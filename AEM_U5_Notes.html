@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEM Unit 5 — Microcontrollers</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --fg: #0e0e0e;
+    --muted: #6b6b6b;
+    --border: #d0cfc9;
+    --accent: #0e0e0e;
+    --tag-bg: #e8e7e2;
+    --code-bg: #eceae4;
+    --highlight: #0e0e0e;
+    --white: #fff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    font-size: 15px;
+  }
+
+  /* ── Sidebar nav ── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 230px;
+    background: var(--fg);
+    color: var(--bg);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 2rem 0 4rem;
+  }
+  .sidebar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    padding: 0 1.5rem 2rem;
+    border-bottom: 1px solid #333;
+    line-height: 1.3;
+  }
+  .sidebar-brand span { display: block; font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 300; opacity: 0.5; margin-bottom: 0.3rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .nav-section { margin-top: 1.5rem; }
+  .nav-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.4;
+    padding: 0 1.5rem 0.5rem;
+  }
+  .nav-link {
+    display: block;
+    padding: 0.35rem 1.5rem;
+    color: rgba(245,244,240,0.7);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 300;
+    transition: color 0.2s, background 0.2s;
+    line-height: 1.4;
+  }
+  .nav-link:hover { color: var(--bg); background: rgba(255,255,255,0.08); }
+
+  /* ── Main ── */
+  .main {
+    margin-left: 230px;
+    min-height: 100vh;
+    padding: 3rem 3.5rem 6rem;
+    max-width: 1000px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    border-bottom: 2px solid var(--fg);
+    padding-bottom: 2.5rem;
+    margin-bottom: 3.5rem;
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .hero-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 0.7rem;
+    font-style: italic;
+  }
+
+  /* ── Sections ── */
+  .section {
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 1.8rem 0 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fg);
+  }
+
+  h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 1.2rem 0 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  p { margin-bottom: 0.9rem; }
+
+  /* ── Tags / chips ── */
+  .tag {
+    display: inline-block;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+    margin: 0.15rem 0.15rem 0.15rem 0;
+  }
+
+  /* ── Definition list ── */
+  .def-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    margin: 1.2rem 0;
+  }
+  .def-grid dt, .def-grid dd {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.83rem;
+    line-height: 1.5;
+  }
+  .def-grid dt { font-family: 'DM Mono', monospace; font-size: 0.72rem; background: var(--tag-bg); font-weight: 500; color: var(--fg); }
+  .def-grid dt:last-of-type, .def-grid dd:last-of-type { border-bottom: none; }
+
+  /* ── Comparison table ── */
+  .cmp-table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.83rem; }
+  .cmp-table th {
+    background: var(--fg);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+  }
+  .cmp-table td { padding: 0.55rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .cmp-table tr:last-child td { border-bottom: none; }
+  .cmp-table tr:nth-child(even) td { background: var(--tag-bg); }
+
+  /* ── Code ── */
+  code {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    background: var(--code-bg);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+  }
+  pre {
+    background: var(--fg);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.76rem;
+    line-height: 1.8;
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+
+  /* ── Callout / Note ── */
+  .callout {
+    border-left: 3px solid var(--fg);
+    background: var(--tag-bg);
+    padding: 0.9rem 1.2rem;
+    margin: 1.2rem 0;
+    font-size: 0.85rem;
+  }
+  .callout strong { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 0.3rem; }
+  .callout.formula { font-family: 'DM Mono', monospace; font-size: 0.9rem; text-align: center; border-color: var(--muted); }
+
+  /* ── Bullet list ── */
+  ul.notes { list-style: none; margin: 0.5rem 0 1rem; }
+  ul.notes li {
+    padding: 0.3rem 0 0.3rem 1.3rem;
+    position: relative;
+    font-size: 0.86rem;
+    line-height: 1.6;
+  }
+  ul.notes li::before { content: '—'; position: absolute; left: 0; color: var(--muted); }
+
+  /* ── SVG diagrams ── */
+  .diagram-wrap {
+    margin: 1.5rem 0;
+    border: 1px solid var(--border);
+    background: var(--white);
+    padding: 1.5rem;
+    overflow-x: auto;
+  }
+  .diagram-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.7rem;
+  }
+  svg text { font-family: 'DM Mono', monospace; }
+
+  /* ── Two-col grid ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1rem 0; }
+  .card {
+    border: 1px solid var(--border);
+    padding: 1rem 1.1rem;
+    background: var(--white);
+  }
+  .card h4 { margin-top: 0; }
+
+  /* ── Register bit row ── */
+  .reg {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 1px;
+    background: var(--fg);
+    border: 1px solid var(--fg);
+    margin: 0.8rem 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+  }
+  .reg-cell {
+    background: var(--bg);
+    text-align: center;
+    padding: 0.4rem 0.2rem 0.2rem;
+  }
+  .reg-cell .bit-num { display: block; font-size: 0.55rem; color: var(--muted); }
+  .reg-cell .bit-name { font-size: 0.65rem; font-weight: 500; }
+
+  /* ── Interrupt vector ── */
+  .ivt { margin: 0.8rem 0; }
+  .ivt-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.79rem;
+  }
+  .ivt-row:first-child { background: var(--fg); color: var(--bg); font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; }
+  .ivt-row span { padding: 0.35rem 0.7rem; }
+  .ivt-row .addr { width: 90px; font-family: 'DM Mono', monospace; color: var(--muted); }
+  .ivt-row .name { width: 130px; font-family: 'DM Mono', monospace; font-weight: 500; }
+  .ivt-row .desc { flex: 1; }
+
+  /* ── I2C message frame ── */
+  .frame-row {
+    display: flex;
+    margin: 0.8rem 0;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    overflow-x: auto;
+  }
+  .frame-cell {
+    background: var(--bg);
+    padding: 0.45rem 0.7rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .frame-cell.dark { background: var(--fg); color: var(--bg); }
+  .frame-cell.gray { background: var(--tag-bg); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 2rem 1.2rem 4rem; }
+    .two-col { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2rem; }
+    .def-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ SIDEBAR ════════════════════ -->
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <span>AEM · Unit 5</span>
+    Microcontrollers
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Foundations</div>
+    <a href="#s1" class="nav-link">Computing Basics &amp; Flip-Flops</a>
+    <a href="#s2" class="nav-link">Microprocessor vs. MCU</a>
+    <a href="#s3" class="nav-link">Embedded Systems</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">ATmega328P</div>
+    <a href="#s4" class="nav-link">Why ATmega · Architecture</a>
+    <a href="#s5" class="nav-link">Pin Description</a>
+    <a href="#s6" class="nav-link">Digital &amp; Analog I/O</a>
+    <a href="#s7" class="nav-link">AREF</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Interrupts</div>
+    <a href="#s8" class="nav-link">Polling vs Interrupts</a>
+    <a href="#s9" class="nav-link">INT vs PCINT</a>
+    <a href="#s10" class="nav-link">PCINT Registers</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Memory</div>
+    <a href="#s11" class="nav-link">Memory Types</a>
+    <a href="#s12" class="nav-link">Non-Volatile Memories</a>
+    <a href="#s13" class="nav-link">RAM — SRAM &amp; DRAM</a>
+    <a href="#s14" class="nav-link">ATmega328 Memory Map</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Timers &amp; PWM</div>
+    <a href="#s15" class="nav-link">Timer/Counter Overview</a>
+    <a href="#s16" class="nav-link">Timer Registers</a>
+    <a href="#s17" class="nav-link">PWM — Modes &amp; Duty Cycle</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Communication</div>
+    <a href="#s18" class="nav-link">SPI Protocol</a>
+    <a href="#s19" class="nav-link">I²C Protocol</a>
+    <a href="#s20" class="nav-link">UART / RS-232</a>
+  </div>
+</nav>
+
+<!-- ════════════════════ MAIN ════════════════════ -->
+<main class="main">
+
+  <div class="hero">
+    <div class="hero-tag">Applied Electronics &amp; Microcontrollers · Unit 5</div>
+    <h1>Micro&shy;controllers</h1>
+    <div class="hero-sub">ATmega328P · Interrupts · Memory · Timers · PWM · SPI · I²C · UART</div>
+  </div>
+
+  <!-- ═══ S1: Computing Basics ═══ -->
+  <section class="section" id="s1">
+    <div class="section-num">01 — Foundations</div>
+    <h2>Computing Basics &amp; Flip-Flops</h2>
+
+    <h3>What does "Compute" mean?</h3>
+    <p>To compute means <em>to count</em> and <em>to calculate</em>. Every computing device at its core must handle:</p>
+    <ul class="notes">
+      <li><strong>Input data</strong> — receiving data from the external world</li>
+      <li><strong>Processing</strong> — performing operations on the data (arithmetic, logic)</li>
+      <li><strong>Output</strong> — producing a result/answer</li>
+    </ul>
+    <p>Additional features expected of a modern computing device:</p>
+    <ul class="notes">
+      <li>Storage of data and output for future retrieval</li>
+      <li>Print / Display / Transfer output</li>
+      <li>Ability to modify/update the process (reprogrammability)</li>
+    </ul>
+
+    <h3>Role of Flip-Flops</h3>
+    <p>A <strong>flip-flop</strong> is the fundamental building block of digital memory:</p>
+    <dl class="def-grid">
+      <dt>What it stores</dt><dd>1 single bit (binary digit) — either 0 or 1</dd>
+      <dt>Stable states</dt><dd>Two stable states → called a <em>Bistable Multivibrator</em></dd>
+      <dt>Purpose</dt><dd>Data storage and retrieval — the basis of all memory</dd>
+      <dt>Scaling</dt><dd>Many flip-flops together form the complete memory of a computing device</dd>
+      <dt>Types used</dt><dd>Flip-flops and Latches are both used as data storage elements</dd>
+    </dl>
+    <div class="callout">
+      <strong>Key insight</strong>
+      A register in a CPU is just a group of flip-flops. 8 flip-flops = 1 byte register. 32 flip-flops = 32-bit register.
+    </div>
+  </section>
+
+  <!-- ═══ S2: µP vs µC ═══ -->
+  <section class="section" id="s2">
+    <div class="section-num">02 — Core Hardware</div>
+    <h2>Microprocessor vs. Microcontroller</h2>
+
+    <h3>Microprocessor (µP)</h3>
+    <p>An electronic device that is a <strong>Central Processing Unit (CPU) on a single integrated circuit chip</strong>. It contains millions of transistors, resistors, and diodes.</p>
+    <ul class="notes">
+      <li>Has <em>only the CPU</em> inside — no ROM, RAM, or I/O built-in</li>
+      <li>All memory and peripherals must be added externally</li>
+      <li>No specific task — fully programmable as per requirement</li>
+      <li>Results in a large PCB with many external chips</li>
+    </ul>
+
+    <h3>Microcontroller (µC)</h3>
+    <p>A microcontroller has the CPU <em>plus</em> all the following embedded on a <strong>single chip</strong>:</p>
+    <div class="diagram-wrap">
+      <div class="diagram-label">MCU Internal Architecture</div>
+      <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px">
+        <!-- Outer chip border -->
+        <rect x="20" y="20" width="640" height="180" fill="none" stroke="#0e0e0e" stroke-width="2"/>
+        <text x="340" y="12" text-anchor="middle" font-size="9" fill="#6b6b6b" letter-spacing="2">MICROCONTROLLER CHIP</text>
+        <!-- CPU -->
+        <rect x="260" y="60" width="160" height="100" fill="#0e0e0e"/>
+        <text x="340" y="106" text-anchor="middle" font-size="11" fill="#f5f4f0" font-weight="500">CPU</text>
+        <text x="340" y="122" text-anchor="middle" font-size="8" fill="#aaa">ALU + CU + Registers</text>
+        <!-- ROM -->
+        <rect x="50" y="65" width="90" height="45" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="95" y="84" text-anchor="middle" font-size="9" fill="#0e0e0e" font-weight="500">ROM / FLASH</text>
+        <text x="95" y="98" text-anchor="middle" font-size="8" fill="#6b6b6b">Non-volatile</text>
+        <!-- RAM -->
+        <rect x="50" y="125" width="90" height="45" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="95" y="144" text-anchor="middle" font-size="9" fill="#0e0e0e" font-weight="500">SRAM</text>
+        <text x="95" y="158" text-anchor="middle" font-size="8" fill="#6b6b6b">Volatile RAM</text>
+        <!-- I/O -->
+        <rect x="540" y="65" width="90" height="45" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="585" y="84" text-anchor="middle" font-size="9" fill="#0e0e0e" font-weight="500">I/O Ports</text>
+        <text x="585" y="98" text-anchor="middle" font-size="8" fill="#6b6b6b">Digital + Analog</text>
+        <!-- Clock -->
+        <rect x="540" y="125" width="90" height="45" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="585" y="144" text-anchor="middle" font-size="9" fill="#0e0e0e" font-weight="500">Clock</text>
+        <text x="585" y="158" text-anchor="middle" font-size="8" fill="#6b6b6b">Oscillator</text>
+        <!-- Timers -->
+        <rect x="270" y="175" width="140" height="30" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="340" y="195" text-anchor="middle" font-size="9" fill="#0e0e0e" font-weight="500">Timers / UART / SPI / I2C / ADC</text>
+        <!-- Arrows CPU-ROM -->
+        <line x1="260" y1="100" x2="140" y2="100" stroke="#0e0e0e" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="260" y1="115" x2="140" y2="147" stroke="#0e0e0e" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Arrows CPU-IO -->
+        <line x1="420" y1="100" x2="540" y2="90" stroke="#0e0e0e" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="420" y1="120" x2="540" y2="147" stroke="#0e0e0e" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Arrow CPU-Timers -->
+        <line x1="340" y1="160" x2="340" y2="175" stroke="#0e0e0e" stroke-width="1.5" marker-end="url(#arr)"/>
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0e0e0e"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h3>Side-by-Side Comparison</h3>
+    <table class="cmp-table">
+      <thead><tr><th>Feature</th><th>Microprocessor</th><th>Microcontroller</th></tr></thead>
+      <tbody>
+        <tr><td>Memory &amp; I/O</td><td>External chips required</td><td>Built-in on single chip</td></tr>
+        <tr><td>Circuit size</td><td>Large</td><td>Small &amp; compact</td></tr>
+        <tr><td>Cost</td><td>High (system level)</td><td>Low</td></tr>
+        <tr><td>Power consumption</td><td>High</td><td>Low</td></tr>
+        <tr><td>Speed of operation</td><td>Slower (external bus transactions)</td><td>Faster (internal operations)</td></tr>
+        <tr><td>Application type</td><td>General-purpose (PC, server)</td><td>Dedicated (washing machine, automobile)</td></tr>
+        <tr><td>Programming difficulty</td><td>More complex</td><td>Easier</td></tr>
+      </tbody>
+    </table>
+
+    <h3>History of Microprocessors</h3>
+    <table class="cmp-table">
+      <thead><tr><th>Processor</th><th>Year</th><th>Clock Speed</th><th>Transistors</th></tr></thead>
+      <tbody>
+        <tr><td>Intel 4004 / 4040</td><td>1971</td><td>740 KHz</td><td>2,300</td></tr>
+        <tr><td>Intel 8080 (8-bit)</td><td>1974</td><td>~1 MHz</td><td>6,000</td></tr>
+        <tr><td>Intel 8086 (16-bit)</td><td>1978</td><td>~5–10 MHz</td><td>~29,000</td></tr>
+        <tr><td>Intel 80386 (32-bit)</td><td>1985</td><td>16–33 MHz</td><td>275,000</td></tr>
+        <tr><td>Intel Pentium</td><td>1993</td><td>60–200 MHz</td><td>3.1 million</td></tr>
+        <tr><td>Intel Core 2 Duo/Quad</td><td>~2006</td><td>1.2–3 GHz</td><td>291 million</td></tr>
+        <tr><td>Intel i3/i5/i7/i9</td><td>2007–2019</td><td>2.2–3.6 GHz</td><td>1.75–2.1 billion</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══ S3: Embedded Systems ═══ -->
+  <section class="section" id="s3">
+    <div class="section-num">03 — Embedded Systems</div>
+    <h2>Embedded Systems</h2>
+
+    <p>An <strong>Embedded System</strong> is a combination of hardware and software designed for a <em>specific dedicated task</em>. The firmware (specific program) is written to ROM and cannot be used in any other system.</p>
+
+    <h3>Key Features</h3>
+    <div class="two-col">
+      <div>
+        <ul class="notes">
+          <li>Combination of H/W and S/W</li>
+          <li>Specific task given — not general purpose</li>
+          <li>Dialogue between hardware and software</li>
+          <li>Can be a small part of a bigger system</li>
+          <li>Requires less power</li>
+          <li>Highly stable, reliable, efficient</li>
+          <li>Minimal user interface</li>
+          <li>Time specific &amp; task specific</li>
+        </ul>
+      </div>
+      <div>
+        <ul class="notes">
+          <li>Mass produced → very cheap</li>
+          <li>User friendly</li>
+          <li>Development creates obsolescence of older version</li>
+          <li><strong>Examples:</strong> Washing machines, Mobile phones, Microwave ovens, Automobiles, Video devices, Games, Music systems, Cameras, Medical instruments, Defense weapons</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Classification of Embedded Systems</h3>
+
+    <h4>By Scale / Complexity</h4>
+    <table class="cmp-table">
+      <thead><tr><th>Type</th><th>Controller</th><th>Characteristics</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>Small Scale</td><td>8-bit µC</td><td>Few hardware components, small power source, simple</td><td>Calculator, LED blinker</td></tr>
+        <tr><td>Medium Scale</td><td>16/32-bit µC</td><td>Complex H/W and S/W; uses RTOS, debugger, simulator</td><td>Home appliances, Security systems</td></tr>
+        <tr><td>Sophisticated</td><td>Multi-core, DSP</td><td>Huge H/W and S/W, very complex, many subsystems, costly</td><td>Washing machines, Automobiles, Medical instruments, Defense</td></tr>
+      </tbody>
+    </table>
+
+    <h4>By Application Type</h4>
+    <dl class="def-grid">
+      <dt>Stand-alone</dt><dd>Least complicated. Works independently without a host computer. Input can be analog or digital. e.g. Calculator, Digital wristwatch</dd>
+      <dt>Real-time</dt><dd>Functions within a definite time interval. <em>Soft real-time</em> (Microwave, Washing machine) — deadline can be missed occasionally. <em>Hard real-time</em> (Missiles, Robotics, Space) — deadline missing is catastrophic.</dd>
+      <dt>Networked</dt><dd>Connected to LAN, WAN, Internet etc. e.g. ATM, Card swipe machine, Home security system</dd>
+      <dt>Mobile</dt><dd>Portable embedded systems for cell phones, PDAs, digital data devices</dd>
+    </dl>
+
+    <h3>Embedded System Hardware Approaches</h3>
+    <div class="two-col">
+      <div class="card">
+        <h4>Microcontroller-based</h4>
+        <ul class="notes">
+          <li>CPU + ROM + RAM + I/O on single chip</li>
+          <li>Simple programming, low cost</li>
+          <li>ATmega328P, 8051, PIC, STM32</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>FPGA / ASIC-based</h4>
+        <ul class="notes">
+          <li>Field Programmable Gate Array</li>
+          <li>Application-Specific Integrated Circuit</li>
+          <li>Used for high-speed, custom hardware</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ S4: ATmega328P Overview ═══ -->
+  <section class="section" id="s4">
+    <div class="section-num">04 — ATmega328P</div>
+    <h2>Why ATmega328P — Architecture</h2>
+
+    <h3>Why ATmega328P?</h3>
+    <ul class="notes">
+      <li>Beginner-friendly with a simple AVR Integrated Development Environment (IDE)</li>
+      <li>Simple programming interface via Arduino</li>
+      <li>Can be programmed in AVR IDE or Arduino IDE using embedded C</li>
+      <li>More convenient hardware setup compared to 8051 flash versions</li>
+      <li>Powers the Arduino Uno — widespread community support</li>
+    </ul>
+
+    <h3>ATmega328P Specifications</h3>
+    <dl class="def-grid">
+      <dt>Architecture</dt><dd>8-bit AVR RISC</dd>
+      <dt>Flash Program Memory</dt><dd>32 KB (in-system reprogrammable)</dd>
+      <dt>SRAM</dt><dd>2 KB</dd>
+      <dt>EEPROM</dt><dd>1 KB</dd>
+      <dt>Clock Speed</dt><dd>Up to 20 MHz (Arduino Uno runs at 16 MHz)</dd>
+      <dt>Digital I/O Pins</dt><dd>23 programmable I/O lines</dd>
+      <dt>ADC</dt><dd>6-channel, 10-bit ADC</dd>
+      <dt>Timers</dt><dd>3 timers (T0: 8-bit, T1: 16-bit, T2: 8-bit)</dd>
+      <dt>Communication</dt><dd>USART, SPI, TWI (I²C)</dd>
+      <dt>Package</dt><dd>28-pin DIP / 32-pin MLF / TQFP</dd>
+      <dt>Supply voltage</dt><dd>1.8V – 5.5V</dd>
+      <dt>Interrupt sources</dt><dd>26 interrupt vectors</dd>
+    </dl>
+
+    <h3>Internal Block Diagram (Simplified)</h3>
+    <div class="diagram-wrap">
+      <div class="diagram-label">ATmega328P Internal Architecture</div>
+      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px">
+        <!-- Main chip outline -->
+        <rect x="10" y="10" width="680" height="300" fill="none" stroke="#d0cfc9" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- CPU core -->
+        <rect x="270" y="30" width="170" height="80" fill="#0e0e0e"/>
+        <text x="355" y="62" text-anchor="middle" font-size="10" fill="#f5f4f0" font-weight="500">AVR CPU CORE</text>
+        <text x="355" y="78" text-anchor="middle" font-size="8" fill="#aaa">ALU · Instruction Decoder</text>
+        <text x="355" y="92" text-anchor="middle" font-size="8" fill="#aaa">32 General Purpose Registers</text>
+
+        <!-- Flash -->
+        <rect x="30" y="30" width="110" height="55" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="85" y="52" text-anchor="middle" font-size="9" font-weight="500" fill="#0e0e0e">FLASH</text>
+        <text x="85" y="66" text-anchor="middle" font-size="8" fill="#6b6b6b">32 KB Program</text>
+        <text x="85" y="78" text-anchor="middle" font-size="8" fill="#6b6b6b">Memory</text>
+
+        <!-- SRAM -->
+        <rect x="30" y="105" width="110" height="55" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="85" y="127" text-anchor="middle" font-size="9" font-weight="500" fill="#0e0e0e">SRAM</text>
+        <text x="85" y="141" text-anchor="middle" font-size="8" fill="#6b6b6b">2 KB Data</text>
+        <text x="85" y="155" text-anchor="middle" font-size="8" fill="#6b6b6b">Memory</text>
+
+        <!-- EEPROM -->
+        <rect x="30" y="180" width="110" height="55" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="85" y="202" text-anchor="middle" font-size="9" font-weight="500" fill="#0e0e0e">EEPROM</text>
+        <text x="85" y="216" text-anchor="middle" font-size="8" fill="#6b6b6b">1 KB Non-volatile</text>
+        <text x="85" y="230" text-anchor="middle" font-size="8" fill="#6b6b6b">Data Storage</text>
+
+        <!-- IO Ports -->
+        <rect x="570" y="30" width="110" height="55" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="625" y="52" text-anchor="middle" font-size="9" font-weight="500" fill="#0e0e0e">PORT B,C,D</text>
+        <text x="625" y="66" text-anchor="middle" font-size="8" fill="#6b6b6b">Digital I/O</text>
+        <text x="625" y="78" text-anchor="middle" font-size="8" fill="#6b6b6b">23 pins</text>
+
+        <!-- ADC -->
+        <rect x="570" y="105" width="110" height="55" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="625" y="127" text-anchor="middle" font-size="9" font-weight="500" fill="#0e0e0e">ADC</text>
+        <text x="625" y="141" text-anchor="middle" font-size="8" fill="#6b6b6b">10-bit, 6-ch</text>
+        <text x="625" y="155" text-anchor="middle" font-size="8" fill="#6b6b6b">A0–A5</text>
+
+        <!-- Timers -->
+        <rect x="570" y="180" width="110" height="55" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="625" y="202" text-anchor="middle" font-size="9" font-weight="500" fill="#0e0e0e">TIMERS</text>
+        <text x="625" y="216" text-anchor="middle" font-size="8" fill="#6b6b6b">T0(8b) T1(16b)</text>
+        <text x="625" y="230" text-anchor="middle" font-size="8" fill="#6b6b6b">T2(8b)</text>
+
+        <!-- SPI/UART/I2C -->
+        <rect x="270" y="240" width="170" height="55" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="355" y="263" text-anchor="middle" font-size="9" font-weight="500" fill="#0e0e0e">COMMUNICATION</text>
+        <text x="355" y="277" text-anchor="middle" font-size="8" fill="#6b6b6b">USART · SPI · TWI(I²C)</text>
+        <text x="355" y="291" text-anchor="middle" font-size="8" fill="#6b6b6b">Watchdog Timer · Interrupts</text>
+
+        <!-- Clock -->
+        <rect x="270" y="135" width="170" height="50" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="355" y="157" text-anchor="middle" font-size="9" font-weight="500" fill="#0e0e0e">CLOCK SYSTEM</text>
+        <text x="355" y="171" text-anchor="middle" font-size="8" fill="#6b6b6b">Internal RC 8MHz / External Crystal 16MHz</text>
+
+        <!-- Connecting lines -->
+        <line x1="140" y1="57" x2="270" y2="65" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="140" y1="132" x2="270" y2="100" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="140" y1="207" x2="270" y2="150" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="440" y1="65" x2="570" y2="57" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="440" y1="100" x2="570" y2="132" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="440" y1="150" x2="570" y2="207" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="355" y1="185" x2="355" y2="240" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="355" y1="110" x2="355" y2="135" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="3,2"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══ S5: Pin Description ═══ -->
+  <section class="section" id="s5">
+    <div class="section-num">05 — Pin Description</div>
+    <h2>ATmega328P Pin Description</h2>
+
+    <p>The ATmega328P comes in a 28-pin DIP (Dual In-line Package). Each pin has multiple functions.</p>
+
+    <h3>Port B (Pins PB0–PB7)</h3>
+    <dl class="def-grid">
+      <dt>PB0–PB5</dt><dd>Digital I/O pins — maps to Arduino pins 8–13</dd>
+      <dt>PB6–PB7</dt><dd>Crystal oscillator pins (XTAL1, XTAL2) — used for external clock</dd>
+      <dt>PB3 (OC2A)</dt><dd>PWM output for Timer2 Channel A</dd>
+      <dt>PB1 (OC1A), PB2 (OC1B)</dt><dd>PWM outputs for Timer1</dd>
+      <dt>PB5 (SCK), PB4 (MISO), PB3 (MOSI), PB2 (SS)</dt><dd>SPI communication pins</dd>
+    </dl>
+
+    <h3>Port C (Pins PC0–PC6)</h3>
+    <dl class="def-grid">
+      <dt>PC0–PC5</dt><dd>Analog input pins A0–A5 (also digital I/O)</dd>
+      <dt>PC4 (SDA), PC5 (SCL)</dt><dd>I²C / TWI communication lines</dd>
+      <dt>PC6 (RESET)</dt><dd>Reset pin — pulls low to reset the MCU</dd>
+    </dl>
+
+    <h3>Port D (Pins PD0–PD7)</h3>
+    <dl class="def-grid">
+      <dt>PD0–PD7</dt><dd>Digital I/O pins 0–7 on Arduino</dd>
+      <dt>PD0 (RXD), PD1 (TXD)</dt><dd>UART receive and transmit</dd>
+      <dt>PD2 (INT0), PD3 (INT1)</dt><dd>External hardware interrupt pins</dd>
+      <dt>PD5 (OC0B), PD6 (OC0A)</dt><dd>PWM outputs for Timer0</dd>
+      <dt>PD3 (OC2B)</dt><dd>PWM output for Timer2 Channel B</dd>
+    </dl>
+
+    <h3>Power Pins</h3>
+    <dl class="def-grid">
+      <dt>VCC</dt><dd>Digital supply voltage (5V for Arduino Uno)</dd>
+      <dt>GND</dt><dd>Ground — multiple GND pins for decentralized current paths</dd>
+      <dt>AVCC</dt><dd>Analog supply voltage for ADC and Port C. Must always be connected even if ADC is not used.</dd>
+      <dt>AREF</dt><dd>Analog reference voltage for ADC. Must be decoupled with 100nF capacitor to GND.</dd>
+    </dl>
+
+    <div class="callout">
+      <strong>Why Multiple GND Pins?</strong>
+      Multiple GND pins provide multiple current return paths → reduces current density per path → less heat concentration → simpler hardware connections for devices in multiple directions.
+    </div>
+
+    <h3>DDR / PORT / PIN Registers (for each Port)</h3>
+    <p>Every port has three 8-bit registers controlling its behavior:</p>
+    <dl class="def-grid">
+      <dt>DDRx</dt><dd>Data Direction Register — set bit HIGH = Output, LOW = Input</dd>
+      <dt>PORTx</dt><dd>When OUTPUT: writes HIGH/LOW to pin. When INPUT: enables (1) or disables (0) internal pull-up resistor</dd>
+      <dt>PINx</dt><dd>Reads current state of the pin (read-only)</dd>
+    </dl>
+  </section>
+
+  <!-- ═══ S6: Digital & Analog I/O ═══ -->
+  <section class="section" id="s6">
+    <div class="section-num">06 — I/O Functions</div>
+    <h2>Digital &amp; Analog I/O</h2>
+
+    <h3>Digital I/O (Arduino Functions)</h3>
+    <pre>
+pinMode(pin, mode);          // Sets pin as INPUT or OUTPUT
+                             // Writes 1 bit in DDRx register
+
+digitalWrite(pin, value);    // Sets pin HIGH (1) or LOW (0)
+                             // Writes 1 bit in PORTx register
+
+int val = digitalRead(pin);  // Reads pin value (0 or 1)
+                             // Reads 1 bit from PINx register</pre>
+
+    <h3>Analog Input (ADC)</h3>
+    <p>Analog input pins: <code>A0 to A5</code>. The ATmega328P has a 10-bit ADC (1024 steps).</p>
+    <pre>
+int val = analogRead(pin);   // Returns 0–1023
+                             // Converts 0–5V → 10-bit number</pre>
+    <div class="callout formula">
+      <strong>ADC Resolution Formula</strong>
+      Resolution = V<sub>REF</sub> ÷ 2<sup>n</sup> = 5V ÷ 1024 ≈ <strong>4.88 mV</strong> per step (with 5V AREF, 10-bit ADC)
+    </div>
+
+    <h3>Analog Output (PWM)</h3>
+    <p>Analog output pins: <code>3, 5, 6, 9, 10, 11</code> (PWM-capable digital pins). Operates at ~490 Hz by default.</p>
+    <pre>
+analogWrite(pin, value);     // value: 0–255 (8-bit)
+                             // 0 = 0% duty cycle (always LOW)
+                             // 255 = 100% duty cycle (always HIGH)
+                             // 127 ≈ 50% duty cycle</pre>
+
+    <h3>Serial Communication Library (Arduino)</h3>
+    <pre>
+Serial.begin(baud_rate);     // Initialize UART (9600 default)
+Serial.println(string);      // Print with newline
+Serial.print(string);        // Print without newline
+int b = Serial.read();       // Read one byte (buffered)</pre>
+
+    <h3>Time Functions</h3>
+    <pre>
+delay(ms);                   // Delay in milliseconds
+delayMicroseconds(us);       // Delay in microseconds</pre>
+  </section>
+
+  <!-- ═══ S7: AREF ═══ -->
+  <section class="section" id="s7">
+    <div class="section-num">07 — AREF</div>
+    <h2>AREF — Analog Reference Voltage</h2>
+
+    <p>AREF is the reference voltage that the ADC uses to convert an analog signal to its corresponding digital value. It defines <em>what voltage = 1023 (100%)</em>.</p>
+
+    <h3>Types of AREF</h3>
+    <dl class="def-grid">
+      <dt>Internal (Default)</dt><dd>5V on Arduino Uno. Code: <code>analogReference(DEFAULT);</code></dd>
+      <dt>Internal 1.1V</dt><dd>Internal bandgap reference of 1.1V. Higher resolution for small signals.</dd>
+      <dt>External</dt><dd>Supply your own voltage (min 1.1V) to the AREF pin. Code: <code>analogReference(EXTERNAL);</code><br>External GND must connect to Arduino GND.</dd>
+    </dl>
+
+    <h3>Connection of AREF (Hardware)</h3>
+    <ul class="notes">
+      <li>Pin 21 (AREF) must be <em>decoupled</em></li>
+      <li>Connect a 100nF capacitor between AREF and the neighboring GND pin, as close as possible to the chip</li>
+    </ul>
+
+    <h3>Resolution Comparison</h3>
+    <table class="cmp-table">
+      <thead><tr><th>AREF Value</th><th>Resolution per Step</th><th>Use case</th></tr></thead>
+      <tbody>
+        <tr><td>5V (default)</td><td>5 ÷ 1024 ≈ 4.88 mV</td><td>General 0–5V sensors</td></tr>
+        <tr><td>3.3V (external)</td><td>3.3 ÷ 1024 ≈ 3.22 mV</td><td>3.3V logic sensors</td></tr>
+        <tr><td>1.1V (internal)</td><td>1.1 ÷ 1024 ≈ 1.07 mV</td><td>Precision low-voltage sensing</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Exam Tip</strong>
+      With 5V AREF: measuring 3V gives analogRead() = (3/5) × 1023 ≈ 614. With 3.3V AREF: measuring 3V gives (3/3.3) × 1023 ≈ 931 — much better resolution for 3V range signals.
+    </div>
+  </section>
+
+  <!-- ═══ S8: Interrupts ═══ -->
+  <section class="section" id="s8">
+    <div class="section-num">08 — Interrupts</div>
+    <h2>Polling vs. Interrupts</h2>
+
+    <h3>Polling</h3>
+    <p>Repeatedly reading a data port and testing the input value at regular intervals, regardless of whether the value changed.</p>
+    <ul class="notes">
+      <li>Simple to code</li>
+      <li>Predictable, guaranteed time slices for each device</li>
+      <li><strong>Inefficient</strong> — CPU wastes cycles checking when nothing has changed</li>
+    </ul>
+
+    <h3>Interrupt</h3>
+    <p>A signal generated by hardware or software that <em>triggers the Interrupt Service Routine (ISR)</em> to run. Occurs only when needed.</p>
+
+    <div class="diagram-wrap">
+      <div class="diagram-label">Interrupt Flow</div>
+      <svg viewBox="0 0 620 160" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:620px">
+        <!-- Main program -->
+        <rect x="20" y="30" width="120" height="40" fill="#0e0e0e"/>
+        <text x="80" y="55" text-anchor="middle" font-size="9" fill="#f5f4f0">Main Program</text>
+        <!-- Arrow -->
+        <line x1="140" y1="50" x2="200" y2="50" stroke="#0e0e0e" stroke-width="1.5" marker-end="url(#a2)"/>
+        <!-- Running -->
+        <rect x="200" y="30" width="120" height="40" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="260" y="55" text-anchor="middle" font-size="9">Running...</text>
+        <!-- Interrupt signal -->
+        <line x1="260" y1="70" x2="260" y2="120" stroke="#6b6b6b" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="267" y="100" font-size="8" fill="#6b6b6b">interrupt!</text>
+        <!-- Arrow to ISR -->
+        <line x1="320" y1="50" x2="380" y2="50" stroke="#0e0e0e" stroke-width="1.5" marker-end="url(#a2)"/>
+        <!-- Save return addr -->
+        <rect x="380" y="20" width="120" height="25" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="440" y="37" text-anchor="middle" font-size="8">Save return addr → Stack</text>
+        <!-- ISR -->
+        <rect x="380" y="55" width="120" height="30" fill="#0e0e0e"/>
+        <text x="440" y="75" text-anchor="middle" font-size="9" fill="#f5f4f0">ISR Executes</text>
+        <!-- Arrow back -->
+        <line x1="500" y1="70" x2="560" y2="70" stroke="#0e0e0e" stroke-width="1.5" marker-end="url(#a2)"/>
+        <rect x="560" y="55" width="40" height="30" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="580" y="75" text-anchor="middle" font-size="8">Resume</text>
+        <defs>
+          <marker id="a2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0e0e0e"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h3>How an Interrupt Works — Step by Step</h3>
+    <ul class="notes">
+      <li><strong>1.</strong> Interrupt signal arrives (hardware pin change, timer overflow, UART byte received, etc.)</li>
+      <li><strong>2.</strong> Current instruction completes</li>
+      <li><strong>3.</strong> Return address (PC) is pushed onto the Stack</li>
+      <li><strong>4.</strong> CPU jumps to the ISR (Interrupt Service Routine) via the Interrupt Vector Table</li>
+      <li><strong>5.</strong> ISR executes</li>
+      <li><strong>6.</strong> Return address is popped from stack — original program resumes</li>
+    </ul>
+
+    <h3>Types of AVR Interrupts</h3>
+    <table class="cmp-table">
+      <thead><tr><th>Category</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>Pin change (external)</td><td>Rotary encoder, button press, infrared sensor, keypad</td></tr>
+        <tr><td>Timer interrupts</td><td>Timer overflow, output compare match</td></tr>
+        <tr><td>UART</td><td>Byte received / ready to transmit</td></tr>
+        <tr><td>SPI</td><td>Data transfer complete</td></tr>
+        <tr><td>I²C (TWI)</td><td>Address match, data received</td></tr>
+        <tr><td>ADC</td><td>Conversion complete</td></tr>
+        <tr><td>EEPROM</td><td>Ready for use</td></tr>
+        <tr><td>Watchdog</td><td>Timer timeout (system recovery)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══ S9: INT vs PCINT ═══ -->
+  <section class="section" id="s9">
+    <div class="section-num">09 — INT vs PCINT</div>
+    <h2>INT vs PCINT — Pin Change Interrupts</h2>
+
+    <table class="cmp-table">
+      <thead><tr><th>#</th><th>INT (External Interrupt)</th><th>PCINT (Pin Change Interrupt)</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Dedicated hardware interrupt pins only (INT0 = PD2, INT1 = PD3)</td><td>Can be generated by almost any I/O pin (PCINT0–PCINT23)</td></tr>
+        <tr><td>2</td><td>Each has its own dedicated Vector address — not shared</td><td>Group of pins share the same PCINT vector. 3 groups total.</td></tr>
+        <tr><td>3</td><td>Programmer always knows which pin caused the interrupt</td><td>Programmer must determine which specific pin changed within the ISR</td></tr>
+        <tr><td>4</td><td>Can trigger on: rising edge, falling edge, any change, or low level</td><td>Can only trigger on any pin change (both edges)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>PCINT Groups on ATmega328P</h3>
+    <table class="cmp-table">
+      <thead><tr><th>PCIE Bit</th><th>PCINT Pins</th><th>ATmega328 Port</th><th>Arduino Pins</th></tr></thead>
+      <tbody>
+        <tr><td>PCIE0</td><td>PCINT0–PCINT7 (8 pins)</td><td>Port B0–B7</td><td>Digital 8–13 (6 usable; B6,B7 are crystal pins)</td></tr>
+        <tr><td>PCIE1</td><td>PCINT8–PCINT14 (7 pins)</td><td>Port C0–C6</td><td>A0–A5 (6 usable; C6 is reset pin)</td></tr>
+        <tr><td>PCIE2</td><td>PCINT16–PCINT23 (8 pins)</td><td>Port D0–D7</td><td>Digital 0–7 (all 8 usable)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══ S10: PCINT Registers ═══ -->
+  <section class="section" id="s10">
+    <div class="section-num">10 — PCINT Registers</div>
+    <h2>PCINT Registers</h2>
+
+    <h3>Three Key Registers</h3>
+    <dl class="def-grid">
+      <dt>PCICR</dt><dd>Pin Change Interrupt Control Register — enables/disables PCINT groups</dd>
+      <dt>PCIFR</dt><dd>Pin Change Interrupt Flag Register — indicates which group triggered</dd>
+      <dt>PCMSKx</dt><dd>Pin Change Mask Register — enables specific pins within a group (x = 0, 1, or 2)</dd>
+    </dl>
+
+    <h4>PCICR — Pin Change Interrupt Control Register</h4>
+    <div class="reg">
+      <div class="reg-cell"><span class="bit-num">7</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">6</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">5</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">4</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">3</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">2</span><span class="bit-name">PCIE2</span></div>
+      <div class="reg-cell"><span class="bit-num">1</span><span class="bit-name">PCIE1</span></div>
+      <div class="reg-cell"><span class="bit-num">0</span><span class="bit-name">PCIE0</span></div>
+    </div>
+    <p style="font-size:0.82rem">Set PCIE0=1 to enable PCINT group 0, PCIE1=1 for group 1, PCIE2=1 for group 2.</p>
+
+    <h4>PCIFR — Pin Change Interrupt Flag Register</h4>
+    <div class="reg">
+      <div class="reg-cell"><span class="bit-num">7</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">6</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">5</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">4</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">3</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">2</span><span class="bit-name">PCIF2</span></div>
+      <div class="reg-cell"><span class="bit-num">1</span><span class="bit-name">PCIF1</span></div>
+      <div class="reg-cell"><span class="bit-num">0</span><span class="bit-name">PCIF0</span></div>
+    </div>
+    <p style="font-size:0.82rem">Flag bits are set when an interrupt is triggered by a pin in the corresponding group.</p>
+
+    <h4>PCMSKx — Pin Change Mask Register</h4>
+    <p style="font-size:0.83rem">Each bit in PCMSKx corresponds to one PCINT pin in the group. Setting a bit to 1 enables that specific pin to trigger the interrupt.</p>
+    <ul class="notes">
+      <li><code>PCMSK0</code> — controls PCINT0 to PCINT7 (Port B)</li>
+      <li><code>PCMSK1</code> — controls PCINT8 to PCINT14 (Port C)</li>
+      <li><code>PCMSK2</code> — controls PCINT16 to PCINT23 (Port D)</li>
+    </ul>
+
+    <h3>Steps to Enable a PCINT</h3>
+    <pre>
+// Step 1: Enable global interrupts
+sei();
+
+// Step 2: Enable the PCINT group (e.g., group 2 for Port D)
+PCICR |= (1 << PCIE2);
+
+// Step 3: Enable specific pin (e.g., PD4 = PCINT20)
+PCMSK2 |= (1 << PCINT20);
+
+// Step 4: Define the ISR for the group
+ISR(PCINT2_vect) {
+    // Determine which pin changed, then handle
+}</pre>
+  </section>
+
+  <!-- ═══ S11: Memory Types ═══ -->
+  <section class="section" id="s11">
+    <div class="section-num">11 — Memory</div>
+    <h2>Memory Types Overview</h2>
+
+    <div class="diagram-wrap">
+      <div class="diagram-label">Memory Hierarchy</div>
+      <svg viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:620px">
+        <!-- Non-volatile branch -->
+        <rect x="20" y="20" width="120" height="35" fill="#0e0e0e"/>
+        <text x="80" y="43" text-anchor="middle" font-size="9" fill="#f5f4f0">MEMORY</text>
+        <!-- two branches -->
+        <line x1="140" y1="37" x2="190" y2="70" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="140" y1="37" x2="190" y2="140" stroke="#0e0e0e" stroke-width="1.5"/>
+        <!-- NVM box -->
+        <rect x="190" y="55" width="130" height="35" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="255" y="77" text-anchor="middle" font-size="9" font-weight="500">Non-Volatile (ROM)</text>
+        <!-- RAM box -->
+        <rect x="190" y="125" width="130" height="35" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="255" y="147" text-anchor="middle" font-size="9" font-weight="500">Volatile (RAM)</text>
+
+        <!-- ROM sub-types -->
+        <line x1="320" y1="72" x2="370" y2="40" stroke="#d0cfc9" stroke-width="1"/>
+        <line x1="320" y1="72" x2="370" y2="72" stroke="#d0cfc9" stroke-width="1"/>
+        <line x1="320" y1="72" x2="370" y2="104" stroke="#d0cfc9" stroke-width="1"/>
+        <line x1="320" y1="72" x2="370" y2="136" stroke="#d0cfc9" stroke-width="1"/>
+        <line x1="320" y1="72" x2="370" y2="168" stroke="#d0cfc9" stroke-width="1"/>
+
+        <text x="372" y="44" font-size="8" fill="#0e0e0e">MROM (Mask ROM)</text>
+        <text x="372" y="76" font-size="8" fill="#0e0e0e">PROM (OTP)</text>
+        <text x="372" y="108" font-size="8" fill="#0e0e0e">EPROM (UV erasable)</text>
+        <text x="372" y="140" font-size="8" fill="#0e0e0e">EEPROM (electrical)</text>
+        <text x="372" y="172" font-size="8" fill="#0e0e0e">Flash EEPROM</text>
+
+        <!-- RAM sub-types -->
+        <line x1="320" y1="142" x2="370" y2="210" stroke="#d0cfc9" stroke-width="1"/>
+        <line x1="320" y1="142" x2="370" y2="230" stroke="#d0cfc9" stroke-width="1"/>
+        <text x="372" y="214" font-size="8" fill="#0e0e0e">SRAM (Static)</text>
+        <text x="372" y="234" font-size="8" fill="#0e0e0e">DRAM (Dynamic)</text>
+      </svg>
+    </div>
+
+    <h3>Memory Levels (Hierarchy)</h3>
+    <table class="cmp-table">
+      <thead><tr><th>Level</th><th>Name</th><th>Speed</th><th>Capacity</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>L1</td><td>Registers</td><td>Fastest</td><td>Bytes (32 in AVR)</td><td>Inside CPU — immediate access</td></tr>
+        <tr><td>L2</td><td>Cache (SRAM)</td><td>Very fast</td><td>KB–MB</td><td>Temporary fast storage</td></tr>
+        <tr><td>L3</td><td>Main Memory (RAM/DRAM)</td><td>Fast</td><td>GB</td><td>Active program data; volatile</td></tr>
+        <tr><td>L4</td><td>Secondary (HDD/Flash)</td><td>Slower</td><td>TB</td><td>Permanent storage; non-volatile</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══ S12: Non-volatile Memories ═══ -->
+  <section class="section" id="s12">
+    <div class="section-num">12 — Non-Volatile Memory</div>
+    <h2>Non-Volatile Memory Types</h2>
+
+    <dl class="def-grid">
+      <dt>ROM</dt><dd>Read-Only Memory. Data programmed at manufacture. Cannot be rewritten. Used for permanent system software.</dd>
+      <dt>MROM</dt><dd>Mask ROM. Data burned into chip during manufacturing. Only economical for mass production. Cannot be reprogrammed ever.</dd>
+      <dt>PROM</dt><dd>Programmable ROM. Blank when manufactured. Programmed once using a PROM Programmer by "blowing" fuses — irreversible. Invented 1956 by Wen Tsing Chow.</dd>
+      <dt>EPROM</dt><dd>Erasable PROM. Erased using UV light through a quartz glass window on the chip top. Erasure takes ~20 minutes. Requires 12.5V (Vpp) for programming. Removed from board to erase.</dd>
+      <dt>EEPROM</dt><dd>Electrically Erasable PROM. Written/erased electrically while on the circuit board. Byte-level erasure. Up to 100,000 write/erase cycles. ATmega328 has 1KB EEPROM.</dd>
+      <dt>Flash</dt><dd>Flash EEPROM. Entire device erased at once (in a "flash") — under 1 second. Block-level erasure possible. Intermediate write speed. ATmega328 has 32KB Flash. Used in USB drives, SD cards, SSDs.</dd>
+    </dl>
+
+    <h3>EEPROM vs UV-EPROM Comparison</h3>
+    <table class="cmp-table">
+      <thead><tr><th>#</th><th>EEPROM</th><th>UV-EPROM</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Erased electrically</td><td>Erased by UV light exposure</td></tr>
+        <tr><td>2</td><td>Erasure is instant</td><td>Erasure takes ~20 minutes</td></tr>
+        <tr><td>3</td><td>Can erase individual bytes</td><td>Entire chip contents erased at once</td></tr>
+        <tr><td>4</td><td>Programmed/erased on the board</td><td>Must be removed from board</td></tr>
+        <tr><td>5</td><td>No external device needed</td><td>Needs external programmer &amp; eraser</td></tr>
+        <tr><td>6</td><td>100,000 write/erase cycles</td><td>~1,000 write/erase cycles</td></tr>
+        <tr><td>7</td><td>More expensive</td><td>Less expensive</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══ S13: RAM ═══ -->
+  <section class="section" id="s13">
+    <div class="section-num">13 — RAM</div>
+    <h2>RAM — SRAM &amp; DRAM</h2>
+
+    <h3>SRAM — Static RAM</h3>
+    <ul class="notes">
+      <li>Uses bistable <strong>flip-flop latching circuitry</strong> — 6 transistors per bit cell</li>
+      <li><em>Static</em> — no refresh needed; data held as long as power is on</li>
+      <li>Faster access, lower latency</li>
+      <li>More complex circuit → less density per chip area</li>
+      <li>Used for: CPU cache, MCU on-chip RAM</li>
+      <li><strong>ATmega328P: 2KB SRAM</strong></li>
+    </ul>
+
+    <h3>DRAM — Dynamic RAM</h3>
+    <ul class="notes">
+      <li>Stores each bit as <strong>charge in a capacitor</strong> — 1 transistor + 1 capacitor per cell</li>
+      <li><em>Dynamic</em> — capacitors discharge → needs periodic <strong>refresh</strong> (every few ms)</li>
+      <li>Simpler circuit → higher density, larger capacity</li>
+      <li>Slower than SRAM</li>
+      <li>Used for: Main system RAM (DDR4, DDR5)</li>
+    </ul>
+
+    <h3>SRAM vs DRAM Comparison</h3>
+    <table class="cmp-table">
+      <thead><tr><th>#</th><th>SRAM</th><th>DRAM</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Complex circuitry → less capacity per size</td><td>Simple cell → high density/capacity</td></tr>
+        <tr><td>2</td><td>Transistors store data</td><td>Capacitors store data</td></tr>
+        <tr><td>3</td><td>Lower access time (faster)</td><td>Higher access time (slower)</td></tr>
+        <tr><td>4</td><td>Medium/more power consumption</td><td>Reduced power consumption</td></tr>
+        <tr><td>5</td><td>Low packing density</td><td>High packing density</td></tr>
+        <tr><td>6</td><td>Cache memory (1MB–16MB)</td><td>Main memory (4GB–16GB)</td></tr>
+        <tr><td>7</td><td>On-chip (inside processor)</td><td>Off-chip (on motherboard)</td></tr>
+        <tr><td>8</td><td>Costlier</td><td>Cheaper</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Virtual Memory</strong>
+      When physical DRAM runs out, the OS creates virtual memory by temporarily transferring inactive data from DRAM to disk (swap space). This allows running programs larger than physical RAM.
+    </div>
+  </section>
+
+  <!-- ═══ S14: ATmega Memory Map ═══ -->
+  <section class="section" id="s14">
+    <div class="section-num">14 — ATmega328P Memory</div>
+    <h2>ATmega328P Memory Map</h2>
+
+    <div class="diagram-wrap">
+      <div class="diagram-label">ATmega328P Memory Organization</div>
+      <svg viewBox="0 0 580 280" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:580px">
+        <!-- Program Memory (Flash) -->
+        <rect x="40" y="20" width="160" height="240" fill="none" stroke="#0e0e0e" stroke-width="1.5"/>
+        <text x="120" y="14" text-anchor="middle" font-size="9" fill="#6b6b6b" letter-spacing="1">PROGRAM MEMORY</text>
+        <!-- Boot section -->
+        <rect x="40" y="20" width="160" height="60" fill="#0e0e0e"/>
+        <text x="120" y="47" text-anchor="middle" font-size="8" fill="#f5f4f0">Boot Loader Section</text>
+        <text x="120" y="60" text-anchor="middle" font-size="7" fill="#aaa">0x3800 – 0x3FFF</text>
+        <!-- App section -->
+        <rect x="40" y="80" width="160" height="180" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="0.5"/>
+        <text x="120" y="168" text-anchor="middle" font-size="8">Application Section</text>
+        <text x="120" y="182" text-anchor="middle" font-size="7" fill="#6b6b6b">0x0000 – 0x37FF</text>
+        <text x="40" y="95" font-size="7" fill="#0e0e0e" dx="5">0x3800</text>
+        <text x="40" y="257" font-size="7" fill="#0e0e0e" dx="5">0x0000</text>
+
+        <!-- Labels -->
+        <text x="120" y="142" text-anchor="middle" font-size="7" fill="#6b6b6b">32KB Flash Total</text>
+        <text x="120" y="155" text-anchor="middle" font-size="7" fill="#6b6b6b">16K × 16-bit words</text>
+        <text x="120" y="128" text-anchor="middle" font-size="7" fill="#6b6b6b">PC: 14-bit wide</text>
+
+        <!-- Data Memory (SRAM) -->
+        <rect x="250" y="20" width="160" height="240" fill="none" stroke="#0e0e0e" stroke-width="1.5"/>
+        <text x="330" y="14" text-anchor="middle" font-size="9" fill="#6b6b6b" letter-spacing="1">DATA MEMORY (SRAM)</text>
+
+        <!-- Registers 0x0000-0x001F -->
+        <rect x="250" y="20" width="160" height="40" fill="#0e0e0e"/>
+        <text x="330" y="37" text-anchor="middle" font-size="8" fill="#f5f4f0">32 GP Registers</text>
+        <text x="250" y="67" font-size="7" dx="3" fill="#6b6b6b">0x001F</text>
+        <text x="250" y="28" font-size="7" dx="3" fill="#f5f4f0">0x0000</text>
+
+        <!-- I/O Registers 0x0020-0x005F -->
+        <rect x="250" y="60" width="160" height="40" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="0.5"/>
+        <text x="330" y="84" text-anchor="middle" font-size="8">64 I/O Registers</text>
+        <text x="250" y="105" font-size="7" dx="3" fill="#6b6b6b">0x005F</text>
+
+        <!-- Extended I/O 0x0060-0x00FF -->
+        <rect x="250" y="100" width="160" height="40" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="330" y="124" text-anchor="middle" font-size="8">160 Ext. I/O Regs</text>
+        <text x="250" y="145" font-size="7" dx="3" fill="#6b6b6b">0x00FF</text>
+
+        <!-- SRAM 0x0100-0x08FF -->
+        <rect x="250" y="140" width="160" height="120" fill="#f5f4f0" stroke="#0e0e0e" stroke-width="0.5"/>
+        <text x="330" y="193" text-anchor="middle" font-size="8">Internal SRAM</text>
+        <text x="330" y="207" text-anchor="middle" font-size="7" fill="#6b6b6b">2 KB</text>
+        <text x="330" y="220" text-anchor="middle" font-size="7" fill="#6b6b6b">0x0100 – 0x08FF</text>
+        <text x="250" y="257" font-size="7" dx="3" fill="#6b6b6b">0x08FF</text>
+
+        <!-- EEPROM -->
+        <rect x="460" y="20" width="100" height="240" fill="none" stroke="#0e0e0e" stroke-width="1.5"/>
+        <text x="510" y="14" text-anchor="middle" font-size="9" fill="#6b6b6b" letter-spacing="1">EEPROM</text>
+        <rect x="460" y="20" width="100" height="240" fill="#e8e7e2"/>
+        <text x="510" y="135" text-anchor="middle" font-size="8">1 KB</text>
+        <text x="510" y="150" text-anchor="middle" font-size="7" fill="#6b6b6b">0x000 – 0x3FF</text>
+        <text x="510" y="165" text-anchor="middle" font-size="7" fill="#6b6b6b">Separate space</text>
+        <text x="510" y="180" text-anchor="middle" font-size="7" fill="#6b6b6b">100K cycles</text>
+      </svg>
+    </div>
+
+    <h3>Flash Program Memory Details</h3>
+    <ul class="notes">
+      <li>32KB in-system reprogrammable Flash — at least 100,000 write/erase cycles</li>
+      <li>Organized as <strong>16K × 16 bits</strong> (16-bit wide words)</li>
+      <li>Program Counter (PC) is <strong>14-bit wide</strong> (2¹⁴ = 16,384 locations)</li>
+      <li>Two sections: <em>Application</em> and <em>Boot Loader</em></li>
+      <li>AVR Bootloader allows Arduino IDE to write code to flash via USB (UART)</li>
+    </ul>
+
+    <h3>EEPROM in ATmega328P</h3>
+    <ul class="notes">
+      <li>1KB (1024 bytes) of EEPROM — separate address space</li>
+      <li>Single byte read/write operations</li>
+      <li>At least 100,000 write/erase cycles</li>
+      <li>Used for non-volatile storage of constants, calibration data, settings</li>
+      <li>Requires special write sequence; accessed via EEAR, EEDR, EECR registers</li>
+    </ul>
+  </section>
+
+  <!-- ═══ S15: Timers ═══ -->
+  <section class="section" id="s15">
+    <div class="section-num">15 — Timers</div>
+    <h2>Timer/Counter Overview</h2>
+
+    <p>ATmega328P has <strong>3 hardware timers</strong> — fully independent counting units:</p>
+    <table class="cmp-table">
+      <thead><tr><th>Timer</th><th>Bits</th><th>Max Count</th><th>PWM Outputs</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Timer0</td><td>8-bit</td><td>255</td><td>OC0A (PD6/pin 6), OC0B (PD5/pin 5)</td><td>Used by <code>delay()</code> and <code>millis()</code></td></tr>
+        <tr><td>Timer1</td><td>16-bit</td><td>65535</td><td>OC1A (PB1/pin 9), OC1B (PB2/pin 10)</td><td>Best for precise timing / servo control</td></tr>
+        <tr><td>Timer2</td><td>8-bit</td><td>255</td><td>OC2A (PB3/pin 11), OC2B (PD3/pin 3)</td><td>Can use asynchronous clock (external 32kHz)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Timer Operating Modes</h3>
+    <dl class="def-grid">
+      <dt>Normal Mode</dt><dd>Counter counts up from 0 to MAX (255 or 65535), then overflows back to 0. Generate interrupts on overflow. Most common for simple timing/counting.</dd>
+      <dt>CTC Mode</dt><dd>Clear Timer on Compare — counter resets to 0 when it matches OCRnA. Frequency precisely controllable by changing OCRnA value. Use for audio frequency generation, adjustable time base.</dd>
+      <dt>Fast PWM</dt><dd>Counter counts 0→MAX, then resets. Output set HIGH at bottom, cleared on compare match. Single slope. Higher frequency.</dd>
+      <dt>Phase Correct PWM</dt><dd>Counter counts 0→MAX→0 (dual slope). Lower frequency but symmetrical. Used for motor control.</dd>
+    </dl>
+
+    <h3>Clock Sources for Timer</h3>
+    <ul class="notes">
+      <li><strong>Internal clock</strong> — system clock or prescaled: fCLK/8, fCLK/64, fCLK/256, fCLK/1024</li>
+      <li><strong>External clock</strong> — applied to T0/T1 pin; sampled every system clock cycle; cannot be prescaled; max frequency &lt; fCLK/2.5</li>
+    </ul>
+
+    <div class="callout formula">
+      <strong>Timer Frequency Formula</strong>
+      f<sub>timer</sub> = f<sub>CLK</sub> ÷ Prescaler
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      f<sub>OVF</sub> = f<sub>CLK</sub> ÷ (Prescaler × 256)  [8-bit Normal Mode]
+    </div>
+  </section>
+
+  <!-- ═══ S16: Timer Registers ═══ -->
+  <section class="section" id="s16">
+    <div class="section-num">16 — Timer Registers</div>
+    <h2>Timer/Counter Registers (Timer0)</h2>
+
+    <h3>TCCR0A — Timer/Counter Control Register A</h3>
+    <div class="reg">
+      <div class="reg-cell"><span class="bit-num">7</span><span class="bit-name">COM0A1</span></div>
+      <div class="reg-cell"><span class="bit-num">6</span><span class="bit-name">COM0A0</span></div>
+      <div class="reg-cell"><span class="bit-num">5</span><span class="bit-name">COM0B1</span></div>
+      <div class="reg-cell"><span class="bit-num">4</span><span class="bit-name">COM0B0</span></div>
+      <div class="reg-cell"><span class="bit-num">3</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">2</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">1</span><span class="bit-name">WGM01</span></div>
+      <div class="reg-cell"><span class="bit-num">0</span><span class="bit-name">WGM00</span></div>
+    </div>
+
+    <h3>TCCR0B — Timer/Counter Control Register B</h3>
+    <div class="reg">
+      <div class="reg-cell"><span class="bit-num">7</span><span class="bit-name">FOC0A</span></div>
+      <div class="reg-cell"><span class="bit-num">6</span><span class="bit-name">FOC0B</span></div>
+      <div class="reg-cell"><span class="bit-num">5</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">4</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">3</span><span class="bit-name">WGM02</span></div>
+      <div class="reg-cell"><span class="bit-num">2</span><span class="bit-name">CS02</span></div>
+      <div class="reg-cell"><span class="bit-num">1</span><span class="bit-name">CS01</span></div>
+      <div class="reg-cell"><span class="bit-num">0</span><span class="bit-name">CS00</span></div>
+    </div>
+
+    <h3>Clock Select Bits (CS02:CS00)</h3>
+    <table class="cmp-table">
+      <thead><tr><th>CS02</th><th>CS01</th><th>CS00</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td><td>No clock source — Timer stopped</td></tr>
+        <tr><td>0</td><td>0</td><td>1</td><td>clkI/O (No prescaling)</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>clkI/O / 8</td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td>clkI/O / 64</td></tr>
+        <tr><td>1</td><td>0</td><td>0</td><td>clkI/O / 256</td></tr>
+        <tr><td>1</td><td>0</td><td>1</td><td>clkI/O / 1024</td></tr>
+        <tr><td>1</td><td>1</td><td>0</td><td>External T0 pin — falling edge</td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td>External T0 pin — rising edge</td></tr>
+      </tbody>
+    </table>
+
+    <h3>WGM Bits — Waveform Generation Mode</h3>
+    <p>WGM02 (in TCCR0B) combined with WGM01:WGM00 (in TCCR0A) selects the timer mode:</p>
+    <table class="cmp-table">
+      <thead><tr><th>WGM02</th><th>WGM01</th><th>WGM00</th><th>Mode</th><th>TOP</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td><td>Normal</td><td>0xFF</td></tr>
+        <tr><td>0</td><td>0</td><td>1</td><td>Phase Correct PWM</td><td>0xFF</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>CTC</td><td>OCR0A</td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td>Fast PWM</td><td>0xFF</td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td>Fast PWM</td><td>OCR0A</td></tr>
+      </tbody>
+    </table>
+
+    <h3>TIMSK0 — Timer Interrupt Mask Register</h3>
+    <div class="reg">
+      <div class="reg-cell"><span class="bit-num">7</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">6</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">5</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">4</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">3</span><span class="bit-name">—</span></div>
+      <div class="reg-cell"><span class="bit-num">2</span><span class="bit-name">OCIE0B</span></div>
+      <div class="reg-cell"><span class="bit-num">1</span><span class="bit-name">OCIE0A</span></div>
+      <div class="reg-cell"><span class="bit-num">0</span><span class="bit-name">TOIE0</span></div>
+    </div>
+    <ul class="notes">
+      <li><strong>TOIE0</strong> — Timer Overflow Interrupt Enable. Set to 1 to enable overflow interrupt.</li>
+      <li><strong>OCIE0A</strong> — Output Compare A Match Interrupt Enable</li>
+      <li><strong>OCIE0B</strong> — Output Compare B Match Interrupt Enable</li>
+    </ul>
+
+    <h3>TIFR0 — Timer Interrupt Flag Register</h3>
+    <ul class="notes">
+      <li><strong>TOV0</strong> — Overflow flag; set when counter overflows</li>
+      <li><strong>OCF0A</strong> — Compare A match flag; set when TCNT0 = OCR0A</li>
+      <li><strong>OCF0B</strong> — Compare B match flag; set when TCNT0 = OCR0B</li>
+      <li>Flags cleared by hardware when ISR executes, or by writing logic 1 to the flag bit</li>
+    </ul>
+
+    <h3>Output Compare Registers</h3>
+    <dl class="def-grid">
+      <dt>OCR0A</dt><dd>Output Compare Register A — sets duty cycle in PWM or TOP in CTC mode</dd>
+      <dt>OCR0B</dt><dd>Output Compare Register B — secondary compare value</dd>
+      <dt>TCNT0</dt><dd>Timer/Counter Register — current counter value (0–255 for 8-bit)</dd>
+    </dl>
+  </section>
+
+  <!-- ═══ S17: PWM ═══ -->
+  <section class="section" id="s17">
+    <div class="section-num">17 — PWM</div>
+    <h2>PWM — Pulse Width Modulation</h2>
+
+    <p>PWM is a technique where the <em>width of a pulse is varied while keeping the frequency constant</em>. The average output voltage is proportional to the duty cycle.</p>
+
+    <h3>Key Definitions</h3>
+    <dl class="def-grid">
+      <dt>Frequency (f)</dt><dd>Number of complete cycles per second. f = 1/T (Hz)</dd>
+      <dt>Period (T)</dt><dd>Time for one complete cycle. T = 1/f. Example: 50Hz → T = 20ms</dd>
+      <dt>Duty Cycle (D)</dt><dd>Fraction of the period when the signal is ON (HIGH). D = T<sub>ON</sub>/(T<sub>ON</sub>+T<sub>OFF</sub>) × 100%</dd>
+    </dl>
+
+    <div class="callout formula">
+      <strong>Duty Cycle</strong>
+      D (%) = T<sub>ON</sub> / T × 100&nbsp;&nbsp;|&nbsp;&nbsp;
+      Example: T=10ms, T<sub>ON</sub>=2ms → D = 20%
+    </div>
+
+    <h3>PWM Duty Cycle Visualization</h3>
+    <div class="diagram-wrap">
+      <div class="diagram-label">PWM Signals at Different Duty Cycles</div>
+      <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:620px">
+        <!-- 10% -->
+        <text x="20" y="28" font-size="8" fill="#6b6b6b">10%</text>
+        <line x1="60" y1="10" x2="60" y2="45" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="60" y1="10" x2="75" y2="10" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="75" y1="10" x2="75" y2="45" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="75" y1="45" x2="210" y2="45" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="210" y1="10" x2="225" y2="10" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="210" y1="45" x2="210" y2="10" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="225" y1="10" x2="225" y2="45" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="225" y1="45" x2="360" y2="45" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="360" y1="45" x2="360" y2="10" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="360" y1="10" x2="375" y2="10" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="375" y1="10" x2="375" y2="45" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="375" y1="45" x2="580" y2="45" stroke="#0e0e0e" stroke-width="1.5"/>
+
+        <!-- 50% -->
+        <text x="20" y="95" font-size="8" fill="#6b6b6b">50%</text>
+        <line x1="60" y1="62" x2="60" y2="105" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="60" y1="62" x2="185" y2="62" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="185" y1="62" x2="185" y2="105" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="185" y1="105" x2="320" y2="105" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="320" y1="105" x2="320" y2="62" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="320" y1="62" x2="450" y2="62" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="450" y1="62" x2="450" y2="105" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="450" y1="105" x2="580" y2="105" stroke="#0e0e0e" stroke-width="1.5"/>
+
+        <!-- 90% -->
+        <text x="20" y="158" font-size="8" fill="#6b6b6b">90%</text>
+        <line x1="60" y1="120" x2="60" y2="165" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="60" y1="120" x2="245" y2="120" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="245" y1="120" x2="245" y2="165" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="245" y1="165" x2="260" y2="165" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="260" y1="165" x2="260" y2="120" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="260" y1="120" x2="445" y2="120" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="445" y1="120" x2="445" y2="165" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="445" y1="165" x2="460" y2="165" stroke="#0e0e0e" stroke-width="1.5"/>
+        <line x1="460" y1="165" x2="460" y2="120" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="460" y1="120" x2="580" y2="120" stroke="#0e0e0e" stroke-width="1.5"/>
+
+        <text x="590" y="48" font-size="7" fill="#6b6b6b">~0.5V</text>
+        <text x="590" y="108" font-size="7" fill="#6b6b6b">2.5V</text>
+        <text x="590" y="168" font-size="7" fill="#6b6b6b">4.5V</text>
+      </svg>
+    </div>
+
+    <h3>Applications of PWM</h3>
+    <ul class="notes">
+      <li>Dimming LEDs / controlling light intensity</li>
+      <li>Providing analog output voltage (0–5V equivalent)</li>
+      <li>Generating audio signals</li>
+      <li>Variable speed control for DC motors</li>
+      <li>Generating modulated signals for IR remote controls</li>
+      <li>Servo motor control (20ms period, 1–2ms pulse width)</li>
+    </ul>
+
+    <h3>Fast PWM vs Phase Correct PWM</h3>
+    <table class="cmp-table">
+      <thead><tr><th>Feature</th><th>Fast PWM</th><th>Phase Correct PWM</th></tr></thead>
+      <tbody>
+        <tr><td>Counting</td><td>Single slope (0 → MAX → reset to 0)</td><td>Dual slope (0 → MAX → 0)</td></tr>
+        <tr><td>Frequency</td><td>Higher (f = fCLK / (prescaler × 256))</td><td>Lower (half of Fast PWM)</td></tr>
+        <tr><td>Symmetry</td><td>Asymmetric</td><td>Symmetric — centered pulses</td></tr>
+        <tr><td>Use case</td><td>LED dimming, high-freq DAC</td><td>Motor control (less noise)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>PWM Arduino Pins Map</h3>
+    <table class="cmp-table">
+      <thead><tr><th>Timer Output</th><th>Arduino Pin</th><th>Chip Pin</th><th>Port</th></tr></thead>
+      <tbody>
+        <tr><td>OC0A</td><td>6</td><td>12</td><td>PD6</td></tr>
+        <tr><td>OC0B</td><td>5</td><td>11</td><td>PD5</td></tr>
+        <tr><td>OC1A</td><td>9</td><td>15</td><td>PB1</td></tr>
+        <tr><td>OC1B</td><td>10</td><td>16</td><td>PB2</td></tr>
+        <tr><td>OC2A</td><td>11</td><td>17</td><td>PB3</td></tr>
+        <tr><td>OC2B</td><td>3</td><td>5</td><td>PD3</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Advantage of Hardware PWM</strong>
+      Once the timer is configured and the mode/duty cycle set, the PWM waveform is generated automatically by hardware. The CPU is free to do other work — no need for constant polling or delay loops.
+    </div>
+  </section>
+
+  <!-- ═══ S18: SPI ═══ -->
+  <section class="section" id="s18">
+    <div class="section-num">18 — SPI</div>
+    <h2>SPI — Serial Peripheral Interface</h2>
+
+    <p>SPI is a <strong>synchronous serial communication protocol</strong> that uses a shared clock line. Developed by Motorola in the mid-1980s.</p>
+
+    <h3>SPI Lines (4-wire)</h3>
+    <dl class="def-grid">
+      <dt>SCK</dt><dd>Serial Clock — generated by master; synchronizes all data transfer</dd>
+      <dt>MOSI</dt><dd>Master Out Slave In — data from master to slave</dd>
+      <dt>MISO</dt><dd>Master In Slave Out — data from slave to master</dd>
+      <dt>SS / CS</dt><dd>Slave Select / Chip Select — active LOW; selects which slave is active</dd>
+    </dl>
+
+    <h3>SPI Topology</h3>
+    <div class="diagram-wrap">
+      <div class="diagram-label">SPI Master–Slave Connection (Multiple Slaves)</div>
+      <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:620px">
+        <!-- Master -->
+        <rect x="20" y="65" width="120" height="80" fill="#0e0e0e"/>
+        <text x="80" y="100" text-anchor="middle" font-size="10" fill="#f5f4f0" font-weight="500">SPI</text>
+        <text x="80" y="114" text-anchor="middle" font-size="10" fill="#f5f4f0" font-weight="500">MASTER</text>
+
+        <!-- Slave 1 -->
+        <rect x="380" y="20" width="110" height="60" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="435" y="50" text-anchor="middle" font-size="9" font-weight="500">SPI Slave 1</text>
+        <text x="435" y="64" text-anchor="middle" font-size="7" fill="#6b6b6b">(e.g. ADC, Sensor)</text>
+
+        <!-- Slave 2 -->
+        <rect x="380" y="120" width="110" height="60" fill="#e8e7e2" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="435" y="150" text-anchor="middle" font-size="9" font-weight="500">SPI Slave 2</text>
+        <text x="435" y="164" text-anchor="middle" font-size="7" fill="#6b6b6b">(e.g. LCD, Flash)</text>
+
+        <!-- SCK line (shared) -->
+        <line x1="140" y1="78" x2="380" y2="30" stroke="#0e0e0e" stroke-width="1.5" stroke-dasharray="0"/>
+        <line x1="140" y1="78" x2="380" y2="130" stroke="#0e0e0e" stroke-width="1.5"/>
+        <text x="230" y="68" font-size="7" fill="#6b6b6b">SCK</text>
+
+        <!-- MOSI -->
+        <line x1="140" y1="90" x2="380" y2="43" stroke="#0e0e0e" stroke-width="1"/>
+        <line x1="140" y1="90" x2="380" y2="143" stroke="#0e0e0e" stroke-width="1"/>
+        <text x="230" y="88" font-size="7" fill="#6b6b6b">MOSI</text>
+
+        <!-- MISO -->
+        <line x1="140" y1="100" x2="380" y2="55" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="4,2"/>
+        <line x1="140" y1="100" x2="380" y2="155" stroke="#0e0e0e" stroke-width="1" stroke-dasharray="4,2"/>
+        <text x="230" y="108" font-size="7" fill="#6b6b6b">MISO</text>
+
+        <!-- SS1 (separate) -->
+        <line x1="200" y1="112" x2="380" y2="37" stroke="#6b6b6b" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="250" y="122" font-size="7" fill="#6b6b6b">SS1</text>
+
+        <!-- SS2 (separate) -->
+        <line x1="200" y1="130" x2="380" y2="167" stroke="#6b6b6b" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="250" y="148" font-size="7" fill="#6b6b6b">SS2</text>
+
+        <!-- Legend -->
+        <line x1="500" y1="185" x2="520" y2="185" stroke="#0e0e0e" stroke-width="1.5"/>
+        <text x="525" y="188" font-size="7" fill="#0e0e0e">Shared (SCK/MOSI/MISO)</text>
+        <line x1="500" y1="195" x2="520" y2="195" stroke="#6b6b6b" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="525" y="198" font-size="7" fill="#6b6b6b">Individual SS per slave</text>
+      </svg>
+    </div>
+
+    <h3>SPI Characteristics</h3>
+    <ul class="notes">
+      <li>Full-duplex — simultaneous send and receive</li>
+      <li>Master controls the clock — no baud rate negotiation needed</li>
+      <li>No addressing — slaves selected by dedicated SS pin (pulled LOW)</li>
+      <li>Faster than I²C — up to tens of MHz</li>
+      <li>Requires more pins for multiple slaves (one SS per slave)</li>
+      <li>Point-to-point or Point-to-multipoint</li>
+      <li>Master in MCU; slaves can be sensors, ADC, LCD, DAC, Flash memory</li>
+    </ul>
+
+    <h3>SPI on Arduino (ATmega328P)</h3>
+    <dl class="def-grid">
+      <dt>SCK</dt><dd>Pin 13 (PB5)</dd>
+      <dt>MISO</dt><dd>Pin 12 (PB4)</dd>
+      <dt>MOSI</dt><dd>Pin 11 (PB3)</dd>
+      <dt>SS</dt><dd>Pin 10 (PB2) — must be configured as output</dd>
+    </dl>
+  </section>
+
+  <!-- ═══ S19: I2C ═══ -->
+  <section class="section" id="s19">
+    <div class="section-num">19 — I²C</div>
+    <h2>I²C — Inter-Integrated Circuit</h2>
+
+    <p>I²C (pronounced "I-squared-C" or "I-two-C") was developed in the early 1980s by Philips Semiconductors to connect a CPU to peripheral chips in TV sets. It uses only <strong>2 wires</strong>.</p>
+
+    <h3>I²C Bus Lines</h3>
+    <dl class="def-grid">
+      <dt>SDA</dt><dd>Serial Data Line — carries all data</dd>
+      <dt>SCL</dt><dd>Serial Clock Line — generated by master</dd>
+    </dl>
+    <div class="callout">
+      <strong>Pull-up Resistors Required</strong>
+      Both SDA and SCL must be connected to positive supply (VCC) via pull-up resistors (typically 4.7kΩ). Devices only pull lines LOW — never drive them HIGH.
+    </div>
+
+    <h3>I²C Key Features</h3>
+    <ul class="notes">
+      <li>Only 2 wires (vs 4 for SPI)</li>
+      <li>Multi-master, multi-slave — multiple masters can share the bus</li>
+      <li>7-bit or 10-bit addressing → up to 128 or 1024 devices on one bus</li>
+      <li>Speed: standard 100 Kbps, fast mode 400 Kbps, fast-plus 1 Mbps</li>
+      <li>Short distance, on-board communication (ideal for PCB)</li>
+      <li>New devices can be added simply by connecting to the 2 bus lines</li>
+      <li>Combines best of SPI (multi-slave) and UART (simple wiring)</li>
+    </ul>
+
+    <h3>Comparison: SPI vs I²C vs UART</h3>
+    <table class="cmp-table">
+      <thead><tr><th>Feature</th><th>SPI</th><th>I²C</th><th>UART</th></tr></thead>
+      <tbody>
+        <tr><td>Wires</td><td>4 (+ 1 SS per slave)</td><td>2</td><td>2 (TX + RX)</td></tr>
+        <tr><td>Speed</td><td>Very fast (MHz)</td><td>Fast (400 Kbps)</td><td>Medium (115200 bps typical)</td></tr>
+        <tr><td>Masters</td><td>1 master</td><td>Multiple masters</td><td>Peer-to-peer</td></tr>
+        <tr><td>Slaves</td><td>Multiple (1 SS each)</td><td>Up to 1024 (addressed)</td><td>1</td></tr>
+        <tr><td>Clock</td><td>Synchronous (shared)</td><td>Synchronous (shared SCL)</td><td>Asynchronous (no shared clock)</td></tr>
+        <tr><td>Addressing</td><td>No (SS pin)</td><td>Yes (7 or 10-bit)</td><td>No</td></tr>
+      </tbody>
+    </table>
+
+    <h3>I²C Message Structure</h3>
+    <p>I²C transfers data in "messages" broken into "frames". Each message consists of:</p>
+
+    <div class="frame-row">
+      <div class="frame-cell dark">START</div>
+      <div class="frame-cell">Address (7-bit)</div>
+      <div class="frame-cell gray">R/W</div>
+      <div class="frame-cell dark">ACK</div>
+      <div class="frame-cell">Data (8-bit)</div>
+      <div class="frame-cell dark">ACK/NACK</div>
+      <div class="frame-cell gray">...</div>
+      <div class="frame-cell dark">STOP</div>
+    </div>
+
+    <dl class="def-grid">
+      <dt>START condition</dt><dd>SDA goes LOW while SCL is HIGH — signals beginning of transmission</dd>
+      <dt>Address frame</dt><dd>7-bit slave address + 1 R/W bit (8 bits total)</dd>
+      <dt>R/W bit</dt><dd>0 = Master writes to slave; 1 = Master reads from slave</dd>
+      <dt>ACK/NACK</dt><dd>ACK (0): slave received correctly. NACK (1): error or end of transfer</dd>
+      <dt>Data frames</dt><dd>8 bits each, followed by ACK/NACK</dd>
+      <dt>STOP condition</dt><dd>SDA goes HIGH while SCL is HIGH — signals end of transmission</dd>
+    </dl>
+
+    <h3>I²C on Arduino (ATmega328P)</h3>
+    <dl class="def-grid">
+      <dt>SDA</dt><dd>A4 (pin 27 / PC4) — on R3 layout: also dedicated SDA header pin</dd>
+      <dt>SCL</dt><dd>A5 (pin 28 / PC5) — on R3 layout: also dedicated SCL header pin</dd>
+    </dl>
+    <pre>
+#include &lt;Wire.h&gt;
+
+Wire.begin();                      // Initialize as master
+Wire.beginTransmission(address);   // Start transmission to slave
+Wire.write(data);                  // Send data byte
+Wire.endTransmission();            // Send STOP condition
+
+Wire.requestFrom(address, count);  // Request bytes from slave
+while(Wire.available()) {
+  byte b = Wire.read();
+}</pre>
+  </section>
+
+  <!-- ═══ S20: UART / RS-232 ═══ -->
+  <section class="section" id="s20">
+    <div class="section-num">20 — UART / RS-232</div>
+    <h2>UART &amp; RS-232</h2>
+
+    <h3>Asynchronous Serial Communication</h3>
+    <ul class="notes">
+      <li>No shared clock between transmitter and receiver</li>
+      <li>Each device independently transmits/receives at an <em>agreed baud rate</em></li>
+      <li>Essential for longer-distance reliable data transfer</li>
+      <li>Almost every MCU has at least one UART</li>
+      <li>Examples of async protocols: RS-232, RS-422, RS-485</li>
+    </ul>
+
+    <h3>UART Frame Structure</h3>
+    <div class="frame-row">
+      <div class="frame-cell dark">START<br><span style="font-size:0.6rem">(always 0)</span></div>
+      <div class="frame-cell">D0</div>
+      <div class="frame-cell">D1</div>
+      <div class="frame-cell">D2</div>
+      <div class="frame-cell">D3</div>
+      <div class="frame-cell">D4</div>
+      <div class="frame-cell">D5</div>
+      <div class="frame-cell">D6</div>
+      <div class="frame-cell">D7</div>
+      <div class="frame-cell gray">PARITY<br><span style="font-size:0.6rem">(optional)</span></div>
+      <div class="frame-cell dark">STOP<br><span style="font-size:0.6rem">(always 1)</span></div>
+    </div>
+    <ul class="notes">
+      <li><strong>Start bit</strong>: always logic 0 (LOW) — signals start of frame</li>
+      <li><strong>Data bits</strong>: 5–9 bits (usually 8 bits = 1 byte), LSB first</li>
+      <li><strong>Parity bit</strong>: optional error checking (odd/even)</li>
+      <li><strong>Stop bit(s)</strong>: always logic 1 (HIGH); 1 or 2 bits — signals end of frame</li>
+    </ul>
+
+    <h3>Baud Rate</h3>
+    <p>Baud rate = bits per second. Common values: 9600, 19200, 38400, 57600, 115200 bps. Both devices must agree on the same baud rate.</p>
+
+    <h3>RS-232 Standard</h3>
+    <ul class="notes">
+      <li>First introduced in 1960 by Electronic Industries Association (EIA)</li>
+      <li>"Recommended Standard 232" — serial communication at medium distances</li>
+      <li>Voltage levels: +3V to +15V = logic 0 (SPACE); −3V to −15V = logic 1 (MARK)</li>
+      <li>TTL levels (Arduino): 0V = logic 0, 5V = logic 1 — must convert with MAX232 IC</li>
+      <li>Minimum connections: TX, RX, GND (3 wires)</li>
+      <li>Full implementation: up to 14 wires (with handshake signals)</li>
+      <li>Connector: DE-9 (9-pin D-sub); older standard used DB-25</li>
+    </ul>
+
+    <h3>RS-232 DE-9 Pin Functions</h3>
+    <table class="cmp-table">
+      <thead><tr><th>Pin</th><th>Signal</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>DCD</td><td>Data Carrier Detect</td></tr>
+        <tr><td>2</td><td>RXD</td><td>Receive Data</td></tr>
+        <tr><td>3</td><td>TXD</td><td>Transmit Data</td></tr>
+        <tr><td>4</td><td>DTR</td><td>Data Terminal Ready</td></tr>
+        <tr><td>5</td><td>GND</td><td>Signal Ground</td></tr>
+        <tr><td>6</td><td>DSR</td><td>Data Set Ready</td></tr>
+        <tr><td>7</td><td>RTS</td><td>Request To Send</td></tr>
+        <tr><td>8</td><td>CTS</td><td>Clear To Send</td></tr>
+        <tr><td>9</td><td>RI</td><td>Ring Indicator</td></tr>
+      </tbody>
+    </table>
+
+    <h3>UART Connection Diagram</h3>
+    <div class="diagram-wrap">
+      <div class="diagram-label">UART Cross-connection (TX→RX, RX→TX)</div>
+      <svg viewBox="0 0 500 100" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:500px">
+        <!-- Device 1 -->
+        <rect x="20" y="20" width="120" height="60" fill="#0e0e0e"/>
+        <text x="80" y="48" text-anchor="middle" font-size="9" fill="#f5f4f0">ATmega328P</text>
+        <text x="80" y="62" text-anchor="middle" font-size="8" fill="#aaa">UART 1</text>
+
+        <!-- Device 2 -->
+        <rect x="360" y="20" width="120" height="60" fill="#0e0e0e"/>
+        <text x="420" y="48" text-anchor="middle" font-size="9" fill="#f5f4f0">Host / PC</text>
+        <text x="420" y="62" text-anchor="middle" font-size="8" fill="#aaa">via MAX232</text>
+
+        <!-- TX -> RX line -->
+        <line x1="140" y1="40" x2="360" y2="55" stroke="#f5f4f0" stroke-width="1.5" marker-end="url(#a3)"/>
+        <text x="250" y="38" text-anchor="middle" font-size="7" fill="#6b6b6b">TX → RX</text>
+
+        <!-- RX -> TX line -->
+        <line x1="360" y1="40" x2="140" y2="55" stroke="#f5f4f0" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a3)"/>
+        <text x="250" y="68" text-anchor="middle" font-size="7" fill="#6b6b6b">RX ← TX</text>
+
+        <!-- GND -->
+        <line x1="140" y1="72" x2="360" y2="72" stroke="#6b6b6b" stroke-width="1"/>
+        <text x="250" y="83" text-anchor="middle" font-size="7" fill="#6b6b6b">GND (common)</text>
+
+        <defs>
+          <marker id="a3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#f5f4f0"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h3>MAX232 — Level Converter</h3>
+    <p>The MAX232 IC converts TTL voltage levels (0/5V) from the ATmega to RS-232 voltage levels (±12V) required by the RS-232 standard. It is required when connecting ATmega directly to a PC COM port.</p>
+    <ul class="notes">
+      <li>ATmega TX (5V TTL) → MAX232 → RS-232 TXD (±12V)</li>
+      <li>RS-232 RXD (±12V) → MAX232 → ATmega RX (5V TTL)</li>
+      <li>Arduino uses USB-to-UART bridge IC (e.g., CH340, FTDI) instead of MAX232</li>
+    </ul>
+
+    <h3>UART on ATmega328P / Arduino</h3>
+    <dl class="def-grid">
+      <dt>TX pin</dt><dd>PD1 = Arduino pin 1</dd>
+      <dt>RX pin</dt><dd>PD0 = Arduino pin 0</dd>
+    </dl>
+    <pre>
+Serial.begin(9600);       // Start UART at 9600 baud
+Serial.print("Hello");    // Send text
+int c = Serial.read();    // Read 1 byte (returns -1 if no data)
+Serial.available();       // Number of bytes in receive buffer</pre>
+
+    <div class="callout">
+      <strong>Key Difference Summary</strong>
+      SPI = fastest, most pins, no addressing, synchronous. I²C = 2 wires, multi-master, addressed, medium speed. UART = no clock needed, any distance, 2 wires, peer-to-peer, asynchronous.
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEM Unit 4 — Electronics Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --border2: #2e2e2e;
+    --text: #e8e8e8;
+    --muted: #888888;
+    --dim: #555555;
+    --accent: #ffffff;
+    --mark: #1e1e1e;
+    --rule: 1px solid #222;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 40px 120px;
+  }
+
+  /* HEADER */
+  .site-header {
+    border-bottom: var(--rule);
+    padding-bottom: 40px;
+    margin-bottom: 60px;
+  }
+  .course-tag {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 16px;
+  }
+  .site-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    font-weight: 400;
+    color: var(--accent);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .site-header .subtitle {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: var(--rule);
+    padding: 28px 32px;
+    margin-bottom: 60px;
+  }
+  .toc-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 18px;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+  }
+  .toc ol li {
+    counter-increment: toc;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 5px 0;
+    border-bottom: 1px solid #161616;
+  }
+  .toc ol li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-size: 10px;
+    color: var(--dim);
+    min-width: 22px;
+  }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12.5px;
+    transition: color 0.2s;
+  }
+  .toc a:hover { color: var(--accent); }
+
+  /* SECTIONS */
+  section {
+    margin-bottom: 72px;
+    padding-top: 8px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--accent);
+    margin-bottom: 20px;
+    line-height: 1.25;
+  }
+  h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text);
+    margin: 32px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  h4 {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 22px 0 8px;
+  }
+
+  p { margin-bottom: 14px; color: #c8c8c8; }
+
+  ul, ol {
+    padding-left: 20px;
+    margin-bottom: 14px;
+  }
+  li { margin-bottom: 6px; color: #c0c0c0; }
+
+  strong { color: var(--accent); font-weight: 500; }
+  em { color: var(--muted); font-style: italic; }
+
+  code {
+    background: var(--mark);
+    border: 1px solid var(--border2);
+    color: #d4d4d4;
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  /* CALLOUT BOXES */
+  .callout {
+    border-left: 2px solid var(--border2);
+    background: var(--surface);
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+  .callout.key {
+    border-left-color: #555;
+  }
+  .callout.formula {
+    border-left-color: #444;
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+  }
+  .callout.warn {
+    border-left-color: #4a4a4a;
+    background: #131313;
+  }
+  .callout-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 9.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border-bottom: 1px solid var(--border2);
+    background: var(--surface);
+    font-weight: 400;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #161616;
+    color: #bbb;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #121212; }
+
+  /* SVG DIAGRAMS */
+  .diagram-wrap {
+    background: var(--surface);
+    border: var(--rule);
+    padding: 24px;
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .diagram-caption {
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  svg text { font-family: 'DM Mono', monospace; }
+
+  /* GRID LAYOUTS */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: var(--rule);
+    padding: 16px 18px;
+  }
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+  .card p { font-size: 12.5px; margin-bottom: 0; }
+
+  /* HIGHLIGHT NUMBERS */
+  .num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* DIVIDER */
+  hr {
+    border: none;
+    border-top: var(--rule);
+    margin: 40px 0;
+  }
+
+  /* FORMULA DISPLAY */
+  .eq {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--text);
+    margin: 16px 0;
+    padding: 14px;
+    background: var(--mark);
+    border: var(--rule);
+    letter-spacing: 0.05em;
+  }
+
+  /* TRUTH TABLE */
+  .truth td, .truth th {
+    text-align: center;
+    width: 80px;
+  }
+
+  /* BACK-TO-TOP */
+  .back-top {
+    display: block;
+    text-align: right;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    margin-top: 40px;
+    transition: color 0.2s;
+  }
+  .back-top:hover { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    body { padding: 32px 20px 80px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body id="top">
+
+<!-- ───── HEADER ───── -->
+<header class="site-header">
+  <div class="course-tag">Applied Electronics & Microcontrollers · Unit 4</div>
+  <h1>Diodes, Transistors,<br>FETs & Power Devices</h1>
+  <div class="subtitle">FY — DESH — VIT · Comprehensive Exam Notes</div>
+</header>
+
+<!-- ───── TABLE OF CONTENTS ───── -->
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#s1">PN Junction Diode — Fundamentals</a></li>
+    <li><a href="#s2">Biasing, V-I Characteristics & Specifications</a></li>
+    <li><a href="#s3">Rectifier Circuits</a></li>
+    <li><a href="#s4">Special Diodes</a></li>
+    <li><a href="#s5">Bipolar Junction Transistor (BJT)</a></li>
+    <li><a href="#s6">BJT Configurations & Characteristics</a></li>
+    <li><a href="#s7">BJT as Switch & Amplifier</a></li>
+    <li><a href="#s8">Field Effect Transistor (FET) & JFET</a></li>
+    <li><a href="#s9">MOSFET — Enhancement & Depletion Types</a></li>
+    <li><a href="#s10">IGBT</a></li>
+    <li><a href="#s11">Logic Gates using Transistors</a></li>
+  </ol>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — PN JUNCTION DIODE
+════════════════════════════════════════════ -->
+<section id="s1">
+  <div class="section-label">01</div>
+  <h2>PN Junction Diode — Fundamentals</h2>
+
+  <p>The diode is the <strong>simplest non-linear circuit element</strong>. Like a resistor it has two terminals, but unlike a resistor it has a <strong>non-linear current-voltage (I-V) characteristic</strong>. Its most common application is in rectifiers that convert AC to DC.</p>
+
+  <h3>Physical Structure</h3>
+  <p>A PN junction diode is formed by joining a <strong>P-type</strong> semiconductor with an <strong>N-type</strong> semiconductor. The P-side is the <strong>Anode (+)</strong>; the N-side is the <strong>Cathode (−)</strong>.</p>
+
+  <!-- SVG: PN Junction cross-section -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 520 130" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- P-side -->
+      <rect x="20" y="30" width="190" height="70" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+      <text x="115" y="70" fill="#888" font-size="11" text-anchor="middle" font-family="DM Mono,monospace">P-TYPE</text>
+      <text x="115" y="86" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">majority: holes (+)</text>
+      <!-- holes -->
+      <circle cx="50" cy="60" r="5" fill="none" stroke="#666" stroke-width="1.2"/>
+      <circle cx="75" cy="50" r="5" fill="none" stroke="#666" stroke-width="1.2"/>
+      <circle cx="100" cy="70" r="5" fill="none" stroke="#666" stroke-width="1.2"/>
+      <circle cx="145" cy="55" r="5" fill="none" stroke="#666" stroke-width="1.2"/>
+      <circle cx="170" cy="68" r="5" fill="none" stroke="#666" stroke-width="1.2"/>
+      <!-- Junction line -->
+      <line x1="210" y1="15" x2="210" y2="115" stroke="#444" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="210" y="12" fill="#444" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">JUNCTION</text>
+      <!-- Depletion region -->
+      <rect x="185" y="30" width="50" height="70" fill="#161616" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="210" y="68" fill="#444" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">DEPLETION</text>
+      <text x="210" y="80" fill="#444" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">REGION</text>
+      <!-- N-side -->
+      <rect x="235" y="30" width="185" height="70" fill="#161616" stroke="#333" stroke-width="1"/>
+      <text x="327" y="70" fill="#888" font-size="11" text-anchor="middle" font-family="DM Mono,monospace">N-TYPE</text>
+      <text x="327" y="86" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">majority: electrons (−)</text>
+      <!-- electrons -->
+      <circle cx="260" cy="60" r="5" fill="#333" stroke="#555" stroke-width="1.2"/>
+      <circle cx="285" cy="50" r="5" fill="#333" stroke="#555" stroke-width="1.2"/>
+      <circle cx="315" cy="70" r="5" fill="#333" stroke="#555" stroke-width="1.2"/>
+      <circle cx="355" cy="55" r="5" fill="#333" stroke="#555" stroke-width="1.2"/>
+      <circle cx="390" cy="68" r="5" fill="#333" stroke="#555" stroke-width="1.2"/>
+      <!-- Anode/Cathode labels -->
+      <line x1="20" y1="95" x2="20" y2="115" stroke="#444" stroke-width="1"/>
+      <text x="20" y="125" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">ANODE (+)</text>
+      <line x1="420" y1="95" x2="420" y2="115" stroke="#444" stroke-width="1"/>
+      <text x="420" y="125" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">CATHODE (−)</text>
+    </svg>
+    <div class="diagram-caption">PN Junction Cross-Section · Depletion region at interface</div>
+  </div>
+
+  <h3>What is the Depletion Region?</h3>
+  <p>At the junction, free electrons from the N-side diffuse to the P-side and recombine with holes. This leaves <strong>positively charged donor ions</strong> on the N-side and <strong>negatively charged acceptor ions</strong> on the P-side, forming a <em>space-charge region</em> that is depleted of mobile carriers. This region creates a <strong>built-in electric field</strong> opposing further diffusion.</p>
+
+  <div class="callout key">
+    <div class="callout-label">Key Point</div>
+    The built-in potential for silicon ≈ <strong>0.6–0.7 V</strong>. For germanium ≈ <strong>0.2–0.3 V</strong>. Current flows only when this barrier is overcome.
+  </div>
+
+  <!-- SVG: Diode Symbol -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 300 80" width="80%" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0" y1="40" x2="90" y2="40" stroke="#555" stroke-width="1.5"/>
+      <!-- Triangle (anode side) -->
+      <polygon points="90,20 90,60 140,40" fill="#2a2a2a" stroke="#666" stroke-width="1.5"/>
+      <!-- Cathode bar -->
+      <line x1="140" y1="20" x2="140" y2="60" stroke="#888" stroke-width="2.5"/>
+      <line x1="140" y1="40" x2="230" y2="40" stroke="#555" stroke-width="1.5"/>
+      <!-- Anode label -->
+      <text x="60" y="18" fill="#555" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">ANODE</text>
+      <text x="60" y="30" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">(+)</text>
+      <!-- Cathode label -->
+      <text x="165" y="18" fill="#555" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">CATHODE</text>
+      <text x="165" y="30" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">(−)</text>
+      <!-- current direction -->
+      <text x="115" y="72" fill="#444" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">current flows →</text>
+    </svg>
+    <div class="diagram-caption">Diode Circuit Symbol · Conventional current flows anode → cathode</div>
+  </div>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — BIASING & V-I CHARACTERISTICS
+════════════════════════════════════════════ -->
+<section id="s2">
+  <div class="section-label">02</div>
+  <h2>Biasing, V-I Characteristics & Specifications</h2>
+
+  <p>The voltage applied to a diode is called <strong>bias voltage</strong>. There are two types.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Forward Bias</div>
+      <p>+ve terminal → P-type<br>−ve terminal → N-type</p>
+      <ul style="font-size:12px; margin-top:8px;">
+        <li>Opposes built-in field → depletion region <em>narrows</em></li>
+        <li>At 0.6 V (Si) barrier disappears</li>
+        <li>Large current flows</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Reverse Bias</div>
+      <p>+ve terminal → N-type<br>−ve terminal → P-type</p>
+      <ul style="font-size:12px; margin-top:8px;">
+        <li>Aids built-in field → depletion region <em>widens</em></li>
+        <li>Only tiny leakage (reverse saturation) current flows</li>
+        <li>Breakdown at high reverse voltage</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>V-I Characteristics</h3>
+
+  <!-- SVG: Complete V-I Characteristic -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 500 340" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Axes -->
+      <line x1="240" y1="20" x2="240" y2="300" stroke="#444" stroke-width="1.2"/>
+      <line x1="20" y1="180" x2="480" y2="180" stroke="#444" stroke-width="1.2"/>
+      <!-- Axis arrows -->
+      <polygon points="240,14 235,26 245,26" fill="#444"/>
+      <polygon points="486,180 474,175 474,185" fill="#444"/>
+      <!-- Axis labels -->
+      <text x="248" y="14" fill="#666" font-size="10" font-family="DM Mono,monospace">I (mA)</text>
+      <text x="460" y="175" fill="#666" font-size="10" font-family="DM Mono,monospace">V</text>
+      <!-- Origin -->
+      <text x="228" y="193" fill="#555" font-size="9" font-family="DM Mono,monospace">0</text>
+      <!-- FORWARD CURVE (right/up) — exponential rise -->
+      <path d="M240,180 Q290,178 310,165 Q340,140 360,100 Q380,60 395,30" fill="none" stroke="#888" stroke-width="2"/>
+      <!-- Knee at ~0.6V -->
+      <line x1="310" y1="165" x2="310" y2="185" stroke="#444" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="295" y="198" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">0.6V (Si)</text>
+      <text x="310" y="155" fill="#555" font-size="9" text-anchor="end" font-family="DM Mono,monospace">knee</text>
+      <!-- Forward label -->
+      <text x="410" y="45" fill="#777" font-size="10" font-family="DM Mono,monospace">Forward</text>
+      <text x="410" y="58" fill="#777" font-size="10" font-family="DM Mono,monospace">region</text>
+      <!-- REVERSE REGION (left) — flat reverse saturation -->
+      <path d="M240,180 Q180,182 120,185 Q70,186 30,188" fill="none" stroke="#666" stroke-width="1.8"/>
+      <!-- Breakdown vertical drop -->
+      <path d="M30,188 Q28,220 26,290" fill="none" stroke="#666" stroke-width="1.8"/>
+      <line x1="30" y1="188" x2="30" y2="178" stroke="#444" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="22" y="174" fill="#555" font-size="9" font-family="DM Mono,monospace">−Vbr</text>
+      <!-- Reverse saturation current label -->
+      <text x="130" y="176" fill="#555" font-size="9" font-family="DM Mono,monospace">−IR (saturation)</text>
+      <!-- Breakdown label -->
+      <text x="32" y="250" fill="#666" font-size="9" font-family="DM Mono,monospace">Breakdown</text>
+      <!-- IF labels on y-axis -->
+      <text x="220" y="110" fill="#555" font-size="9" text-anchor="end" font-family="DM Mono,monospace">IF↑</text>
+      <!-- Region labels -->
+      <text x="360" y="175" fill="#444" font-size="9" font-family="DM Mono,monospace">+V →</text>
+      <text x="70" y="175" fill="#444" font-size="9" font-family="DM Mono,monospace">← −V</text>
+    </svg>
+    <div class="diagram-caption">Complete V-I Characteristic of PN Junction Diode</div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Three operating conditions</div>
+    <strong>Zero Bias:</strong> No external voltage. Depletion region at equilibrium. No current.<br>
+    <strong>Forward Bias:</strong> &gt;0.6V applied (Si). Exponentially rising current. Low resistance.<br>
+    <strong>Reverse Bias:</strong> Only tiny reverse saturation current (nA range) until breakdown.
+  </div>
+
+  <h3>Diode Specification Sheet Parameters</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Parameter</th><th>Symbol</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Forward Voltage</td><td><code>VF</code></td><td>Voltage drop at specific forward current (typically 0.6–0.7V Si)</td></tr>
+      <tr><td>Max Forward Current</td><td><code>IF(max)</code></td><td>Continuous current diode can handle without damage</td></tr>
+      <tr><td>Max Reverse Current</td><td><code>IR</code></td><td>Leakage current in reverse bias (very small, nA–µA)</td></tr>
+      <tr><td>Peak Inverse Voltage</td><td><code>PIV</code></td><td>Maximum reverse voltage before breakdown occurs</td></tr>
+      <tr><td>Power Dissipation</td><td><code>PD</code></td><td>Maximum allowable power dissipation</td></tr>
+      <tr><td>Junction Capacitance</td><td><code>CJ</code></td><td>Capacitance across the depletion region in reverse bias</td></tr>
+      <tr><td>Reverse Recovery Time</td><td><code>trr</code></td><td>Time to switch from conducting to blocking state</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">Exam Note</div>
+    All specifications change with temperature. As temperature ↑: forward voltage ↓, leakage current ↑, breakdown voltage changes slightly.
+  </div>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — RECTIFIER CIRCUITS
+════════════════════════════════════════════ -->
+<section id="s3">
+  <div class="section-label">03</div>
+  <h2>Rectifier Circuits</h2>
+
+  <p>A <strong>rectifier</strong> converts <strong>AC → DC</strong>. This process is called <strong>rectification</strong>. Three types are covered.</p>
+
+  <h3>Half-Wave Rectifier</h3>
+  <div class="grid-2">
+    <div>
+      <p>Uses a <strong>single diode</strong>. Only the positive half-cycle passes through; the negative half is blocked. Output is pulsating DC.</p>
+      <div class="callout formula">
+        <div class="callout-label">Formulas</div>
+        Vdc = Vm / π ≈ 0.318 Vm<br>
+        Vrms = Vm / 2<br>
+        Efficiency ≈ 40.6%<br>
+        Ripple factor = 1.21
+      </div>
+    </div>
+    <div class="diagram-wrap" style="margin:0;">
+      <svg viewBox="0 0 260 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- Input sine wave -->
+        <text x="10" y="16" fill="#555" font-size="9" font-family="DM Mono,monospace">INPUT AC</text>
+        <path d="M10,50 Q35,20 60,50 Q85,80 110,50 Q135,20 160,50" fill="none" stroke="#555" stroke-width="1.5"/>
+        <!-- Arrow -->
+        <text x="100" y="80" fill="#444" font-size="9" font-family="DM Mono,monospace">D₁ →</text>
+        <!-- Output -->
+        <text x="10" y="100" fill="#555" font-size="9" font-family="DM Mono,monospace">OUTPUT DC</text>
+        <path d="M10,130 Q35,105 60,130 Q85,130 110,130 Q135,110 160,130" fill="none" stroke="#888" stroke-width="1.5"/>
+        <path d="M60,130 L110,130" stroke="#888" stroke-width="1.5"/>
+      </svg>
+      <div class="diagram-caption">Half-wave output</div>
+    </div>
+  </div>
+
+  <h3>Full-Wave Bridge Rectifier</h3>
+  <p>Uses <strong>4 diodes</strong> in a bridge configuration. Both half-cycles are utilized — the diode pairs alternate. Output ripple frequency = 2× input frequency.</p>
+
+  <div class="callout formula">
+    <div class="callout-label">Formulas</div>
+    Vdc = 2Vm / π ≈ 0.636 Vm<br>
+    Vrms = Vm / √2<br>
+    Efficiency ≈ 81.2%<br>
+    Ripple factor = 0.48
+  </div>
+
+  <!-- SVG: Bridge Rectifier Diagram -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 440 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Bridge shape -->
+      <!-- Top path: D1 -->
+      <line x1="70" y1="100" x2="130" y2="50" stroke="#555" stroke-width="1.3"/>
+      <polygon points="140,43 128,52 136,60" fill="#555"/>
+      <text x="88" y="63" fill="#666" font-size="9" font-family="DM Mono,monospace">D1</text>
+      <line x1="140" y1="50" x2="200" y2="100" stroke="#555" stroke-width="1.3"/>
+      <!-- Bottom path: D2 -->
+      <line x1="70" y1="100" x2="130" y2="150" stroke="#555" stroke-width="1.3"/>
+      <polygon points="140,157 128,148 136,140" fill="#555"/>
+      <text x="88" y="148" fill="#666" font-size="9" font-family="DM Mono,monospace">D2</text>
+      <line x1="140" y1="150" x2="200" y2="100" stroke="#555" stroke-width="1.3"/>
+      <!-- Right path: D3 -->
+      <line x1="200" y1="100" x2="260" y2="50" stroke="#555" stroke-width="1.3"/>
+      <polygon points="270,43 258,52 266,60" fill="#555"/>
+      <text x="222" y="63" fill="#666" font-size="9" font-family="DM Mono,monospace">D3</text>
+      <line x1="270" y1="50" x2="330" y2="100" stroke="#555" stroke-width="1.3"/>
+      <!-- Right path: D4 -->
+      <line x1="200" y1="100" x2="260" y2="150" stroke="#555" stroke-width="1.3"/>
+      <polygon points="270,157 258,148 266,140" fill="#555"/>
+      <text x="222" y="148" fill="#666" font-size="9" font-family="DM Mono,monospace">D4</text>
+      <line x1="270" y1="150" x2="330" y2="100" stroke="#555" stroke-width="1.3"/>
+      <!-- Input -->
+      <text x="10" y="95" fill="#555" font-size="9" font-family="DM Mono,monospace">AC IN</text>
+      <line x1="45" y1="90" x2="70" y2="90" stroke="#444" stroke-width="1"/>
+      <line x1="45" y1="110" x2="70" y2="110" stroke="#444" stroke-width="1"/>
+      <!-- Load -->
+      <line x1="330" y1="100" x2="380" y2="100" stroke="#444" stroke-width="1.2"/>
+      <rect x="380" y="80" width="20" height="40" fill="none" stroke="#555" stroke-width="1"/>
+      <text x="405" y="103" fill="#555" font-size="9" font-family="DM Mono,monospace">RL</text>
+      <!-- +/- output -->
+      <text x="350" y="80" fill="#777" font-size="11" font-family="DM Mono,monospace">+</text>
+      <text x="350" y="128" fill="#777" font-size="11" font-family="DM Mono,monospace">−</text>
+      <!-- GND lines -->
+      <line x1="330" y1="100" x2="380" y2="100" stroke="#555" stroke-width="1"/>
+      <!-- Active diodes label -->
+      <text x="70" y="185" fill="#444" font-size="8" font-family="DM Mono,monospace">+ve cycle: D1,D3 conduct · −ve cycle: D2,D4 conduct</text>
+    </svg>
+    <div class="diagram-caption">Bridge Full-Wave Rectifier — 4 Diodes</div>
+  </div>
+
+  <h3>Comparison of Rectifiers</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Parameter</th><th>Half-Wave</th><th>Full-Wave (Bridge)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>No. of diodes</td><td>1</td><td>4</td></tr>
+      <tr><td>Output frequency</td><td>fin</td><td>2 × fin</td></tr>
+      <tr><td>Vdc</td><td>0.318 Vm</td><td>0.636 Vm</td></tr>
+      <tr><td>Efficiency</td><td>40.6%</td><td>81.2%</td></tr>
+      <tr><td>Ripple factor</td><td>1.21</td><td>0.48</td></tr>
+      <tr><td>PIV required</td><td>Vm</td><td>Vm</td></tr>
+      <tr><td>Ripple</td><td>High</td><td>Low</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — SPECIAL DIODES
+════════════════════════════════════════════ -->
+<section id="s4">
+  <div class="section-label">04</div>
+  <h2>Special Diodes</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">LED — Light Emitting Diode</div>
+      <p>A PN junction diode that <strong>emits light</strong> when forward biased. Electrons recombine with holes releasing photons.</p>
+      <ul style="font-size:12px;margin-top:8px;">
+        <li>Materials: Gallium Arsenide (GaAs), GaAsP, AlGaInP (red/orange/yellow), InGaN (green/blue)</li>
+        <li>Colour depends on material composition (bandgap energy)</li>
+        <li>Forward voltage: ~1.8–3.5 V depending on color</li>
+        <li>Does NOT work in reverse bias</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Photodiode</div>
+      <p>Converts <strong>light → current</strong>. Operated in <strong>reverse bias</strong>.</p>
+      <ul style="font-size:12px;margin-top:8px;">
+        <li>Light creates electron-hole pairs in depletion region</li>
+        <li>Reverse current proportional to light intensity</li>
+        <li>Dark current: tiny current even without light</li>
+        <li>Applications: optical communication, sensors, solar cells</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Zener Diode</h3>
+  <p>A <strong>heavily doped</strong> PN junction designed to operate in the <strong>reverse breakdown region</strong>. Also called <em>breakdown diode</em>. It maintains a nearly <strong>constant voltage</strong> across its terminals when the reverse breakdown voltage (Zener voltage, Vz) is reached.</p>
+
+  <!-- SVG: Zener symbol + characteristic -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 480 160" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Zener Symbol -->
+      <line x1="30" y1="80" x2="100" y2="80" stroke="#555" stroke-width="1.5"/>
+      <polygon points="100,60 100,100 150,80" fill="#222" stroke="#666" stroke-width="1.5"/>
+      <!-- Zener cathode bar with bends -->
+      <line x1="150" y1="60" x2="150" y2="100" stroke="#888" stroke-width="2.5"/>
+      <line x1="150" y1="60" x2="140" y2="52" stroke="#888" stroke-width="2"/>
+      <line x1="150" y1="100" x2="160" y2="108" stroke="#888" stroke-width="2"/>
+      <line x1="150" y1="80" x2="220" y2="80" stroke="#555" stroke-width="1.5"/>
+      <text x="125" y="125" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">Zener Symbol</text>
+      <!-- Zener V-I curve -->
+      <line x1="310" y1="30" x2="310" y2="150" stroke="#444" stroke-width="1"/>
+      <line x1="260" y1="95" x2="470" y2="95" stroke="#444" stroke-width="1"/>
+      <!-- Forward part -->
+      <path d="M310,95 Q340,93 350,85 Q365,65 375,38" fill="none" stroke="#777" stroke-width="1.8"/>
+      <!-- Reverse saturation -->
+      <path d="M310,95 Q285,96 265,98" fill="none" stroke="#666" stroke-width="1.5"/>
+      <!-- Sharp breakdown -->
+      <path d="M265,98 Q263,115 261,148" fill="none" stroke="#888" stroke-width="2"/>
+      <!-- Vz label -->
+      <line x1="265" y1="98" x2="265" y2="90" stroke="#444" stroke-width="1" stroke-dasharray="2,2"/>
+      <text x="265" y="86" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">−Vz</text>
+      <text x="380" y="55" fill="#555" font-size="9" font-family="DM Mono,monospace">forward</text>
+      <text x="268" y="135" fill="#666" font-size="9" font-family="DM Mono,monospace">breakdown</text>
+      <text x="310" y="25" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">I</text>
+      <text x="472" y="98" fill="#555" font-size="9" font-family="DM Mono,monospace">V</text>
+    </svg>
+    <div class="diagram-caption">Zener Diode Symbol & V-I Characteristic</div>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-label">Zener Breakdown Mechanisms</div>
+    <strong>Zener Effect:</strong> Occurs at low breakdown voltages (&lt;5V). Heavy doping causes direct tunneling of electrons across narrow depletion region due to strong electric field.<br><br>
+    <strong>Avalanche Breakdown:</strong> Occurs at higher voltages (&gt;5V). Carriers gain enough energy to ionize atoms by collision, creating an avalanche multiplication of carriers.
+  </div>
+
+  <h4>Zener Diode as Voltage Regulator</h4>
+  <p>Zener diode is connected in <strong>reverse bias</strong> in parallel with the load. As long as input voltage ≥ Vz, output stays constant at Vz. Series resistor Rs limits current. Used in power supply regulation circuits.</p>
+
+  <div class="callout formula">
+    <div class="callout-label">Regulation Formula</div>
+    Vout = Vz (constant)<br>
+    IR = (Vin − Vz) / Rs<br>
+    IZ = IR − IL
+  </div>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5 — BJT FUNDAMENTALS
+════════════════════════════════════════════ -->
+<section id="s5">
+  <div class="section-label">05</div>
+  <h2>Bipolar Junction Transistor (BJT)</h2>
+
+  <p>A BJT is a <strong>three-terminal, current-controlled</strong> semiconductor device. Unlike a FET (voltage-controlled), BJT current gain is driven by base current. It uses <strong>both</strong> majority and minority carriers — hence "bipolar".</p>
+
+  <h3>Types & Structure</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">NPN Transistor</div>
+      <p><strong>N</strong>-type emitter | <strong>P</strong>-type base | <strong>N</strong>-type collector<br>
+      Most common type. Current flows from collector to emitter. Conventional: IB into base, IE out of emitter.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">PNP Transistor</div>
+      <p><strong>P</strong>-type emitter | <strong>N</strong>-type base | <strong>P</strong>-type collector<br>
+      Current flows from emitter to collector. IB flows out of base.</p>
+    </div>
+  </div>
+
+  <!-- SVG: NPN Structure -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 460 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Emitter (N+) -->
+      <rect x="20" y="35" width="100" height="80" fill="#111" stroke="#333" stroke-width="1"/>
+      <text x="70" y="75" fill="#777" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">N+</text>
+      <text x="70" y="88" fill="#555" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">EMITTER</text>
+      <text x="70" y="100" fill="#444" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">(heavily doped)</text>
+      <!-- Base (P) -->
+      <rect x="120" y="35" width="50" height="80" fill="#191919" stroke="#333" stroke-width="1"/>
+      <text x="145" y="72" fill="#888" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">P</text>
+      <text x="145" y="84" fill="#555" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">BASE</text>
+      <text x="145" y="96" fill="#444" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">(thin)</text>
+      <!-- Collector (N) -->
+      <rect x="170" y="35" width="120" height="80" fill="#131313" stroke="#333" stroke-width="1"/>
+      <text x="230" y="72" fill="#777" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">N</text>
+      <text x="230" y="84" fill="#555" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">COLLECTOR</text>
+      <text x="230" y="96" fill="#444" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">(lightly doped)</text>
+      <!-- Terminals -->
+      <line x1="70" y1="35" x2="70" y2="15" stroke="#555" stroke-width="1.5"/>
+      <text x="70" y="11" fill="#666" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">E</text>
+      <line x1="145" y1="35" x2="145" y2="15" stroke="#555" stroke-width="1.5"/>
+      <text x="145" y="11" fill="#666" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">B</text>
+      <line x1="230" y1="35" x2="230" y2="15" stroke="#555" stroke-width="1.5"/>
+      <text x="230" y="11" fill="#666" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">C</text>
+      <!-- Junctions labels -->
+      <text x="120" y="128" fill="#444" font-size="8" font-family="DM Mono,monospace">E-B jn</text>
+      <text x="170" y="128" fill="#444" font-size="8" font-family="DM Mono,monospace">C-B jn</text>
+      <!-- Current arrows -->
+      <text x="310" y="65" fill="#555" font-size="9" font-family="DM Mono,monospace">IE = IB + IC</text>
+      <text x="310" y="80" fill="#444" font-size="9" font-family="DM Mono,monospace">IB small (~µA)</text>
+      <text x="310" y="95" fill="#444" font-size="9" font-family="DM Mono,monospace">IC large (~mA)</text>
+    </svg>
+    <div class="diagram-caption">NPN BJT Physical Structure</div>
+  </div>
+
+  <h3>Operating Regions</h3>
+  <div class="callout key">
+    <div class="callout-label">Biasing Table</div>
+    <table style="font-size:12px;width:100%;border-collapse:collapse;">
+      <tr style="border-bottom:1px solid #222;">
+        <td style="padding:5px 8px;color:#888;font-size:10px;">REGION</td>
+        <td style="padding:5px 8px;color:#888;font-size:10px;">E-B JUNCTION</td>
+        <td style="padding:5px 8px;color:#888;font-size:10px;">C-B JUNCTION</td>
+        <td style="padding:5px 8px;color:#888;font-size:10px;">MODE</td>
+      </tr>
+      <tr style="border-bottom:1px solid #1a1a1a;"><td style="padding:5px 8px;">Active</td><td style="padding:5px 8px;">Forward</td><td style="padding:5px 8px;">Reverse</td><td style="padding:5px 8px;">Amplifier</td></tr>
+      <tr style="border-bottom:1px solid #1a1a1a;"><td style="padding:5px 8px;">Saturation</td><td style="padding:5px 8px;">Forward</td><td style="padding:5px 8px;">Forward</td><td style="padding:5px 8px;">Switch — ON (closed)</td></tr>
+      <tr><td style="padding:5px 8px;">Cut-off</td><td style="padding:5px 8px;">Reverse</td><td style="padding:5px 8px;">Reverse</td><td style="padding:5px 8px;">Switch — OFF (open)</td></tr>
+    </table>
+  </div>
+
+  <h3>BJT Working Principle (NPN)</h3>
+  <p>The emitter-base junction is forward biased — electrons from the emitter (N+) are injected into the thin P-base. Only a small fraction recombine with holes in the base (forming IB). The majority (~95–99%) diffuse through to the reverse-biased collector junction and are swept into the collector forming IC.</p>
+
+  <div class="callout formula">
+    <div class="callout-label">Key Relations</div>
+    IE = IB + IC  (KCL at transistor)<br>
+    IC = β × IB  (current amplification)<br>
+    IC = α × IE  (CB current gain)<br>
+    β = α / (1 − α)  |  α = β / (β + 1)
+  </div>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6 — BJT CONFIGURATIONS
+════════════════════════════════════════════ -->
+<section id="s6">
+  <div class="section-label">06</div>
+  <h2>BJT Configurations & Characteristics</h2>
+
+  <h3>Common Base (CB)</h3>
+  <p>Base is the <strong>common terminal</strong> to both input and output circuits.</p>
+  <ul>
+    <li><strong>Input:</strong> V<sub>EB</sub> and I<sub>E</sub> (emitter-base)</li>
+    <li><strong>Output:</strong> V<sub>CB</sub> and I<sub>C</sub> (collector-base)</li>
+    <li>Current gain: <code>α = IC/IE</code> — always &lt;1 (typically 0.95–0.99)</li>
+    <li>Very LOW input resistance (~22 Ω), VERY HIGH output resistance (~1 MΩ)</li>
+    <li>High voltage gain (~150), <em>no</em> phase inversion</li>
+    <li>Application: Pre-amplifier, high-frequency amplifier</li>
+  </ul>
+
+  <h3>Common Emitter (CE) — Most Widely Used</h3>
+  <p>Emitter is the <strong>common terminal</strong>. This is the most commonly used configuration.</p>
+  <ul>
+    <li><strong>Input:</strong> V<sub>BE</sub> and I<sub>B</sub></li>
+    <li><strong>Output:</strong> V<sub>CE</sub> and I<sub>C</sub></li>
+    <li>Current gain: <code>β = IC/IB</code> (25 to 300 typical)</li>
+    <li>Medium input R (~1 kΩ), High output R (~40 kΩ)</li>
+    <li>Highest power gain; <strong>180° phase inversion</strong></li>
+    <li>V<sub>CE</sub> = V<sub>CB</sub> + V<sub>BE</sub></li>
+    <li>Application: General-purpose amplifier</li>
+  </ul>
+
+  <!-- SVG: CE Output Characteristics -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 440 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Axes -->
+      <line x1="60" y1="20" x2="60" y2="170" stroke="#444" stroke-width="1.2"/>
+      <line x1="60" y1="170" x2="420" y2="170" stroke="#444" stroke-width="1.2"/>
+      <polygon points="60,14 55,26 65,26" fill="#444"/>
+      <polygon points="426,170 414,165 414,175" fill="#444"/>
+      <text x="40" y="14" fill="#666" font-size="9" font-family="DM Mono,monospace">IC</text>
+      <text x="420" y="180" fill="#666" font-size="9" font-family="DM Mono,monospace">VCE</text>
+      <!-- Family of curves for different IB values -->
+      <path d="M60,140 Q90,138 100,136 Q200,132 420,130" fill="none" stroke="#666" stroke-width="1.2"/>
+      <text x="422" y="133" fill="#555" font-size="8" font-family="DM Mono,monospace">IB=20µA</text>
+      <path d="M60,115 Q90,112 100,110 Q200,106 420,104" fill="none" stroke="#666" stroke-width="1.2"/>
+      <text x="422" y="107" fill="#555" font-size="8" font-family="DM Mono,monospace">IB=40µA</text>
+      <path d="M60,90 Q90,87 100,84 Q200,80 420,78" fill="none" stroke="#666" stroke-width="1.2"/>
+      <text x="422" y="81" fill="#555" font-size="8" font-family="DM Mono,monospace">IB=60µA</text>
+      <path d="M60,65 Q90,62 100,58 Q200,54 420,52" fill="none" stroke="#666" stroke-width="1.2"/>
+      <text x="422" y="55" fill="#555" font-size="8" font-family="DM Mono,monospace">IB=80µA</text>
+      <path d="M60,40 Q90,37 100,33 Q200,28 420,26" fill="none" stroke="#666" stroke-width="1.2"/>
+      <!-- Saturation region -->
+      <rect x="60" y="20" width="40" height="150" fill="#1a1a1a"/>
+      <text x="80" y="185" fill="#444" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">SAT</text>
+      <!-- Active region label -->
+      <text x="250" y="185" fill="#444" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">ACTIVE REGION</text>
+      <!-- Cut-off -->
+      <text x="300" y="165" fill="#444" font-size="8" font-family="DM Mono,monospace">IB=0 → cut-off</text>
+      <path d="M60,168 Q200,168 420,168" fill="none" stroke="#333" stroke-width="1" stroke-dasharray="4,3"/>
+    </svg>
+    <div class="diagram-caption">CE Output Characteristics (IC vs VCE) for various IB</div>
+  </div>
+
+  <h3>Common Collector (CC) — Emitter Follower</h3>
+  <p>Collector is the common terminal. Input is applied between base-collector, output taken from emitter-collector.</p>
+  <ul>
+    <li><strong>Input:</strong> V<sub>BC</sub> and I<sub>B</sub></li>
+    <li><strong>Output:</strong> V<sub>EC</sub> and I<sub>E</sub></li>
+    <li>Current gain: <code>γ = IE/IB</code> — very high (β + 1)</li>
+    <li>Very HIGH input R (~500 kΩ), very LOW output R (~50 Ω)</li>
+    <li>Voltage gain &lt;1 (≈1), no phase inversion — acts as <em>voltage follower</em></li>
+    <li>Application: Impedance matching, buffer stage</li>
+  </ul>
+
+  <h3>CB–CE–CC Comparison Table</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Parameter</th><th>Common Base</th><th>Common Emitter</th><th>Common Collector</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Current Gain</td><td>&lt;1 (α)</td><td>High 25–300 (β)</td><td>Very High (γ=β+1)</td></tr>
+      <tr><td>Voltage Gain</td><td>~150</td><td>~500</td><td>&lt;1</td></tr>
+      <tr><td>Input Resistance</td><td>Very Low (22 Ω)</td><td>Low (1 kΩ)</td><td>High (500 kΩ)</td></tr>
+      <tr><td>Output Resistance</td><td>Very High (1 MΩ)</td><td>High (40 kΩ)</td><td>Low (50 Ω)</td></tr>
+      <tr><td>Phase Shift</td><td>0°</td><td>180°</td><td>0°</td></tr>
+      <tr><td>Power Gain</td><td>Medium</td><td>Highest</td><td>Low</td></tr>
+      <tr><td>Current Factor</td><td>α = IC/IE</td><td>β = IC/IB</td><td>γ = IE/IB</td></tr>
+      <tr><td>Application</td><td>HF amplifier, pre-amp</td><td>General amplifier</td><td>Buffer, impedance match</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Current Amplification — Worked Example</h3>
+  <div class="callout formula">
+    <div class="callout-label">Example Problem</div>
+    Given: β = 125, VCC = 5V, RC = 0.7 kΩ<br><br>
+    IC(sat) = VCC / RC = 5 / 700 = 7.1 mA<br>
+    IB(required) = IC / β = 7.1 mA / 125 = 56.8 µA<br><br>
+    If α = 0.99: β = α/(1−α) = 0.99/0.01 = 99
+  </div>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 7 — BJT AS SWITCH & AMPLIFIER
+════════════════════════════════════════════ -->
+<section id="s7">
+  <div class="section-label">07</div>
+  <h2>BJT as Switch & Amplifier</h2>
+
+  <h3>BJT as Switch</h3>
+  <p>A BJT toggles between two states using <strong>Cut-off</strong> (OFF) and <strong>Saturation</strong> (ON) regions.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Switch OFF — Cut-off Region</div>
+      <p>Both junctions <strong>reverse biased</strong>.<br>
+      IB = 0, IC ≈ 0<br>
+      VCE ≈ VCC (full voltage appears across transistor)<br>
+      Transistor acts as <strong>open circuit</strong></p>
+    </div>
+    <div class="card">
+      <div class="card-title">Switch ON — Saturation Region</div>
+      <p>Both junctions <strong>forward biased</strong>.<br>
+      IB sufficient to drive into saturation<br>
+      VCE ≈ 0.2V (VCE(sat))<br>
+      Transistor acts as <strong>closed switch</strong></p>
+    </div>
+  </div>
+
+  <div class="callout formula">
+    <div class="callout-label">Switching Conditions</div>
+    For saturation (switch ON):<br>
+    IB ≥ IC(sat) / β<br>
+    IC(sat) = (VCC − VCE(sat)) / RC ≈ VCC / RC<br><br>
+    For cut-off (switch OFF):<br>
+    VBE &lt; 0.6V → IB = 0 → IC = ICEO ≈ 0
+  </div>
+
+  <h3>BJT as Amplifier (CE Configuration)</h3>
+  <p>In the <strong>active region</strong>, small changes in IB produce large changes in IC — this is amplification.</p>
+  <ul>
+    <li>Small AC input signal superimposed on DC bias point (Q-point)</li>
+    <li>Output AC signal is amplified and <strong>inverted</strong> (180° phase shift in CE)</li>
+    <li>The Q-point (quiescent point) must be in the middle of the active region for maximum undistorted swing</li>
+  </ul>
+
+  <div class="callout formula">
+    <div class="callout-label">Amplifier Gain</div>
+    Voltage gain Av = −β × RC / Rin<br>
+    Current gain Ai = β = IC / IB<br>
+    Power gain Ap = Av × Ai
+  </div>
+
+  <h3>Common BJT Part Numbers</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>NPN</th><th>PNP</th><th>VCE</th><th>IC(max)</th><th>Pd</th><th>Package</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>BC547</td><td>BC557</td><td>45V</td><td>100mA</td><td>600mW</td><td>TO-92</td></tr>
+      <tr><td>2N3904</td><td>2N3906</td><td>40V</td><td>200mA</td><td>625mW</td><td>TO-92</td></tr>
+      <tr><td>2N2222</td><td>2N2907</td><td>30V</td><td>800mA</td><td>800mW</td><td>TO-92/18</td></tr>
+      <tr><td>SL100</td><td>SK100</td><td>50V</td><td>500mA</td><td>800mW</td><td>TO-39</td></tr>
+      <tr><td>TIP122</td><td>TIP127</td><td>100V</td><td>5.0A</td><td>2W</td><td>TO-220</td></tr>
+      <tr><td>TIP3055</td><td>TIP2955</td><td>60V</td><td>15A</td><td>90W</td><td>TO-220</td></tr>
+      <tr><td>2N2055</td><td>2N2955</td><td>60V</td><td>15A</td><td>115W</td><td>TO-3</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">BJT Properties — Exam Note</div>
+    BJT is a <strong>minority carrier device</strong>. Compared to MOSFET: slower switching, but lower on-resistance at high voltages.<br>
+    BJT has been <strong>replaced by MOSFET</strong> in low-voltage (&lt;500V) applications.<br>
+    BJT is being <strong>replaced by IGBT</strong> at voltages above 500V.
+  </div>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 8 — FET & JFET
+════════════════════════════════════════════ -->
+<section id="s8">
+  <div class="section-label">08</div>
+  <h2>Field Effect Transistor (FET) & JFET</h2>
+
+  <p>A FET controls current through a circuit via an <strong>applied voltage</strong> — it behaves like a <strong>voltage-controlled resistor</strong>. FETs are <strong>unipolar</strong> (conduction by one carrier type only), unlike BJTs which are bipolar.</p>
+
+  <h3>FET Terminals</h3>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Gate (G)</div>
+      <p>Controls current flow — the "gatekeeper". Applies electric field to channel.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Source (S)</div>
+      <p>Source of charge carriers. Electrons enter here (N-channel) or holes (P-channel).</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Drain (D)</div>
+      <p>Destination of carriers. Current exits at drain.</p>
+    </div>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-label">FET vs BJT Key Differences</div>
+    <table style="font-size:12px;width:100%;border-collapse:collapse;">
+      <tr style="border-bottom:1px solid #1e1e1e;"><td style="padding:5px 8px;color:#888;">Property</td><td style="padding:5px 8px;color:#888;">BJT</td><td style="padding:5px 8px;color:#888;">FET</td></tr>
+      <tr style="border-bottom:1px solid #1a1a1a;"><td style="padding:5px 8px;">Control</td><td style="padding:5px 8px;">Current (IB)</td><td style="padding:5px 8px;">Voltage (VGS)</td></tr>
+      <tr style="border-bottom:1px solid #1a1a1a;"><td style="padding:5px 8px;">Carriers</td><td style="padding:5px 8px;">Both (bipolar)</td><td style="padding:5px 8px;">One type (unipolar)</td></tr>
+      <tr style="border-bottom:1px solid #1a1a1a;"><td style="padding:5px 8px;">Input R</td><td style="padding:5px 8px;">Low kΩ</td><td style="padding:5px 8px;">Very high MΩ–GΩ</td></tr>
+      <tr><td style="padding:5px 8px;">Noise</td><td style="padding:5px 8px;">Higher</td><td style="padding:5px 8px;">Lower</td></tr>
+    </table>
+  </div>
+
+  <h3>JFET Architecture</h3>
+  <p>An N-channel JFET has an <strong>N-type body</strong> (the channel) with <strong>P-type gate</strong> regions on both sides. The gate is <strong>reverse biased</strong> to create depletion regions that control channel width.</p>
+
+  <!-- SVG: JFET cross-section -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 440 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Source terminal -->
+      <text x="40" y="20" fill="#666" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">S</text>
+      <line x1="40" y1="22" x2="40" y2="50" stroke="#555" stroke-width="1.5"/>
+      <!-- Drain terminal -->
+      <text x="380" y="20" fill="#666" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">D</text>
+      <line x1="380" y1="22" x2="380" y2="50" stroke="#555" stroke-width="1.5"/>
+      <!-- N channel -->
+      <rect x="40" y="50" width="340" height="60" fill="#161616" stroke="#333" stroke-width="1"/>
+      <text x="210" y="83" fill="#777" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">N-CHANNEL</text>
+      <!-- P-gate top -->
+      <rect x="120" y="30" width="180" height="22" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1"/>
+      <text x="210" y="45" fill="#666" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">P-GATE</text>
+      <!-- P-gate bottom -->
+      <rect x="120" y="108" width="180" height="22" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1"/>
+      <text x="210" y="123" fill="#666" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">P-GATE</text>
+      <!-- Gate terminal -->
+      <line x1="210" y1="22" x2="210" y2="30" stroke="#555" stroke-width="1.5"/>
+      <text x="210" y="18" fill="#666" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">G</text>
+      <!-- Depletion regions (shaded) -->
+      <rect x="120" y="52" width="180" height="15" fill="#1e1e1e" stroke="none"/>
+      <rect x="120" y="93" width="180" height="15" fill="#1e1e1e" stroke="none"/>
+      <text x="210" y="62" fill="#444" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">depletion region</text>
+      <text x="210" y="103" fill="#444" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">depletion region</text>
+      <!-- Current arrow -->
+      <text x="210" y="155" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">← electron flow ← (conventional: D to S)</text>
+    </svg>
+    <div class="diagram-caption">N-Channel JFET Cross-Section</div>
+  </div>
+
+  <h3>JFET Operation</h3>
+  <ul>
+    <li>With <strong>VGS = 0</strong>: Channel fully open, maximum drain current flows (IDSS)</li>
+    <li><strong>Increasing reverse bias</strong> on gate (more negative VGS for N-channel) → depletion regions grow → channel narrows → current decreases</li>
+    <li>At <strong>pinch-off voltage (VP)</strong>: Channel is completely pinched, ID → 0</li>
+  </ul>
+
+  <h3>JFET Characteristic Curve Regions</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Ohmic (Linear) Region</div>
+      <p>Low VDS. JFET behaves like a <strong>variable resistor</strong> controlled by VGS. Channel resistance = f(VGS).</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Saturation (Pinch-off) Region</div>
+      <p>Higher VDS. Current is nearly <strong>constant</strong> for a given VGS. Acts as a <strong>voltage-controlled current source</strong>.</p>
+    </div>
+  </div>
+
+  <div class="callout formula">
+    <div class="callout-label">JFET Drain Current (Shockley's Equation)</div>
+    ID = IDSS × (1 − VGS/VP)²<br><br>
+    where IDSS = drain current with VGS=0<br>
+    VP = pinch-off voltage
+  </div>
+
+  <h3>P-Channel JFET</h3>
+  <p>Same as N-channel but with all polarities reversed. N-type gate, P-type channel. Gate must be forward-biased positive. Increasing positive gate bias increases channel resistance.</p>
+
+  <h3>Advantages of JFET</h3>
+  <ul>
+    <li>Very <strong>high input resistance</strong> (gate draws almost no current) — ideal for sensitive measurements</li>
+    <li><strong>Low noise</strong> at low frequencies</li>
+    <li>Radiation tolerant — reverse-biased junctions can handle significant radiation damage</li>
+    <li>JFETs are virtually <strong>obsolete in ICs</strong> but still used as discrete components</li>
+  </ul>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 9 — MOSFET
+════════════════════════════════════════════ -->
+<section id="s9">
+  <div class="section-label">09</div>
+  <h2>MOSFET — Enhancement & Depletion Types</h2>
+
+  <p><strong>MOSFET</strong> = Metal Oxide Semiconductor Field Effect Transistor. It is the foundation of modern integrated circuits — <em>thousands to billions</em> can be fabricated on a single chip. Used for switching and amplification in virtually all modern electronics.</p>
+
+  <h3>MOSFET Structure</h3>
+  <p>Unlike JFET, the gate in a MOSFET is <strong>electrically insulated</strong> from the channel by a thin layer of <strong>silicon dioxide (SiO2)</strong>. This means the gate draws essentially <em>zero current</em> and the input impedance is extremely high (&gt;10 MΩ).</p>
+
+  <div class="callout key">
+    <div class="callout-label">MOSFET Types</div>
+    Two main categories:<br>
+    1. <strong>Enhancement MOSFET (E-MOSFET)</strong> — normally OFF, channel induced by gate voltage<br>
+    2. <strong>Depletion MOSFET (D-MOSFET)</strong> — normally ON, channel exists without gate voltage<br><br>
+    Each available in <strong>N-channel</strong> and <strong>P-channel</strong> variants.
+  </div>
+
+  <h3>Enhancement MOSFET (E-MOSFET)</h3>
+  <p>The E-MOSFET operates <strong>only in enhancement mode</strong>. There is no pre-existing channel — the substrate extends completely to the SiO2 layer.</p>
+
+  <ul>
+    <li>N-channel: requires <strong>positive VGS above threshold (VT)</strong> to create channel</li>
+    <li>Positive gate attracts electrons to surface of P-substrate, forming an inversion layer (N-channel)</li>
+    <li>Increasing VGS increases channel conductivity (more electrons induced)</li>
+    <li>For VGS &lt; VT: no channel, transistor is <strong>OFF</strong></li>
+    <li>For VGS &gt; VT: channel formed, current flows — transistor is <strong>ON</strong></li>
+  </ul>
+
+  <!-- SVG: E-MOSFET cross-section -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 460 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- P-substrate -->
+      <rect x="30" y="80" width="380" height="70" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="220" y="130" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">P-SUBSTRATE (body)</text>
+      <!-- N+ source region -->
+      <rect x="50" y="60" width="70" height="60" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+      <text x="85" y="91" fill="#777" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">N+</text>
+      <text x="85" y="103" fill="#555" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">Source</text>
+      <!-- N+ drain region -->
+      <rect x="320" y="60" width="70" height="60" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+      <text x="355" y="91" fill="#777" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">N+</text>
+      <text x="355" y="103" fill="#555" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">Drain</text>
+      <!-- Gate oxide -->
+      <rect x="120" y="58" width="200" height="10" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1"/>
+      <text x="220" y="55" fill="#555" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">SiO₂ (insulator)</text>
+      <!-- Gate metal -->
+      <rect x="120" y="44" width="200" height="14" fill="#1e1e1e" stroke="#444" stroke-width="1"/>
+      <text x="220" y="41" fill="#666" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">METAL GATE</text>
+      <!-- Induced channel when on -->
+      <rect x="120" y="68" width="200" height="12" fill="#1d1d1d" stroke="#3a3a3a" stroke-width="0.5" stroke-dasharray="3,2"/>
+      <text x="220" y="78" fill="#444" font-size="7.5" text-anchor="middle" font-family="DM Mono,monospace">induced N-channel (when VGS > VT)</text>
+      <!-- Terminals -->
+      <line x1="85" y1="44" x2="85" y2="60" stroke="#555" stroke-width="1.5"/>
+      <text x="85" y="39" fill="#666" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">S</text>
+      <line x1="355" y1="44" x2="355" y2="60" stroke="#555" stroke-width="1.5"/>
+      <text x="355" y="39" fill="#666" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">D</text>
+      <line x1="220" y1="30" x2="220" y2="44" stroke="#555" stroke-width="1.5"/>
+      <text x="220" y="26" fill="#666" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">G</text>
+    </svg>
+    <div class="diagram-caption">N-Channel E-MOSFET Cross-Section</div>
+  </div>
+
+  <h3>Depletion MOSFET (D-MOSFET)</h3>
+  <p>Has a <strong>physically diffused channel</strong> connecting source and drain — so current flows even with VGS = 0. The gate can <em>deplete</em> or <em>enhance</em> this channel.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Depletion Mode (VGS negative)</div>
+      <p>Negative VGS repels electrons from channel → channel narrows → current decreases. Eventually reaches pinch-off.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Enhancement Mode (VGS positive)</div>
+      <p>Positive VGS attracts more electrons → channel widens → current increases beyond IDSS.</p>
+    </div>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-label">Key Difference: E-MOSFET vs D-MOSFET</div>
+    E-MOSFET: No channel at VGS=0. Only enhancement. Normally OFF.<br>
+    D-MOSFET: Pre-existing channel. Can operate in depletion OR enhancement. Normally ON.
+  </div>
+
+  <h3>MOSFET — OFF State vs ON State</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">OFF State</div>
+      <p>P-N⁻ junction is <strong>reverse biased</strong>. Off-state voltage appears across N⁻ region. No current flows.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">ON State</div>
+      <p>P-N⁻ junction slightly reverse biased. Positive gate voltage <strong>induces conducting channel</strong>. Drain current flows through N⁻ and channel. On-resistance = sum of all resistance elements.</p>
+    </div>
+  </div>
+
+  <h3>Power MOSFET Features</h3>
+  <ul>
+    <li><strong>Voltage-driven device</strong> → simple drive circuit (just charge gate capacitance)</li>
+    <li><strong>Majority carrier device</strong> → fast switching, high frequency (100s kHz)</li>
+    <li>Better thermal stability than BJT</li>
+    <li>On-resistance (RDS(on)) <strong>increases rapidly</strong> with rated blocking voltage</li>
+    <li>Usually used at voltages <strong>&lt;500V</strong>, power &lt;10kW</li>
+    <li>1000V devices available but practical only at low power (&lt;100W)</li>
+    <li>Part number selected by <strong>on-resistance</strong>, not just current rating</li>
+  </ul>
+
+  <h3>Body Diode of Power MOSFET</h3>
+  <p>An inherent <strong>antiparallel diode</strong> exists between source and drain due to the P-N junction between P-body and N⁻ drift region. This diode conducts in the reverse direction. Often exploited in inverter circuits for freewheeling, but its slow reverse recovery can cause switching losses.</p>
+
+  <h3>MOSFET Equivalent Circuit Capacitances</h3>
+  <div class="callout formula">
+    <div class="callout-label">Key Parasitic Capacitances</div>
+    CGS — large, fairly linear (input capacitance, most important)<br>
+    CGD — small, highly nonlinear (Miller capacitance — affects switching)<br>
+    CDS — intermediate, highly nonlinear<br><br>
+    Switching time is determined by the rate at which gate driver charges/discharges CGS and CGD.
+  </div>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 10 — IGBT
+════════════════════════════════════════════ -->
+<section id="s10">
+  <div class="section-label">10</div>
+  <h2>IGBT — Insulated Gate Bipolar Transistor</h2>
+
+  <p>The IGBT is a <strong>hybrid device</strong> — a combination of MOSFET and BJT. It combines the <em>easy voltage-driven gate</em> of a MOSFET with the <em>low on-state voltage drop</em> of a BJT (bipolar minority carrier injection).</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 440 100" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Blocks -->
+      <rect x="20" y="30" width="130" height="40" fill="#181818" stroke="#2e2e2e" stroke-width="1"/>
+      <text x="85" y="52" fill="#777" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">MOSFET input</text>
+      <text x="85" y="64" fill="#555" font-size="8.5" text-anchor="middle" font-family="DM Mono,monospace">(voltage driven gate)</text>
+      <!-- Plus -->
+      <text x="178" y="55" fill="#444" font-size="20" text-anchor="middle" font-family="DM Mono,monospace">+</text>
+      <!-- BJT block -->
+      <rect x="205" y="30" width="130" height="40" fill="#181818" stroke="#2e2e2e" stroke-width="1"/>
+      <text x="270" y="52" fill="#777" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">BJT output</text>
+      <text x="270" y="64" fill="#555" font-size="8.5" text-anchor="middle" font-family="DM Mono,monospace">(low on-resistance)</text>
+      <!-- Equals -->
+      <text x="360" y="55" fill="#444" font-size="20" text-anchor="middle" font-family="DM Mono,monospace">=</text>
+      <!-- IGBT -->
+      <rect x="380" y="25" width="50" height="50" fill="#1e1e1e" stroke="#444" stroke-width="1.5"/>
+      <text x="405" y="52" fill="#999" font-size="10" text-anchor="middle" font-family="DM Mono,monospace">IGBT</text>
+    </svg>
+    <div class="diagram-caption">IGBT = MOSFET (gate drive) + BJT (output characteristics)</div>
+  </div>
+
+  <h3>IGBT Terminals</h3>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Gate (G)</div>
+      <p>Voltage driven like MOSFET. Controls turn-on/off.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Collector (C)</div>
+      <p>Corresponds to drain in MOSFET / collector in BJT. Positive voltage applied.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Emitter (E)</div>
+      <p>Corresponds to source in MOSFET / emitter in BJT.</p>
+    </div>
+  </div>
+
+  <h3>Properties of IGBT</h3>
+  <ul>
+    <li>Device of choice for <strong>500 V to 1700 V+</strong> applications, 1–1000 kW</li>
+    <li><strong>Positive temperature coefficient</strong> at high current → easy to parallel and build modules</li>
+    <li>Forward voltage drop = diode + on-resistance: typically <strong>2–4 V</strong></li>
+    <li>Easy to drive — similar to MOSFET (voltage gate drive)</li>
+    <li><strong>Slower than MOSFET</strong>, but <strong>faster than Darlington, GTO, SCR</strong></li>
+    <li>Typical switching frequencies: <strong>3–30 kHz</strong></li>
+    <li>Advanced devices: HVIGBTs at 3300V; 600V devices reaching 150 kHz</li>
+  </ul>
+
+  <h3>IGBT vs MOSFET vs BJT Comparison</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Feature</th><th>BJT</th><th>MOSFET</th><th>IGBT</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Drive Type</td><td>Current (IB)</td><td>Voltage (VGS)</td><td>Voltage (VGE)</td></tr>
+      <tr><td>Switching Speed</td><td>Slowest</td><td>Fastest</td><td>Medium</td></tr>
+      <tr><td>On-state voltage</td><td>Low (VCE~0.2V)</td><td>Medium (IDSS×RDS)</td><td>Low (~2–4V)</td></tr>
+      <tr><td>Voltage Rating</td><td>&lt;500V</td><td>&lt;500V (optimal)</td><td>500–6500V</td></tr>
+      <tr><td>Drive complexity</td><td>Complex</td><td>Simple</td><td>Simple</td></tr>
+      <tr><td>Thermal handling</td><td>Moderate</td><td>Good</td><td>Very good</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>IGBT Applications</h3>
+  <ul>
+    <li><strong>Induction Heater</strong></li>
+    <li><strong>BLDC / AC Motor drives</strong></li>
+    <li>Inverter circuits (DC-to-AC conversion) for <strong>air conditioners, refrigerators</strong></li>
+    <li>Industrial motors, automotive main motor controllers</li>
+    <li>UPS systems, solar inverters, traction (trains)</li>
+  </ul>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 11 — LOGIC GATES USING TRANSISTORS
+════════════════════════════════════════════ -->
+<section id="s11">
+  <div class="section-label">11</div>
+  <h2>Logic Gates using Transistors</h2>
+
+  <p>Transistors function as <strong>fast electronic switches</strong>. When the base-emitter diode is driven into <strong>saturation</strong>, VCE ≈ 0 → logic LOW output. When in <strong>cut-off</strong>, VCE ≈ VCC → logic HIGH output.</p>
+
+  <div class="callout key">
+    <div class="callout-label">Why use Transistor Logic?</div>
+    <ul style="margin:0;padding-left:16px;">
+      <li>Transistors are <strong>cheaper</strong> than ICs</li>
+      <li>Can operate with voltages as low as <strong>1.5V</strong> (ICs need min 3V)</li>
+      <li>ICs are ultimately made of transistors on-chip (TTL logic uses BJTs)</li>
+      <li>Only 1–2 transistors needed per gate</li>
+    </ul>
+  </div>
+
+  <h3>NOT Gate (Inverter)</h3>
+  <p>Uses a <strong>single NPN transistor</strong> (e.g. BC547). One of the most fundamental gates.</p>
+
+  <!-- SVG: NOT gate using transistor -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 360 180" width="90%" xmlns="http://www.w3.org/2000/svg">
+      <!-- VCC rail -->
+      <line x1="200" y1="20" x2="200" y2="40" stroke="#555" stroke-width="1.5"/>
+      <text x="200" y="16" fill="#666" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">+VCC</text>
+      <!-- RC -->
+      <rect x="186" y="40" width="28" height="40" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="220" y="62" fill="#555" font-size="9" font-family="DM Mono,monospace">RC</text>
+      <!-- Collector line -->
+      <line x1="200" y1="80" x2="200" y2="100" stroke="#555" stroke-width="1.5"/>
+      <!-- NPN symbol -->
+      <!-- Collector -->
+      <line x1="200" y1="100" x2="200" y2="115" stroke="#555" stroke-width="1.5"/>
+      <line x1="200" y1="100" x2="230" y2="88" stroke="#555" stroke-width="1.5"/>
+      <!-- Base -->
+      <line x1="160" y1="125" x2="200" y2="125" stroke="#555" stroke-width="1.5"/>
+      <!-- Emitter with arrow -->
+      <line x1="200" y1="115" x2="230" y2="127" stroke="#555" stroke-width="1.5"/>
+      <polygon points="232,128 222,124 228,117" fill="#555"/>
+      <!-- Emitter to GND -->
+      <line x1="230" y1="128" x2="230" y2="155" stroke="#555" stroke-width="1.5"/>
+      <line x1="215" y1="158" x2="245" y2="158" stroke="#555" stroke-width="1.5"/>
+      <line x1="220" y1="162" x2="240" y2="162" stroke="#555" stroke-width="1.5"/>
+      <line x1="225" y1="166" x2="235" y2="166" stroke="#555" stroke-width="1.5"/>
+      <text x="230" y="172" fill="#555" font-size="8" text-anchor="middle" font-family="DM Mono,monospace">GND</text>
+      <!-- Vertical base line -->
+      <line x1="200" y1="108" x2="200" y2="132" stroke="#555" stroke-width="1.5"/>
+      <!-- RB -->
+      <rect x="120" y="116" width="40" height="20" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="140" y="111" fill="#555" font-size="9" text-anchor="middle" font-family="DM Mono,monospace">RB</text>
+      <!-- Input -->
+      <line x1="80" y1="126" x2="120" y2="126" stroke="#555" stroke-width="1.5"/>
+      <text x="60" y="130" fill="#666" font-size="10" font-family="DM Mono,monospace">A (in)</text>
+      <!-- Output -->
+      <line x1="200" y1="90" x2="300" y2="90" stroke="#555" stroke-width="1.5"/>
+      <text x="310" y="94" fill="#666" font-size="10" font-family="DM Mono,monospace">OUT</text>
+      <!-- LED (optional) -->
+      <circle cx="280" cy="90" r="6" fill="none" stroke="#555" stroke-width="1.2"/>
+    </svg>
+    <div class="diagram-caption">NOT Gate using NPN transistor (BC547)</div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">NOT Gate Working</div>
+    <strong>Input LOW (0V):</strong> Transistor in CUT-OFF → no current through transistor → current flows through RC and LED → <strong>Output HIGH, LED ON</strong><br><br>
+    <strong>Input HIGH (+5V):</strong> Transistor SATURATED → VCE ≈ 0 → all current through transistor, none through LED → <strong>Output LOW, LED OFF</strong>
+  </div>
+
+  <div class="table-wrap">
+  <table class="truth">
+    <thead><tr><th>A (Input)</th><th>Y (Output)</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>AND Gate</h3>
+  <p>Uses <strong>two NPN transistors connected in series</strong>. Both must be ON for current to flow through the LED (output HIGH).</p>
+
+  <div class="callout">
+    <div class="callout-label">AND Gate Working</div>
+    Transistors Q1 and Q2 (BC547) in <strong>series</strong> between VCC and GND (through LED).<br><br>
+    A=0, B=0 → Both OFF → No current → LED OFF → <strong>Y=0</strong><br>
+    A=1, B=0 → Q1 ON, Q2 OFF → No current path → LED OFF → <strong>Y=0</strong><br>
+    A=0, B=1 → Q1 OFF, Q2 ON → No current path → LED OFF → <strong>Y=0</strong><br>
+    A=1, B=1 → Both ON → Current flows → LED ON → <strong>Y=1</strong>
+  </div>
+
+  <div class="table-wrap">
+  <table class="truth">
+    <thead><tr><th>A</th><th>B</th><th>Y = A·B</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>OR Gate</h3>
+  <p>Uses <strong>two NPN transistors connected in parallel</strong>. Either one being ON allows current to flow through the LED (output HIGH).</p>
+
+  <div class="callout">
+    <div class="callout-label">OR Gate Working</div>
+    Transistors Q1 and Q2 in <strong>parallel</strong>.<br><br>
+    A=0, B=0 → Both OFF → No current → LED OFF → <strong>Y=0</strong><br>
+    A=1, B=0 → Q1 ON → Current through LED → <strong>Y=1</strong><br>
+    A=0, B=1 → Q2 ON → Current through LED → <strong>Y=1</strong><br>
+    A=1, B=1 → Both ON → Current through LED → <strong>Y=1</strong>
+  </div>
+
+  <div class="table-wrap">
+  <table class="truth">
+    <thead><tr><th>A</th><th>B</th><th>Y = A+B</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Gate Comparison Summary</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Gate</th><th>Transistor Config</th><th>Output = 1 when…</th><th># Transistors</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>NOT</td><td>Single NPN</td><td>Input = 0</td><td>1</td></tr>
+      <tr><td>AND</td><td>Series</td><td>All inputs = 1</td><td>N (= no. of inputs)</td></tr>
+      <tr><td>OR</td><td>Parallel</td><td>Any input = 1</td><td>N (= no. of inputs)</td></tr>
+      <tr><td>NAND</td><td>Series + NOT</td><td>Not all inputs = 1</td><td>N+1</td></tr>
+      <tr><td>NOR</td><td>Parallel + NOT</td><td>All inputs = 0</td><td>N+1</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">Exam Tip</div>
+    NAND and NOR are <strong>universal gates</strong> — any logic function can be built using only NAND or only NOR gates. NAND = AND + NOT (series transistors + inversion). NOR = OR + NOT (parallel transistors + inversion).
+  </div>
+
+  <!-- Master quick-reference -->
+  <hr>
+  <h3>Quick Reference Card</h3>
+  <div class="grid-2">
+    <div class="callout formula">
+      <div class="callout-label">Diode Equations</div>
+      ID = IS(e^(VD/nVT) − 1) — Shockley<br>
+      VT = kT/q ≈ 26 mV at 25°C<br>
+      Vfwd(Si) ≈ 0.6–0.7V<br>
+      Vfwd(Ge) ≈ 0.2–0.3V
+    </div>
+    <div class="callout formula">
+      <div class="callout-label">BJT Equations</div>
+      IE = IB + IC<br>
+      IC = β·IB = α·IE<br>
+      α = β/(β+1) ; β = α/(1−α)<br>
+      VCE = VCB + VBE
+    </div>
+    <div class="callout formula">
+      <div class="callout-label">JFET Equation</div>
+      ID = IDSS·(1 − VGS/VP)²<br>
+      At VGS=0: ID = IDSS (max)<br>
+      At VGS=VP: ID = 0 (pinch-off)
+    </div>
+    <div class="callout formula">
+      <div class="callout-label">Rectifier Formulas</div>
+      HWR: Vdc = Vm/π; η = 40.6%<br>
+      FWR: Vdc = 2Vm/π; η = 81.2%<br>
+      Ripple factor HWR = 1.21<br>
+      Ripple factor FWR = 0.48
+    </div>
+  </div>
+
+  <a href="#top" class="back-top">↑ back to top</a>
+</section>
+
+<!-- footer -->
+<div style="border-top:1px solid #1a1a1a; padding-top:24px; margin-top:40px; color:#333; font-size:10px; letter-spacing:0.1em; text-align:center;">
+  AEM Unit 4 · FY DESH VIT · Electronics 5.2–5.5
+</div>
+
+</body>
+</html>

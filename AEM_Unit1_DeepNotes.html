@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEM Unit 1 — Deep Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111110;--ink2:#2e2e2b;--ink3:#5c5c57;--ink4:#9a9a93;--ink5:#c8c8bf;
+  --bg:#faf9f6;--bg2:#f3f2ed;--bg3:#eae9e2;
+  --rule:#ddddd4;--accent:#111110;
+  --red:#c0392b;--blue:#1a5276;--green:#1e6e3f;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'IBM Plex Sans',sans-serif;font-weight:300;background:var(--bg);color:var(--ink);line-height:1.8;max-width:900px;margin:0 auto;padding:3rem 2.5rem 8rem}
+
+/* ── HEADER ── */
+.cover{border-bottom:2px solid var(--ink);padding-bottom:2rem;margin-bottom:1.5rem}
+.cover-tag{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink4);margin-bottom:.6rem}
+.cover-title{font-family:'Lora',serif;font-size:3rem;font-weight:600;line-height:1.1;letter-spacing:-.02em;color:var(--ink)}
+.cover-sub{font-size:.9rem;color:var(--ink3);margin-top:.4rem}
+.cover-meta{display:flex;gap:2rem;margin-top:1.25rem;font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--ink4);letter-spacing:.08em;text-transform:uppercase}
+
+/* ── TOC ── */
+.toc-wrap{background:var(--bg2);border:1px solid var(--rule);padding:1.75rem 2rem;margin-bottom:3.5rem;border-radius:2px}
+.toc-tag{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink4);margin-bottom:1rem}
+.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:.15rem .5rem}
+.toc-item{display:flex;gap:.5rem;align-items:baseline;font-size:.83rem;padding:.2rem 0}
+.toc-num{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--ink5);min-width:2.2ch}
+.toc-item a{color:var(--ink2);text-decoration:none;border-bottom:1px dotted var(--ink5)}
+.toc-item a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+@media(max-width:600px){.toc-grid{grid-template-columns:1fr}}
+
+/* ── SECTION ── */
+.section{margin-bottom:5rem}
+.sec-tag{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink5);margin-bottom:.35rem}
+h2{font-family:'Lora',serif;font-weight:600;font-size:1.9rem;letter-spacing:-.018em;color:var(--ink);border-bottom:1px solid var(--rule);padding-bottom:.65rem;margin-bottom:1.5rem}
+h3{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin:2rem 0 .7rem;font-weight:500}
+h4{font-size:.92rem;font-weight:500;color:var(--ink2);margin:1.2rem 0 .4rem}
+p{font-size:.93rem;margin-bottom:.8rem;color:var(--ink2)}
+p:last-child{margin-bottom:0}
+strong{font-weight:500;color:var(--ink)}
+
+/* ── CALLOUT BOXES ── */
+.def{border-left:3px solid var(--ink);padding:.9rem 1.3rem;margin:1.2rem 0;background:var(--bg2)}
+.def p{font-family:'Lora',serif;font-style:italic;font-size:.9rem;color:var(--ink2)}
+.def cite{display:block;font-family:'IBM Plex Mono',monospace;font-style:normal;font-size:.62rem;color:var(--ink4);margin-top:.3rem;letter-spacing:.05em}
+.note{border-left:3px solid var(--ink4);padding:.8rem 1.2rem;margin:1rem 0;background:var(--bg2)}
+.note p{font-size:.88rem;color:var(--ink3)}
+.key-box{background:var(--bg3);border:1px solid var(--rule);border-radius:2px;padding:1rem 1.3rem;margin:1rem 0}
+.key-box p{font-size:.88rem}
+
+/* ── TABLES ── */
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:1rem 0 1.5rem}
+th{background:var(--ink);color:var(--bg);font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;font-weight:400;padding:.6rem .9rem;text-align:left}
+td{padding:.55rem .9rem;border-bottom:1px solid var(--rule);color:var(--ink2);vertical-align:top}
+tr:nth-child(even) td{background:var(--bg2)}
+.tbl-label{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--ink4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem}
+
+/* ── KEY-VALUE ── */
+.kv{display:grid;grid-template-columns:auto 1fr;gap:.3rem 1.25rem;margin:.5rem 0 1.25rem}
+.kk{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--ink4);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;padding-top:.15rem}
+.kv p{margin:0;font-size:.88rem}
+
+/* ── LISTS ── */
+ul.deep{list-style:none;padding:0;margin:.5rem 0 1.2rem}
+ul.deep li{font-size:.9rem;color:var(--ink2);padding:.35rem 0 .35rem 1.4rem;border-bottom:1px solid var(--rule);position:relative}
+ul.deep li:last-child{border-bottom:none}
+ul.deep li::before{content:'→';position:absolute;left:0;color:var(--ink4);font-family:'IBM Plex Mono',monospace;font-size:.7rem;top:.45rem}
+ol.deep{padding-left:1.5rem;margin:.5rem 0 1.2rem}
+ol.deep li{font-size:.9rem;color:var(--ink2);padding:.25rem 0;border-bottom:1px solid var(--rule)}
+ol.deep li:last-child{border-bottom:none}
+
+/* ── CODE / FORMULA ── */
+code{font-family:'IBM Plex Mono',monospace;font-size:.8em;background:var(--bg3);border:1px solid var(--rule);padding:.1em .4em;border-radius:2px;color:var(--ink2)}
+.formula{font-family:'IBM Plex Mono',monospace;font-size:.85rem;background:var(--bg2);border:1px solid var(--rule);padding:.9rem 1.25rem;margin:1rem 0;color:var(--ink2);border-radius:2px;overflow-x:auto}
+.formula .label{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink4);margin-bottom:.4rem}
+
+/* ── MATRIX ── */
+.mat-wrap{display:inline-flex;align-items:center;gap:.3rem;font-family:'IBM Plex Mono',monospace;font-size:.82rem}
+.mat-bracket-l,.mat-bracket-r{display:flex;align-items:center;font-size:2.5rem;color:var(--ink3);font-weight:200;line-height:1}
+.mat-grid{display:grid;gap:.35rem .9rem;line-height:1.5;text-align:center}
+.mat3{grid-template-columns:repeat(3,5ch)}
+.mat4{grid-template-columns:repeat(4,5ch)}
+.mat-title{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:.5rem}
+.matrix-section{background:var(--bg2);border:1px solid var(--rule);padding:1.25rem 1.5rem;margin:1.2rem 0;border-radius:2px;overflow-x:auto}
+
+/* ── SVG visuals ── */
+.visual-wrap{margin:1.75rem 0;background:var(--bg2);border:1px solid var(--rule);border-radius:2px;padding:1.25rem}
+.visual-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:.75rem;display:block}
+svg text{font-family:'IBM Plex Sans','IBM Plex Mono',sans-serif}
+
+/* ── TAG CHIPS ── */
+.chip{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--rule);color:var(--ink4);padding:.15em .55em;border-radius:1px;margin:.15rem .1rem}
+.chip.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* ── FOOTER ── */
+.footer{border-top:1px solid var(--rule);margin-top:5rem;padding-top:1.25rem;font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;color:var(--ink5);display:flex;justify-content:space-between}
+
+@media(max-width:600px){body{padding:1.5rem 1.1rem 5rem}.cover-title{font-size:2rem}.kv{grid-template-columns:1fr}.mat4{grid-template-columns:repeat(4,4ch)}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ COVER ═══════════ -->
+<header class="cover">
+  <p class="cover-tag">VIT Pune · DESH · Applied Electromechanical Systems</p>
+  <h1 class="cover-title">Unit 1 — Deep Notes</h1>
+  <p class="cover-sub">Electromechanical Systems &nbsp;·&nbsp; Robotics &nbsp;·&nbsp; Kinematics &nbsp;·&nbsp; Transformation Matrices</p>
+  <div class="cover-meta">
+    <span>B.Tech FY · DESH</span>
+    <span>12 Topics · Comprehensive</span>
+    <span>Exam-Ready</span>
+  </div>
+</header>
+
+<!-- ═══════════ TOC ═══════════ -->
+<nav class="toc-wrap">
+  <p class="toc-tag">Contents</p>
+  <div class="toc-grid">
+    <div class="toc-item"><span class="toc-num">01</span><a href="#s1">Systems — Concept &amp; Classification</a></div>
+    <div class="toc-item"><span class="toc-num">02</span><a href="#s2">Control Systems</a></div>
+    <div class="toc-item"><span class="toc-num">03</span><a href="#s3">Electromechanical Systems</a></div>
+    <div class="toc-item"><span class="toc-num">04</span><a href="#s4">Robotics — Definitions &amp; History</a></div>
+    <div class="toc-item"><span class="toc-num">05</span><a href="#s5">Asimov's Laws of Robotics</a></div>
+    <div class="toc-item"><span class="toc-num">06</span><a href="#s6">Robot Classification</a></div>
+    <div class="toc-item"><span class="toc-num">07</span><a href="#s7">Robot Anatomy &amp; Terminology</a></div>
+    <div class="toc-item"><span class="toc-num">08</span><a href="#s8">Robot Kinematics — Introduction</a></div>
+    <div class="toc-item"><span class="toc-num">09</span><a href="#s9">Robot Configurations &amp; Workspace</a></div>
+    <div class="toc-item"><span class="toc-num">10</span><a href="#s10">Degrees of Freedom</a></div>
+    <div class="toc-item"><span class="toc-num">11</span><a href="#s11">Forward &amp; Inverse Kinematics</a></div>
+    <div class="toc-item"><span class="toc-num">12</span><a href="#s12">Transformation Matrices</a></div>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s1">
+  <p class="sec-tag">Topic 01</p>
+  <h2>Systems — Concept &amp; Classification</h2>
+
+  <h3>What is a System?</h3>
+  <p>The word <em>system</em> appears in everyday language — solar system, digestive system, operating system, transport system. What unifies them all? A <strong>system</strong> is an organized assembly or collection of components (physical or abstract) that are interconnected and work together to achieve a specific function or goal.</p>
+  <p>Every system has a recognizable <strong>boundary</strong>. What lies inside the boundary is the system; what lies outside is the <strong>environment</strong>. The system interacts with its environment by exchanging inputs and outputs across this boundary.</p>
+
+  <div class="def"><p>A system is an assembly of interconnected components with a defined boundary that receives inputs from the environment, processes them, and delivers outputs.</p></div>
+
+  <!-- Visual: System block -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 1.1 — Generic system model</span>
+    <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- environment bg -->
+      <rect x="0" y="0" width="700" height="160" rx="6" fill="#eae9e2"/>
+      <text x="14" y="18" font-size="9" fill="#9a9a93" letter-spacing="2" font-family="IBM Plex Mono,monospace" text-transform="uppercase">ENVIRONMENT</text>
+      <!-- input arrow -->
+      <rect x="10" y="58" width="130" height="44" rx="4" fill="#f3f2ed" stroke="#c8c8bf" stroke-width="1"/>
+      <text x="75" y="77" font-size="11" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Inputs</text>
+      <text x="75" y="92" font-size="9.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">energy · matter · info</text>
+      <line x1="140" y1="80" x2="190" y2="80" stroke="#111110" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- system box -->
+      <rect x="190" y="30" width="320" height="100" rx="4" fill="#f3f2ed" stroke="#111110" stroke-width="2"/>
+      <text x="350" y="68" font-size="13" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">SYSTEM</text>
+      <text x="350" y="86" font-size="10" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">Components · Process · Control</text>
+      <text x="350" y="103" font-size="9.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Interconnected · Goal-oriented</text>
+      <!-- output arrow -->
+      <line x1="510" y1="80" x2="560" y2="80" stroke="#111110" stroke-width="1.5" marker-end="url(#arr)"/>
+      <rect x="560" y="58" width="130" height="44" rx="4" fill="#f3f2ed" stroke="#c8c8bf" stroke-width="1"/>
+      <text x="625" y="77" font-size="11" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Outputs</text>
+      <text x="625" y="92" font-size="9.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">work · signal · product</text>
+      <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#111110"/></marker></defs>
+    </svg>
+  </div>
+
+  <h3>Classification of Systems</h3>
+
+  <!-- Visual: Classification tree -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 1.2 — System classification tree</span>
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- root -->
+      <rect x="275" y="10" width="150" height="36" rx="3" fill="#111110"/>
+      <text x="350" y="33" font-size="12" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">SYSTEMS</text>
+      <!-- branches to L1 nodes -->
+      <!-- Natural / Man-made -->
+      <line x1="350" y1="46" x2="350" y2="72" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="350" y1="72" x2="140" y2="72" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="350" y1="72" x2="560" y2="72" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="140" y1="72" x2="140" y2="88" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="560" y1="72" x2="560" y2="88" stroke="#c8c8bf" stroke-width="1"/>
+      <!-- L1 boxes -->
+      <rect x="65" y="88" width="150" height="34" rx="3" fill="#2e2e2b"/>
+      <text x="140" y="110" font-size="11" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Natural Systems</text>
+      <rect x="485" y="88" width="150" height="34" rx="3" fill="#2e2e2b"/>
+      <text x="560" y="110" font-size="11" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Man-made Systems</text>
+      <!-- Natural children -->
+      <line x1="140" y1="122" x2="140" y2="148" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="140" y1="148" x2="70" y2="148" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="140" y1="148" x2="210" y2="148" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="70" y1="148" x2="70" y2="164" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="210" y1="148" x2="210" y2="164" stroke="#c8c8bf" stroke-width="1"/>
+      <rect x="20" y="164" width="100" height="30" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="70" y="184" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Solar System</text>
+      <rect x="160" y="164" width="100" height="30" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="210" y="184" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Human Body</text>
+      <!-- Man-made children -->
+      <line x1="560" y1="122" x2="560" y2="148" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="560" y1="148" x2="490" y2="148" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="560" y1="148" x2="630" y2="148" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="490" y1="148" x2="490" y2="164" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="630" y1="148" x2="630" y2="164" stroke="#c8c8bf" stroke-width="1"/>
+      <rect x="440" y="164" width="100" height="30" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="490" y="184" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Machines</text>
+      <rect x="580" y="164" width="100" height="30" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="630" y="184" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Software</text>
+      <!-- By energy exchange -->
+      <line x1="350" y1="46" x2="350" y2="230" stroke="#c8c8bf" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="350" y="250" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace" letter-spacing="1">BY ENERGY EXCHANGE</text>
+      <line x1="350" y1="255" x2="350" y2="268" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="140" y1="268" x2="560" y2="268" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="140" y1="268" x2="140" y2="280" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="350" y1="268" x2="350" y2="280" stroke="#c8c8bf" stroke-width="1"/>
+      <line x1="560" y1="268" x2="560" y2="280" stroke="#c8c8bf" stroke-width="1"/>
+      <rect x="68" y="280" width="144" height="30" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="140" y="299" font-size="9.5" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Open — exchanges both</text>
+      <rect x="276" y="280" width="148" height="30" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="350" y="299" font-size="9.5" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Closed — energy only</text>
+      <rect x="486" y="280" width="148" height="30" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="560" y="299" font-size="9.5" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Isolated — neither</text>
+    </svg>
+  </div>
+
+  <p class="tbl-label">Detailed classification with examples</p>
+  <table>
+    <tr><th>Category</th><th>Basis</th><th>Description</th><th>Examples</th></tr>
+    <tr><td>Natural</td><td>Origin</td><td>Exist without human design</td><td>Solar system, ecosystem, human body</td></tr>
+    <tr><td>Man-made</td><td>Origin</td><td>Designed and built by humans</td><td>Engine, computer, control system</td></tr>
+    <tr><td>Open</td><td>Exchange</td><td>Exchanges both matter and energy with environment</td><td>Living organisms, furnace</td></tr>
+    <tr><td>Closed</td><td>Exchange</td><td>Exchanges only energy with environment</td><td>Sealed engine, piston in cylinder</td></tr>
+    <tr><td>Isolated</td><td>Exchange</td><td>No exchange with environment (idealised)</td><td>Insulated thermos (approx.)</td></tr>
+    <tr><td>Physical</td><td>Nature</td><td>Has tangible, real-world components</td><td>Mechanical, hydraulic, electrical</td></tr>
+    <tr><td>Abstract</td><td>Nature</td><td>Mathematical / logical models</td><td>Algorithms, control models, DSP</td></tr>
+    <tr><td>Static</td><td>Time</td><td>Output depends only on current input</td><td>Resistive circuit</td></tr>
+    <tr><td>Dynamic</td><td>Time</td><td>Output depends on input history (has memory)</td><td>Mechanical spring-mass, RC circuit</td></tr>
+    <tr><td>Linear</td><td>Behaviour</td><td>Obeys superposition and homogeneity</td><td>Most textbook systems</td></tr>
+    <tr><td>Non-linear</td><td>Behaviour</td><td>Does not obey superposition</td><td>Robot joints, real actuators</td></tr>
+  </table>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s2">
+  <p class="sec-tag">Topic 02</p>
+  <h2>Control Systems</h2>
+
+  <div class="def"><p>A control system is a mechanism that controls the input and the processing of a system in order to achieve a desired output (response).</p></div>
+
+  <p>Control systems are everywhere — from a simple immersion rod to the attitude control of a satellite. The key idea is: how accurately and reliably can we get the output we want from a given system?</p>
+
+  <h3>Open Loop Control System</h3>
+  <p>In an open-loop system, the output is <strong>not measured and not fed back</strong> to the input. The controller acts solely on the programmed input and has no knowledge of what the output actually turned out to be. It is also called a <strong>non-feedback system</strong>.</p>
+
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 2.1 — Open loop control system</span>
+    <svg viewBox="0 0 700 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#111110"/></marker></defs>
+      <!-- blocks -->
+      <rect x="10" y="35" width="100" height="40" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="60" y="60" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Reference</text>
+      <text x="60" y="72" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Input r(t)</text>
+      <line x1="110" y1="55" x2="145" y2="55" stroke="#111110" stroke-width="1.5" marker-end="url(#a1)"/>
+      <rect x="145" y="35" width="110" height="40" rx="3" fill="#2e2e2b"/>
+      <text x="200" y="60" font-size="10" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Controller</text>
+      <line x1="255" y1="55" x2="295" y2="55" stroke="#111110" stroke-width="1.5" marker-end="url(#a1)"/>
+      <rect x="295" y="35" width="110" height="40" rx="3" fill="#2e2e2b"/>
+      <text x="350" y="60" font-size="10" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Plant / Process</text>
+      <line x1="405" y1="55" x2="445" y2="55" stroke="#111110" stroke-width="1.5" marker-end="url(#a1)"/>
+      <rect x="445" y="35" width="100" height="40" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="495" y="60" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Output</text>
+      <text x="495" y="72" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">c(t)</text>
+      <!-- no feedback label -->
+      <text x="600" y="58" font-size="9" fill="#c0392b" font-family="IBM Plex Mono,monospace">✕ No Feedback</text>
+    </svg>
+  </div>
+
+  <div class="kv">
+    <span class="kk">Pros</span><p>Simple design, inexpensive, easy to build and maintain.</p>
+    <span class="kk">Cons</span><p>Cannot correct for disturbances, environmental changes, or internal variations.</p>
+    <span class="kk">When used</span><p>When system is well-understood and disturbances are negligible.</p>
+    <span class="kk">Examples</span><p>Traffic light, washing machine timer, immersion rod, field-controlled DC motor, bread toaster.</p>
+  </div>
+
+  <h3>Closed Loop Control System</h3>
+  <p>A closed-loop system uses a <strong>feedback path</strong> to compare the actual output with the desired reference. The difference (the <em>error signal</em>) is used by the controller to adjust the system and drive the output toward the desired value. Because the control action is a function of the output, the system is <strong>self-correcting</strong>.</p>
+
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 2.2 — Closed loop (feedback) control system</span>
+    <svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#111110"/></marker></defs>
+      <!-- Reference -->
+      <rect x="10" y="52" width="80" height="36" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="50" y="73" font-size="9.5" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Reference r(t)</text>
+      <line x1="90" y1="70" x2="115" y2="70" stroke="#111110" stroke-width="1.5" marker-end="url(#a2)"/>
+      <!-- Summer -->
+      <circle cx="130" cy="70" r="16" fill="#f3f2ed" stroke="#111110" stroke-width="1.5"/>
+      <text x="130" y="75" font-size="14" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Σ</text>
+      <text x="121" y="63" font-size="9" fill="#1e6e3f" font-family="IBM Plex Mono,monospace">+</text>
+      <text x="121" y="82" font-size="9" fill="#c0392b" font-family="IBM Plex Mono,monospace">−</text>
+      <!-- error -->
+      <line x1="146" y1="70" x2="178" y2="70" stroke="#111110" stroke-width="1.5" marker-end="url(#a2)"/>
+      <text x="162" y="63" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">e(t)</text>
+      <!-- Controller -->
+      <rect x="178" y="52" width="100" height="36" rx="3" fill="#2e2e2b"/>
+      <text x="228" y="74" font-size="10" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Controller</text>
+      <line x1="278" y1="70" x2="310" y2="70" stroke="#111110" stroke-width="1.5" marker-end="url(#a2)"/>
+      <!-- Actuator -->
+      <rect x="310" y="52" width="90" height="36" rx="3" fill="#2e2e2b"/>
+      <text x="355" y="74" font-size="10" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Actuator</text>
+      <line x1="400" y1="70" x2="432" y2="70" stroke="#111110" stroke-width="1.5" marker-end="url(#a2)"/>
+      <!-- Plant -->
+      <rect x="432" y="52" width="100" height="36" rx="3" fill="#2e2e2b"/>
+      <text x="482" y="74" font-size="10" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Plant</text>
+      <line x1="532" y1="70" x2="570" y2="70" stroke="#111110" stroke-width="1.5" marker-end="url(#a2)"/>
+      <!-- Output -->
+      <rect x="570" y="52" width="90" height="36" rx="3" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="615" y="68" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Output</text>
+      <text x="615" y="81" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">c(t)</text>
+      <!-- Feedback line -->
+      <line x1="615" y1="88" x2="615" y2="135" stroke="#111110" stroke-width="1.5"/>
+      <line x1="615" y1="135" x2="130" y2="135" stroke="#111110" stroke-width="1.5"/>
+      <line x1="130" y1="135" x2="130" y2="86" stroke="#111110" stroke-width="1.5" marker-end="url(#a2)"/>
+      <!-- Sensor -->
+      <rect x="320" y="118" width="90" height="30" rx="3" fill="#f3f2ed" stroke="#9a9a93"/>
+      <text x="365" y="137" font-size="9.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Sensor / FB</text>
+      <text x="350" y="108" font-size="8.5" fill="#1a5276" font-family="IBM Plex Mono,monospace">← Feedback path →</text>
+    </svg>
+  </div>
+
+  <div class="kv">
+    <span class="kk">Error</span><p>e(t) = r(t) − c(t) — the difference between reference and actual output. The controller works to make this zero.</p>
+    <span class="kk">Pros</span><p>Self-correcting, accurate, handles disturbances and parameter variations automatically.</p>
+    <span class="kk">Cons</span><p>More complex, more expensive, can become unstable if not designed carefully.</p>
+    <span class="kk">Examples</span><p>Air conditioner, rocket launch system, radar tracking, human respiratory system, thermostat.</p>
+  </div>
+
+  <h3>Comparison Table</h3>
+  <table>
+    <tr><th>Parameter</th><th>Open Loop</th><th>Closed Loop</th></tr>
+    <tr><td>Feedback path</td><td>Absent</td><td>Present</td></tr>
+    <tr><td>Error correction</td><td>Not possible</td><td>Automatic (via error signal)</td></tr>
+    <tr><td>Accuracy</td><td>Low</td><td>High</td></tr>
+    <tr><td>Stability</td><td>Always stable</td><td>May become unstable</td></tr>
+    <tr><td>Effect of disturbances</td><td>High impact</td><td>Automatically compensated</td></tr>
+    <tr><td>Complexity</td><td>Simple</td><td>Complex</td></tr>
+    <tr><td>Cost</td><td>Low</td><td>Higher</td></tr>
+    <tr><td>Reliability</td><td>High (simple)</td><td>Moderate (depends on sensors)</td></tr>
+    <tr><td>Speed of response</td><td>Faster</td><td>Slightly slower (processing delay)</td></tr>
+    <tr><td>Examples</td><td>Traffic light, washing machine</td><td>Thermostat, rocket guidance</td></tr>
+  </table>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s3">
+  <p class="sec-tag">Topic 03</p>
+  <h2>Electromechanical Systems (Mechatronics)</h2>
+
+  <h3>Origin</h3>
+  <p>In <strong>1969</strong>, a senior engineer at the Japanese company <strong>Yaskawa Electric</strong> first coined the word <em>mechatronics</em> — a portmanteau combining <em>mechanics</em> and <em>electronics</em>. Yaskawa registered it as a trademark in 1971. Today it refers to an entire interdisciplinary engineering field.</p>
+
+  <div class="def"><p>Mechatronics (electromechanical systems) is the synergetic integration of mechanical engineering with electronics and intelligent computer control in the designing, manufacturing, and production of products and processes.</p></div>
+
+  <!-- Visual: Mechatronics Venn -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 3.1 — Mechatronics as intersection of disciplines</span>
+    <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- circles -->
+      <circle cx="220" cy="145" r="110" fill="none" stroke="#111110" stroke-width="1.5" stroke-dasharray="5 3" opacity=".5"/>
+      <circle cx="480" cy="145" r="110" fill="none" stroke="#111110" stroke-width="1.5" stroke-dasharray="5 3" opacity=".5"/>
+      <circle cx="350" cy="240" r="110" fill="none" stroke="#111110" stroke-width="1.5" stroke-dasharray="5 3" opacity=".5"/>
+      <!-- center label -->
+      <ellipse cx="350" cy="185" rx="55" ry="35" fill="#111110"/>
+      <text x="350" y="183" font-size="10" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Mechatronics</text>
+      <text x="350" y="196" font-size="8.5" fill="#c8c8bf" text-anchor="middle" font-family="IBM Plex Mono,monospace">Electromechanical</text>
+      <!-- discipline labels -->
+      <text x="155" y="90" font-size="12" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Mechanical</text>
+      <text x="155" y="106" font-size="12" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Engineering</text>
+      <text x="155" y="124" font-size="9.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">hydraulics · pneumatics</text>
+      <text x="155" y="138" font-size="9.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">mechanisms · thermal</text>
+      <text x="540" y="90" font-size="12" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Electronics &amp;</text>
+      <text x="540" y="106" font-size="12" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Electrical</text>
+      <text x="540" y="124" font-size="9.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">analog · digital · power</text>
+      <text x="540" y="138" font-size="9.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">circuits · motors</text>
+      <text x="350" y="278" font-size="12" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Computer Science</text>
+      <text x="350" y="293" font-size="9.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">control · AI · programming · sensors</text>
+    </svg>
+  </div>
+
+  <h3>Subsystems of Mechatronics</h3>
+
+  <h4>1. Mechanical Systems</h4>
+  <p>Classified as <strong>rigid, deformable, or fluid</strong> in nature. Mechanical subsystems can be hydraulic, pneumatic, rotational, or translational. They are interfaced with computers through sensors and actuators. Key components: control valves, gears, cylinders, chains, pistons, shafts, bearings, springs, cams.</p>
+
+  <h4>2. Electrical Systems</h4>
+  <p>Concerned with the behaviour of three fundamental quantities — <strong>charge (Q), current (I), and voltage (V)</strong>. Electrical systems are integral to all electromechanical designs. Key components: generators, transformers, relays, circuit breakers, switches, motors.</p>
+
+  <h4>3. Electronic Systems</h4>
+  <p>Used to design control and signal-processing circuits:</p>
+  <ul class="deep">
+    <li><strong>Analog circuits</strong> — passive components (R, L, C) and active components (diodes, transistors, op-amps, ICs).</li>
+    <li><strong>Digital circuits</strong> — combinational logic (gates, mux, decoders) and sequential logic (flip-flops, counters, shift registers).</li>
+  </ul>
+
+  <h4>4. Instrumentation &amp; Control Systems</h4>
+  <ul class="deep">
+    <li>Covers transducers, signal conditioning elements, analog meters, display devices, recorders, printers.</li>
+    <li>Data acquisition systems (DAQ / data loggers) collect, process, and store data.</li>
+    <li>Control systems maintain or alter a quantity of interest (position, speed, temperature) in a desired manner.</li>
+    <li>Deals with time-domain and frequency-domain analysis, stability, Bode plots, Nyquist criterion.</li>
+    <li>Key components: stepper motors, synchros, servo motors, servomechanisms, actuators, PLCs, microcontrollers.</li>
+  </ul>
+
+  <!-- Visual: Mechatronic block diagram -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 3.2 — General mechatronic system block diagram</span>
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#111110"/></marker></defs>
+      <!-- Environment -->
+      <text x="10" y="15" font-size="8.5" fill="#9a9a93" font-family="IBM Plex Mono,monospace" letter-spacing="1">PHYSICAL WORLD / ENVIRONMENT</text>
+      <!-- Sensors -->
+      <rect x="10" y="80" width="100" height="40" rx="3" fill="#f3f2ed" stroke="#111110" stroke-width="1.5"/>
+      <text x="60" y="97" font-size="9.5" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Sensors</text>
+      <text x="60" y="110" font-size="8" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">transducers</text>
+      <line x1="110" y1="100" x2="140" y2="100" stroke="#111110" stroke-width="1.5" marker-end="url(#a3)"/>
+      <!-- Signal Cond -->
+      <rect x="140" y="80" width="110" height="40" rx="3" fill="#f3f2ed" stroke="#111110" stroke-width="1.5"/>
+      <text x="195" y="97" font-size="9.5" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Signal Cond.</text>
+      <text x="195" y="110" font-size="8" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">amplify·filter·ADC</text>
+      <line x1="250" y1="100" x2="280" y2="100" stroke="#111110" stroke-width="1.5" marker-end="url(#a3)"/>
+      <!-- Computer / Controller -->
+      <rect x="280" y="65" width="140" height="70" rx="3" fill="#111110"/>
+      <text x="350" y="93" font-size="11" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Computer /</text>
+      <text x="350" y="108" font-size="11" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Controller</text>
+      <text x="350" y="122" font-size="8" fill="#c8c8bf" text-anchor="middle" font-family="IBM Plex Mono,monospace">μC · PLC · DSP</text>
+      <line x1="420" y1="100" x2="450" y2="100" stroke="#111110" stroke-width="1.5" marker-end="url(#a3)"/>
+      <!-- Drive / Amplifier -->
+      <rect x="450" y="80" width="110" height="40" rx="3" fill="#f3f2ed" stroke="#111110" stroke-width="1.5"/>
+      <text x="505" y="97" font-size="9.5" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Drive/Amp</text>
+      <text x="505" y="110" font-size="8" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">DAC · power amp</text>
+      <line x1="560" y1="100" x2="590" y2="100" stroke="#111110" stroke-width="1.5" marker-end="url(#a3)"/>
+      <!-- Actuators -->
+      <rect x="590" y="80" width="100" height="40" rx="3" fill="#f3f2ed" stroke="#111110" stroke-width="1.5"/>
+      <text x="640" y="97" font-size="9.5" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Actuators</text>
+      <text x="640" y="110" font-size="8" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">motor · cylinder</text>
+      <!-- Mechanical -->
+      <rect x="590" y="148" width="100" height="36" rx="3" fill="#2e2e2b"/>
+      <text x="640" y="170" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Mech. System</text>
+      <line x1="640" y1="120" x2="640" y2="148" stroke="#111110" stroke-width="1.5" marker-end="url(#a3)"/>
+      <!-- feedback arrow from mech to sensors -->
+      <path d="M 590 166 Q 350 190 60 166" fill="none" stroke="#111110" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a3)"/>
+      <text x="335" y="195" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">feedback (measurement)</text>
+    </svg>
+  </div>
+
+  <h3>Applications of Mechatronics</h3>
+  <ul class="deep">
+    <li>Automatic washing machines and dishwashers</li>
+    <li>CD players, VCRs, camcorders</li>
+    <li>Document scanners, MRI equipment</li>
+    <li>Integrated circuit (IC) manufacturing systems</li>
+    <li>Industrial welding robots</li>
+    <li>Fax machines, photocopiers, laser printers</li>
+    <li>Flexible manufacturing systems (FMS)</li>
+    <li>Air conditioners, elevator controls</li>
+    <li>Automotive systems (ABS, EFI, ADAS)</li>
+    <li>CNC machines, 3D printers</li>
+  </ul>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s4">
+  <p class="sec-tag">Topic 04</p>
+  <h2>Robotics — Definitions &amp; History</h2>
+
+  <h3>Origin of the Word "Robot"</h3>
+  <p>The word <strong>Robot</strong> was first coined by Czech novelist <strong>Karel Čapek</strong> in his 1920 play <em>Rossum's Universal Robots (RUR)</em>. In Czech, <em>robot</em> comes from the word <em>robota</em>, meaning <em>forced labour</em> or <em>drudgery</em>. Čapek depicted robots as humanoid machines that could replace human workers.</p>
+  <p>The term <strong>Robotics</strong> was first used in print by science fiction author <strong>Isaac Asimov</strong> in his 1942 short story <em>"Runaround."</em></p>
+
+  <h3>Definitions of Robot</h3>
+  <div class="def"><p>Machines that can replace human beings as regards physical work and decision making are categorised as robots.</p></div>
+  <div class="def"><p>A machine that resembles a living creature in being capable of moving independently (as by walking or rolling on wheels) and performing complex actions (such as grasping and moving objects).</p><cite>— Merriam-Webster Dictionary</cite></div>
+  <div class="def"><p>A machine capable of carrying out a complex series of actions automatically, especially one programmable by a computer.</p><cite>— Oxford English Dictionary</cite></div>
+  <div class="def"><p>A robot is a re-programmable, multi-functional manipulator designed to move material, parts, tools, or specialised devices through variable programmed motions for the performance of a variety of tasks.</p><cite>— Robotics Institute of America (RIA)</cite></div>
+
+  <h3>Definitions of Robotics</h3>
+  <div class="def"><p>Robotics is the art, knowledge base, and know-how of designing, applying, and using robots in human endeavours.</p></div>
+  <div class="def"><p>Robotics is the science of designing and building robots suitable for real-life applications in automated manufacturing and other non-manufacturing environments.</p></div>
+  <p>Robotics draws from: physics, mathematics, mechanical engineering, electronics &amp; electrical engineering, computer science, and cognitive science.</p>
+
+  <h3>Advantages of Robots</h3>
+  <table>
+    <tr><th>Advantage</th><th>Explanation</th></tr>
+    <tr><td>Human safety</td><td>Keep humans away from dangerous environments (radioactive, toxic, explosive, extreme temperatures).</td></tr>
+    <tr><td>Speed</td><td>Execute repetitive tasks much faster than humans, without tiring.</td></tr>
+    <tr><td>Consistency</td><td>Identical output every cycle — no variation due to mood, fatigue, or distraction.</td></tr>
+    <tr><td>Accuracy</td><td>Sub-millimetre positional accuracy in precision robots like surgical or CNC systems.</td></tr>
+    <tr><td>Reliability</td><td>Operate 24/7 with minimal downtime (only scheduled maintenance).</td></tr>
+    <tr><td>Productivity</td><td>Higher and sustained output rate increases manufacturing throughput significantly.</td></tr>
+    <tr><td>Dirty/Dangerous tasks</td><td>Can handle tasks humans cannot — deep sea, space, hazardous chemicals.</td></tr>
+    <tr><td>No fatigue</td><td>Performance does not degrade over time on repetitive tasks.</td></tr>
+  </table>
+
+  <h3>Disadvantages of Robots</h3>
+  <table>
+    <tr><th>Disadvantage</th><th>Explanation</th></tr>
+    <tr><td>Unemployment</td><td>Displaces human workers in repetitive or semi-skilled labour sectors.</td></tr>
+    <tr><td>High expertise</td><td>Programming, calibration, and maintenance require specialised skills.</td></tr>
+    <tr><td>High initial cost</td><td>Capital investment in industrial robots is very high.</td></tr>
+    <tr><td>Inflexibility</td><td>Restricted to the tasks they are programmed for; adapting to new tasks can be slow and expensive.</td></tr>
+    <tr><td>Setup time</td><td>Even small changes in task or environment require significant reprogramming and re-calibration.</td></tr>
+    <tr><td>Power dependency</td><td>Entirely dependent on electricity; unusable during power outages without backup.</td></tr>
+    <tr><td>High maintenance cost</td><td>Mechanical wear, electronic failures, and sensor drift require ongoing maintenance.</td></tr>
+    <tr><td>Safety hazards</td><td>Can be fatally dangerous to nearby humans if a mechanical failure or software error occurs.</td></tr>
+  </table>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s5">
+  <p class="sec-tag">Topic 05</p>
+  <h2>Asimov's Laws of Robotics</h2>
+
+  <p>Isaac Asimov introduced these laws in his science fiction writings to address the ethical behaviour of robots. Though fictional in origin, they are widely cited in AI ethics and robotics design philosophy. The laws are prioritised — a higher-numbered law can only be followed if it does not violate a lower-numbered one.</p>
+
+  <!-- Visual: Law hierarchy -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 5.1 — Hierarchy of Asimov's laws (higher priority = lower number)</span>
+    <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- Zeroth -->
+      <rect x="50" y="10" width="600" height="50" rx="3" fill="#111110"/>
+      <text x="130" y="31" font-size="9" fill="#c8c8bf" font-family="IBM Plex Mono,monospace" letter-spacing="1">ZEROTH LAW — Highest Priority</text>
+      <text x="130" y="48" font-size="10.5" fill="#faf9f6" font-family="IBM Plex Sans,sans-serif">A robot may not injure humanity, or through inaction allow humanity to come to harm.</text>
+      <!-- First -->
+      <rect x="90" y="75" width="520" height="50" rx="3" fill="#2e2e2b"/>
+      <text x="165" y="96" font-size="9" fill="#9a9a93" font-family="IBM Plex Mono,monospace" letter-spacing="1">FIRST LAW</text>
+      <text x="165" y="113" font-size="10.5" fill="#faf9f6" font-family="IBM Plex Sans,sans-serif">A robot may not injure a human being, unless this would violate a higher-order law.</text>
+      <!-- Second -->
+      <rect x="130" y="140" width="440" height="50" rx="3" fill="#5c5c57"/>
+      <text x="200" y="161" font-size="9" fill="#c8c8bf" font-family="IBM Plex Mono,monospace" letter-spacing="1">SECOND LAW</text>
+      <text x="200" y="178" font-size="10.5" fill="#faf9f6" font-family="IBM Plex Sans,sans-serif">A robot must obey orders from humans, unless they conflict with First Law.</text>
+      <!-- Third -->
+      <rect x="170" y="205" width="360" height="50" rx="3" fill="#9a9a93"/>
+      <text x="235" y="226" font-size="9" fill="#f3f2ed" font-family="IBM Plex Mono,monospace" letter-spacing="1">THIRD LAW — Lowest Priority</text>
+      <text x="235" y="243" font-size="10.5" fill="#faf9f6" font-family="IBM Plex Sans,sans-serif">A robot must protect its own existence (unless it conflicts).</text>
+    </svg>
+  </div>
+
+  <div class="key-box">
+    <p><strong>Key insight for exams:</strong> The laws are arranged in strict priority order. A robot cannot follow Law 2 if doing so violates Law 1. It cannot follow Law 3 if doing so violates Law 2 or Law 1. The Zeroth Law, added later, supersedes all three original laws — a robot may harm an individual to save humanity at large.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s6">
+  <p class="sec-tag">Topic 06</p>
+  <h2>Robot Classification</h2>
+
+  <!-- Visual: Classification -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 6.1 — General classification of robots</span>
+    <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- root -->
+      <rect x="265" y="8" width="170" height="34" rx="3" fill="#111110"/>
+      <text x="350" y="30" font-size="11" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">ROBOTS</text>
+      <!-- branches -->
+      <line x1="350" y1="42" x2="350" y2="60" stroke="#c8c8bf"/>
+      <line x1="90" y1="60" x2="610" y2="60" stroke="#c8c8bf"/>
+      <line x1="90" y1="60" x2="90" y2="74" stroke="#c8c8bf"/>
+      <line x1="230" y1="60" x2="230" y2="74" stroke="#c8c8bf"/>
+      <line x1="350" y1="60" x2="350" y2="74" stroke="#c8c8bf"/>
+      <line x1="470" y1="60" x2="470" y2="74" stroke="#c8c8bf"/>
+      <line x1="610" y1="60" x2="610" y2="74" stroke="#c8c8bf"/>
+      <!-- boxes -->
+      <rect x="30" y="74" width="120" height="40" rx="3" fill="#2e2e2b"/>
+      <text x="90" y="93" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Industrial</text>
+      <text x="90" y="106" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">welding · assembly</text>
+      <rect x="170" y="74" width="120" height="40" rx="3" fill="#2e2e2b"/>
+      <text x="230" y="93" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Mobile</text>
+      <text x="230" y="106" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">AGV · wheeled</text>
+      <rect x="290" y="74" width="120" height="40" rx="3" fill="#2e2e2b"/>
+      <text x="350" y="93" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Service</text>
+      <text x="350" y="106" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">domestic · delivery</text>
+      <rect x="410" y="74" width="120" height="40" rx="3" fill="#2e2e2b"/>
+      <text x="470" y="93" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Humanoid</text>
+      <text x="470" y="106" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Atlas · Sophia</text>
+      <rect x="550" y="74" width="120" height="40" rx="3" fill="#2e2e2b"/>
+      <text x="610" y="93" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Special Purpose</text>
+      <text x="610" y="106" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">space · surgical</text>
+      <!-- Industrial by drive -->
+      <line x1="90" y1="114" x2="90" y2="134" stroke="#c8c8bf"/>
+      <line x1="40" y1="134" x2="140" y2="134" stroke="#c8c8bf"/>
+      <line x1="40" y1="134" x2="40" y2="148" stroke="#c8c8bf"/>
+      <line x1="90" y1="134" x2="90" y2="148" stroke="#c8c8bf"/>
+      <line x1="140" y1="134" x2="140" y2="148" stroke="#c8c8bf"/>
+      <rect x="8" y="148" width="64" height="30" rx="2" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="40" y="166" font-size="8.5" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Electric</text>
+      <rect x="58" y="148" width="64" height="30" rx="2" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="90" y="166" font-size="8.5" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Hydraulic</text>
+      <rect x="108" y="148" width="64" height="30" rx="2" fill="#f3f2ed" stroke="#c8c8bf"/>
+      <text x="140" y="166" font-size="8.5" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Pneumatic</text>
+      <text x="90" y="198" font-size="7.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace" letter-spacing="1">BY DRIVE TYPE</text>
+    </svg>
+  </div>
+
+  <table>
+    <tr><th>Drive Type</th><th>Operating Principle</th><th>Speed</th><th>Force/Power</th><th>Use Case</th></tr>
+    <tr><td>Electric (servo/stepper)</td><td>Electromagnetic torque in motors</td><td>High</td><td>Moderate–High</td><td>Most industrial robots; high precision required</td></tr>
+    <tr><td>Hydraulic</td><td>Pressurised fluid drives pistons/cylinders</td><td>Slow</td><td>Very High</td><td>Very large, heavy-load robots (automobile assembly)</td></tr>
+    <tr><td>Pneumatic</td><td>Compressed air drives cylinders</td><td>Very Fast</td><td>Low</td><td>Small, fast robots; pick-and-place tasks</td></tr>
+  </table>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s7">
+  <p class="sec-tag">Topic 07</p>
+  <h2>Robot Anatomy &amp; Terminology</h2>
+
+  <h3>Anatomy of a Robot Manipulator</h3>
+  <p>The anatomy of a robot refers to the study of its skeletal structure — the physical construction of the manipulator. A robot manipulator has many analogies to the human arm.</p>
+
+  <!-- Visual: Robot anatomy -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 7.1 — Robot manipulator anatomy</span>
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- Base -->
+      <rect x="270" y="270" width="160" height="36" rx="3" fill="#111110"/>
+      <text x="350" y="293" font-size="11" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">BASE (Link 0)</text>
+      <!-- Link 1 -->
+      <rect x="310" y="195" width="80" height="75" rx="4" fill="#2e2e2b"/>
+      <text x="350" y="238" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Link 1</text>
+      <!-- Joint 1 circle -->
+      <circle cx="350" cy="196" r="14" fill="#f3f2ed" stroke="#111110" stroke-width="2"/>
+      <text x="350" y="201" font-size="9" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">J1</text>
+      <!-- Link 2 at angle -->
+      <line x1="350" y1="182" x2="300" y2="110" stroke="none"/>
+      <rect x="260" y="108" width="80" height="74" rx="4" fill="#5c5c57" transform="rotate(-30 300 145)"/>
+      <text x="293" y="148" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" transform="rotate(-30 293 148)">Link 2</text>
+      <!-- Joint 2 -->
+      <circle cx="350" cy="182" r="14" fill="#f3f2ed" stroke="#111110" stroke-width="2"/>
+      <text x="350" y="187" font-size="9" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">J2</text>
+      <!-- Wrist -->
+      <circle cx="256" cy="97" r="14" fill="#f3f2ed" stroke="#111110" stroke-width="2"/>
+      <text x="256" y="102" font-size="8" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">J3</text>
+      <!-- Wrist box -->
+      <rect x="215" y="60" width="70" height="35" rx="3" fill="#9a9a93"/>
+      <text x="250" y="82" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Wrist</text>
+      <!-- End effector -->
+      <rect x="186" y="20" width="80" height="38" rx="3" fill="#f3f2ed" stroke="#111110" stroke-width="2"/>
+      <text x="226" y="38" font-size="9.5" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">End Effector</text>
+      <text x="226" y="52" font-size="8" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">gripper / tool</text>
+      <!-- Labels on right -->
+      <line x1="430" y1="288" x2="500" y2="288" stroke="#c8c8bf" stroke-dasharray="3 2"/>
+      <text x="505" y="292" font-size="9.5" fill="#5c5c57" font-family="IBM Plex Sans,sans-serif">Foundation — fixed or mobile</text>
+      <line x1="390" y1="232" x2="500" y2="232" stroke="#c8c8bf" stroke-dasharray="3 2"/>
+      <text x="505" y="236" font-size="9.5" fill="#5c5c57" font-family="IBM Plex Sans,sans-serif">Rigid body connecting joints</text>
+      <line x1="364" y1="182" x2="500" y2="175" stroke="#c8c8bf" stroke-dasharray="3 2"/>
+      <text x="505" y="179" font-size="9.5" fill="#5c5c57" font-family="IBM Plex Sans,sans-serif">Rotational/translational motion</text>
+      <line x1="270" y1="78" x2="200" y2="78" stroke="none"/>
+      <text x="10" y="88" font-size="9.5" fill="#5c5c57" font-family="IBM Plex Sans,sans-serif">Provides orientation (3 DOF)</text>
+      <text x="10" y="38" font-size="9.5" fill="#5c5c57" font-family="IBM Plex Sans,sans-serif">Performs the task (gripper/tool)</text>
+    </svg>
+  </div>
+
+  <div class="kv">
+    <span class="kk">Base (Link 0)</span><p>The foundation of the robot. Usually floor-mounted or on a mobile platform. All subsequent joint-link numbering starts from here.</p>
+    <span class="kk">Links</span><p>Rigid structural members. Link-0 connects to Joint-1; Link-1 is the output of Joint-1 and input to Joint-2, and so on. Links do not deform under load (idealised as rigid bodies).</p>
+    <span class="kk">Joints</span><p>Connect adjacent links and provide controlled relative motion (rotation or translation). Each joint has an input link and output link.</p>
+    <span class="kk">Arm</span><p>The link-joint assembly that ensures mobility and reachability. Provides position of the end effector in space.</p>
+    <span class="kk">Wrist</span><p>Located at the end of the arm. Provides orientation (Roll-Pitch-Yaw) of the end effector. Usually has 3 DOF.</p>
+    <span class="kk">End Effector</span><p>Attached to the wrist. Performs the actual task — gripping, welding, painting, drilling. Analogous to the human hand.</p>
+  </div>
+
+  <h3>Joint-Link Numbering Convention</h3>
+  <div class="key-box">
+    <p>The base is <strong>Link 0</strong>. The first joint is <strong>Joint 1</strong>. Link 0 is the input to Joint 1; the output of Joint 1 is <strong>Link 1</strong>. Link 1 is simultaneously the output of Joint 1 AND the input to Joint 2. This scheme continues: Link (n-1) → Joint n → Link n.</p>
+  </div>
+
+  <h3>Joint Types — Detailed</h3>
+  <!-- Visual: Joint types -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 7.2 — Five joint types and their motion</span>
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- L Joint -->
+      <g>
+        <rect x="10" y="30" width="110" height="18" rx="2" fill="#2e2e2b"/>
+        <rect x="10" y="80" width="110" height="18" rx="2" fill="#9a9a93"/>
+        <line x1="65" y1="48" x2="65" y2="80" stroke="#c8c8bf" stroke-dasharray="3 2"/>
+        <text x="65" y="118" font-size="9" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">L-JOINT (Linear)</text>
+        <text x="65" y="130" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Parallel sliding</text>
+        <text x="65" y="142" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Prismatic (P)</text>
+      </g>
+      <!-- O Joint -->
+      <g>
+        <rect x="145" y="50" width="110" height="18" rx="2" fill="#2e2e2b" transform="rotate(90 200 59)"/>
+        <rect x="155" y="30" width="90" height="18" rx="2" fill="#9a9a93"/>
+        <text x="200" y="118" font-size="9" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">O-JOINT (Orthogonal)</text>
+        <text x="200" y="130" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Perpendicular sliding</text>
+        <text x="200" y="142" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Prismatic (P)</text>
+      </g>
+      <!-- R Joint -->
+      <g>
+        <rect x="275" y="60" width="90" height="14" rx="2" fill="#2e2e2b"/>
+        <rect x="335" y="30" width="14" height="60" rx="2" fill="#9a9a93"/>
+        <circle cx="342" cy="67" r="8" fill="#f3f2ed" stroke="#111110" stroke-width="1.5"/>
+        <path d="M 348 55 A 12 12 0 0 1 354 67" fill="none" stroke="#111110" stroke-width="1.5"/>
+        <text x="335" y="118" font-size="9" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">R-JOINT (Rotational)</text>
+        <text x="335" y="130" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Axis ⊥ link axes</text>
+        <text x="335" y="142" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Revolute (R)</text>
+      </g>
+      <!-- T Joint -->
+      <g>
+        <rect x="415" y="55" width="110" height="14" rx="2" fill="#2e2e2b"/>
+        <circle cx="470" cy="62" r="10" fill="#f3f2ed" stroke="#111110" stroke-width="1.5"/>
+        <path d="M 475 52 A 14 14 0 0 1 484 62" fill="none" stroke="#111110" stroke-width="1.5"/>
+        <text x="470" y="118" font-size="9" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">T-JOINT (Twisting)</text>
+        <text x="470" y="130" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Axis ∥ link axes</text>
+        <text x="470" y="142" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Revolute (R)</text>
+      </g>
+      <!-- V Joint -->
+      <g>
+        <rect x="560" y="55" width="110" height="14" rx="2" fill="#2e2e2b"/>
+        <rect x="608" y="30" width="14" height="45" rx="2" fill="#9a9a93" transform="rotate(90 615 52)"/>
+        <circle cx="615" cy="62" r="9" fill="#f3f2ed" stroke="#111110" stroke-width="1.5"/>
+        <text x="615" y="118" font-size="9" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">V-JOINT (Revolving)</text>
+        <text x="615" y="130" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Input∥ axis, Output ⊥</text>
+        <text x="615" y="142" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Revolute (R)</text>
+      </g>
+      <text x="350" y="170" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace" letter-spacing="1">Prismatic (P) = linear · Revolute (R) = rotational</text>
+    </svg>
+  </div>
+
+  <table>
+    <tr><th>Joint</th><th>Symbol</th><th>Motion Type</th><th>Link orientation</th><th>DOF</th><th>Variable</th></tr>
+    <tr><td>Linear (L)</td><td>P</td><td>Translational — sliding</td><td>Input ∥ output (both parallel)</td><td>1</td><td>distance d</td></tr>
+    <tr><td>Orthogonal (O)</td><td>P</td><td>Translational — sliding</td><td>Input ⊥ output</td><td>1</td><td>distance d</td></tr>
+    <tr><td>Rotational (R)</td><td>R</td><td>Rotational</td><td>Axis of rotation ⊥ both link axes</td><td>1</td><td>angle θ</td></tr>
+    <tr><td>Twisting (T)</td><td>R</td><td>Rotational</td><td>Rotation axis ∥ both link axes</td><td>1</td><td>angle θ</td></tr>
+    <tr><td>Revolving (V)</td><td>R</td><td>Rotational</td><td>Input ∥ rotation axis; output ⊥</td><td>1</td><td>angle θ</td></tr>
+    <tr><td>Spherical (Ball)</td><td>S</td><td>Rotational (3-axis)</td><td>Free rotation in all directions</td><td>3</td><td>θ₁, θ₂, θ₃</td></tr>
+  </table>
+
+  <h3>End Effectors</h3>
+  <p>An end effector is attached to the wrist of the manipulator. It performs the required task. Two broad categories:</p>
+  <ul class="deep">
+    <li><strong>Grippers</strong> — mechanical (jaw/finger), vacuum/suction (cup), magnetic (permanent or electromagnet), electrical (servo-driven).</li>
+    <li><strong>Tools</strong> — welding guns, spray paint guns, drilling spindles, screwdrivers, laser cutters, heating torches, ultrasonic probes.</li>
+  </ul>
+
+  <h3>Actuators</h3>
+  <div class="kv">
+    <span class="kk">Electric motors</span><p>Most widely used. DC servo motors, AC servo motors, stepper motors. High precision, easy to control electronically.</p>
+    <span class="kk">Pneumatic</span><p>Compressed air. Fast response, lightweight, low cost. Suitable for small robots with low force requirements. Limited positional accuracy.</p>
+    <span class="kk">Hydraulic</span><p>Pressurised fluid. Very high force and torque. Used in large, heavy-duty robots. Slower response; oil leaks are a concern.</p>
+  </div>
+
+  <h3>Sensors</h3>
+  <table>
+    <tr><th>Sensor</th><th>Measurand</th><th>Application in Robots</th></tr>
+    <tr><td>Proximity sensor</td><td>Distance/nearness (contactless)</td><td>Obstacle detection, workspace limits</td></tr>
+    <tr><td>Tactile sensor</td><td>Touch, pressure, contact force</td><td>Gripper force control, collision detection</td></tr>
+    <tr><td>Encoder (optical/magnetic)</td><td>Angular position &amp; speed of motor</td><td>Joint position feedback (most critical sensor)</td></tr>
+    <tr><td>Gyroscope</td><td>Angular velocity, orientation</td><td>Balance control in mobile robots</td></tr>
+    <tr><td>Accelerometer</td><td>Linear acceleration</td><td>Mobile robots, vibration monitoring</td></tr>
+    <tr><td>Hall effect sensor</td><td>Magnetic field</td><td>Motor commutation, position sensing</td></tr>
+    <tr><td>Temperature sensor</td><td>Temperature</td><td>Motor thermal protection, process monitoring</td></tr>
+    <tr><td>Force/Torque sensor</td><td>6-axis force and torque</td><td>Assembly tasks, compliant motion</td></tr>
+    <tr><td>Vision / Camera</td><td>2D/3D images</td><td>Object recognition, path planning, inspection</td></tr>
+  </table>
+
+  <h3>Accuracy, Precision, Resolution — Critical Differences</h3>
+  <!-- Visual: Accuracy vs Precision -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 7.3 — Accuracy vs Precision (target analogy)</span>
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- Target 1: High Acc, High Prec -->
+      <g transform="translate(80,110)">
+        <circle cx="0" cy="0" r="55" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="38" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="20" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="5" fill="#111110"/>
+        <circle cx="3" cy="-4" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="-2" cy="3" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="4" cy="2" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="-3" cy="-2" r="5" fill="#2e2e2b" opacity=".8"/>
+        <text x="0" y="78" font-size="10" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">High Accuracy</text>
+        <text x="0" y="91" font-size="9.5" fill="#1e6e3f" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">High Precision</text>
+        <text x="0" y="-70" font-size="8.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">IDEAL</text>
+      </g>
+      <!-- Target 2: Low Acc, High Prec -->
+      <g transform="translate(270,110)">
+        <circle cx="0" cy="0" r="55" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="38" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="20" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="5" fill="#c8c8bf"/>
+        <circle cx="28" cy="28" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="31" cy="24" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="26" cy="30" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="30" cy="27" r="5" fill="#2e2e2b" opacity=".8"/>
+        <text x="0" y="78" font-size="10" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Low Accuracy</text>
+        <text x="0" y="91" font-size="9.5" fill="#1e6e3f" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">High Precision</text>
+      </g>
+      <!-- Target 3: High Acc, Low Prec -->
+      <g transform="translate(460,110)">
+        <circle cx="0" cy="0" r="55" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="38" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="20" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="5" fill="#c8c8bf"/>
+        <circle cx="-10" cy="8" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="12" cy="-12" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="-6" cy="-14" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="8" cy="10" r="5" fill="#2e2e2b" opacity=".8"/>
+        <text x="0" y="78" font-size="10" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">High Accuracy</text>
+        <text x="0" y="91" font-size="9.5" fill="#c0392b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Low Precision</text>
+      </g>
+      <!-- Target 4: Low both -->
+      <g transform="translate(640,110)">
+        <circle cx="0" cy="0" r="55" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="38" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="20" fill="none" stroke="#ddddd4" stroke-width="1"/>
+        <circle cx="0" cy="0" r="5" fill="#c8c8bf"/>
+        <circle cx="25" cy="-30" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="-30" cy="20" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="10" cy="40" r="5" fill="#2e2e2b" opacity=".8"/>
+        <circle cx="-20" cy="-25" r="5" fill="#2e2e2b" opacity=".8"/>
+        <text x="0" y="78" font-size="10" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Low Accuracy</text>
+        <text x="0" y="91" font-size="9.5" fill="#c0392b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Low Precision</text>
+      </g>
+    </svg>
+  </div>
+
+  <table>
+    <tr><th>Term</th><th>Definition</th><th>Property of</th><th>Key Distinction</th></tr>
+    <tr><td>Accuracy</td><td>How close the robot's actual position is to the programmed target point</td><td>Single event</td><td>Closeness to target</td></tr>
+    <tr><td>Precision (Repeatability)</td><td>How close repeated positions are to each other, regardless of where the target is</td><td>Set of events</td><td>Spread / consistency</td></tr>
+    <tr><td>Resolution</td><td>Smallest incremental movement or measurement the robot can make</td><td>The system hardware</td><td>Granularity of control</td></tr>
+  </table>
+
+  <div class="key-box">
+    <p><strong>Exam tip:</strong> You can have high precision (repeatable) but low accuracy (consistently hitting the wrong spot). A robot that always returns to the same wrong position is precise but inaccurate. Resolution determines the finest possible movement — a higher-resolution system has smaller minimum steps.</p>
+  </div>
+
+  <h3>Programming Interface</h3>
+  <div class="kv">
+    <span class="kk">General purpose</span><p>Embedded C, Python — used for custom robot controllers.</p>
+    <span class="kk">Proprietary</span><p>KRL (KUKA Robot Language), KAREL (Fanuc), RAPID (ABB), RobotC (LEGO/educational).</p>
+    <span class="kk">Simulation / AI</span><p>MATLAB (MathWorks), ROS (Robot Operating System), Simulink.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s8">
+  <p class="sec-tag">Topic 08</p>
+  <h2>Robot Kinematics — Introduction</h2>
+
+  <div class="def"><p>Kinematics is the science of motion. Robot kinematics applies geometry to study the movement of multi-degree-of-freedom kinematic chains — the links and joints that form the robot structure — to plan and control movement without regard to the forces causing it.</p></div>
+
+  <p>Kinematics analyses <strong>positions, velocities, and accelerations</strong> of links and joints. It provides the mathematical tools to answer: <em>"Where does my robot end effector go?"</em> and <em>"What joint movements do I need?"</em></p>
+
+  <h3>Kinematics vs Dynamics</h3>
+  <table>
+    <tr><th>Kinematics</th><th>Dynamics</th></tr>
+    <tr><td>Study of motion (position, velocity, acceleration)</td><td>Study of motion <em>and the forces causing it</em></td></tr>
+    <tr><td>Uses geometry and trigonometry</td><td>Uses Newton's laws, Lagrangian mechanics</td></tr>
+    <tr><td>Ignores mass, inertia, forces</td><td>Includes mass, inertia, torque, gravity</td></tr>
+    <tr><td>Foundation for path planning</td><td>Foundation for torque/force computation</td></tr>
+    <tr><td>Solved first (simpler)</td><td>Solved after kinematics (more complex)</td></tr>
+  </table>
+
+  <h3>Reference Frames and Why They Matter</h3>
+  <p>Coordinates of a point in 3D space are meaningless without specifying <em>relative to what?</em> A reference frame defines the origin and the directions of the X, Y, Z axes from which measurements are taken. In a robot:</p>
+  <ul class="deep">
+    <li><strong>World Frame (Frame 0)</strong> — fixed to the ground/base of the robot. All other measurements are ultimately referenced to this.</li>
+    <li><strong>Joint Frame i</strong> — attached to Link i. Rotates and translates with the joint.</li>
+    <li><strong>Tool Frame</strong> — attached to the end effector (tip of the gripper or tool).</li>
+    <li><strong>Product/Object Frame</strong> — attached to the workpiece being manipulated.</li>
+  </ul>
+  <p>Transforming between frames is the core mathematical operation in robotics. If L₁, θ₁ and L₂, θ₂ are known (Link lengths and joint angles), we can find the coordinates of the tool frame relative to the world frame.</p>
+
+  <!-- Visual: Reference frames on 2-link arm -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 8.1 — Reference frames on a 2-link planar robot</span>
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <defs>
+        <marker id="ax" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a5276"/></marker>
+        <marker id="ay" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1e6e3f"/></marker>
+        <marker id="al" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#111110"/></marker>
+      </defs>
+      <!-- Ground -->
+      <rect x="0" y="185" width="700" height="35" fill="#f3f2ed"/>
+      <line x1="0" y1="185" x2="700" y2="185" stroke="#c8c8bf" stroke-width="1"/>
+      <!-- Base / Joint 0 -->
+      <circle cx="130" cy="185" r="0" fill="#111110"/>
+      <rect x="115" y="168" width="30" height="17" rx="2" fill="#111110"/>
+      <!-- Frame 0 axes -->
+      <line x1="130" y1="168" x2="130" y2="130" stroke="#1e6e3f" stroke-width="1.5" marker-end="url(#ay)"/>
+      <text x="135" y="128" font-size="9" fill="#1e6e3f" font-family="IBM Plex Mono,monospace">Y₀</text>
+      <line x1="130" y1="168" x2="168" y2="168" stroke="#1a5276" stroke-width="1.5" marker-end="url(#ax)"/>
+      <text x="170" y="173" font-size="9" fill="#1a5276" font-family="IBM Plex Mono,monospace">X₀</text>
+      <text x="118" y="200" font-size="9" fill="#111110" font-family="IBM Plex Mono,monospace">O₀ (World)</text>
+      <!-- Link 1 -->
+      <line x1="130" y1="168" x2="300" y2="90" stroke="#111110" stroke-width="4" stroke-linecap="round"/>
+      <text x="195" y="122" font-size="10" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" transform="rotate(-25 195 122)">L₁</text>
+      <!-- Angle theta 1 -->
+      <path d="M 165 168 A 35 35 0 0 0 148 140" fill="none" stroke="#111110" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="170" y="148" font-size="10" fill="#111110" font-family="IBM Plex Mono,monospace">θ₁</text>
+      <!-- Joint 1 -->
+      <circle cx="300" cy="90" r="9" fill="#f3f2ed" stroke="#111110" stroke-width="2"/>
+      <!-- Frame 1 axes -->
+      <line x1="300" y1="90" x2="300" y2="52" stroke="#1e6e3f" stroke-width="1.5" marker-end="url(#ay)" transform="rotate(-25 300 90)"/>
+      <line x1="300" y1="90" x2="338" y2="90" stroke="#1a5276" stroke-width="1.5" marker-end="url(#ax)" transform="rotate(-25 300 90)"/>
+      <text x="310" y="55" font-size="9" fill="#1e6e3f" font-family="IBM Plex Mono,monospace">Y₁</text>
+      <text x="315" y="85" font-size="9" fill="#1a5276" font-family="IBM Plex Mono,monospace">X₁</text>
+      <text x="278" y="112" font-size="9" fill="#111110" font-family="IBM Plex Mono,monospace">O₁ (J1)</text>
+      <!-- Link 2 -->
+      <line x1="300" y1="90" x2="480" y2="40" stroke="#5c5c57" stroke-width="4" stroke-linecap="round"/>
+      <text x="385" y="55" font-size="10" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" transform="rotate(-15 385 55)">L₂</text>
+      <!-- Angle theta 2 -->
+      <path d="M 335 90 A 35 35 0 0 0 320 62" fill="none" stroke="#5c5c57" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="340" y="68" font-size="10" fill="#5c5c57" font-family="IBM Plex Mono,monospace">θ₂</text>
+      <!-- End effector / Frame 2 -->
+      <circle cx="480" cy="40" r="9" fill="#f3f2ed" stroke="#111110" stroke-width="2"/>
+      <rect x="476" y="14" width="26" height="26" rx="2" fill="none" stroke="#111110" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <text x="516" y="28" font-size="9" fill="#111110" font-family="IBM Plex Mono,monospace">Tool Frame</text>
+      <text x="516" y="41" font-size="9" fill="#9a9a93" font-family="IBM Plex Mono,monospace">(End Effector)</text>
+      <text x="450" y="60" font-size="9" fill="#111110" font-family="IBM Plex Mono,monospace">O₂</text>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s9">
+  <p class="sec-tag">Topic 09</p>
+  <h2>Robot Configurations &amp; Workspace</h2>
+
+  <h3>Roll, Pitch, and Yaw</h3>
+  <p>These three terms describe the orientation (rotation) of the robot's wrist and end effector in 3D space. They are borrowed from aerospace and nautical terminology.</p>
+
+  <!-- Visual: RPY -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 9.1 — Roll, Pitch, Yaw visualised on a robot wrist</span>
+    <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- Roll -->
+      <g transform="translate(90,90)">
+        <rect x="-55" y="-12" width="110" height="24" rx="4" fill="#2e2e2b"/>
+        <ellipse cx="0" cy="0" rx="18" ry="34" fill="none" stroke="#111110" stroke-width="2" stroke-dasharray="5 3"/>
+        <path d="M -18 -15 A 18 34 0 0 1 18 -15" fill="none" stroke="#111110" stroke-width="2"/>
+        <defs><marker id="r1" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#111110"/></marker></defs>
+        <path d="M 15 -18 A 18 34 0 0 1 18 0" fill="none" stroke="#111110" stroke-width="1.5" marker-end="url(#r1)"/>
+        <text x="0" y="58" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">ROLL</text>
+        <text x="0" y="73" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">rotation about X-axis</text>
+        <text x="0" y="85" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">(longitudinal axis)</text>
+      </g>
+      <!-- Pitch -->
+      <g transform="translate(350,90)">
+        <rect x="-55" y="-12" width="110" height="24" rx="4" fill="#2e2e2b"/>
+        <ellipse cx="0" cy="0" rx="34" ry="18" fill="none" stroke="#111110" stroke-width="2" stroke-dasharray="5 3"/>
+        <path d="M 28 -15 A 34 18 0 0 1 28 15" fill="none" stroke="#111110" stroke-width="2"/>
+        <path d="M 28 -18 A 34 18 0 0 1 34 0" fill="none" stroke="#111110" stroke-width="1.5" marker-end="url(#r1)"/>
+        <text x="0" y="58" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">PITCH</text>
+        <text x="0" y="73" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">rotation about Y-axis</text>
+        <text x="0" y="85" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">(lateral / nodding)</text>
+      </g>
+      <!-- Yaw -->
+      <g transform="translate(610,90)">
+        <rect x="-55" y="-12" width="110" height="24" rx="4" fill="#2e2e2b"/>
+        <ellipse cx="0" cy="0" rx="18" ry="34" fill="none" stroke="#111110" stroke-width="2" stroke-dasharray="5 3" transform="rotate(90)"/>
+        <path d="M -25 -18 A 34 18 0 0 0 25 -18" fill="none" stroke="#111110" stroke-width="2"/>
+        <path d="M -28 -15 A 34 18 0 0 0 -34 0" fill="none" stroke="#111110" stroke-width="1.5" marker-end="url(#r1)"/>
+        <text x="0" y="58" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">YAW</text>
+        <text x="0" y="73" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">rotation about Z-axis</text>
+        <text x="0" y="85" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">(vertical / turning)</text>
+      </g>
+    </svg>
+  </div>
+
+  <h3>Robot Configurations and Their Workspaces</h3>
+  <table>
+    <tr><th>Configuration</th><th>Joint Sequence</th><th>Workspace Shape</th><th>Advantages</th><th>Applications</th></tr>
+    <tr><td><strong>Polar / Spherical</strong></td><td>T-R-L (T=twist, R=rotate, L=linear)</td><td>Partial sphere / spherical sector</td><td>Large work envelope relative to size</td><td>Die casting, arc welding, machine loading</td></tr>
+    <tr><td><strong>Cylindrical</strong></td><td>T-L-O (vertical + radial slide)</td><td>Hollow cylinder / annular region</td><td>Good for tall workspaces; simple Z-axis</td><td>Machine loading/unloading, assembly</td></tr>
+    <tr><td><strong>Cartesian / Rectilinear</strong></td><td>O-O-O (three orthogonal slides)</td><td>Rectangular prism (box)</td><td>Easiest to program; uniform stiffness</td><td>Pick and place, gantry systems, 3D printers</td></tr>
+    <tr><td><strong>Articulated / Jointed-arm</strong></td><td>T-R-R (arm with shoulder &amp; elbow)</td><td>Irregular sphere/teardrop</td><td>Most flexible; largest range of motion per unit space</td><td>Welding, painting, assembly — most common industrial</td></tr>
+    <tr><td><strong>SCARA</strong></td><td>R-R-L (2 horizontal R + vertical L)</td><td>Vertical cylinder with cylindrical hole</td><td>Very fast horizontal motion; stiff vertically</td><td>PCB assembly, semiconductor handling</td></tr>
+    <tr><td><strong>Delta / Parallel</strong></td><td>Parallel linkage structure</td><td>Hemisphere</td><td>Extremely fast; very lightweight moving mass</td><td>Food packaging, pharmaceutical sorting</td></tr>
+  </table>
+
+  <!-- Visual: Workspace shapes -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 9.2 — Workspace envelopes of four common configurations</span>
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- Polar -->
+      <g transform="translate(80,130)">
+        <path d="M -60 0 A 60 60 0 0 1 60 0 Z" fill="#eae9e2" stroke="#111110" stroke-width="1.5"/>
+        <path d="M -30 0 A 30 30 0 0 1 30 0 Z" fill="#faf9f6" stroke="#c8c8bf" stroke-width="1"/>
+        <line x1="-60" y1="0" x2="60" y2="0" stroke="#c8c8bf" stroke-width="1"/>
+        <line x1="0" y1="0" x2="0" y2="-60" stroke="#111110" stroke-width="1.5"/>
+        <circle cx="0" cy="0" r="5" fill="#111110"/>
+        <text x="0" y="26" font-size="9.5" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Polar</text>
+        <text x="0" y="38" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">partial sphere</text>
+      </g>
+      <!-- Cylindrical -->
+      <g transform="translate(245,130)">
+        <rect x="-50" y="-70" width="100" height="70" fill="#eae9e2" stroke="#111110" stroke-width="1.5"/>
+        <rect x="-20" y="-70" width="40" height="70" fill="#faf9f6" stroke="#c8c8bf" stroke-width="1"/>
+        <circle cx="0" cy="0" r="5" fill="#111110"/>
+        <text x="0" y="20" font-size="9.5" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Cylindrical</text>
+        <text x="0" y="32" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">hollow cylinder</text>
+      </g>
+      <!-- Cartesian -->
+      <g transform="translate(420,130)">
+        <rect x="-60" y="-80" width="110" height="80" fill="#eae9e2" stroke="#111110" stroke-width="1.5"/>
+        <circle cx="-60" cy="0" r="5" fill="#111110"/>
+        <text x="-5" y="20" font-size="9.5" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Cartesian</text>
+        <text x="-5" y="32" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">rectangular box</text>
+      </g>
+      <!-- Articulated -->
+      <g transform="translate(620,130)">
+        <ellipse cx="0" cy="-30" rx="60" ry="55" fill="#eae9e2" stroke="#111110" stroke-width="1.5"/>
+        <ellipse cx="0" cy="-30" rx="25" ry="20" fill="#faf9f6" stroke="#c8c8bf" stroke-width="1"/>
+        <circle cx="0" cy="0" r="5" fill="#111110"/>
+        <text x="0" y="35" font-size="9.5" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Articulated</text>
+        <text x="0" y="47" font-size="8" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">irregular sphere</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="def"><p>The <strong>workspace</strong> (or work envelope) of a robot is the set of all positions that can be reached by the robot's end effector. Its shape depends entirely on the robot's configuration and the range of motion of each joint.</p></div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s10">
+  <p class="sec-tag">Topic 10</p>
+  <h2>Degrees of Freedom (DOF)</h2>
+
+  <div class="def"><p>The Degree of Freedom (DOF) of a robot is the number of independent motions it can perform — or equivalently, the number of independent variables required to fully describe its configuration in space.</p></div>
+
+  <p>Each independent motion is one DOF. A rigid body in free space has <strong>6 DOF</strong> — 3 translational (along X, Y, Z) and 3 rotational (about X, Y, Z). When joints connect links, they add constraints that reduce the free DOF.</p>
+
+  <!-- Visual: 6 DOF in space -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 10.1 — 6 DOF of a rigid body in free 3D space</span>
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <defs>
+        <marker id="tx" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1a5276"/></marker>
+        <marker id="ty" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e6e3f"/></marker>
+        <marker id="tz" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c0392b"/></marker>
+      </defs>
+      <!-- Body -->
+      <rect x="280" y="85" width="140" height="50" rx="4" fill="#2e2e2b"/>
+      <text x="350" y="117" font-size="11" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Rigid Body</text>
+      <!-- Translation arrows -->
+      <line x1="420" y1="110" x2="490" y2="110" stroke="#1a5276" stroke-width="2.5" marker-end="url(#tx)"/>
+      <text x="495" y="115" font-size="9.5" fill="#1a5276" font-family="IBM Plex Mono,monospace">+X</text>
+      <line x1="350" y1="85" x2="350" y2="20" stroke="#1e6e3f" stroke-width="2.5" marker-end="url(#ty)"/>
+      <text x="356" y="18" font-size="9.5" fill="#1e6e3f" font-family="IBM Plex Mono,monospace">+Y</text>
+      <line x1="280" y1="130" x2="215" y2="175" stroke="#c0392b" stroke-width="2.5" marker-end="url(#tz)"/>
+      <text x="195" y="183" font-size="9.5" fill="#c0392b" font-family="IBM Plex Mono,monospace">+Z</text>
+      <!-- Rotation arcs -->
+      <path d="M 510 90 A 30 30 0 0 1 510 130" fill="none" stroke="#1a5276" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="540" y="93" font-size="9" fill="#1a5276" font-family="IBM Plex Mono,monospace">Roll (Rx)</text>
+      <path d="M 340 30 A 35 12 0 0 1 380 30" fill="none" stroke="#1e6e3f" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="355" y="50" font-size="9" fill="#1e6e3f" font-family="IBM Plex Mono,monospace">Pitch (Ry)</text>
+      <path d="M 180 100 A 15 40 0 0 0 180 150" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="140" y="98" font-size="9" fill="#c0392b" font-family="IBM Plex Mono,monospace">Yaw (Rz)</text>
+      <!-- DOF count -->
+      <text x="350" y="200" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">3 Translational DOF  +  3 Rotational DOF  =  <tspan font-weight="500">6 Total DOF</tspan></text>
+    </svg>
+  </div>
+
+  <h3>Human Arm DOF Analysis</h3>
+  <table>
+    <tr><th>Joint</th><th>Motions</th><th>DOF</th></tr>
+    <tr><td>Shoulder</td><td>Pitch (flexion/extension), Roll (abduction/adduction), Yaw (internal/external rotation)</td><td>3</td></tr>
+    <tr><td>Elbow</td><td>Flexion / Extension only</td><td>1</td></tr>
+    <tr><td>Wrist</td><td>Pitch (flexion/extension), Roll (radial/ulnar deviation), Yaw (pronation/supination)</td><td>3</td></tr>
+    <tr><td colspan="2"><strong>Total — Human Arm</strong></td><td><strong>7 DOF</strong></td></tr>
+  </table>
+
+  <h3>DOF of Key Robots</h3>
+  <table>
+    <tr><th>Robot</th><th>Joints</th><th>DOF</th><th>Notes</th></tr>
+    <tr><td>PUMA 560</td><td>6 revolute joints</td><td>6</td><td>Classic 6-DOF industrial manipulator — minimum to position end effector freely in 3D</td></tr>
+    <tr><td>SCARA</td><td>2R + 1P</td><td>3–4</td><td>Fast and stiff for vertical insertion tasks</td></tr>
+    <tr><td>Cartesian (Gantry)</td><td>3 prismatic</td><td>3</td><td>Simple, uniform accuracy across workspace</td></tr>
+    <tr><td>Human arm</td><td>Shoulder + Elbow + Wrist</td><td>7</td><td>Redundant DOF — allows avoiding obstacles</td></tr>
+    <tr><td>Redundant robot</td><td>&gt;6 joints</td><td>&gt;6</td><td>Extra DOF for obstacle avoidance, singularity avoidance</td></tr>
+  </table>
+
+  <div class="key-box">
+    <p><strong>Why 6 DOF?</strong> To place an end effector at an arbitrary position (x, y, z) <em>and</em> with an arbitrary orientation (roll, pitch, yaw) in 3D space, you need at least 6 independent control variables — hence 6 joints minimum. A 7th joint provides <em>redundancy</em>: multiple solutions exist for the same end-effector pose.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s11">
+  <p class="sec-tag">Topic 11</p>
+  <h2>Forward &amp; Inverse Kinematics</h2>
+
+  <!-- Visual: FK vs IK -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 11.1 — Forward kinematics (FK) vs Inverse kinematics (IK)</span>
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <defs><marker id="fk" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1a5276"/></marker>
+      <marker id="ik" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c0392b"/></marker></defs>
+      <!-- FK row -->
+      <text x="10" y="55" font-size="9" fill="#1a5276" font-family="IBM Plex Mono,monospace" letter-spacing="1">FORWARD KINEMATICS</text>
+      <rect x="10" y="62" width="160" height="44" rx="3" fill="#f3f2ed" stroke="#1a5276" stroke-width="1.5"/>
+      <text x="90" y="80" font-size="9.5" fill="#1a5276" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Given (Known)</text>
+      <text x="90" y="94" font-size="9" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Mono,monospace">Link lengths d₁…dₙ</text>
+      <text x="90" y="106" font-size="9" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Mono,monospace">Joint angles θ₁…θₙ</text>
+      <line x1="170" y1="84" x2="310" y2="84" stroke="#1a5276" stroke-width="2" marker-end="url(#fk)"/>
+      <text x="240" y="78" font-size="9" fill="#1a5276" text-anchor="middle" font-family="IBM Plex Mono,monospace">Trigonometry</text>
+      <text x="240" y="92" font-size="8.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">unique solution</text>
+      <rect x="310" y="62" width="160" height="44" rx="3" fill="#1a5276"/>
+      <text x="390" y="80" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Find (Unknown)</text>
+      <text x="390" y="94" font-size="9" fill="#c8c8bf" text-anchor="middle" font-family="IBM Plex Mono,monospace">End-effector position</text>
+      <text x="390" y="106" font-size="9" fill="#c8c8bf" text-anchor="middle" font-family="IBM Plex Mono,monospace">(x, y, z) coordinates</text>
+      <text x="500" y="85" font-size="9" fill="#9a9a93" font-family="IBM Plex Mono,monospace">Road map</text>
+      <text x="500" y="97" font-size="9" fill="#9a9a93" font-family="IBM Plex Mono,monospace">→ Destination</text>
+      <!-- IK row -->
+      <text x="10" y="148" font-size="9" fill="#c0392b" font-family="IBM Plex Mono,monospace" letter-spacing="1">INVERSE KINEMATICS</text>
+      <rect x="10" y="154" width="160" height="44" rx="3" fill="#f3f2ed" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="90" y="172" font-size="9.5" fill="#c0392b" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Given (Known)</text>
+      <text x="90" y="186" font-size="9" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Mono,monospace">Link lengths d₁…dₙ</text>
+      <text x="90" y="198" font-size="9" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Mono,monospace">Destination (x, y, z)</text>
+      <line x1="170" y1="176" x2="310" y2="176" stroke="#c0392b" stroke-width="2" marker-end="url(#ik)"/>
+      <text x="240" y="170" font-size="9" fill="#c0392b" text-anchor="middle" font-family="IBM Plex Mono,monospace">Algebra</text>
+      <text x="240" y="184" font-size="8.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">multiple solutions</text>
+      <rect x="310" y="154" width="160" height="44" rx="3" fill="#c0392b"/>
+      <text x="390" y="172" font-size="9.5" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="500">Find (Unknown)</text>
+      <text x="390" y="186" font-size="9" fill="#fad7d7" text-anchor="middle" font-family="IBM Plex Mono,monospace">Joint angles θ₁…θₙ</text>
+      <text x="390" y="198" font-size="9" fill="#fad7d7" text-anchor="middle" font-family="IBM Plex Mono,monospace">to reach destination</text>
+      <text x="500" y="178" font-size="9" fill="#9a9a93" font-family="IBM Plex Mono,monospace">Destination</text>
+      <text x="500" y="190" font-size="9" fill="#9a9a93" font-family="IBM Plex Mono,monospace">→ Find path(s)</text>
+    </svg>
+  </div>
+
+  <h3>Forward Kinematics — In Depth</h3>
+  <p>Given the link lengths (d₁, d₂, …, dₙ) and all joint angles (θ₁, θ₂, …, θₙ), compute the Cartesian coordinates (x, y, z) of the end effector in the world frame. This is a <em>deterministic, unique-solution</em> problem — one set of joint angles always gives exactly one end-effector position.</p>
+  <p>Method: multiply the transformation matrices for each joint in sequence:<br>
+  <code>T₀ⁿ = T₀¹ · T₁² · T₂³ · … · Tₙ₋₁ⁿ</code><br>
+  The final matrix T₀ⁿ gives the position and orientation of the end effector (frame n) relative to the base (frame 0).</p>
+
+  <h3>Inverse Kinematics — In Depth</h3>
+  <p>Given the desired end-effector position (x, y, z) and orientation, find the joint angles (θ₁, θ₂, …, θₙ) required to achieve it. This is a <em>harder</em> problem because:</p>
+  <ul class="deep">
+    <li><strong>Multiple solutions</strong> may exist — the robot can often reach the same point with different postures (elbow up / elbow down).</li>
+    <li><strong>No solution</strong> exists if the target is outside the workspace.</li>
+    <li><strong>Redundant robots</strong> (DOF &gt; 6) have infinitely many solutions — the extra DOF is used for obstacle avoidance.</li>
+    <li>Computationally expensive — often requires iterative numerical methods (Jacobian inversion, gradient descent).</li>
+  </ul>
+  <div class="formula">
+    <div class="label">Analogy</div>
+    FK: Given road map and driving instructions → find where you ended up.<br>
+    IK: Given where you want to go → find what road to drive and which turns to take.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="s12">
+  <p class="sec-tag">Topic 12</p>
+  <h2>Transformation Matrices</h2>
+
+  <h3>Coordinates of a Point in 3D Space</h3>
+  <p>A point P in 3D space is described by its coordinates (x, y, z) relative to a reference frame. The distance from origin is <code>d = √(x² + y² + z²)</code>. The projections on each axis are the dot products of the position vector with the unit vectors of each axis.</p>
+
+  <h3>Translation of a Point</h3>
+  <p>When a reference frame is <strong>translated</strong> (shifted linearly) relative to another, the coordinates of a point are recalculated by vector addition. If frame 2 is displaced from frame 1 by (a, b, c), then the coordinates of point P in frame 1 are:</p>
+  <div class="formula">
+    <div class="label">Translation equations</div>
+    P₁(x) = P₂(x) + a<br>
+    P₁(y) = P₂(y) + b<br>
+    P₁(z) = P₂(z) + c<br>
+    <br>
+    In matrix form: P₁ = P₂ + d &nbsp; where d = [a, b, c]ᵀ
+  </div>
+
+  <h3>Rotation of a Point</h3>
+  <p>When frame 1 is rotated about an axis of frame 0, the coordinates in frame 0 are found by projecting each axis of frame 1 onto each axis of frame 0 (i.e., taking dot products of unit vectors). Since each axis is a unit vector of length 1, these projections are simply cosines and sines of the rotation angle.</p>
+
+  <p>Consider rotating frame 1 about the Z₀ axis by angle θ. X₁ and Y₁ rotate together while Z₁ stays aligned with Z₀.</p>
+
+  <div class="formula">
+    <div class="label">Projection derivation (rotation about Z₀)</div>
+    Projection of X₁ on X₀ = cos θ &nbsp;·&nbsp; |X₁| = cos θ (since |X₁| = 1, unit vector)<br>
+    Projection of X₁ on Y₀ = sin θ<br>
+    Projection of X₁ on Z₀ = 0<br>
+    Projection of Y₁ on X₀ = −sin θ<br>
+    Projection of Y₁ on Y₀ = cos θ<br>
+    Projection of Y₁ on Z₀ = 0<br>
+    Projection of Z₁ on X₀ = 0, Y₀ = 0, Z₀ = 1
+  </div>
+
+  <h3>The Three Rotation Matrices</h3>
+
+  <!-- Visual: Three rotation matrices side by side -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 12.1 — The three fundamental rotation matrices</span>
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- Z rotation -->
+      <g transform="translate(0,0)">
+        <text x="115" y="22" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace" letter-spacing="1">ROTATION ABOUT Z-AXIS</text>
+        <text x="115" y="38" font-size="10" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">R_z(θ) = </text>
+        <text x="60" y="75" font-size="24" fill="#9a9a93" font-family="serif">[</text>
+        <text x="160" y="75" font-size="24" fill="#9a9a93" font-family="serif">]</text>
+        <text x="80" y="63" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">cosθ</text>
+        <text x="116" y="63" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">-sinθ</text>
+        <text x="152" y="63" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="80" y="82" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">sinθ</text>
+        <text x="116" y="82" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace"> cosθ</text>
+        <text x="152" y="82" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="80" y="101" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="116" y="101" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="152" y="101" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">1</text>
+        <text x="115" y="128" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">X₁Y₁ rotate; Z₁ fixed</text>
+        <text x="115" y="141" font-size="8.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">YAW rotation</text>
+      </g>
+      <!-- X rotation -->
+      <g transform="translate(238,0)">
+        <text x="115" y="22" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace" letter-spacing="1">ROTATION ABOUT X-AXIS</text>
+        <text x="115" y="38" font-size="10" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">R_x(θ) = </text>
+        <text x="60" y="75" font-size="24" fill="#9a9a93" font-family="serif">[</text>
+        <text x="160" y="75" font-size="24" fill="#9a9a93" font-family="serif">]</text>
+        <text x="80" y="63" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">1</text>
+        <text x="116" y="63" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="152" y="63" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="80" y="82" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="116" y="82" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">cosθ</text>
+        <text x="152" y="82" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">-sinθ</text>
+        <text x="80" y="101" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="116" y="101" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">sinθ</text>
+        <text x="152" y="101" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">cosθ</text>
+        <text x="115" y="128" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Y₁Z₁ rotate; X₁ fixed</text>
+        <text x="115" y="141" font-size="8.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">ROLL rotation</text>
+      </g>
+      <!-- Y rotation -->
+      <g transform="translate(476,0)">
+        <text x="115" y="22" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace" letter-spacing="1">ROTATION ABOUT Y-AXIS</text>
+        <text x="115" y="38" font-size="10" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">R_y(θ) = </text>
+        <text x="60" y="75" font-size="24" fill="#9a9a93" font-family="serif">[</text>
+        <text x="160" y="75" font-size="24" fill="#9a9a93" font-family="serif">]</text>
+        <text x="80" y="63" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">cosθ</text>
+        <text x="116" y="63" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="152" y="63" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">sinθ</text>
+        <text x="80" y="82" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="116" y="82" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">1</text>
+        <text x="152" y="82" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="80" y="101" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">-sinθ</text>
+        <text x="116" y="101" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">0</text>
+        <text x="152" y="101" font-size="11" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">cosθ</text>
+        <text x="115" y="128" font-size="8.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">X₁Z₁ rotate; Y₁ fixed</text>
+        <text x="115" y="141" font-size="8.5" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">PITCH rotation</text>
+      </g>
+    </svg>
+  </div>
+
+  <h3>Why We Need the 4×4 Homogeneous Transformation Matrix</h3>
+  <p>A pure 3×3 rotation matrix can only express rotation — not translation. But every real robot joint involves <em>both</em>. To combine rotation and translation into a single matrix operation, we use <strong>homogeneous coordinates</strong> by appending a 1 to the position vector, making it 4×1, and expanding the matrix to 4×4.</p>
+
+  <!-- Visual: 4x4 D-H matrix anatomy -->
+  <div class="visual-wrap">
+    <span class="visual-label">Figure 12.2 — Anatomy of the 4×4 Homogeneous (D-H) Transformation Matrix</span>
+    <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- Matrix grid lines -->
+      <g transform="translate(80,30)">
+        <!-- cells -->
+        <!-- Row 1 -->
+        <rect x="0" y="0" width="200" height="50" fill="#eae9e2" stroke="#c8c8bf" stroke-width="1"/>
+        <rect x="200" y="0" width="70" height="50" fill="#f3f2ed" stroke="#c8c8bf" stroke-width="1"/>
+        <text x="100" y="28" font-size="12" fill="#111110" text-anchor="middle" font-family="IBM Plex Mono,monospace">R (3×3)</text>
+        <text x="235" y="20" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Mono,monospace">dx</text>
+        <text x="235" y="34" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Tx</text>
+        <!-- row 2 -->
+        <rect x="0" y="50" width="200" height="50" fill="#eae9e2" stroke="#c8c8bf" stroke-width="1"/>
+        <rect x="200" y="50" width="70" height="50" fill="#f3f2ed" stroke="#c8c8bf" stroke-width="1"/>
+        <text x="100" y="83" font-size="10.5" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Mono,monospace">Rotation Matrix</text>
+        <text x="235" y="70" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Mono,monospace">dy</text>
+        <text x="235" y="84" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Ty</text>
+        <!-- row 3 -->
+        <rect x="0" y="100" width="200" height="50" fill="#eae9e2" stroke="#c8c8bf" stroke-width="1"/>
+        <rect x="200" y="100" width="70" height="50" fill="#f3f2ed" stroke="#c8c8bf" stroke-width="1"/>
+        <text x="100" y="133" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">(orientation of frame)</text>
+        <text x="235" y="120" font-size="10" fill="#2e2e2b" text-anchor="middle" font-family="IBM Plex Mono,monospace">dz</text>
+        <text x="235" y="134" font-size="9" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">Tz</text>
+        <!-- row 4 -->
+        <rect x="0" y="150" width="200" height="38" fill="#f3f2ed" stroke="#c8c8bf" stroke-width="1"/>
+        <rect x="200" y="150" width="70" height="38" fill="#2e2e2b" stroke="#c8c8bf" stroke-width="1"/>
+        <text x="100" y="174" font-size="10" fill="#9a9a93" text-anchor="middle" font-family="IBM Plex Mono,monospace">0  0  0</text>
+        <text x="235" y="174" font-size="11" fill="#faf9f6" text-anchor="middle" font-family="IBM Plex Mono,monospace">1</text>
+        <!-- big brackets -->
+        <text x="-18" y="112" font-size="70" fill="#9a9a93" font-family="serif" font-weight="200">[</text>
+        <text x="278" y="112" font-size="70" fill="#9a9a93" font-family="serif" font-weight="200">]</text>
+        <!-- annotations -->
+        <line x1="270" y1="25" x2="360" y2="10" stroke="#c8c8bf" stroke-width="1"/>
+        <text x="365" y="12" font-size="9" fill="#5c5c57" font-family="IBM Plex Sans,sans-serif">Translation vector (3×1)</text>
+        <text x="365" y="24" font-size="8.5" fill="#9a9a93" font-family="IBM Plex Mono,monospace">[Tx, Ty, Tz]ᵀ — position offset</text>
+        <line x1="100" y1="0" x2="100" y2="-20" stroke="#c8c8bf" stroke-width="1"/>
+        <text x="100" y="-24" font-size="9" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Rotation matrix (3×3) — orientation</text>
+        <line x1="100" y1="188" x2="100" y2="210" stroke="#c8c8bf" stroke-width="1"/>
+        <text x="100" y="222" font-size="9" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Perspective row [0 0 0] — always zero for rigid bodies</text>
+        <line x1="235" y1="188" x2="235" y2="210" stroke="#c8c8bf" stroke-width="1"/>
+        <text x="235" y="222" font-size="9" fill="#5c5c57" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">Scale factor = 1 (no scaling)</text>
+      </g>
+    </svg>
+  </div>
+
+  <h3>Homogeneous Transformation Matrix — Full Form</h3>
+  <div class="matrix-section">
+    <p class="mat-title">Rotation about Z₀ by θ, combined with translation [a, b, 0]</p>
+    <div class="mat-wrap">
+      <div class="mat-bracket-l">[</div>
+      <div class="mat-grid mat4">
+        <span>cos θ</span><span>−sin θ</span><span>0</span><span>a</span>
+        <span>sin θ</span><span> cos θ</span><span>0</span><span>b</span>
+        <span>0</span><span>0</span><span>1</span><span>0</span>
+        <span>0</span><span>0</span><span>0</span><span>1</span>
+      </div>
+      <div class="mat-bracket-r">]</div>
+    </div>
+  </div>
+
+  <div class="matrix-section">
+    <p class="mat-title">Summary — all three rotation matrices (compact)</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem">
+      <div>
+        <p class="mat-title">R_z(θ)</p>
+        <div class="mat-wrap" style="font-size:.75rem">
+          <div class="mat-bracket-l" style="font-size:1.8rem">[</div>
+          <div class="mat-grid mat3">
+            <span>cθ</span><span>-sθ</span><span>0</span>
+            <span>sθ</span><span>cθ</span><span>0</span>
+            <span>0</span><span>0</span><span>1</span>
+          </div>
+          <div class="mat-bracket-r" style="font-size:1.8rem">]</div>
+        </div>
+      </div>
+      <div>
+        <p class="mat-title">R_x(θ)</p>
+        <div class="mat-wrap" style="font-size:.75rem">
+          <div class="mat-bracket-l" style="font-size:1.8rem">[</div>
+          <div class="mat-grid mat3">
+            <span>1</span><span>0</span><span>0</span>
+            <span>0</span><span>cθ</span><span>-sθ</span>
+            <span>0</span><span>sθ</span><span>cθ</span>
+          </div>
+          <div class="mat-bracket-r" style="font-size:1.8rem">]</div>
+        </div>
+      </div>
+      <div>
+        <p class="mat-title">R_y(θ)</p>
+        <div class="mat-wrap" style="font-size:.75rem">
+          <div class="mat-bracket-l" style="font-size:1.8rem">[</div>
+          <div class="mat-grid mat3">
+            <span>cθ</span><span>0</span><span>sθ</span>
+            <span>0</span><span>1</span><span>0</span>
+            <span>-sθ</span><span>0</span><span>cθ</span>
+          </div>
+          <div class="mat-bracket-r" style="font-size:1.8rem">]</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:.8rem;color:var(--ink3);margin-top:.75rem">cθ = cos θ &nbsp;·&nbsp; sθ = sin θ</p>
+  </div>
+
+  <h3>Denavit-Hartenberg (D-H) Convention</h3>
+  <p>The Denavit-Hartenberg convention is a standard method of attaching coordinate frames to each joint of a serial robot and describing the transformation between consecutive frames using exactly <strong>4 parameters</strong>:</p>
+  <table>
+    <tr><th>D-H Parameter</th><th>Symbol</th><th>Description</th></tr>
+    <tr><td>Link length</td><td>aᵢ</td><td>Distance along Xᵢ from Zᵢ₋₁ to Zᵢ</td></tr>
+    <tr><td>Link twist</td><td>αᵢ</td><td>Angle from Zᵢ₋₁ to Zᵢ about Xᵢ</td></tr>
+    <tr><td>Joint distance</td><td>dᵢ</td><td>Distance along Zᵢ₋₁ from Xᵢ₋₁ to Xᵢ</td></tr>
+    <tr><td>Joint angle</td><td>θᵢ</td><td>Angle from Xᵢ₋₁ to Xᵢ about Zᵢ₋₁ (the joint variable for revolute joints)</td></tr>
+  </table>
+  <p>For each joint i, one D-H matrix Tᵢ₋₁ⁱ is computed. The total forward kinematic solution is the sequential product of all such matrices from base to tool frame.</p>
+  <div class="formula">
+    <div class="label">Total FK Transform</div>
+    T₀ⁿ = T₀¹ × T₁² × T₂³ × … × Tₙ₋₁ⁿ<br><br>
+    Result: 4×4 matrix encoding position [x, y, z] and orientation [R] of end effector in base frame.
+  </div>
+
+  <div class="key-box">
+    <p><strong>Exam Quick Reference:</strong><br>
+    • R_z: Identity in bottom-right; cos/sin in top-left 2×2; rest zeros<br>
+    • R_x: Identity in top-left corner; cos/sin in bottom-right 2×2; rest zeros<br>
+    • R_y: cos/sin entries in columns 1&amp;3; middle diagonal = 1; <em>note sign flip</em>: R_y(θ) has +sinθ in position [1,3] and −sinθ in [3,1]<br>
+    • 4×4 D-H matrix: top-left 3×3 = rotation; top-right 3×1 = translation; bottom row = [0 0 0 1]<br>
+    • To go from joint angles → end-effector position: multiply D-H matrices sequentially (FK)<br>
+    • To go from desired position → joint angles: solve inverse (IK) — may have multiple solutions</p>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <span>AEM Unit 1 · VIT Pune · DESH · B.Tech FY</span>
+  <span>Deep Notes — All topics covered</span>
+</footer>
+
+</body>
+</html>

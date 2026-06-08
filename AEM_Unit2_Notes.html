@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEM — Unit 2 Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --ink: #1a1916;
+    --mid: #6b6860;
+    --faint: #dedad4;
+    --accent: #1a1916;
+    --rule: #c8c4bc;
+    --box-bg: #eeecea;
+    --highlight: #e8e5df;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Lora', Georgia, serif;
+    font-size: 15.5px;
+    line-height: 1.8;
+    counter-reset: section;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 230px; height: 100vh;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 2rem 1.4rem;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  #sidebar .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 300;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 0.3rem;
+  }
+
+  #sidebar .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(245,244,240,0.15);
+    padding-bottom: 1.2rem;
+  }
+
+  #sidebar nav { flex: 1; }
+
+  #sidebar nav a {
+    display: block;
+    font-family: 'Lora', serif;
+    font-size: 0.78rem;
+    color: rgba(245,244,240,0.65);
+    text-decoration: none;
+    padding: 0.32rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color 0.2s, padding-left 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  #sidebar nav a:hover { color: var(--bg); padding-left: 6px; }
+  #sidebar nav a.h2-link { font-size: 0.72rem; opacity: 0.45; padding-left: 0.8rem; }
+
+  /* ── MAIN ── */
+  main {
+    margin-left: 230px;
+    padding: 4rem 5vw 6rem 5vw;
+    max-width: 960px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 4rem 0 3rem 0;
+    border-bottom: 1.5px solid var(--ink);
+    margin-bottom: 4rem;
+  }
+
+  .hero .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.8rem;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .hero .sub {
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--mid);
+    font-style: italic;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 5rem;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.8rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1.5px solid var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+  }
+
+  h2 .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--mid);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+  }
+
+  h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 2.2rem 0 0.8rem 0;
+    letter-spacing: 0.01em;
+  }
+
+  h4 {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 1.6rem 0 0.6rem 0;
+    font-style: italic;
+    color: var(--mid);
+  }
+
+  p { margin-bottom: 1rem; }
+
+  /* ── VISUALS ── */
+  .diagram {
+    width: 100%;
+    margin: 1.8rem 0;
+    overflow-x: auto;
+  }
+
+  .diagram svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* ── BOXES ── */
+  .box {
+    background: var(--box-bg);
+    border-left: 2px solid var(--ink);
+    padding: 1.2rem 1.5rem;
+    margin: 1.4rem 0;
+    font-size: 0.93rem;
+  }
+
+  .box.formula {
+    background: var(--highlight);
+    border-left-color: var(--mid);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 2;
+  }
+
+  .box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 1.4rem 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.87rem;
+  }
+
+  th {
+    background: var(--ink);
+    color: var(--bg);
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.65rem 1rem;
+    text-align: left;
+  }
+
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td { background: var(--box-bg); }
+
+  /* ── LISTS ── */
+  ul, ol {
+    margin: 0.8rem 0 1rem 1.4rem;
+  }
+
+  li { margin-bottom: 0.35rem; }
+
+  li::marker { color: var(--mid); }
+
+  /* ── INLINE CODE ── */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.83em;
+    background: var(--highlight);
+    padding: 0.1em 0.35em;
+  }
+
+  /* ── CHIP TAGS ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.8rem 0; }
+
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--rule);
+    padding: 0.2rem 0.6rem;
+    color: var(--mid);
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border: 1px solid var(--ink);
+    padding: 1rem 1.4rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+
+  .callout .callout-label {
+    position: absolute;
+    top: -0.6rem; left: 1rem;
+    background: var(--bg);
+    padding: 0 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  /* ── COMPARE GRID ── */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.2rem 0; }
+
+  .compare-card {
+    background: var(--box-bg);
+    padding: 1rem 1.2rem;
+    font-size: 0.88rem;
+  }
+
+  .compare-card h5 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ── RULE ── */
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+  /* ── BACK TO TOP ── */
+  #top { position: fixed; bottom: 2rem; right: 2rem; background: var(--ink); color: var(--bg); border: none; padding: 0.6rem 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; cursor: pointer; opacity: 0.7; }
+  #top:hover { opacity: 1; }
+
+  @media (max-width: 760px) {
+    #sidebar { display: none; }
+    main { margin-left: 0; padding: 2rem 1.2rem 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+<nav id="sidebar">
+  <div class="brand">AEM</div>
+  <div class="title">Unit 2<br>Notes</div>
+  <nav>
+    <a href="#s0">Robotic Manipulator</a>
+    <a href="#s1">Mechanical Components</a>
+    <a href="#s1a" class="h2-link">Fasteners</a>
+    <a href="#s1b" class="h2-link">Gears</a>
+    <a href="#s2">Info &amp; Energy Flow</a>
+    <a href="#s2a" class="h2-link">Sensor / Transducer</a>
+    <a href="#s2b" class="h2-link">Types of Actuators</a>
+    <a href="#s3">Hydraulic Actuators</a>
+    <a href="#s3a" class="h2-link">Components</a>
+    <a href="#s3b" class="h2-link">Merits &amp; Demerits</a>
+    <a href="#s4">Pneumatic Actuators</a>
+    <a href="#s4a" class="h2-link">Merits &amp; Demerits</a>
+    <a href="#s4b" class="h2-link">Hydro vs Pneumo</a>
+    <a href="#s5">Electric Actuators</a>
+    <a href="#s5a" class="h2-link">Solenoid</a>
+    <a href="#s6">Electromagnetism</a>
+    <a href="#s6a" class="h2-link">Magnetic Terms</a>
+    <a href="#s6b" class="h2-link">B-H Curve</a>
+    <a href="#s7">DC Motors</a>
+    <a href="#s7a" class="h2-link">Construction</a>
+    <a href="#s7b" class="h2-link">Back EMF</a>
+    <a href="#s7c" class="h2-link">Torque Equation</a>
+    <a href="#s7d" class="h2-link">Shunt Motor</a>
+    <a href="#s7e" class="h2-link">Numericals</a>
+    <a href="#s8">BLDC Motors</a>
+    <a href="#s8a" class="h2-link">Hall Effect Sensor</a>
+    <a href="#s8b" class="h2-link">Driver Circuit</a>
+    <a href="#s9">Stepper Motors</a>
+    <a href="#s9a" class="h2-link">Types</a>
+    <a href="#s9b" class="h2-link">Step Angle</a>
+    <a href="#s9c" class="h2-link">Control</a>
+    <a href="#s10">Servo Motors</a>
+    <a href="#s11">Selection Guide</a>
+  </nav>
+</nav>
+
+<!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="tag">Applied Electromechanics · Unit 2</div>
+    <h1>Actuators &amp;<br><em>Electromechanics</em></h1>
+    <p class="sub">Mechanical Components · Hydraulic · Pneumatic · Electric · DC Motors · BLDC · Stepper · Servo</p>
+  </div>
+
+
+  <!-- ═══ 0. ROBOTIC MANIPULATOR ═══ -->
+  <div class="section" id="s0">
+    <h2><span class="num">00</span> Mechanical Structure of a Robotic Manipulator</h2>
+    <p>A robotic manipulator is built from a set of rigid links connected by joints, terminating in an end-effector (gripper). Each structural element has a specific mechanical role:</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" font-family="'Lora', serif">
+        <!-- base to arm chain -->
+        <rect x="20" y="100" width="80" height="40" fill="#1a1916" rx="2"/>
+        <text x="60" y="125" fill="#f5f4f0" font-size="11" text-anchor="middle">BASE</text>
+
+        <rect x="130" y="70" width="100" height="30" fill="#3a3834" rx="2"/>
+        <text x="180" y="90" fill="#f5f4f0" font-size="11" text-anchor="middle">ARM 1</text>
+
+        <rect x="260" y="45" width="100" height="30" fill="#3a3834" rx="2"/>
+        <text x="310" y="65" fill="#f5f4f0" font-size="11" text-anchor="middle">ARM 2</text>
+
+        <rect x="390" y="30" width="80" height="30" fill="#3a3834" rx="2"/>
+        <text x="430" y="50" fill="#f5f4f0" font-size="11" text-anchor="middle">WRIST</text>
+
+        <rect x="500" y="18" width="80" height="30" fill="#6b6860" rx="2"/>
+        <text x="540" y="38" fill="#f5f4f0" font-size="11" text-anchor="middle">GRIPPER</text>
+
+        <!-- joints -->
+        <circle cx="120" cy="85" r="12" fill="#f5f4f0" stroke="#1a1916" stroke-width="2"/>
+        <text x="120" y="89" fill="#1a1916" font-size="9" text-anchor="middle">J1</text>
+
+        <circle cx="250" cy="60" r="12" fill="#f5f4f0" stroke="#1a1916" stroke-width="2"/>
+        <text x="250" y="64" fill="#1a1916" font-size="9" text-anchor="middle">J2</text>
+
+        <circle cx="380" cy="45" r="12" fill="#f5f4f0" stroke="#1a1916" stroke-width="2"/>
+        <text x="380" y="49" fill="#1a1916" font-size="9" text-anchor="middle">J3</text>
+
+        <circle cx="490" cy="33" r="10" fill="#f5f4f0" stroke="#1a1916" stroke-width="2"/>
+        <text x="490" y="37" fill="#1a1916" font-size="8" text-anchor="middle">J4</text>
+
+        <!-- slider arrow -->
+        <line x1="60" y1="95" x2="60" y2="50" stroke="#6b6860" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+        <text x="68" y="70" fill="#6b6860" font-size="9">Slider</text>
+
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#6b6860"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Component</th><th>Role</th></tr>
+        <tr><td>Base</td><td>Fixed mounting point; carries full load of arm. May rotate (waist joint).</td></tr>
+        <tr><td>Arms / Links</td><td>Rigid members transmitting motion between joints. Length determines workspace reach.</td></tr>
+        <tr><td>Joints</td><td>Revolute (rotation) or prismatic (linear). Each joint = one degree of freedom (DoF).</td></tr>
+        <tr><td>Wrist</td><td>Final 3 DoF (yaw, pitch, roll) giving orientation to end-effector.</td></tr>
+        <tr><td>Slider</td><td>Linear joint enabling extension/retraction along an axis.</td></tr>
+        <tr><td>Gripper</td><td>End-effector; grasps, lifts, or manipulates objects.</td></tr>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ═══ 1. MECHANICAL COMPONENTS ═══ -->
+  <div class="section" id="s1">
+    <h2><span class="num">01</span> Mechanical Components</h2>
+
+    <h3 id="s1a">1.1 Fasteners</h3>
+    <p>Fasteners are mechanical devices that join two or more parts. The main categories are:</p>
+
+    <!-- Fastener visual -->
+    <div class="diagram">
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" font-family="'Lora',serif" font-size="11">
+
+        <!-- BOLT -->
+        <rect x="40" y="40" width="30" height="14" fill="#1a1916" rx="2"/>
+        <rect x="47" y="54" width="16" height="60" fill="#3a3834"/>
+        <!-- threads on bolt -->
+        <line x1="47" y1="62" x2="63" y2="62" stroke="#f5f4f0" stroke-width="0.8"/>
+        <line x1="47" y1="70" x2="63" y2="70" stroke="#f5f4f0" stroke-width="0.8"/>
+        <line x1="47" y1="78" x2="63" y2="78" stroke="#f5f4f0" stroke-width="0.8"/>
+        <line x1="47" y1="86" x2="63" y2="86" stroke="#f5f4f0" stroke-width="0.8"/>
+        <text x="55" y="130" text-anchor="middle" fill="#6b6860">Bolt</text>
+        <text x="55" y="142" text-anchor="middle" fill="#6b6860" font-size="9">Hex head +</text>
+        <text x="55" y="153" text-anchor="middle" fill="#6b6860" font-size="9">threaded shaft</text>
+
+        <!-- NUT -->
+        <polygon points="175,45 195,38 215,45 215,65 195,72 175,65" fill="#1a1916"/>
+        <circle cx="195" cy="55" r="9" fill="#f5f4f0"/>
+        <text x="195" y="130" text-anchor="middle" fill="#6b6860">Nut</text>
+        <text x="195" y="142" text-anchor="middle" fill="#6b6860" font-size="9">Internal thread</text>
+        <text x="195" y="153" text-anchor="middle" fill="#6b6860" font-size="9">hexagonal</text>
+
+        <!-- WASHER -->
+        <circle cx="320" cy="55" r="24" fill="#1a1916"/>
+        <circle cx="320" cy="55" r="11" fill="#f5f4f0"/>
+        <text x="320" y="130" text-anchor="middle" fill="#6b6860">Washer</text>
+        <text x="320" y="142" text-anchor="middle" fill="#6b6860" font-size="9">Distributes load,</text>
+        <text x="320" y="153" text-anchor="middle" fill="#6b6860" font-size="9">prevents loosening</text>
+
+        <!-- SCREW -->
+        <ellipse cx="440" cy="46" rx="12" ry="7" fill="#1a1916"/>
+        <line x1="434" y1="46" x2="446" y2="46" stroke="#f5f4f0" stroke-width="1.5"/>
+        <rect x="434" y="53" width="12" height="55" fill="#3a3834"/>
+        <path d="M434,53 L428,108 L446,108" fill="#3a3834"/>
+        <text x="440" y="130" text-anchor="middle" fill="#6b6860">Screw</text>
+        <text x="440" y="142" text-anchor="middle" fill="#6b6860" font-size="9">Slotted / cross /</text>
+        <text x="440" y="153" text-anchor="middle" fill="#6b6860" font-size="9">Allen head</text>
+
+        <!-- RIVET -->
+        <ellipse cx="580" cy="46" rx="14" ry="8" fill="#1a1916"/>
+        <rect x="574" y="54" width="12" height="45" fill="#3a3834"/>
+        <ellipse cx="580" cy="100" rx="10" ry="6" fill="#1a1916"/>
+        <text x="580" y="130" text-anchor="middle" fill="#6b6860">Rivet</text>
+        <text x="580" y="142" text-anchor="middle" fill="#6b6860" font-size="9">Permanent join;</text>
+        <text x="580" y="153" text-anchor="middle" fill="#6b6860" font-size="9">soft material</text>
+      </svg>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Fastener</th><th>Key Feature</th><th>Example Use</th></tr>
+        <tr><td>Hex Bolt</td><td>External thread; needs nut to clamp</td><td>Structural joints, engine blocks</td></tr>
+        <tr><td>Square Head Bolt</td><td>Square head for wrench grip</td><td>Heavy machinery</td></tr>
+        <tr><td>Half-threaded Bolt</td><td>Partial thread; shank provides shear strength</td><td>Load-bearing joints</td></tr>
+        <tr><td>Grub / Set Screw (headless)</td><td>No head; sits flush; locks shaft to hub</td><td>Pulley & gear fixing on shafts</td></tr>
+        <tr><td>Eye Bolt</td><td>Looped head for attachment hooks/ropes</td><td>Lifting, rigging</td></tr>
+        <tr><td>Allen / Socket Screw</td><td>Hex socket head; compact; high torque</td><td>CNC, robotics, precision assemblies</td></tr>
+        <tr><td>Lock Nut</td><td>Nylon insert prevents self-loosening</td><td>Vibrating machinery</td></tr>
+        <tr><td>Plane Washer</td><td>Distributes clamping force over area</td><td>Under bolt head or nut</td></tr>
+        <tr><td>Spring Washer</td><td>Bites surfaces; prevents loosening by vibration</td><td>Automotive, pumps</td></tr>
+        <tr><td>Rivet</td><td>Permanent; deformed cold/hot to clamp</td><td>Aircraft skin, bus frames, denim</td></tr>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Key Concept</span>
+      <p>A <strong>bolt + nut + washer assembly</strong>: the bolt passes through clearance holes, the washer distributes load under the nut, and the nut is tightened to produce a clamping force. The assembly is <em>removable</em>, unlike rivets.</p>
+    </div>
+
+    <h3 id="s1b">1.2 Gears</h3>
+    <p>Gears transmit torque and modify speed between shafts. The fundamental relationship:</p>
+
+    <div class="box formula">
+      <div class="label">Gear Ratio</div>
+      N₁ × T₁ = N₂ × T₂<br>
+      Speed Ratio = T₁ / T₂ (inverse of tooth ratio)<br>
+      Torque Ratio = T₂ / T₁ (torque increases as speed decreases)
+    </div>
+
+    <!-- Gear types visual -->
+    <div class="diagram">
+      <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" font-family="'Lora',serif" font-size="11">
+
+        <!-- SPUR GEAR PAIR -->
+        <g transform="translate(80,110)">
+          <!-- large gear -->
+          <circle cx="0" cy="0" r="48" fill="none" stroke="#1a1916" stroke-width="2"/>
+          <circle cx="0" cy="0" r="38" fill="#eeecea" stroke="#1a1916" stroke-width="1"/>
+          <circle cx="0" cy="0" r="8" fill="#1a1916"/>
+          <!-- teeth approximation -->
+          <g stroke="#1a1916" stroke-width="2" fill="none">
+            <line x1="38" y1="0" x2="48" y2="0"/><line x1="-38" y1="0" x2="-48" y2="0"/>
+            <line x1="0" y1="-38" x2="0" y2="-48"/><line x1="0" y1="38" x2="0" y2="48"/>
+            <line x1="27" y1="-27" x2="34" y2="-34"/><line x1="-27" y1="-27" x2="-34" y2="-34"/>
+            <line x1="27" y1="27" x2="34" y2="34"/><line x1="-27" y1="27" x2="-34" y2="34"/>
+          </g>
+          <!-- small gear -->
+          <circle cx="72" cy="0" r="28" fill="none" stroke="#1a1916" stroke-width="2"/>
+          <circle cx="72" cy="0" r="20" fill="#dedad4" stroke="#1a1916" stroke-width="1"/>
+          <circle cx="72" cy="0" r="5" fill="#1a1916"/>
+          <g stroke="#1a1916" stroke-width="1.5" fill="none">
+            <line x1="92" y1="0" x2="100" y2="0"/><line x1="52" y1="0" x2="44" y2="0"/>
+            <line x1="72" y1="-20" x2="72" y2="-28"/><line x1="72" y1="20" x2="72" y2="28"/>
+          </g>
+          <text x="36" y="75" text-anchor="middle" fill="#6b6860">Spur Gears</text>
+          <text x="36" y="88" text-anchor="middle" fill="#6b6860" font-size="9">Parallel shafts</text>
+        </g>
+
+        <!-- BEVEL GEAR PAIR -->
+        <g transform="translate(320,110)">
+          <!-- simplified bevel representation -->
+          <ellipse cx="0" cy="0" rx="45" ry="18" fill="#eeecea" stroke="#1a1916" stroke-width="2"/>
+          <ellipse cx="0" cy="0" rx="30" ry="10" fill="#dedad4" stroke="#1a1916" stroke-width="1"/>
+          <line x1="0" y1="-18" x2="0" y2="-55" stroke="#1a1916" stroke-width="2"/>
+          <ellipse cx="0" cy="-55" rx="18" ry="45" fill="#eeecea" stroke="#1a1916" stroke-width="2"/>
+          <ellipse cx="0" cy="-55" rx="10" ry="30" fill="#dedad4" stroke="#1a1916" stroke-width="1"/>
+          <circle cx="0" cy="0" r="5" fill="#1a1916"/>
+          <circle cx="0" cy="-55" r="4" fill="#1a1916"/>
+          <!-- arrow showing 90° -->
+          <path d="M 15,-15 Q 20,0 15,-40" fill="none" stroke="#6b6860" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="0" y="40" text-anchor="middle" fill="#6b6860">Bevel Gears</text>
+          <text x="0" y="53" text-anchor="middle" fill="#6b6860" font-size="9">Perpendicular shafts</text>
+        </g>
+
+        <!-- WORM AND WORM WHEEL -->
+        <g transform="translate(560,110)">
+          <!-- worm wheel -->
+          <circle cx="0" cy="0" r="45" fill="none" stroke="#1a1916" stroke-width="2"/>
+          <circle cx="0" cy="0" r="35" fill="#eeecea" stroke="#1a1916" stroke-width="1"/>
+          <circle cx="0" cy="0" r="6" fill="#1a1916"/>
+          <!-- worm (horizontal) -->
+          <rect x="-70" y="-12" width="54" height="24" fill="#dedad4" stroke="#1a1916" stroke-width="1.5" rx="4"/>
+          <line x1="-68" y1="-6" x2="-18" y2="-6" stroke="#1a1916" stroke-width="1"/>
+          <line x1="-68" y1="0" x2="-18" y2="0" stroke="#1a1916" stroke-width="1"/>
+          <line x1="-68" y1="6" x2="-18" y2="6" stroke="#1a1916" stroke-width="1"/>
+          <!-- teeth on wheel facing worm -->
+          <g stroke="#1a1916" stroke-width="1.5">
+            <line x1="-35" y1="-8" x2="-45" y2="-10"/>
+            <line x1="-35" y1="0" x2="-45" y2="0"/>
+            <line x1="-35" y1="8" x2="-45" y2="10"/>
+          </g>
+          <text x="0" y="65" text-anchor="middle" fill="#6b6860">Worm &amp; Wheel</text>
+          <text x="0" y="78" text-anchor="middle" fill="#6b6860" font-size="9">High reduction, self-lock</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Gear Type</th><th>Shaft Arrangement</th><th>Key Properties</th><th>Application</th></tr>
+        <tr><td>Spur Gear</td><td>Parallel shafts</td><td>Simple, efficient, straight teeth; noise at high speed</td><td>Clocks, gearboxes, conveyor drives</td></tr>
+        <tr><td>Bevel Gear</td><td>Perpendicular (or angled) shafts</td><td>Changes direction of power; conical shape</td><td>Differential gear in automobiles</td></tr>
+        <tr><td>Worm &amp; Worm Wheel</td><td>Non-intersecting perpendicular shafts</td><td>Very high reduction ratio; self-locking; low efficiency (~30–50%)</td><td>Lifts, steering boxes, conveyor drives</td></tr>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Exam Tip — Speed in Gear Trains</span>
+      <p>In a gear train, the gear with the <strong>fewest teeth runs fastest</strong>. Smaller gear → higher speed, lower torque. Larger gear → lower speed, higher torque. In a 3-spur gear train with gears of different tooth counts, they do <em>not</em> all run at the same speed.</p>
+    </div>
+  </div>
+
+
+  <!-- ═══ 2. FLOW OF INFORMATION AND ENERGY ═══ -->
+  <div class="section" id="s2">
+    <h2><span class="num">02</span> Flow of Information &amp; Energy</h2>
+
+    <!-- Chain diagram -->
+    <div class="diagram">
+      <svg viewBox="0 0 700 110" xmlns="http://www.w3.org/2000/svg" font-family="'Lora',serif">
+        <defs>
+          <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#1a1916"/>
+          </marker>
+        </defs>
+
+        <!-- boxes -->
+        <rect x="10" y="30" width="120" height="50" fill="#1a1916" rx="2"/>
+        <text x="70" y="52" fill="#f5f4f0" font-size="12" text-anchor="middle" font-family="'Cormorant Garamond',serif">Sensor</text>
+        <text x="70" y="68" fill="rgba(245,244,240,0.55)" font-size="9" text-anchor="middle">Detects change</text>
+
+        <line x1="130" y1="55" x2="156" y2="55" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <rect x="158" y="30" width="130" height="50" fill="#3a3834" rx="2"/>
+        <text x="223" y="52" fill="#f5f4f0" font-size="12" text-anchor="middle" font-family="'Cormorant Garamond',serif">Transducer</text>
+        <text x="223" y="68" fill="rgba(245,244,240,0.55)" font-size="9" text-anchor="middle">Converts signal</text>
+
+        <line x1="288" y1="55" x2="314" y2="55" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <rect x="316" y="30" width="130" height="50" fill="#3a3834" rx="2"/>
+        <text x="381" y="52" fill="#f5f4f0" font-size="12" text-anchor="middle" font-family="'Cormorant Garamond',serif">Controller</text>
+        <text x="381" y="68" fill="rgba(245,244,240,0.55)" font-size="9" text-anchor="middle">Decision / Brain</text>
+
+        <line x1="446" y1="55" x2="472" y2="55" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <rect x="474" y="30" width="130" height="50" fill="#1a1916" rx="2"/>
+        <text x="539" y="52" fill="#f5f4f0" font-size="12" text-anchor="middle" font-family="'Cormorant Garamond',serif">Actuator</text>
+        <text x="539" y="68" fill="rgba(245,244,240,0.55)" font-size="9" text-anchor="middle">Creates motion</text>
+
+        <!-- feedback arrow (dashed, below) -->
+        <path d="M 539,80 Q 539,100 70,100 Q 70,85 70,80" fill="none" stroke="#6b6860" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+        <text x="305" y="108" fill="#6b6860" font-size="9" text-anchor="middle">Feedback loop</text>
+      </svg>
+    </div>
+
+    <h3 id="s2a">2.1 Definitions</h3>
+
+    <h4>Sensor</h4>
+    <p>A device that <em>understands</em> a change in the surroundings and creates a response signal. It perceives the physical world.</p>
+    <ul>
+      <li><strong>Eye</strong> → senses light rays from surfaces.</li>
+      <li><strong>Thermometer</strong> → mercury senses temperature of a body.</li>
+    </ul>
+
+    <h4>Transducer</h4>
+    <p>Collects sensor findings and converts them <em>proportionately</em> into another suitable quantity (usually electrical). In some cases sensor and transducer are a single device.</p>
+    <ul>
+      <li><strong>Microphone</strong> → sound waves → electrical signal.</li>
+      <li><strong>Loudspeaker</strong> → electrical signal → sound waves.</li>
+    </ul>
+
+    <h4>Controller</h4>
+    <p>The <strong>brain</strong> of the system. Makes decisions based on signals received from the transducer and sends commands to the actuator. Examples: PLC, microcontroller, PID controller.</p>
+
+    <h4>Actuator</h4>
+    <p>Creates <strong>linear or rotational motion</strong> in response to commands from the controller. It is the output device that does the physical work.</p>
+
+    <h3 id="s2b">2.2 Types of Actuators</h3>
+    <div class="chips">
+      <span class="chip">1. Pneumatic (Air pressured)</span>
+      <span class="chip">2. Hydraulic (Oil / Water pressured)</span>
+      <span class="chip">3. Electric (Motors / Solenoids)</span>
+    </div>
+  </div>
+
+
+  <!-- ═══ 3. HYDRAULIC ACTUATORS ═══ -->
+  <div class="section" id="s3">
+    <h2><span class="num">03</span> Hydraulic Actuators</h2>
+
+    <p>Hydraulic actuators use <strong>pressurised fluid (oil)</strong> to create force and motion. They operate at pressures up to <strong>700 bar</strong>.</p>
+
+    <h3 id="s3a">3.1 Components of a Hydraulic System</h3>
+
+    <div class="diagram">
+      <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" font-family="'Lora',serif" font-size="10.5">
+        <!-- Reservoir -->
+        <rect x="15" y="80" width="90" height="60" fill="#eeecea" stroke="#1a1916" stroke-width="1.5" rx="2"/>
+        <text x="60" y="105" text-anchor="middle" fill="#1a1916">Reservoir</text>
+        <text x="60" y="118" text-anchor="middle" fill="#6b6860" font-size="9">Oil storage &amp;</text>
+        <text x="60" y="130" text-anchor="middle" fill="#6b6860" font-size="9">conditioning</text>
+
+        <!-- Pump -->
+        <circle cx="175" cy="110" r="32" fill="#dedad4" stroke="#1a1916" stroke-width="1.5"/>
+        <text x="175" y="108" text-anchor="middle" fill="#1a1916">Pump</text>
+        <text x="175" y="121" text-anchor="middle" fill="#6b6860" font-size="9">Pressurises oil</text>
+
+        <!-- Pressure Control Valve -->
+        <polygon points="265,90 315,90 315,130 265,130" fill="#eeecea" stroke="#1a1916" stroke-width="1.5"/>
+        <text x="290" y="107" text-anchor="middle" fill="#1a1916" font-size="10">PCV</text>
+        <text x="290" y="120" text-anchor="middle" fill="#6b6860" font-size="9">Pressure</text>
+        <text x="290" y="131" text-anchor="middle" fill="#6b6860" font-size="9">Control Valve</text>
+
+        <!-- Direction Control Valve -->
+        <polygon points="358,90 418,90 418,130 358,130" fill="#eeecea" stroke="#1a1916" stroke-width="1.5"/>
+        <text x="388" y="107" text-anchor="middle" fill="#1a1916" font-size="10">DCV</text>
+        <text x="388" y="120" text-anchor="middle" fill="#6b6860" font-size="9">Direction</text>
+        <text x="388" y="131" text-anchor="middle" fill="#6b6860" font-size="9">Control Valve</text>
+
+        <!-- Flow Control Valve -->
+        <polygon points="455,90 515,90 515,130 455,130" fill="#eeecea" stroke="#1a1916" stroke-width="1.5"/>
+        <text x="485" y="107" text-anchor="middle" fill="#1a1916" font-size="10">FCV</text>
+        <text x="485" y="120" text-anchor="middle" fill="#6b6860" font-size="9">Flow</text>
+        <text x="485" y="131" text-anchor="middle" fill="#6b6860" font-size="9">Control Valve</text>
+
+        <!-- Actuator (cylinder) -->
+        <rect x="548" y="85" width="110" height="50" fill="#3a3834" stroke="#1a1916" stroke-width="1.5" rx="2"/>
+        <rect x="658" y="97" width="35" height="26" fill="#6b6860" stroke="#1a1916" stroke-width="1"/>
+        <text x="600" y="110" text-anchor="middle" fill="#f5f4f0" font-size="11">Actuator</text>
+        <text x="600" y="123" text-anchor="middle" fill="rgba(245,244,240,0.6)" font-size="9">Linear / Rotary</text>
+
+        <!-- lines between -->
+        <line x1="105" y1="110" x2="143" y2="110" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="207" y1="110" x2="263" y2="110" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="315" y1="110" x2="356" y2="110" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="418" y1="110" x2="453" y2="110" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="515" y1="110" x2="546" y2="110" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <!-- return line (below) -->
+        <path d="M 60,140 Q 60,165 390,165 Q 390,155 390,130" fill="none" stroke="#6b6860" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="200" y="162" fill="#6b6860" font-size="9" text-anchor="middle">Return to reservoir</text>
+      </svg>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Component</th><th>Function</th></tr>
+        <tr><td>Reservoir</td><td>Oil storage + conditioning. Additives maintain oil properties. Acts as heat sink.</td></tr>
+        <tr><td>Pump</td><td>Pressurises oil; sends it to actuator. Pressure determined by system design requirement.</td></tr>
+        <tr><td>Pressure Control Valve (PCV)</td><td>Releases excess oil back to reservoir to maintain required actuator pressure.</td></tr>
+        <tr><td>Direction Control Valve (DCV)</td><td>Directs flow to correct actuator port (extend / retract). Uses Lever + Spring: lever operates, spring resets.</td></tr>
+        <tr><td>Flow Control Valve (FCV)</td><td>Controls flow rate to/from actuator → controls actuation speed.</td></tr>
+        <tr><td>Actuator</td><td>Piston-cylinder (linear) or vane/gear motor (rotary).</td></tr>
+      </table>
+    </div>
+
+    <h4>Double Acting, Single-Ended Cylinder</h4>
+    <p>The most common hydraulic linear actuator. Fluid from pump enters the <strong>blind end</strong> to extend the rod, and the <strong>rod end</strong> to retract it. The rod only exits one side (single-ended). Force equation:</p>
+    <div class="box formula">
+      <div class="label">Force &amp; Pressure</div>
+      F = P × A<br>
+      P = Pressure (Pa = N/m²), A = Piston Area (m²), F = Force (N)<br>
+      <br>
+      Volume of oil required = A × Stroke Length
+    </div>
+
+    <h3 id="s3b">3.2 Merits &amp; Demerits</h3>
+    <div class="compare">
+      <div class="compare-card">
+        <h5>✓ Merits</h5>
+        <ul>
+          <li>Rugged and robust</li>
+          <li>Best for very high force / power applications</li>
+          <li>Holds force &amp; torque constant without continuous pump supply</li>
+          <li>Pump &amp; motor can be located far from actuator — minimal power loss</li>
+          <li>System has highest power-to-weight ratio</li>
+          <li>Flexible, easy control; instant &amp; smooth reversal of motion</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h5>✗ Demerits</h5>
+        <ul>
+          <li>Fluid <strong>leakage</strong> is a constant issue — efficiency drops</li>
+          <li>Fire hazard (flammable hydraulic fluid)</li>
+          <li>Requires many spare parts; complex maintenance</li>
+          <li>System slows down noticeably if leakage occurs</li>
+          <li>Valve operations more difficult vs pneumatic</li>
+          <li>Heavier in weight</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ 4. PNEUMATIC ACTUATORS ═══ -->
+  <div class="section" id="s4">
+    <h2><span class="num">04</span> Pneumatic Actuators</h2>
+    <p>Pneumatic actuators use <strong>compressed air</strong> as the working medium. Operating pressure is typically <strong>5–10 bar</strong>. Source is a compressor (open system).</p>
+
+    <h4>Types</h4>
+    <ul>
+      <li><strong>Linear (cylinder)</strong> — Single-acting (spring return) and double-acting cylinders. Contains: piston, seals, barrel, inlet/outlet ports. Air from compressor enters and drives piston forward/backward.</li>
+      <li><strong>Rotary</strong> — Converts linear piston motion to rotary motion via rack-and-pinion or vane mechanism. Inlet and outlet for compressed air from compressor.</li>
+    </ul>
+
+    <h4>Air Compressor Working Principle</h4>
+    <p>A piston compresses air on its downstroke; inlet valve closes. On upstroke, compressed air exits through outlet valve. Seals prevent leakage around piston and barrel. The compression cycle: <code>Suction → Compression → Discharge</code>.</p>
+
+    <h3 id="s4a">4.1 Merits &amp; Demerits</h3>
+    <div class="compare">
+      <div class="compare-card">
+        <h5>✓ Merits</h5>
+        <ul>
+          <li>Fast response / fast process</li>
+          <li>Usable in extreme temperatures</li>
+          <li>Safe from fire hazards (air is non-flammable)</li>
+          <li>Lighter in weight</li>
+          <li>Valve operations easy</li>
+          <li>Automatic lubrication possible</li>
+          <li>Clean — no fluid contamination risk</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h5>✗ Demerits</h5>
+        <ul>
+          <li>Limited stroke length</li>
+          <li>Loss of air pressure is always a problem</li>
+          <li>Moisture entry drops air pressure; causes corrosion</li>
+          <li>Air may be contaminated → downtime &amp; maintenance</li>
+          <li>Low pressure system (vs hydraulic)</li>
+          <li>Noisy operation (exhaust noise)</li>
+          <li>Compressible medium → less precise force control</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 id="s4b">4.2 Hydraulic vs Pneumatic — Comparison Table</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>Hydraulic</th><th>Pneumatic</th></tr>
+        <tr><td>Working medium</td><td>Pressurised liquid (oil/water)</td><td>Compressed gas (usually air)</td></tr>
+        <tr><td>Operating pressure</td><td>Up to 700 bar</td><td>5–10 bar</td></tr>
+        <tr><td>System type</td><td>Closed system (fluid recirculates)</td><td>Open system (exhausted to atmosphere)</td></tr>
+        <tr><td>Force/Power</td><td>Very high</td><td>Moderate</td></tr>
+        <tr><td>Speed</td><td>Moderate</td><td>Fast</td></tr>
+        <tr><td>Fire hazard</td><td>Unsafe (oil is flammable)</td><td>Safe</td></tr>
+        <tr><td>Leakage consequence</td><td>System slows, contamination risk</td><td>Pressure loss, noise</td></tr>
+        <tr><td>Weight</td><td>Heavier</td><td>Lighter</td></tr>
+        <tr><td>Valve operation</td><td>Difficult (viscous fluid)</td><td>Easy (low viscosity air)</td></tr>
+        <tr><td>Lubrication</td><td>Oil provides self-lubrication</td><td>Separate lubrication needed</td></tr>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ═══ 5. ELECTRIC ACTUATORS ═══ -->
+  <div class="section" id="s5">
+    <h2><span class="num">05</span> Electric Actuators</h2>
+    <p>Electric actuators use electrical energy to produce motion. They are the most common actuators in modern systems due to their precision, controllability, and cleanliness.</p>
+
+    <div class="compare">
+      <div class="compare-card">
+        <h5>✓ Merits</h5>
+        <ul>
+          <li>Highest precision and control</li>
+          <li>Very high overall efficiency</li>
+          <li>Can be networked and programmed (digital control)</li>
+          <li>Quieter than pneumatic &amp; hydraulic</li>
+          <li>No fluid leaks → environmentally clean</li>
+          <li>Easy integration with computers and PLCs</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h5>✗ Demerits</h5>
+        <ul>
+          <li>Higher initial unit cost than pneumatic/hydraulic</li>
+          <li>Continuously running motor overheats → wear on mechanical parts</li>
+          <li>Requires separate DC power supply (for DC types)</li>
+          <li>More complex control electronics needed</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4>Sub-types of Electric Actuators</h4>
+    <div class="chips">
+      <span class="chip">Solenoid Coil</span>
+      <span class="chip">Relay</span>
+      <span class="chip">DC Motor (Brushed)</span>
+      <span class="chip">BLDC Motor</span>
+      <span class="chip">AC Motor</span>
+      <span class="chip">Stepper Motor</span>
+      <span class="chip">Servo Motor</span>
+    </div>
+
+    <h3 id="s5a">5.1 Solenoid Coil</h3>
+    <p>A solenoid is a coil of wire that, when carrying current, creates a magnetic field and <strong>attracts a ferromagnetic core (plunger)</strong> into the coil, producing linear motion. This is the <strong>attraction–repulsion principle</strong>.</p>
+    <ul>
+      <li>When current flows → magnetic field created → core pulled in.</li>
+      <li>When current stops → spring returns core to original position.</li>
+      <li>Used in: solenoid valves (control fluid flow in hydraulic/pneumatic systems), relays, door locks.</li>
+    </ul>
+
+    <div class="callout">
+      <span class="callout-label">Relay</span>
+      <p>A relay is an electrically operated switch. A small control current through a solenoid coil attracts an armature, which closes (or opens) a separate high-current circuit. Enables low-power circuits to control high-power loads with electrical isolation.</p>
+    </div>
+  </div>
+
+
+  <!-- ═══ 6. ELECTROMAGNETISM ═══ -->
+  <div class="section" id="s6">
+    <h2><span class="num">06</span> Revision of Electromagnetism</h2>
+
+    <h3>6.1 Origin of Magnetism</h3>
+    <p>Magnetism originates from <strong>unpaired electron spins</strong> in atoms. Electrons spinning clockwise (CW) or counter-clockwise (CCW) create tiny magnetic moments. The number of unpaired electrons and their spin orientations — along with crystal structure — are responsible for the magnetic properties of a material.</p>
+
+    <h3>6.2 Earth's Magnetism</h3>
+    <p>The Earth behaves as a huge bar magnet. Its magnetic north pole is near the <strong>geographical south pole</strong> (and vice versa). Geographical axis and magnetic axis are <strong>not coincident</strong> — they are offset by about 11°. A compass needle aligns with magnetic field lines, not geographical north.</p>
+
+    <h3>6.3 Properties of Magnetic Lines of Force</h3>
+    <ol>
+      <li>Invisible, imaginary, roughly elliptical lines that <strong>never cross each other</strong>.</li>
+      <li>Closed loops: travel from <strong>North pole → South pole externally</strong> and South → North <em>internally</em> through the magnet.</li>
+      <li>Lines parallel and in the <strong>same direction → REPEL</strong> each other.</li>
+      <li>Lines act like <strong>stretched rubber bands</strong> — always try to contract (minimum length).</li>
+      <li>Lines prefer a path of <strong>minimum reluctance</strong> (analogous to minimum resistance in electric circuits).</li>
+    </ol>
+
+    <h3>6.4 Right Hand Thumb Rule</h3>
+    <p>For a current-carrying conductor: <strong>Thumb = direction of current; curled fingers = direction of magnetic field lines</strong> around the conductor.</p>
+    <p>For a current-carrying coil: <strong>Curled fingers = direction of current in coil; thumb = direction of North pole (field exits thumb side).</strong></p>
+
+    <div class="callout">
+      <span class="callout-label">Rules Summary — Match These!</span>
+      <p>
+        <strong>Right Hand Thumb Rule</strong> → Direction of magnetic field due to current in a single conductor.<br>
+        <strong>Right Hand Grip Rule</strong> → Direction of field lines (North pole) due to current in a coil.<br>
+        <strong>Fleming's Left Hand Rule</strong> → <em>Motoring action</em>: Force on conductor in magnetic field (F, B, I).<br>
+        <strong>Fleming's Right Hand Rule</strong> → <em>Generating action</em>: Direction of induced EMF.<br>
+        <strong>Faraday's Laws</strong> → Electromagnetic induction.<br>
+        <strong>Lenz's Law</strong> → Direction of induced voltage opposes cause.
+      </p>
+    </div>
+
+    <h3 id="s6a">6.5 Important Magnetic Terms</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Term</th><th>Symbol</th><th>Definition</th><th>Unit</th></tr>
+        <tr><td>Magnetic Permeability</td><td>μ</td><td>Property of material to allow magnetic lines to pass through it</td><td>H/m (Henry/metre)</td></tr>
+        <tr><td>Relative Permeability</td><td>μᵣ</td><td>Ratio: μ_material / μ_air (dimensionless). Good ferromagnetic ≈ 800–1200</td><td>— (no unit)</td></tr>
+        <tr><td>MMF (Magneto Motive Force)</td><td>F</td><td>F = N × I (analogous to EMF in electric circuits)</td><td>Ampere-Turns (AT)</td></tr>
+        <tr><td>Magnetic Field Intensity</td><td>H</td><td>MMF per unit length: H = F/l. H ∝ I (proportional to current)</td><td>AT/m (A/m)</td></tr>
+        <tr><td>Magnetic Flux</td><td>φ</td><td>Total magnetic field passing through a surface</td><td>Weber (Wb)</td></tr>
+        <tr><td>Magnetic Flux Density</td><td>B</td><td>B = φ/A (flux per unit area)</td><td>Tesla (T) = Wb/m²</td></tr>
+        <tr><td>Reluctance</td><td>S</td><td>Opposition to magnetic flux (analogous to resistance). φ = F/S</td><td>AT/Wb</td></tr>
+      </table>
+    </div>
+
+    <div class="box formula">
+      <div class="label">Key Magnetic Equations</div>
+      φ = F / S = (N × I) / (l / (μ × A))<br>
+      B = φ / A    [Tesla]<br>
+      H = B / μ    [A/m]<br>
+      H = (N × I) / l  →  H ∝ I<br>
+      μ = φ × l / (I × N × A)
+    </div>
+
+    <h3 id="s6b">6.6 B–H Curve (Hysteresis Loop)</h3>
+    <p>The B–H curve (hysteresis loop) shows how flux density (B) in a ferromagnetic material changes with the applied magnetising force (H) during a complete magnetisation cycle.</p>
+
+    <!-- B-H curve SVG -->
+    <div class="diagram">
+      <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" font-family="'Lora',serif" font-size="11">
+        <!-- axes -->
+        <line x1="250" y1="310" x2="250" y2="20" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="30" y1="170" x2="475" y2="170" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="260" y="18" fill="#1a1916" font-size="12" font-style="italic">B</text>
+        <text x="472" y="185" fill="#1a1916" font-size="12" font-style="italic">H</text>
+        <text x="235" y="185" fill="#6b6860" font-size="10">O</text>
+
+        <!-- B-H loop path (approximate) -->
+        <!-- First magnetisation: O → A (sluggish) → B (linear) → C (saturation) -->
+        <path d="M250,170 Q255,165 265,155 Q280,130 300,100 Q320,75 340,65 Q360,58 380,57 Q400,56 420,56"
+              fill="none" stroke="#1a1916" stroke-width="2"/>
+
+        <!-- Demagnetisation from +saturation: → D (retentivity) → E (coercivity) → F (negative saturation) -->
+        <path d="M420,56 Q430,56 440,70 Q445,100 420,130 Q390,155 370,165 Q340,175 310,178 Q280,180 260,180 Q255,180 250,180"
+              fill="none" stroke="#3a3834" stroke-width="2" stroke-dasharray="none"/>
+        <path d="M250,180 Q240,180 225,185 Q200,195 185,220 Q170,245 170,275 Q170,300 175,310"
+              fill="none" stroke="#3a3834" stroke-width="2"/>
+
+        <!-- Negative branch back up to positive -->
+        <path d="M175,310 Q100,310 80,280 Q65,250 80,220 Q100,195 130,182 Q160,172 200,170 Q220,169 250,170"
+              fill="none" stroke="#6b6860" stroke-width="2" stroke-dasharray="none"/>
+
+        <!-- Key points labels -->
+        <!-- A – sluggish start region -->
+        <circle cx="270" cy="155" r="3" fill="#1a1916"/>
+        <text x="275" y="153" fill="#1a1916" font-size="10">A</text>
+
+        <!-- B – linear -->
+        <circle cx="330" cy="85" r="3" fill="#1a1916"/>
+        <text x="335" y="83" fill="#1a1916" font-size="10">B</text>
+
+        <!-- C – saturation (+) -->
+        <circle cx="420" cy="56" r="3" fill="#1a1916"/>
+        <text x="425" y="55" fill="#1a1916" font-size="10">C (+Sat)</text>
+
+        <!-- D – retentivity (+Br) -->
+        <circle cx="250" cy="180" r="4" fill="#1a1916"/>
+        <text x="255" y="178" fill="#1a1916" font-size="10">D (Br)</text>
+        <line x1="200" y1="180" x2="249" y2="180" stroke="#6b6860" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="140" y="183" fill="#6b6860" font-size="9">Retentivity</text>
+
+        <!-- E – coercivity (–Hc) -->
+        <circle cx="175" cy="170" r="4" fill="#1a1916"/>
+        <text x="118" y="168" fill="#1a1916" font-size="10">E (–Hc)</text>
+        <text x="100" y="155" fill="#6b6860" font-size="9">Coercivity</text>
+
+        <!-- F – negative saturation -->
+        <circle cx="175" cy="310" r="3" fill="#1a1916"/>
+        <text x="115" y="313" fill="#1a1916" font-size="10">F (–Sat)</text>
+
+        <!-- G – negative retentivity -->
+        <circle cx="250" cy="163" r="3" fill="#6b6860"/>
+
+        <!-- Annotations -->
+        <text x="390" y="35" fill="#6b6860" font-size="9">Saturation</text>
+        <text x="330" y="120" fill="#6b6860" font-size="9">Linear rise</text>
+        <text x="255" y="145" fill="#6b6860" font-size="9">Sluggish start</text>
+      </svg>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Point</th><th>Meaning</th></tr>
+        <tr><td>O → A</td><td>Sluggish (non-linear) start — domain walls begin to move slowly</td></tr>
+        <tr><td>A → B</td><td>Rapid linear rise — domains align quickly with H</td></tr>
+        <tr><td>B → C</td><td>Saturation — all domains aligned, no further increase in B</td></tr>
+        <tr><td>C → D (OD)</td><td>H reduced to zero; B = Retentivity (Br) = residual magnetism remaining</td></tr>
+        <tr><td>D → E</td><td>H reversed; B = 0 at point E → Coercivity (Hc) = force needed to demagnetise</td></tr>
+        <tr><td>E → F</td><td>Negative saturation reached in reverse direction</td></tr>
+        <tr><td>F → G → C</td><td>Return to positive saturation completing the loop</td></tr>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Exam Tip</span>
+      <p><strong>Retentivity</strong> = residual flux density when H is removed. <strong>Coercivity</strong> = reverse H needed to reduce B to zero. Hard magnetic materials → high coercivity (good permanent magnets). Soft magnetic materials → low coercivity, small hysteresis loop (good for transformer cores — low core loss).</p>
+    </div>
+  </div>
+
+
+  <!-- ═══ 7. DC MOTORS ═══ -->
+  <div class="section" id="s7">
+    <h2><span class="num">07</span> DC Motors</h2>
+
+    <h3 id="s7a">7.1 Construction of a DC Machine</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Part</th><th>Function</th></tr>
+        <tr><td>Yoke (Frame)</td><td>Outer cast iron/steel cylinder; houses everything; carries magnetic flux return path</td></tr>
+        <tr><td>Field Poles</td><td>Electromagnets wound with field winding; produce the main magnetic flux in air gap</td></tr>
+        <tr><td>Field Winding</td><td>Copper coils on pole cores; carry field current to produce flux</td></tr>
+        <tr><td>Armature</td><td>Rotating part (rotor) — laminated silicon steel cylinder with slots for conductors</td></tr>
+        <tr><td>Armature Winding</td><td>Copper conductors placed in armature slots; carry armature current; generate torque</td></tr>
+        <tr><td>Commutator</td><td>Cylindrical assembly of copper segments insulated from each other; rectifies induced AC to DC at output (generator) or routes current to conductors (motor)</td></tr>
+        <tr><td>Brushes</td><td>Carbon/graphite blocks spring-loaded against commutator; electrical connection to rotating armature</td></tr>
+        <tr><td>Shaft</td><td>Transmits torque to external load</td></tr>
+        <tr><td>Cooling Fan</td><td>Removes heat generated in windings</td></tr>
+        <tr><td>Air Gap</td><td>Space between stator poles and rotor; magnetic flux crosses this gap</td></tr>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Every Rotating Machine Must Have</span>
+      <p><strong>Stator</strong> (stationary) + <strong>Rotor</strong> (rotating) + <strong>Air Gap</strong> separating them + shaft, bearings, foundation. One winding produces flux (field winding) and another is where working EMF is induced (armature winding).</p>
+    </div>
+
+    <h3>7.2 Working Principle (Motoring Action)</h3>
+    <p><em>"When a current-carrying conductor is placed in a magnetic field, it experiences a mechanical force."</em> — This is Fleming's Left Hand Rule.</p>
+
+    <ul>
+      <li>Field poles create a main magnetic flux across the air gap (N → S).</li>
+      <li>Armature current in conductors creates an armature flux (circular around conductors).</li>
+      <li>The two fluxes combine: one side of the conductor gets dense flux (strong repulsion), the other gets weak flux. This creates an unbalanced force → <strong>torque (couple)</strong> making the armature rotate.</li>
+      <li>Under field pole N, current is a <strong>dot</strong> (⊙); under S, a <strong>cross</strong> (⊗).</li>
+    </ul>
+
+    <h4>Role of Commutator — Unidirectional Rotation</h4>
+    <p>When a dot conductor passes from N-pole region to S-pole region (after 180° of rotation), it would normally reverse force direction. The commutator reverses current direction in that conductor at exactly that moment — so the conductor always carries current in the direction that keeps torque in the same rotational direction. This gives <strong>unidirectional continuous rotation</strong>.</p>
+
+    <div class="box formula">
+      <div class="label">Commutator</div>
+      Number of segments = Number of armature slots (practically)<br>
+      Each segment is insulated from adjacent segments
+    </div>
+
+    <h3 id="s7b">7.3 Back EMF (Counter EMF)</h3>
+    <p>When the armature rotates, conductors cut the main flux in the air gap. By Faraday's Law, an EMF is induced in them. By Lenz's Law, this EMF opposes the supply voltage — hence called <strong>Back EMF (Eb)</strong> or Counter EMF.</p>
+
+    <div class="box formula">
+      <div class="label">Back EMF Equation</div>
+      Eb = (φ × Z × N × P) / (60 × A)<br>
+      <br>
+      φ = flux per pole (Wb)<br>
+      Z = total number of armature conductors<br>
+      N = speed in rpm<br>
+      P = number of poles<br>
+      A = number of parallel paths<br>
+        (Wave winding: A = 2 | Lap winding: A = P)<br>
+      <br>
+      Also:  Eb = V – Ia × Ra<br>
+      ∴ Ia = (V – Eb) / Ra
+    </div>
+
+    <p>Since <code>Eb ∝ φ × N</code>, back EMF acts as a speed-sensing signal. At start, N=0 → Eb=0 → Ia = V/Ra (very large — needs starter). As speed rises, Eb rises, Ia reduces to safe value.</p>
+
+    <h3 id="s7c">7.4 Torque Equation</h3>
+
+    <div class="box formula">
+      <div class="label">Torque Derivation</div>
+      Mechanical power = Eb × Ia = Ta × ω<br>
+      ω = 2πN/60<br>
+      <br>
+      Ta = (1/2π) × (φ × Z × P × Ia) / A    [N·m]<br>
+      <br>
+      Simplified: Ta = 0.159 × Ia × (φ × Z × P / A)<br>
+      <br>
+      ∴  T ∝ φ × Ia<br>
+      (All other terms are machine constants)
+    </div>
+
+    <h3 id="s7d">7.5 DC Shunt Motor</h3>
+
+    <!-- Shunt motor circuit diagram (SVG) -->
+    <div class="diagram">
+      <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" font-family="'Lora',serif" font-size="11">
+        <!-- supply -->
+        <line x1="30" y1="30" x2="30" y2="170" stroke="#1a1916" stroke-width="2"/>
+        <text x="10" y="100" fill="#1a1916" font-size="14">+</text>
+        <line x1="470" y1="30" x2="470" y2="170" stroke="#1a1916" stroke-width="2"/>
+        <text x="474" y="100" fill="#1a1916" font-size="14">–</text>
+        <text x="245" y="22" text-anchor="middle" fill="#1a1916" font-size="12">V (Supply)</text>
+        <line x1="30" y1="30" x2="470" y2="30" stroke="#1a1916" stroke-width="1.5"/>
+        <line x1="30" y1="170" x2="470" y2="170" stroke="#1a1916" stroke-width="1.5"/>
+
+        <!-- Armature branch: Ra + Armature (M) in series -->
+        <line x1="30" y1="100" x2="80" y2="100" stroke="#1a1916" stroke-width="1.5"/>
+        <!-- Ra box -->
+        <rect x="80" y="88" width="50" height="24" fill="#eeecea" stroke="#1a1916" stroke-width="1.2"/>
+        <text x="105" y="105" text-anchor="middle" fill="#1a1916">Ra</text>
+        <line x1="130" y1="100" x2="180" y2="100" stroke="#1a1916" stroke-width="1.5"/>
+        <!-- Motor circle -->
+        <circle cx="215" cy="100" r="28" fill="#dedad4" stroke="#1a1916" stroke-width="1.5"/>
+        <text x="215" y="96" text-anchor="middle" fill="#1a1916" font-size="13">M</text>
+        <text x="215" y="112" text-anchor="middle" fill="#6b6860" font-size="9">Armature</text>
+        <line x1="243" y1="100" x2="340" y2="100" stroke="#1a1916" stroke-width="1.5"/>
+        <line x1="340" y1="100" x2="470" y2="100" stroke="#1a1916" stroke-width="1.5"/>
+
+        <!-- Shunt field branch: Rsh in parallel with armature+Ra -->
+        <line x1="30" y1="30" x2="30" y2="55" stroke="#1a1916" stroke-width="1"/>
+        <line x1="30" y1="55" x2="390" y2="55" stroke="#1a1916" stroke-width="1"/>
+        <!-- Rsh box -->
+        <rect x="340" y="43" width="50" height="24" fill="#eeecea" stroke="#1a1916" stroke-width="1.2"/>
+        <text x="365" y="60" text-anchor="middle" fill="#1a1916">Rsh</text>
+        <line x1="390" y1="55" x2="390" y2="170" stroke="#1a1916" stroke-width="1"/>
+
+        <!-- Current labels -->
+        <text x="50" y="95" fill="#3a3834" font-size="10">Im</text>
+        <text x="150" y="95" fill="#3a3834" font-size="10">Ia</text>
+        <text x="410" y="100" fill="#3a3834" font-size="10">Ish</text>
+
+        <!-- Equation text -->
+        <text x="245" y="155" text-anchor="middle" fill="#6b6860" font-size="10">Im = Ia + Ish  |  Eb = V – Ia·Ra</text>
+      </svg>
+    </div>
+
+    <div class="box formula">
+      <div class="label">DC Shunt Motor — Practical Values</div>
+      V = 230 V DC<br>
+      Im = 10 A (total supply current; depends on HP)<br>
+      Ish = 1 A (shunt field current)  →  Ia = Im – Ish = 9 A<br>
+      Ra &lt; 1.0 Ω  |  Rsh = 200+ Ω<br>
+      Eb ≈ 227–228 V  (small drop across Ra + brushes)
+    </div>
+
+    <h4>Characteristics of DC Shunt Motor</h4>
+    <p>Shunt motor has constant field flux (Rsh = constant → Ish = constant → φ = constant).</p>
+
+    <ul>
+      <li><strong>Speed-Load:</strong> N ∝ (V – Ia·Ra). As load increases, Ia increases slightly, Eb drops slightly, speed drops slightly. Essentially <strong>approximately constant speed</strong> motor. N ∝ (V – IaRa) / φ</li>
+      <li><strong>Torque-Current:</strong> T ∝ φ × Ia ∝ Ia (since φ = constant). Linear relation. <strong>T ∝ Ia</strong>.</li>
+      <li><strong>Speed-Torque:</strong> As T increases (load increases), speed decreases slightly — nearly flat curve.</li>
+    </ul>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Motor Type</th><th>Characteristic</th><th>Applications</th></tr>
+        <tr><td>DC Shunt Motor</td><td>Approx. constant speed; medium starting torque; adjustable speed</td><td>Lathes, centrifugal pumps, machine tools, blowers, fans</td></tr>
+      </table>
+    </div>
+
+    <h4>Types of Brushed DC Motors</h4>
+    <ul>
+      <li><strong>Self-Excited:</strong> Field winding powered from armature terminals.
+        <ul>
+          <li>Shunt Excited — field winding in parallel with armature</li>
+          <li>Series Excited — field winding in series with armature (T ∝ Ia²; high starting torque)</li>
+          <li>Compound Excited — both shunt and series field windings (cumulative or differential)</li>
+        </ul>
+      </li>
+      <li><strong>Permanent Magnet (PM):</strong> No field winding; permanent magnets provide field flux.</li>
+    </ul>
+
+    <h3 id="s7e">7.6 Numericals — Important Formulae Sheet</h3>
+
+    <div class="box formula">
+      <div class="label">All DC Shunt Motor Formulae</div>
+      Pinput = V × Iinput<br>
+      Iinput = Ia + Ish  (shunt motor)<br>
+      Ish = V / Rsh<br>
+      Eb = V – Ia × Ra<br>
+      Eb = (φ × Z × N × P) / (60 × A)<br>
+      N = (Eb × 60 × A) / (φ × Z × P)  [rpm]<br>
+      Ta = 0.159 × Ia × (φ × Z × P / A)  [N·m]<br>
+      T ∝ φ × Ia<br>
+      N ∝ Eb / φ<br>
+      Eb × Ia = Ta × ω  (electrical ↔ mechanical power)<br>
+      ω = 2πN/60  [rad/s]<br>
+      Power output = Ta × ω – losses
+    </div>
+
+    <h4>Solved Problem Examples</h4>
+
+    <div class="callout">
+      <span class="callout-label">Problem Type 1 — Find Back EMF</span>
+      <p><strong>Q:</strong> DC shunt motor, V = 450 V, Im = 120 A, Ra = 0.15 Ω, Rsh = 150 Ω. Find Eb.<br>
+      <strong>A:</strong> Ish = 450/150 = 3 A. Ia = 120 – 3 = 117 A. Eb = 450 – (117 × 0.15) = 450 – 17.55 = <strong>432.45 V</strong></p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Problem Type 2 — Find Speed and Torque</span>
+      <p><strong>Q:</strong> 4-pole, 500 V, wave-wound, Z = 522, φ = 0.025 Wb, Ra = 0.4 Ω, Ia = 80 A. Find Eb, N, Ta.<br>
+      <strong>A:</strong> Eb = 500 – (80 × 0.4) = 468 V. For wave winding A = 2.<br>
+      N = (468 × 60 × 2)/(0.025 × 522 × 4) = 56160/52.2 = <strong>1075.9 rpm</strong>.<br>
+      Ta = 0.159 × 80 × (0.025 × 522 × 4/2) = 0.159 × 80 × 26.1 = <strong>331.9 N·m</strong></p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Problem Type 3 — Half Load Speed</span>
+      <p><strong>Q:</strong> 120 V shunt motor, Ra = 0.2 Ω, Rsh = 60 Ω, full load Im = 40 A, N₁ = 1800 rpm. Find half-load speed.<br>
+      <strong>A:</strong> Ish = 120/60 = 2 A. Full load: Ia₁ = 40–2 = 38 A. Eb₁ = 120 – (38×0.2) = 112.4 V.<br>
+      Half load: Im₂ = ~21 A (approx half). Ia₂ = 21–2 = 19 A. Eb₂ = 120 – (19×0.2) = 116.2 V.<br>
+      N₂/N₁ = Eb₂/Eb₁ (φ constant) = 116.2/112.4 → N₂ = 1800 × 116.2/112.4 ≈ <strong>1860.85 rpm</strong></p>
+    </div>
+  </div>
+
+
+  <!-- ═══ 8. BLDC MOTORS ═══ -->
+  <div class="section" id="s8">
+    <h2><span class="num">08</span> Brushless DC (BLDC) Motors</h2>
+
+    <h3>8.1 Why BLDC? — Merits &amp; Demerits of Brushed DC vs BLDC</h3>
+
+    <p>BLDC motors were developed to overcome the problems caused by brush-commutator contact in conventional DC motors.</p>
+
+    <div class="compare">
+      <div class="compare-card">
+        <h5>Brushed DC — Problems</h5>
+        <ul>
+          <li>Continuous friction at commutator → wear &amp; tear of brushes &amp; segments</li>
+          <li>Maintenance cost increases</li>
+          <li>Heat generates carbon particles at brush contacts</li>
+          <li>Frequent brush replacement</li>
+          <li>Voltage drop at brush contacts (efficiency loss)</li>
+          <li>Starter needed (high inrush current)</li>
+          <li>Noisy operation</li>
+          <li>Separate DC power supply required</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h5>BLDC — Advantages</h5>
+        <ul>
+          <li>No brushes → no wear, no carbon dust</li>
+          <li>Quiet operation</li>
+          <li>Low maintenance</li>
+          <li>High power-to-weight ratio</li>
+          <li>Good electronic / software control</li>
+          <li>Moderate &amp; small capacity motors</li>
+          <li>No commutator voltage drop</li>
+          <li>Works on simple attraction–repulsion (N–S) principle — not Left Hand Rule</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>8.2 Construction</h3>
+    <p>A BLDC motor is a synchronous DC motor with two main parts:</p>
+    <ul>
+      <li><strong>Stator</strong> — has wound pole windings (coils) that can be electronically switched. The stator carries the armature winding in a BLDC (unlike brushed DC where it's on rotor). Typically 3-phase, 6 poles.</li>
+      <li><strong>Rotor</strong> — carries <strong>permanent magnets</strong> (N and S poles). No windings. Rotates because stator poles are switched to always attract or repel rotor poles.</li>
+    </ul>
+
+    <h3>8.3 Working Principle</h3>
+    <p>When stator poles are excited, <strong>attraction takes place between opposite poles</strong> of stator and rotor → rotor rotates. When a rotor pole approaches the attracting stator pole, that stator pole is <strong>switched OFF</strong> and the <strong>next stator pole is excited</strong>. The rotor pole keeps chasing the stator pole but never catches it → <strong>continuous rotation</strong>.</p>
+
+    <div class="callout">
+      <span class="callout-label">Key Concept — Driver Circuit</span>
+      <p>The motor driver circuit changes stator polarity at the correct moment. To know the exact location of the rotor pole at any instant, a <strong>Hall Effect Sensor</strong> (or back EMF in sensorless type) is used. The driver circuit timing depends on rotor position.</p>
+    </div>
+
+    <h3 id="s8a">8.4 Hall Effect Sensor</h3>
+    <p><strong>Hall Effect:</strong> When a current-carrying conductor is subjected to a magnetic field perpendicular to current flow, an EMF is produced at right angles to both current and field. This EMF is detected by the sensor.</p>
+    <ul>
+      <li>Hall sensors are placed in stator to detect rotor magnet position.</li>
+      <li>Output: digital signal (HIGH/LOW) indicating proximity of N or S pole.</li>
+      <li>Common IC: <strong>A3144</strong> — 3 terminals: VCC (+5V), GND, Digital Output with pull-up resistor (10 kΩ) and optimal capacitor (104 = 0.1 µF).</li>
+      <li>3 sensors placed 120° apart for 3-phase BLDC; output gives 6 possible rotor positions per revolution cycle.</li>
+    </ul>
+
+    <h3 id="s8b">8.5 Driver Circuit for BLDC</h3>
+    <p>The most common configuration: <strong>three pairs of power MOSFETs</strong> arranged as a 3-phase bridge (H-bridge structure). Each pair governs switching of one phase.</p>
+    <ul>
+      <li>MOSFETs controlled by <strong>PWM (Pulse Width Modulation)</strong> — converts DC input to modulated driving voltage.</li>
+      <li>PWM allows start-up current limiting and precise speed/torque control.</li>
+      <li>At each step, <strong>two windings are energized</strong> (one "high", one "low") and the third floats.</li>
+      <li>A <strong>deglitch circuit</strong> (using logic gates with delay) prevents false triggering from glitches (sudden temporary faults) in sensor signals.</li>
+    </ul>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" font-family="'Lora',serif" font-size="10.5">
+        <!-- 3-phase bridge structure -->
+        <!-- DC+ rail -->
+        <line x1="60" y1="30" x2="580" y2="30" stroke="#1a1916" stroke-width="2"/>
+        <text x="25" y="34" fill="#1a1916" font-size="11">+VDC</text>
+
+        <!-- DC– rail -->
+        <line x1="60" y1="170" x2="580" y2="170" stroke="#1a1916" stroke-width="2"/>
+        <text x="25" y="174" fill="#1a1916" font-size="11">GND</text>
+
+        <!-- Phase A -->
+        <line x1="160" y1="30" x2="160" y2="75" stroke="#1a1916" stroke-width="1.5"/>
+        <rect x="140" y="75" width="40" height="25" fill="#dedad4" stroke="#1a1916" stroke-width="1.2"/>
+        <text x="160" y="91" text-anchor="middle" fill="#1a1916">Q1</text>
+        <line x1="160" y1="100" x2="160" y2="125" stroke="#1a1916" stroke-width="1.5"/>
+        <text x="160" y="118" text-anchor="middle" fill="#6b6860" font-size="9">Phase A</text>
+        <rect x="140" y="125" width="40" height="25" fill="#eeecea" stroke="#1a1916" stroke-width="1.2"/>
+        <text x="160" y="141" text-anchor="middle" fill="#1a1916">Q2</text>
+        <line x1="160" y1="150" x2="160" y2="170" stroke="#1a1916" stroke-width="1.5"/>
+
+        <!-- Phase B -->
+        <line x1="320" y1="30" x2="320" y2="75" stroke="#1a1916" stroke-width="1.5"/>
+        <rect x="300" y="75" width="40" height="25" fill="#dedad4" stroke="#1a1916" stroke-width="1.2"/>
+        <text x="320" y="91" text-anchor="middle" fill="#1a1916">Q3</text>
+        <line x1="320" y1="100" x2="320" y2="125" stroke="#1a1916" stroke-width="1.5"/>
+        <text x="320" y="118" text-anchor="middle" fill="#6b6860" font-size="9">Phase B</text>
+        <rect x="300" y="125" width="40" height="25" fill="#eeecea" stroke="#1a1916" stroke-width="1.2"/>
+        <text x="320" y="141" text-anchor="middle" fill="#1a1916">Q4</text>
+        <line x1="320" y1="150" x2="320" y2="170" stroke="#1a1916" stroke-width="1.5"/>
+
+        <!-- Phase C -->
+        <line x1="480" y1="30" x2="480" y2="75" stroke="#1a1916" stroke-width="1.5"/>
+        <rect x="460" y="75" width="40" height="25" fill="#dedad4" stroke="#1a1916" stroke-width="1.2"/>
+        <text x="480" y="91" text-anchor="middle" fill="#1a1916">Q5</text>
+        <line x1="480" y1="100" x2="480" y2="125" stroke="#1a1916" stroke-width="1.5"/>
+        <text x="480" y="118" text-anchor="middle" fill="#6b6860" font-size="9">Phase C</text>
+        <rect x="460" y="125" width="40" height="25" fill="#eeecea" stroke="#1a1916" stroke-width="1.2"/>
+        <text x="480" y="141" text-anchor="middle" fill="#1a1916">Q6</text>
+        <line x1="480" y1="150" x2="480" y2="170" stroke="#1a1916" stroke-width="1.5"/>
+
+        <!-- Motor label -->
+        <text x="320" y="192" text-anchor="middle" fill="#1a1916" font-size="11" font-style="italic">3-Phase BLDC Motor (windings connected at mid-points)</text>
+      </svg>
+    </div>
+
+    <h3>8.6 Sensorless BLDC Control</h3>
+    <p>Uses <strong>Back EMF</strong> (generated by rotating rotor magnets cutting stator windings) to determine rotor position — no physical sensors needed.</p>
+    <ul>
+      <li>Back EMF ∝ rotational speed. At zero speed, back EMF = 0 (starting issue).</li>
+      <li>Controlled by microcontroller, DSP, or dedicated driver IC.</li>
+      <li>More complex but lower cost (no Hall sensors). Used in high-volume applications like drones, fans.</li>
+    </ul>
+
+    <h3>8.7 Types of BLDC Motors</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Type</th><th>Description</th><th>Use Case</th></tr>
+        <tr><td>In-runner (Inner Rotor)</td><td>Rotor with permanent magnets at center; surrounded by stator coils. Conventional design. Lower inertia.</td><td>RC cars, servo drives, robotics</td></tr>
+        <tr><td>Out-runner (Outer Rotor)</td><td>Stator coils at center; rotor with permanent magnets surrounds stator. Higher inertia, more poles → smoother rotation, more torque at lower RPM.</td><td>Drones, electric bicycles, direct drive fans</td></tr>
+        <tr><td>Axial Flux (Pancake)</td><td>Stator and rotor mounted face-to-face, parallel to each other. Very flat profile.</td><td>Space-constrained applications, electric vehicles</td></tr>
+      </table>
+    </div>
+
+    <h4>Phase Configurations</h4>
+    <p>BLDC motors available as single-phase, 2-phase, or 3-phase. <strong>3-phase BLDC is most common</strong> — smoother torque, better efficiency.</p>
+
+    <h4>Applications of BLDC Motor</h4>
+    <div class="chips">
+      <span class="chip">CNC Machines</span>
+      <span class="chip">Robotics</span>
+      <span class="chip">Position Control</span>
+      <span class="chip">Electric Vehicles</span>
+      <span class="chip">Washing Machines</span>
+      <span class="chip">Hard Drives</span>
+      <span class="chip">DVD Drives</span>
+      <span class="chip">Ceiling Fans (new)</span>
+      <span class="chip">Blowers</span>
+      <span class="chip">Air Conditioners</span>
+      <span class="chip">Refrigeration</span>
+      <span class="chip">Drones</span>
+    </div>
+  </div>
+
+
+  <!-- ═══ 9. STEPPER MOTORS ═══ -->
+  <div class="section" id="s9">
+    <h2><span class="num">09</span> Stepper Motors</h2>
+
+    <h3>9.1 Definition &amp; Working Principle</h3>
+    <p>A stepper motor is a <strong>special electrical machine which rotates in discrete angular steps</strong> in response to a programmed sequence of input electrical pulses. Unlike regular motors, it does <strong>not rotate continuously</strong> — each pulse advances it by one precise step angle.</p>
+
+    <ul>
+      <li>Working: magnetic interaction between rotor and stator causes rotor to align to minimum reluctance or attraction position.</li>
+      <li>Step angle: typically <strong>1.8°</strong> (200 steps per revolution). Can range from &lt;1° to 45°.</li>
+      <li>Speed = pulse frequency × step angle. Higher pulse rate → higher speed → at very high rates, runs nearly like a DC motor.</li>
+      <li>When no pulse → rotor <strong>remains locked</strong> in current position (holding torque).</li>
+    </ul>
+
+    <h3>9.2 Features</h3>
+    <ul>
+      <li>Digitally controlled — programmable for Direction, Speed, Number of steps.</li>
+      <li>Brushless — no wear &amp; tear.</li>
+      <li>Open-loop control possible (no feedback sensor needed for basic positioning).</li>
+      <li>Load vs no-load → no difference in running current.</li>
+      <li>Rating given in <strong>torque (N·m)</strong>, not horsepower (doesn't rotate continuously).</li>
+      <li>Low cost, accurate, decent holding torque, moderate speed.</li>
+      <li>Compatible with digital devices (computers, microcontrollers).</li>
+    </ul>
+
+    <h3 id="s9a">9.3 Classification</h3>
+
+    <h4>Based on Rotor Construction</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Type</th><th>Rotor Material</th><th>Key Feature</th><th>Detent Torque?</th></tr>
+        <tr><td>Permanent Magnet (PM)</td><td>Permanent magnet (2 or more poles)</td><td>Simple; attracts to stator poles. Cylindrical or projected pole rotor.</td><td>Yes</td></tr>
+        <tr><td>Variable Reluctance (VR)</td><td>Soft iron (non-magnetized)</td><td>Rotor tries to achieve minimum reluctance position. Stator wound for 3 phases, 6 poles; rotor has different number of teeth.</td><td>No</td></tr>
+        <tr><td>Hybrid (HSM)</td><td>Axial permanent magnet + toothed rotor</td><td>Combines PM and VR principles. Smallest step angle. High holding, dynamic &amp; detent torque. Smooth operation. Micro-stepping possible.</td><td>Yes</td></tr>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Detent Torque</span>
+      <p>The torque that holds the rotor in position when stator windings are <strong>de-energized</strong>. Present in PM and Hybrid types (because permanent magnet rotor is attracted to stator poles even without current). Absent in VR type (no permanent magnet).</p>
+    </div>
+
+    <h4>Based on Stator Coil Connection</h4>
+    <ul>
+      <li><strong>Unipolar</strong> — Centre-tapped coil. One end (+VIN at centre). Only half the coil used at a time. Simpler drive circuit (only 2 semiconductors per phase). But magnetic field is half strength. More leads available as motor inputs.</li>
+      <li><strong>Bipolar</strong> — Two leads per coil. Requires H-bridge for direction control (4 MOSFETs per phase). More complex drive but maximum torque from all copper used.</li>
+    </ul>
+
+    <h3>9.4 Variable Reluctance Stepper — Step Sequence</h3>
+    <p>Stator poles are switched ON in sequence. Rotor teeth align to the energized stator pole (minimum reluctance position). When rotor approaches that pole, it's switched OFF and next pole energized → rotor advances one step.</p>
+
+    <h3 id="s9b">9.5 Step Angle Calculation</h3>
+
+    <div class="box formula">
+      <div class="label">Step Angle — Variable Reluctance</div>
+      Step Angle = 360° / (Nr × P)<br>
+      <br>
+      Nr = number of rotor teeth<br>
+      P = number of phases (stator coil sets)<br>
+      <br>
+      Example: Nr = 50, P = 4 → Step Angle = 360/(50×4) = 1.8°<br>
+      Steps per revolution = 360/1.8 = 200 steps
+    </div>
+
+    <div class="box formula">
+      <div class="label">Speed from Pulse Frequency</div>
+      Speed (rpm) = (Pulse frequency × Step angle) / 6<br>
+      <br>
+      Example: Step angle = 0.9°, f = 500 Hz<br>
+      Steps per rev = 360/0.9 = 400<br>
+      Rev per second = 500/400 = 1.25 rps<br>
+      Speed = 1.25 × 60 = 75 RPM
+    </div>
+
+    <h3 id="s9c">9.6 Stepping Sequences</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Mode</th><th>Description</th><th>Step Size</th></tr>
+        <tr><td>Full Step — One Phase ON</td><td>One phase energized at a time. Minimum torque.</td><td>Full step (e.g., 1.8°)</td></tr>
+        <tr><td>Full Step — Two Phase ON</td><td>Two adjacent phases energized simultaneously. Higher torque.</td><td>Full step (same angle, rotor aligns midpoint)</td></tr>
+        <tr><td>Half Step</td><td>Alternates between one and two phases ON. Doubles resolution.</td><td>Half step (e.g., 0.9°)</td></tr>
+        <tr><td>Micro-stepping</td><td>Current gradually changed between phases. Very small, smooth steps. Available in Hybrid type.</td><td>&lt;&lt; 1°</td></tr>
+      </table>
+    </div>
+
+    <h4>Unipolar Control Circuit Logic (Full Step)</h4>
+    <p>Stepper coils A, B, C, D switched using transistors (or MOSFETs). The sequence table uses binary 1/0 to activate coils. At each step, rotor aligns to active poles. The sequence determines rotation direction: reversing the sequence reverses rotation.</p>
+
+    <div class="box">
+      <div class="label">Typical 4-Phase Full Step Sequence (One Phase ON)</div>
+      <p>Step 1: A=1, B=0, C=0, D=0</p>
+      <p>Step 2: A=0, B=1, C=0, D=0</p>
+      <p>Step 3: A=0, B=0, C=1, D=0</p>
+      <p>Step 4: A=0, B=0, C=0, D=1 → then repeat</p>
+    </div>
+
+    <h4>Hybrid Stepper Motor Advantages vs VR</h4>
+    <ul>
+      <li>Smaller step angle possible</li>
+      <li>Higher holding, dynamic, and detent torque values</li>
+      <li>Less tendency to resonate</li>
+      <li>High efficiency at lower stepping rates</li>
+    </ul>
+    <h4>Hybrid Stepper — Disadvantages</h4>
+    <ul>
+      <li>Performance affected by change in magnetic strength (temperature, demagnetisation)</li>
+      <li>Higher inertia and weight (due to rotor magnet)</li>
+      <li>More expensive than VR type</li>
+    </ul>
+
+    <h3>9.7 Stepper Motor Advantages &amp; Disadvantages</h3>
+    <div class="compare">
+      <div class="compare-card">
+        <h5>✓ Advantages</h5>
+        <ul>
+          <li>Rugged construction</li>
+          <li>Can operate open-loop (no feedback sensor needed)</li>
+          <li>Low maintenance (brushless)</li>
+          <li>Less likely to stall or slip</li>
+          <li>Simple construction, reliable</li>
+          <li>Full torque at standstill</li>
+          <li>Low cost</li>
+          <li>Excellent start/stop/reverse response</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h5>✗ Disadvantages</h5>
+        <ul>
+          <li>Requires dedicated driver/control circuit</li>
+          <li>Uses more current than DC motors (even at standstill)</li>
+          <li>Torque output drops rapidly at higher speeds</li>
+          <li>Can miss steps under overload (open-loop)</li>
+          <li>Resonance at certain speeds (especially VR/PM types)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4>Applications of Stepper Motors</h4>
+    <div class="chips">
+      <span class="chip">Printing Machinery</span>
+      <span class="chip">X-Y Printers / Plotters</span>
+      <span class="chip">CNC Machines</span>
+      <span class="chip">X-Ray Machines</span>
+      <span class="chip">Conveyor / Material Handling</span>
+      <span class="chip">Packing Machinery</span>
+      <span class="chip">Robotics</span>
+      <span class="chip">Automobile Valve Control</span>
+      <span class="chip">Peristaltic Pumps</span>
+      <span class="chip">Security Cameras (PTZ)</span>
+      <span class="chip">Diamond Cutting Machines</span>
+      <span class="chip">Medical Equipment</span>
+    </div>
+  </div>
+
+
+  <!-- ═══ 10. SERVO MOTORS ═══ -->
+  <div class="section" id="s10">
+    <h2><span class="num">10</span> Servo Motors</h2>
+
+    <h3>10.1 What is a Servo Motor?</h3>
+    <p>A servo motor is essentially a <strong>combination</strong> of a DC/AC motor + gear train + position sensor + feedback circuit + control circuit — all housed together in one unit.</p>
+
+    <p><strong>Key distinguishing feature:</strong> It can rotate through <em>specific degrees</em> (position control) in addition to continuous rotation. This makes it ideal for <strong>precise position control</strong>.</p>
+
+    <!-- Servo block diagram -->
+    <div class="diagram">
+      <svg viewBox="0 0 680 140" xmlns="http://www.w3.org/2000/svg" font-family="'Lora',serif" font-size="10.5">
+        <defs>
+          <marker id="arrowB" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="#1a1916"/>
+          </marker>
+        </defs>
+
+        <!-- PWM Input -->
+        <rect x="10" y="50" width="90" height="40" fill="#1a1916" rx="2"/>
+        <text x="55" y="67" text-anchor="middle" fill="#f5f4f0" font-size="10">PWM</text>
+        <text x="55" y="80" text-anchor="middle" fill="rgba(245,244,240,0.6)" font-size="9">Input Signal</text>
+
+        <line x1="100" y1="70" x2="118" y2="70" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowB)"/>
+
+        <!-- Control Circuit -->
+        <rect x="120" y="45" width="100" height="50" fill="#3a3834" rx="2"/>
+        <text x="170" y="65" text-anchor="middle" fill="#f5f4f0">Control</text>
+        <text x="170" y="80" text-anchor="middle" fill="#f5f4f0">Circuit</text>
+
+        <line x1="220" y1="70" x2="238" y2="70" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowB)"/>
+
+        <!-- DC Motor -->
+        <rect x="240" y="50" width="80" height="40" fill="#eeecea" stroke="#1a1916" rx="2" stroke-width="1.2"/>
+        <text x="280" y="67" text-anchor="middle" fill="#1a1916">DC Motor</text>
+        <text x="280" y="80" text-anchor="middle" fill="#6b6860" font-size="9">High speed</text>
+
+        <line x1="320" y1="70" x2="338" y2="70" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowB)"/>
+
+        <!-- Gear Train -->
+        <rect x="340" y="45" width="90" height="50" fill="#eeecea" stroke="#1a1916" rx="2" stroke-width="1.2"/>
+        <text x="385" y="65" text-anchor="middle" fill="#1a1916">Gear Train</text>
+        <text x="385" y="80" text-anchor="middle" fill="#6b6860" font-size="9">Speed↓ Torque↑</text>
+
+        <line x1="430" y1="70" x2="448" y2="70" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowB)"/>
+
+        <!-- Output Shaft -->
+        <rect x="450" y="50" width="80" height="40" fill="#3a3834" rx="2"/>
+        <text x="490" y="67" text-anchor="middle" fill="#f5f4f0">Output</text>
+        <text x="490" y="80" text-anchor="middle" fill="rgba(245,244,240,0.6)" font-size="9">30–40 RPM</text>
+
+        <!-- Potentiometer feedback -->
+        <rect x="550" y="50" width="120" height="40" fill="#dedad4" stroke="#1a1916" rx="2" stroke-width="1.2"/>
+        <text x="610" y="65" text-anchor="middle" fill="#1a1916">Potentiometer</text>
+        <text x="610" y="79" text-anchor="middle" fill="#6b6860" font-size="9">Position sensor</text>
+
+        <!-- feedback arrow back to control -->
+        <path d="M 610,90 Q 610,120 170,120 Q 170,97 170,95" fill="none" stroke="#6b6860" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrowB)"/>
+        <text x="400" y="130" fill="#6b6860" font-size="9" text-anchor="middle">Feedback (position error → correction)</text>
+
+        <line x1="530" y1="70" x2="548" y2="70" stroke="#1a1916" stroke-width="1.5" marker-end="url(#arrowB)"/>
+      </svg>
+    </div>
+
+    <h3>10.2 Internal Components</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Component</th><th>Role</th></tr>
+        <tr><td>DC Motor</td><td>High-speed, low-torque motor — provides the rotational input.</td></tr>
+        <tr><td>Gear Train</td><td>Reduces speed dramatically (e.g., to 30–40 RPM); multiplies torque correspondingly. Multiple gear stages.</td></tr>
+        <tr><td>Potentiometer (Position Sensor)</td><td>Connected to end of gear train; turns through same angle as last gear. Resistance varies with angle. Position = calculated from resistance.</td></tr>
+        <tr><td>Control Circuit (H-bridge + comparator)</td><td>Compares commanded position (from PWM) with actual position (from pot). Drives motor until error = 0.</td></tr>
+        <tr><td>Power Connector</td><td>Motor power (+5V or +6V typically for hobby servos).</td></tr>
+        <tr><td>Signal Wire (PWM)</td><td>Orange/yellow: 50 Hz pulse; pulse width 1–2 ms → 0°–180° range.</td></tr>
+      </table>
+    </div>
+
+    <h4>PWM Control of Servo</h4>
+    <div class="box formula">
+      <div class="label">PWM Signal</div>
+      Frequency: 50 Hz (period = 20 ms)<br>
+      Pulse width: 1.0 ms → 0° position<br>
+      Pulse width: 1.5 ms → 90° (neutral)<br>
+      Pulse width: 2.0 ms → 180° position<br>
+      <br>
+      Wire colours: Brown/Black = GND, Red = +VCC, Orange/Yellow = PWM signal
+    </div>
+
+    <h3>10.3 Speed Control of Servo Motor</h3>
+    <ul>
+      <li><strong>Armature voltage control:</strong> Voltage to motor armature from servo system controls speed. N ∝ (V – Ia·Ra) / φ</li>
+      <li><strong>Field (flux) control:</strong> Voltage to field winding controls flux, thus speed. N ∝ Eb / φ — reducing φ increases speed.</li>
+    </ul>
+
+    <h3>10.4 Applications of Servo Motor</h3>
+    <div class="chips">
+      <span class="chip">Position Control Systems</span>
+      <span class="chip">Robotics</span>
+      <span class="chip">CNC Machines</span>
+      <span class="chip">Automation Conveyors</span>
+      <span class="chip">Navigation Systems</span>
+      <span class="chip">Solar Tracking</span>
+      <span class="chip">Radio Antennas &amp; Observatories</span>
+      <span class="chip">Auto-Focus Cameras</span>
+      <span class="chip">Textile &amp; Printing Machinery</span>
+    </div>
+  </div>
+
+
+  <!-- ═══ 11. SELECTION GUIDE ═══ -->
+  <div class="section" id="s11">
+    <h2><span class="num">11</span> Selection of Actuators — Comparison Guide</h2>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>Hydraulic</th><th>Pneumatic</th><th>Electric</th></tr>
+        <tr><td>Force / Torque</td><td>Very High (700 bar)</td><td>Moderate (5–10 bar)</td><td>Low to High (depends on motor)</td></tr>
+        <tr><td>Speed</td><td>Moderate</td><td>High / Fast</td><td>Precise control possible</td></tr>
+        <tr><td>Precision</td><td>Good</td><td>Poor to Moderate</td><td>Excellent</td></tr>
+        <tr><td>Cleanliness</td><td>Poor (oil leaks)</td><td>Good (air)</td><td>Excellent (no fluid)</td></tr>
+        <tr><td>Noise</td><td>Moderate</td><td>High</td><td>Low</td></tr>
+        <tr><td>Cost</td><td>Medium-High</td><td>Low-Medium</td><td>Medium-High</td></tr>
+        <tr><td>Environment</td><td>Risk of fire (oil)</td><td>Safe</td><td>Safe (no fluid)</td></tr>
+        <tr><td>Control</td><td>Moderate</td><td>Simple</td><td>Excellent (digital)</td></tr>
+        <tr><td>Typical Use</td><td>Excavators, presses, car lifts</td><td>Packaging, robotics (pick &amp; place), food industry</td><td>CNC, robotics, EVs, consumer appliances</td></tr>
+      </table>
+    </div>
+
+    <h3>Motor Selection Summary</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Need</th><th>Best Motor</th></tr>
+        <tr><td>Constant speed, medium torque</td><td>DC Shunt Motor / AC Induction Motor</td></tr>
+        <tr><td>High starting torque (traction)</td><td>DC Series Motor</td></tr>
+        <tr><td>High efficiency, low maintenance, variable load</td><td>BLDC Motor</td></tr>
+        <tr><td>Precise positioning, open-loop, low-medium power</td><td>Stepper Motor</td></tr>
+        <tr><td>Precise positioning, closed-loop, high torque accuracy</td><td>Servo Motor</td></tr>
+        <tr><td>Very high power density, industrial drive</td><td>DC Shunt / Compound Motor</td></tr>
+      </table>
+    </div>
+
+    <hr>
+
+    <div class="box">
+      <div class="label">Quick Recall — Key Numbers</div>
+      <p>Hydraulic pressure: up to <strong>700 bar</strong> | Pneumatic: <strong>5–10 bar</strong> | Servo PWM: <strong>50 Hz, 1–2 ms</strong> pulse | Stepper common step angle: <strong>1.8°</strong> (200 steps/rev) | μᵣ for good ferromagnetic: <strong>800–1200</strong> | BLDC Hall sensor IC: <strong>A3144</strong> (10 kΩ pullup, 0.1 µF capacitor) | Shunt motor typical: <strong>230 V, Ra &lt; 1 Ω, Rsh = 200+ Ω</strong></p>
+    </div>
+
+  </div>
+
+</main>
+
+<button id="top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ TOP</button>
+
+</body>
+</html>

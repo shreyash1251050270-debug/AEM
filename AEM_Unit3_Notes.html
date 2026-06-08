@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEM Unit 3 — Grippers & Robot Controls</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --border2: #2e2e2e;
+    --text: #e8e8e8;
+    --muted: #666;
+    --accent: #ffffff;
+    --dim: #444;
+    --highlight: #1a1a1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 56px 64px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border: 1px solid var(--border2);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    color: var(--accent);
+  }
+  .subtitle {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* ── NAV / TOC ── */
+  .toc {
+    padding: 32px 64px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .toc-item {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 6px 14px;
+    border: 1px solid var(--border2);
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .toc-item:hover { border-color: var(--dim); color: var(--text); }
+
+  /* ── MAIN LAYOUT ── */
+  .wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 64px 100px;
+  }
+
+  /* ── SECTION ── */
+  section {
+    padding-top: 72px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 56px;
+  }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(20px, 3vw, 30px);
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 32px;
+    letter-spacing: -0.5px;
+  }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 28px 0 12px;
+    letter-spacing: 0.3px;
+  }
+  h4 {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin: 20px 0 8px;
+  }
+
+  p { color: var(--text); margin-bottom: 14px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── CALLOUT / INFO BOX ── */
+  .callout {
+    background: var(--surface);
+    border-left: 2px solid var(--accent);
+    padding: 18px 22px;
+    margin: 22px 0;
+    font-size: 13px;
+  }
+  .callout.key {
+    border-left-color: var(--accent);
+  }
+  .callout.formula {
+    border-left-color: var(--dim);
+    font-family: 'DM Mono', monospace;
+    font-style: italic;
+  }
+  .callout-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  /* ── GRID CARDS ── */
+  .grid {
+    display: grid;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .card {
+    background: var(--surface);
+    padding: 22px 20px;
+    transition: background 0.2s;
+  }
+  .card:hover { background: var(--surface2); }
+  .card-num {
+    font-size: 32px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    color: var(--border2);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .card p { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 12.5px;
+  }
+  th {
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border2);
+    font-weight: 400;
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface); }
+  td:first-child { color: var(--accent); font-weight: 500; }
+
+  /* ── LIST STYLES ── */
+  ul, ol {
+    padding-left: 18px;
+    margin: 12px 0;
+    color: var(--text);
+  }
+  li { margin-bottom: 6px; font-size: 13px; line-height: 1.75; }
+  li::marker { color: var(--dim); }
+
+  /* ── DIAGRAM / SVG WRAPPERS ── */
+  .diagram-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin: 28px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .diagram-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+  }
+  svg text { fill: var(--text); }
+
+  /* ── FORMULA BLOCK ── */
+  .formula-block {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    padding: 24px 28px;
+    margin: 20px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 2;
+  }
+  .formula-main {
+    font-size: 16px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .formula-vars { color: var(--muted); font-size: 12px; }
+
+  /* ── STEP LIST ── */
+  .steps { margin: 20px 0; }
+  .step {
+    display: flex;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-n {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 2px;
+    min-width: 36px;
+    padding-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-title {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 4px;
+    font-family: 'Syne', sans-serif;
+  }
+  .step-body p { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.7; }
+
+  /* ── COMPARISON TABLE ── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+  .compare-col { background: var(--surface); padding: 24px; }
+  .compare-head {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border2);
+  }
+  .compare-col li { font-size: 12.5px; margin-bottom: 8px; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  /* ── INLINE HIGHLIGHT ── */
+  strong { color: var(--accent); font-weight: 500; }
+  em { color: var(--muted); font-style: italic; }
+  code {
+    background: var(--surface2);
+    padding: 1px 6px;
+    font-size: 12px;
+    border: 1px solid var(--border2);
+    color: var(--text);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .header, .wrapper { padding-left: 24px; padding-right: 24px; }
+    .toc { padding-left: 24px; padding-right: 24px; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .compare { grid-template-columns: 1fr; }
+  }
+
+  /* ── PROGRESS / TOC HIGHLIGHT ── */
+  .chapter-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 0;
+  }
+  .chapter-divider span {
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .chapter-divider::before, .chapter-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════ HEADER ══ -->
+<div class="header">
+  <div class="tag">AEM · Unit III · Detailed Study Notes</div>
+  <h1>Grippers &amp;<br>Robot Controls</h1>
+  <div class="subtitle">End Effectors · Classification · Force Analysis · Control Systems</div>
+</div>
+
+<div class="toc">
+  <a class="toc-item" href="#s1">01 Introduction</a>
+  <a class="toc-item" href="#s2">02 Mode of Grasp</a>
+  <a class="toc-item" href="#s3">03 Classification</a>
+  <a class="toc-item" href="#s4">04 Mechanical Grippers</a>
+  <a class="toc-item" href="#s5">05 Vacuum Grippers</a>
+  <a class="toc-item" href="#s6">06 Magnetic Grippers</a>
+  <a class="toc-item" href="#s7">07 Adhesive Grippers</a>
+  <a class="toc-item" href="#s8">08 Selection Criteria</a>
+  <a class="toc-item" href="#s9">09 Design Criteria</a>
+  <a class="toc-item" href="#s10">10 Force Analysis</a>
+  <a class="toc-item" href="#s11">11 Gripper vs End Effector</a>
+  <a class="toc-item" href="#s12">12 Control Systems</a>
+  <a class="toc-item" href="#s13">13 PID Control</a>
+  <a class="toc-item" href="#s14">14 Performance Criteria</a>
+</div>
+
+<div class="wrapper">
+
+<!-- ══════════════════════════════════════════ §1 ══ -->
+<section id="s1">
+  <div class="section-label">Section 01</div>
+  <h2>Introduction to Grippers</h2>
+
+  <div class="callout key">
+    <div class="callout-label">Core Definition</div>
+    A <strong>gripper</strong> is a mechanical or robotic device that acts as the "hand" of a robot arm, enabling it to <strong>grasp, hold, manipulate, and release</strong> objects. It is the most common type of end effector.
+  </div>
+
+  <p>The easiest analogy is the <strong>human hand</strong> — just as a hand enables holding, tightening, handling, and releasing an object, a gripper performs the same function for an industrial robot.</p>
+
+  <p>Industrial robots use grippers as <strong>end effectors</strong> for picking up raw and finished work parts. A robot can perform good grasping only when it obtains proper gripper selection and design.</p>
+
+  <h3>Gripper vs. End Effector</h3>
+  <div class="callout">
+    <div class="callout-label">Critical Distinction</div>
+    <strong>An end-effector</strong> is any device at the end of a robotic arm designed to interact with the environment. Its exact nature depends on the application.<br><br>
+    <strong>A gripper</strong> is a <em>type</em> of end effector — but not all end effectors are grippers. Tools like welding torches, spray guns, and drills are end effectors, not grippers.
+  </div>
+
+  <!-- Visual: Robot Arm Anatomy -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 280" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace">
+      <!-- Base -->
+      <rect x="60" y="220" width="80" height="30" fill="none" stroke="#333" stroke-width="1.5"/>
+      <text x="100" y="262" font-size="10" fill="#555" text-anchor="middle" letter-spacing="1">BASE</text>
+      <!-- Shoulder link -->
+      <line x1="100" y1="220" x2="100" y2="140" stroke="#333" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="100" cy="220" r="10" fill="none" stroke="#444" stroke-width="1.5"/>
+      <circle cx="100" cy="140" r="10" fill="none" stroke="#444" stroke-width="1.5"/>
+      <text x="60" y="182" font-size="10" fill="#555" text-anchor="middle">SHOULDER</text>
+      <!-- Upper arm -->
+      <line x1="100" y1="140" x2="210" y2="80" stroke="#333" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="210" cy="80" r="10" fill="none" stroke="#444" stroke-width="1.5"/>
+      <text x="140" y="95" font-size="10" fill="#555">ELBOW</text>
+      <!-- Forearm -->
+      <line x1="210" y1="80" x2="340" y2="80" stroke="#333" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="340" cy="80" r="10" fill="none" stroke="#444" stroke-width="1.5"/>
+      <text x="265" y="68" font-size="10" fill="#555" text-anchor="middle">WRIST</text>
+      <!-- End effector bracket -->
+      <line x1="340" y1="80" x2="400" y2="80" stroke="#444" stroke-width="4" stroke-linecap="round"/>
+      <!-- Gripper fingers -->
+      <line x1="400" y1="80" x2="450" y2="55" stroke="#666" stroke-width="6" stroke-linecap="round"/>
+      <line x1="400" y1="80" x2="450" y2="105" stroke="#666" stroke-width="6" stroke-linecap="round"/>
+      <text x="480" y="60" font-size="11" fill="#aaa">FINGER 1</text>
+      <text x="480" y="110" font-size="11" fill="#aaa">FINGER 2</text>
+      <!-- Labels -->
+      <text x="430" y="80" font-size="9" fill="#888" text-anchor="middle">GRIPPER</text>
+      <text x="430" y="92" font-size="9" fill="#555" text-anchor="middle">(END EFFECTOR)</text>
+      <!-- Annotation lines -->
+      <line x1="340" y1="80" x2="340" y2="170" stroke="#222" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="340" y="185" font-size="10" fill="#444" text-anchor="middle">WRIST JOINT</text>
+      <!-- Robot controller box -->
+      <rect x="560" y="180" width="100" height="70" fill="none" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="610" y="205" font-size="10" fill="#444" text-anchor="middle">ROBOT</text>
+      <text x="610" y="220" font-size="10" fill="#444" text-anchor="middle">CONTROLLER</text>
+      <line x1="560" y1="215" x2="100" y2="215" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="6 4"/>
+      <text x="330" y="210" font-size="9" fill="#333" text-anchor="middle">CONTROL SIGNAL</text>
+    </svg>
+    <div class="diagram-label">Fig. 1 — Robot Arm Anatomy with Gripper (End Effector)</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ §2 ══ -->
+<section id="s2">
+  <div class="section-label">Section 02</div>
+  <h2>Mode of Grasp</h2>
+  <p>There are <strong>four main categories</strong> based on how gripping is applied to the workpiece:</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-num">01</div>
+      <div class="card-title">No Gripping</div>
+      <p>The workpiece is held in a <strong>jig</strong> (specially designed purpose-built holder) and the robot performs an activity on it without physically gripping it.</p>
+      <p style="margin-top:10px;font-size:11px;color:#555">Examples: Spot welding, flame cutting, drilling</p>
+    </div>
+    <div class="card">
+      <div class="card-num">02</div>
+      <div class="card-title">Coarse Gripping</div>
+      <p>The robot holds the workpiece, but gripping does <strong>not need to be precise</strong>. Accuracy in positioning is not critical.</p>
+      <p style="margin-top:10px;font-size:11px;color:#555">Examples: Handling castings, dipping, unloading furnaces, stacking boxes or sacks</p>
+    </div>
+    <div class="card">
+      <div class="card-num">03</div>
+      <div class="card-title">Precise Gripping</div>
+      <p>The robot holds the workpiece requiring <strong>accurate positioning</strong>. Higher-level control is necessary.</p>
+      <p style="margin-top:10px;font-size:11px;color:#555">Examples: Unloading and loading machine tools</p>
+    </div>
+    <div class="card">
+      <div class="card-num">04</div>
+      <div class="card-title">Assembly</div>
+      <p>Robot must assemble parts requiring <strong>accurate positioning + sensory feedback</strong> to monitor and correct movements in real time.</p>
+      <p style="margin-top:10px;font-size:11px;color:#555">Examples: Electronic component assembly, precision fitting</p>
+    </div>
+  </div>
+
+  <h3>Internal vs. External Gripping</h3>
+  <div class="compare">
+    <div class="compare-col">
+      <div class="compare-head">Internal Gripper</div>
+      <ul>
+        <li>Fingers expand <strong>outward</strong> to grip from inside a hole or cavity</li>
+        <li>Used when external surfaces are unsuitable for gripping</li>
+        <li>Better for tubular or hollow components</li>
+        <li>Provides stable grip for internal bores</li>
+        <li>Less common; more specialized</li>
+      </ul>
+    </div>
+    <div class="compare-col">
+      <div class="compare-head">External Gripper</div>
+      <ul>
+        <li>Fingers close <strong>inward</strong> to grip external surfaces of an object</li>
+        <li>Most common configuration in industry</li>
+        <li>Suitable for solid blocks, cylinders, irregular shapes</li>
+        <li>Simpler mechanism and control</li>
+        <li>Wide range of jaw designs available</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ §3 ══ -->
+<section id="s3">
+  <div class="section-label">Section 03</div>
+  <h2>Classification of Grippers</h2>
+
+  <h3>General Category (by Gripping Principle)</h3>
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">Impactive</div>
+      <p>Jaws or claws that physically grasp by <strong>direct impact</strong> upon the object. The most common type.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Ingressive</div>
+      <p>Pins, needles, or hackles that physically <strong>penetrate the surface</strong> of the object. Used for textile, carbon, and glass fiber handling.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Astrictive</div>
+      <p>Apply <strong>suction forces</strong> to the object's surface — via vacuum, magneto-adhesion, or electro-adhesion.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Contiguous</div>
+      <p>Requires <strong>direct contact for adhesion</strong> — glue, surface tension, or freezing. No mechanical clamping.</p>
+    </div>
+  </div>
+
+  <h3>Major Mechanism-Based Classification</h3>
+
+  <!-- Visual: Classification Tree -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 320" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace" font-size="10">
+      <!-- Root -->
+      <rect x="250" y="10" width="200" height="36" fill="none" stroke="#333" stroke-width="1.5"/>
+      <text x="350" y="30" text-anchor="middle" fill="#ccc" font-size="11" font-family="Syne, sans-serif" font-weight="700">GRIPPERS</text>
+      <text x="350" y="43" text-anchor="middle" fill="#555">CLASSIFICATION</text>
+
+      <!-- Branches from root -->
+      <line x1="350" y1="46" x2="350" y2="70" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="70" y1="70" x2="630" y2="70" stroke="#2a2a2a" stroke-width="1"/>
+      <!-- 5 verticals -->
+      <line x1="70" y1="70" x2="70" y2="90" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="195" y1="70" x2="195" y2="90" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="350" y1="70" x2="350" y2="90" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="500" y1="70" x2="500" y2="90" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="630" y1="70" x2="630" y2="90" stroke="#2a2a2a" stroke-width="1"/>
+
+      <!-- Level 1 boxes -->
+      <rect x="20" y="90" width="100" height="30" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="70" y="107" text-anchor="middle" fill="#aaa" font-size="9.5">MECHANICAL</text>
+      <text x="70" y="118" text-anchor="middle" fill="#555" font-size="9">FINGER</text>
+
+      <rect x="145" y="90" width="100" height="30" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="195" y="107" text-anchor="middle" fill="#aaa" font-size="9.5">VACUUM &amp;</text>
+      <text x="195" y="118" text-anchor="middle" fill="#555" font-size="9">MAGNETIC</text>
+
+      <rect x="300" y="90" width="100" height="30" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="350" y="107" text-anchor="middle" fill="#aaa" font-size="9.5">UNIVERSAL</text>
+      <text x="350" y="118" text-anchor="middle" fill="#555" font-size="9">GRIPPERS</text>
+
+      <rect x="450" y="90" width="100" height="30" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="500" y="107" text-anchor="middle" fill="#aaa" font-size="9.5">ADHESIVE</text>
+      <text x="500" y="118" text-anchor="middle" fill="#555" font-size="9">GRIPPERS</text>
+
+      <rect x="580" y="90" width="100" height="30" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="630" y="107" text-anchor="middle" fill="#aaa" font-size="9.5">HOOKS &amp;</text>
+      <text x="630" y="118" text-anchor="middle" fill="#555" font-size="9">SCOOPS</text>
+
+      <!-- Sub-branches for MECHANICAL -->
+      <line x1="70" y1="120" x2="70" y2="145" stroke="#222" stroke-width="1"/>
+      <line x1="20" y1="145" x2="120" y2="145" stroke="#222" stroke-width="1"/>
+      <line x1="20" y1="145" x2="20" y2="162" stroke="#222" stroke-width="1"/>
+      <line x1="70" y1="145" x2="70" y2="162" stroke="#222" stroke-width="1"/>
+      <line x1="120" y1="145" x2="120" y2="162" stroke="#222" stroke-width="1"/>
+      <rect x="-5" y="162" width="52" height="28" fill="#0d0d0d" stroke="#1e1e1e" stroke-width="1"/>
+      <text x="21" y="175" text-anchor="middle" fill="#555" font-size="8.5">PNEUMATIC</text>
+      <text x="21" y="185" text-anchor="middle" fill="#444" font-size="7.5">compressed air</text>
+      <rect x="44" y="162" width="52" height="28" fill="#0d0d0d" stroke="#1e1e1e" stroke-width="1"/>
+      <text x="70" y="175" text-anchor="middle" fill="#555" font-size="8.5">HYDRAULIC</text>
+      <text x="70" y="185" text-anchor="middle" fill="#444" font-size="7.5">fluid pressure</text>
+      <rect x="94" y="162" width="52" height="28" fill="#0d0d0d" stroke="#1e1e1e" stroke-width="1"/>
+      <text x="120" y="175" text-anchor="middle" fill="#555" font-size="8.5">ELECTRIC</text>
+      <text x="120" y="185" text-anchor="middle" fill="#444" font-size="7.5">motor driven</text>
+
+      <!-- Sub-branches for UNIVERSAL -->
+      <line x1="350" y1="120" x2="350" y2="145" stroke="#222" stroke-width="1"/>
+      <line x1="290" y1="145" x2="410" y2="145" stroke="#222" stroke-width="1"/>
+      <line x1="290" y1="145" x2="290" y2="162" stroke="#222" stroke-width="1"/>
+      <line x1="350" y1="145" x2="350" y2="162" stroke="#222" stroke-width="1"/>
+      <line x1="410" y1="145" x2="410" y2="162" stroke="#222" stroke-width="1"/>
+      <rect x="264" y="162" width="52" height="28" fill="#0d0d0d" stroke="#1e1e1e" stroke-width="1"/>
+      <text x="290" y="175" text-anchor="middle" fill="#555" font-size="8.5">INFLATABLE</text>
+      <text x="290" y="185" text-anchor="middle" fill="#444" font-size="7.5">fingers</text>
+      <rect x="324" y="162" width="52" height="28" fill="#0d0d0d" stroke="#1e1e1e" stroke-width="1"/>
+      <text x="350" y="175" text-anchor="middle" fill="#555" font-size="8.5">SOFT</text>
+      <text x="350" y="185" text-anchor="middle" fill="#444" font-size="7.5">fingers</text>
+      <rect x="384" y="162" width="52" height="28" fill="#0d0d0d" stroke="#1e1e1e" stroke-width="1"/>
+      <text x="410" y="175" text-anchor="middle" fill="#555" font-size="8.5">3-FINGER</text>
+      <text x="410" y="185" text-anchor="middle" fill="#444" font-size="7.5">grippers</text>
+    </svg>
+    <div class="diagram-label">Fig. 2 — Gripper Classification Tree</div>
+  </div>
+
+  <h3>Jaw Gripper Types Comparison</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Jaw Count</th>
+        <th>Centering Accuracy</th>
+        <th>Contact Area</th>
+        <th>Cost</th>
+        <th>Best Use</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Two-Jaw Gripper</td>
+        <td>2</td>
+        <td>High (most accurate)</td>
+        <td>Lower (2 contact points)</td>
+        <td>Lowest</td>
+        <td>Most common; general parts</td>
+      </tr>
+      <tr>
+        <td>Three-Jaw Gripper</td>
+        <td>3</td>
+        <td>Very High</td>
+        <td>More than 2-jaw</td>
+        <td>Medium</td>
+        <td>Cylindrical/round parts</td>
+      </tr>
+      <tr>
+        <td>Multi-Jaw Gripper</td>
+        <td>4+</td>
+        <td>Highest centering</td>
+        <td>Maximum contact</td>
+        <td>Highest</td>
+        <td>Complex/irregular shapes</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-label">Note on Jaw Motion</div>
+    All two-jaw grippers have <strong>two mounting locations</strong> for fingers and the jaws move in <strong>synchronous motion</strong> — opening and closing toward the central axis of the gripper body simultaneously.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ §4 ══ -->
+<section id="s4">
+  <div class="section-label">Section 04</div>
+  <h2>Mechanical Grippers — Deep Dive</h2>
+
+  <p>A mechanical gripper uses mechanical fingers actuated by a mechanism to grasp an object. It is used for general pick-and-place applications.</p>
+
+  <h3>Actuation Methods</h3>
+  <div class="grid grid-3">
+    <div class="card">
+      <div class="card-title">Pneumatic</div>
+      <p>Uses <strong>compressed air</strong>. Most common in industry. Fast actuation, simple, clean, but limited force precision.</p>
+      <p style="margin-top:8px;font-size:11px;color:#444">Operating pressure: typically 4–7 bar</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Hydraulic</div>
+      <p>Uses <strong>pressurized fluid</strong>. Delivers maximum gripping force. Best for heavy loads. Cylinder diameter kept minimal to reduce surface area.</p>
+      <p style="margin-top:8px;font-size:11px;color:#444">Force acts directly on piston → jaw/finger</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Electric</div>
+      <p>Uses an <strong>electric motor</strong>. Offers highest precision. Most modern: has microprocessors enabling variable grip force, position, and speed control.</p>
+      <p style="margin-top:8px;font-size:11px;color:#444">Programmable; best for delicate tasks</p>
+    </div>
+  </div>
+
+  <h3>Mechanism Sub-Types</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">01</div>
+      <div class="step-body">
+        <div class="step-title">Linkage Grippers</div>
+        <p>No cam, screw, or gear involved. Movement occurs only due to links attached to input and output. The mechanism must be perfectly designed so the input actuator's motion is transformed into gripping action at the output. Simplest and most reliable for repetitive motions.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">02</div>
+      <div class="step-body">
+        <div class="step-title">Gear and Rack Grippers</div>
+        <p>Input motion from gear motion drives connecting links into motion, producing gripping action at the output link. The rack converts rotary motion of the gear to linear motion of the jaw.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">03</div>
+      <div class="step-body">
+        <div class="step-title">Cam-Actuated Grippers</div>
+        <p>Reciprocating motion of the cam imparts motion to the follower, causing fingers to produce a grabbing action. A variety of cam profiles can be employed — constant velocity, circular arcs, harmonic curves, etc. Different profiles give different speed/force characteristics.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">04</div>
+      <div class="step-body">
+        <div class="step-title">Screw-Driven Grippers</div>
+        <p>Operated by turning a screw, which gives motion to connecting links and thus gripping motion to the output. The screw motion can be controlled by an attached motor. Self-locking when power is off (a major safety advantage).</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Flexible & Multiple-Jaw Grippers</h3>
+  <p>Flexible grippers consist of <strong>several linkages on each finger</strong> and can be two or multiple jaw designs. They can conform to object shapes, making them suitable for irregular or delicate objects. Multiple jaw grippers hold objects from multiple contact points, improving stability.</p>
+
+  <div class="callout">
+    <div class="callout-label">Hydraulic Gripper Selection Checklist</div>
+    When selecting a hydraulic gripper, consider: <strong>Part weight and size</strong> · <strong>Part material</strong> · <strong>Clearance around the part</strong> · <strong>Operating environment</strong> (corrosive, food/beverage) · <strong>Robot motion path</strong>
+  </div>
+
+  <!-- Visual: Mechanical Gripper Diagram -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 600 240" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace" font-size="10">
+      <!-- Actuator cylinder -->
+      <rect x="40" y="90" width="120" height="60" fill="none" stroke="#333" stroke-width="1.5" rx="2"/>
+      <rect x="40" y="90" width="60" height="60" fill="#141414" stroke="none"/>
+      <text x="100" y="123" text-anchor="middle" fill="#555" font-size="9">ACTUATOR</text>
+      <text x="100" y="135" text-anchor="middle" fill="#444" font-size="8">(PNEUMATIC)</text>
+      <!-- Piston rod -->
+      <line x1="160" y1="120" x2="200" y2="120" stroke="#444" stroke-width="4"/>
+      <!-- Pivot -->
+      <circle cx="220" cy="120" r="8" fill="none" stroke="#333" stroke-width="1.5"/>
+      <!-- Upper link -->
+      <line x1="220" y1="112" x2="320" y2="72" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+      <!-- Lower link -->
+      <line x1="220" y1="128" x2="320" y2="168" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+      <!-- Finger pivots -->
+      <circle cx="320" cy="72" r="6" fill="none" stroke="#333" stroke-width="1.5"/>
+      <circle cx="320" cy="168" r="6" fill="none" stroke="#333" stroke-width="1.5"/>
+      <!-- Fingers -->
+      <line x1="320" y1="72" x2="420" y2="50" stroke="#555" stroke-width="6" stroke-linecap="round"/>
+      <line x1="320" y1="168" x2="420" y2="190" stroke="#555" stroke-width="6" stroke-linecap="round"/>
+      <!-- Finger tips -->
+      <rect x="420" y="40" width="30" height="18" fill="none" stroke="#444" stroke-width="1" rx="1"/>
+      <rect x="420" y="182" width="30" height="18" fill="none" stroke="#444" stroke-width="1" rx="1"/>
+      <!-- Workpiece -->
+      <rect x="455" y="85" width="40" height="70" fill="#0d0d0d" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="475" y="124" text-anchor="middle" fill="#444" font-size="9">PART</text>
+      <!-- Labels -->
+      <text x="228" y="155" fill="#444" font-size="9">LINK</text>
+      <text x="228" y="95" fill="#444" font-size="9">LINK</text>
+      <text x="160" y="80" fill="#444" font-size="9">PISTON ROD</text>
+      <!-- Arrows force direction -->
+      <text x="545" y="80" fill="#555" font-size="8">GRIP</text>
+      <text x="545" y="92" fill="#555" font-size="8">FORCE</text>
+      <line x1="540" y1="95" x2="500" y2="105" stroke="#333" stroke-width="1" marker-end="url(#arr)"/>
+    </svg>
+    <div class="diagram-label">Fig. 3 — Mechanical Linkage Gripper (Pneumatic Actuation)</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ §5 ══ -->
+<section id="s5">
+  <div class="section-label">Section 05</div>
+  <h2>Vacuum Grippers</h2>
+
+  <p>Vacuum grippers use <strong>suction cups (vacuum cups)</strong> to grip objects. They operate by creating a pressure differential — the atmospheric pressure pushing the object against the cup exceeds the internal vacuum pressure, holding the object securely.</p>
+
+  <h3>How Vacuum is Generated</h3>
+  <p>The vacuum can be generated using a <strong>venturi effect</strong> or a dedicated <strong>vacuum pump</strong>. When the suction cup contacts a flat/smooth surface and air is evacuated, the object is held in place.</p>
+
+  <h3>Advantages of Vacuum Grippers</h3>
+  <ul>
+    <li>Can handle <strong>fragile objects</strong> without damage (glass, electronics)</li>
+    <li>Works on <strong>large flat surfaces</strong> efficiently (sheet metal, panels)</li>
+    <li>Can pick up objects from a <strong>single surface</strong> — no need to grip from multiple sides</li>
+    <li>Very fast pick-and-place cycle times</li>
+    <li>No risk of marring or scratching delicate surfaces</li>
+    <li>Can handle <strong>non-ferrous materials</strong> that magnetic grippers cannot</li>
+  </ul>
+
+  <h3>Disadvantages of Vacuum Grippers</h3>
+  <ul>
+    <li>Requires a <strong>smooth, non-porous surface</strong> for effective suction</li>
+    <li>Cannot handle objects with <strong>holes or perforations</strong></li>
+    <li>May fail on <strong>rough, dirty, or wet surfaces</strong></li>
+    <li>The suction cup can wear out over time</li>
+    <li>Relies on consistent air/vacuum supply</li>
+  </ul>
+
+  <!-- Visual: Vacuum Suction Cup Physics -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 500 200" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace">
+      <!-- Object (flat surface) -->
+      <rect x="100" y="130" width="300" height="40" fill="#111" stroke="#333" stroke-width="1.5"/>
+      <text x="250" y="156" text-anchor="middle" fill="#555" font-size="10">WORKPIECE (FLAT SURFACE)</text>
+      <!-- Suction cup body -->
+      <path d="M160 50 Q160 130 190 130 L310 130 Q340 130 340 50 Z" fill="none" stroke="#333" stroke-width="1.5"/>
+      <line x1="210" y1="50" x2="290" y2="50" stroke="#333" stroke-width="1.5"/>
+      <!-- Vacuum line -->
+      <line x1="250" y1="50" x2="250" y2="10" stroke="#2a2a2a" stroke-width="3"/>
+      <text x="265" y="30" fill="#444" font-size="9">VACUUM LINE</text>
+      <!-- Vacuum zone label -->
+      <text x="250" y="98" text-anchor="middle" fill="#1e1e1e" font-size="9">LOW P</text>
+      <text x="250" y="110" text-anchor="middle" fill="#1e1e1e" font-size="9">(VACUUM)</text>
+      <!-- Atmospheric pressure arrows -->
+      <text x="60" y="95" fill="#444" font-size="9">ATMO-</text>
+      <text x="60" y="107" fill="#444" font-size="9">SPHERE</text>
+      <line x1="90" y1="100" x2="155" y2="100" stroke="#333" stroke-width="1" marker-end="url(#arrowL)"/>
+      <text x="360" y="95" fill="#444" font-size="9">ATMO-</text>
+      <text x="360" y="107" fill="#444" font-size="9">SPHERE</text>
+      <line x1="357" y1="100" x2="345" y2="100" stroke="#333" stroke-width="1" marker-end="url(#arrowR)"/>
+      <!-- Force arrows up on workpiece -->
+      <line x1="200" y1="160" x2="200" y2="140" stroke="#444" stroke-width="1.5" marker-end="url(#arrowU)"/>
+      <line x1="250" y1="165" x2="250" y2="140" stroke="#444" stroke-width="1.5" marker-end="url(#arrowU)"/>
+      <line x1="300" y1="160" x2="300" y2="140" stroke="#444" stroke-width="1.5" marker-end="url(#arrowU)"/>
+      <text x="250" y="185" text-anchor="middle" fill="#444" font-size="9">ATMOSPHERIC PRESSURE HOLDS PART UP</text>
+      <defs>
+        <marker id="arrowL" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#444"/></marker>
+        <marker id="arrowR" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M0,0 L6,3 L0,6 Z" fill="#444"/></marker>
+        <marker id="arrowU" markerWidth="6" markerHeight="6" refX="3" refY="6" orient="auto"><path d="M0,6 L3,0 L6,6 Z" fill="#444"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-label">Fig. 4 — Vacuum Gripper Working Principle (Pressure Differential)</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ §6 ══ -->
+<section id="s6">
+  <div class="section-label">Section 06</div>
+  <h2>Magnetic Grippers</h2>
+
+  <p>Used to grip <strong>ferrous materials</strong> (iron, steel). A magnetic gripper uses a magnetic head to attract ferrous materials such as steel plates. The magnetic head is constructed with a <strong>ferromagnetic core and conducting coils</strong>.</p>
+
+  <h3>Working Principle</h3>
+  <p>Magnetic grippers are easier to control, but require a source of <strong>DC power</strong> and an appropriate controller. When the part is to be released, the control unit <strong>reverses the polarity</strong> at a reduced power level before switching off the electromagnet. This cancels the residual magnetism in the workpiece, ensuring a positive release.</p>
+
+  <h3>Force Equation (Maxwell's Equation)</h3>
+  <div class="formula-block">
+    <div class="formula-main">F = (IN)² / [2μ₀(R_A + R_M)² · A_c]</div>
+    <div class="formula-vars">
+      Where:<br>
+      IN = Number of amp-turns of coil<br>
+      A_c = Area of contact of the object with the magnet<br>
+      R_A = Reluctance of magnetic paths through air<br>
+      R_M = Reluctance of magnetic paths through metal
+    </div>
+  </div>
+
+  <h3>Gripping Force Requirement</h3>
+  <div class="formula-block">
+    <div class="formula-main">P ≥ [a + g] × m × FoS</div>
+    <div class="formula-vars">
+      Where:<br>
+      a = Gripper acceleration (m/s²)<br>
+      g = Gravitational constant (9.81 m/s²)<br>
+      m = Mass of object (kg)<br>
+      FoS = Factor of Safety
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">✓ Advantages</div>
+      <ul style="padding-left:14px;margin:8px 0;">
+        <li>Pick-up times are very fast</li>
+        <li>Variations in part-size can be tolerated</li>
+        <li>Capable of handling metal parts with holes</li>
+        <li>Needs only one surface for gripping</li>
+        <li>Safe in hazardous environments — no spark risk</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">✗ Disadvantages</div>
+      <ul style="padding-left:14px;margin:8px 0;">
+        <li>Residual magnetism in workpiece can cause problems in subsequent handling</li>
+        <li>Magnetic attraction can penetrate beyond top layer — may lift multiple parts from a stack</li>
+        <li>Only works on <strong>ferrous materials</strong></li>
+        <li>Requires DC power supply</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ §7 ══ -->
+<section id="s7">
+  <div class="section-label">Section 07</div>
+  <h2>Adhesive Grippers</h2>
+
+  <p>An adhesive gripper is a robot end effector that grasps objects by <strong>literally sticking to them</strong>. The gripper uses a type of adhesive (two-sided tape, glue pads, or microfiber surfaces) applied to a rod, sphere, or solid object.</p>
+
+  <h3>Key Characteristics</h3>
+  <ul>
+    <li>A major asset in manufacturing — the adhesive can remain <strong>sticky for a long time</strong> without maintenance</li>
+    <li>The adhesive cannot be disabled by the object itself (passive holding)</li>
+    <li>Used for lightweight, flat, or thin parts where mechanical gripping is impractical</li>
+    <li>Microfiber adhesive grippers mimic gecko feet — rely on <strong>Van der Waals forces</strong></li>
+  </ul>
+
+  <h3>Applications</h3>
+  <p>Adhesive grippers are used to handle: <strong>delicate electronic components</strong>, thin films and foils, small pharmaceutical parts, fragile substrates. JPL (Jet Propulsion Laboratory) has developed gecko-inspired adhesive grippers for space robotics applications.</p>
+
+  <div class="callout">
+    <div class="callout-label">Limitation</div>
+    Adhesive grippers typically handle only <strong>one part per cycle</strong> before the adhesive must be "reset" or replaced. They are generally limited to lightweight, clean objects.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ §8 ══ -->
+<section id="s8">
+  <div class="section-label">Section 08</div>
+  <h2>Gripper Selection Criteria</h2>
+  <p>Selecting the correct gripper is critical for reliable robot performance. The following factors must all be considered:</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">I</div>
+      <div class="step-body">
+        <div class="step-title">Surface Accessibility</div>
+        <p>The gripper must have the <strong>physical ability to reach</strong> the surface of the workpart. Obstructions, fixtures, or confined spaces can limit gripper geometry.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">II</div>
+      <div class="step-body">
+        <div class="step-title">Part Size Variation</div>
+        <p>Changes in workpart size (e.g., during machining: material is removed) must be accounted for while providing accurate positioning. The gripper must hold the part even when size varies.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">III</div>
+      <div class="step-body">
+        <div class="step-title">Delicate Surface Protection</div>
+        <p>The gripper must <strong>not create distortion or scratches</strong> on fragile workparts. Resilient pads or soft-contact fingers may be required.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">IV</div>
+      <div class="step-body">
+        <div class="step-title">Contact Area &amp; Stability</div>
+        <p>The gripper should hold the <strong>larger area of a workpart</strong> if it has various dimensions — this increases stability and control in positioning. Use resilient pads for more grasping contact.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">V</div>
+      <div class="step-body">
+        <div class="step-title">Weight of Workpart</div>
+        <p>The gripper must be rated for the <strong>weight of the object</strong> plus dynamic forces during acceleration. Must grip at or near the <strong>centre of mass</strong>.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">VI</div>
+      <div class="step-body">
+        <div class="step-title">Robot Arm Speed &amp; Direction</div>
+        <p>Speed of arm movement and the connection between <strong>direction of movement and gripper position</strong> on the part must be considered. Fast acceleration demands higher grip force.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">VII</div>
+      <div class="step-body">
+        <div class="step-title">Friction vs. Physical Constraint</div>
+        <p>Determine whether <strong>friction</strong> or <strong>physical constriction</strong> (form-fitting geometry) helps grip the part. Also consider the coefficient of friction μ between gripper and workpart.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">VIII</div>
+      <div class="step-body">
+        <div class="step-title">Operating Environment</div>
+        <p>Consider: <strong>heat, temperature, humidity, moisture, dirt, chemicals</strong>. These affect material choice, sealing requirements, and maintenance intervals.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Complete Design Factor Matrix</h3>
+  <table>
+    <thead>
+      <tr><th>Factor</th><th>Sub-Considerations</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Part to be Handled</td><td>Weight, size, shape, changes in shape during processing, tolerances, surface condition, protection of delicate surfaces</td></tr>
+      <tr><td>Actuation Method</td><td>Mechanical grasping, vacuum cup, magnetic, adhesive, scoops</td></tr>
+      <tr><td>Power &amp; Signal Transmission</td><td>Pneumatic, electrical, hydraulic, mechanical</td></tr>
+      <tr><td>Gripper Force</td><td>Weight of object, method of holding, coefficient of friction, speed and acceleration during motion cycle</td></tr>
+      <tr><td>Positioning</td><td>Finger length, robot accuracy &amp; repeatability, tolerance on part size</td></tr>
+      <tr><td>Service Conditions</td><td>Number of actuations over lifetime, replaceability of wear components, maintenance &amp; serviceability</td></tr>
+      <tr><td>Operating Environment</td><td>Heat, temperature, humidity, moisture, dirt, chemicals</td></tr>
+      <tr><td>Temperature Problems</td><td>Heat shields, long fingers, forced cooling, heat-resistant materials</td></tr>
+      <tr><td>Fabrication Materials</td><td>Strength, durability, rigidity, fatigue strength, cost, ease of fabrication, friction properties, compatibility with environment</td></tr>
+      <tr><td>Other Conditions</td><td>Interchangeable fingers, design standards, risk of product changes, lead time, production tryout</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════════════════════════════════════════ §9 ══ -->
+<section id="s9">
+  <div class="section-label">Section 09</div>
+  <h2>Gripper Design Criteria</h2>
+
+  <h3>Design Criteria (Must-Have Properties)</h3>
+  <div class="grid grid-3">
+    <div class="card">
+      <div class="card-title">Strong &amp; Durable</div>
+      <p>Must withstand repeated gripping forces, dynamic loads, and environmental stresses without failure.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Lightweight</div>
+      <p>Light gripper = less payload consumed by the gripper itself, leaving more capacity for the workpiece.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Dimensionally Stable</div>
+      <p>Must maintain workpiece orientation under high gravitational forces during all robot motions.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Built-in Compliance</div>
+      <p>Must have some automatic alignment capability to accommodate positioning tolerances — passive compliance preferred.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Fast Acting</div>
+      <p>Gripper open/close time affects cycle time. Must actuate quickly to keep robot throughput high.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Maintainable</div>
+      <p>Wear parts must be easily replaceable. Design should allow quick service without major disassembly.</p>
+    </div>
+  </div>
+
+  <h3>Design Rules (Step-by-Step Approach)</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">i</div>
+      <div class="step-body">
+        <div class="step-title">Study the Gripping Requirements</div>
+        <p>Analyze parts to be grasped and tasks to be performed. Express gripping requirements keeping in view types of material, shape, and properties.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">ii</div>
+      <div class="step-body">
+        <div class="step-title">Determine Additional Requirements</div>
+        <p>Identify any special conditions: high temperature, abrasives, dirt, chemicals, explosive environments, etc.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">iii</div>
+      <div class="step-body">
+        <div class="step-title">Determine Specific Solutions</div>
+        <p>Develop designs combining modular solutions. Don't design from scratch — use existing proven modules where possible.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">iv</div>
+      <div class="step-body">
+        <div class="step-title">Consider Multi-Gripper Design</div>
+        <p>Consider a design with <strong>two or three grippers mounted together</strong> at the end of the arm — enables handling multiple parts or different operations per cycle.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">v</div>
+      <div class="step-body">
+        <div class="step-title">Redesign the Part if Feasible</div>
+        <p>If the part is difficult to grip, consider whether the part itself can be redesigned to be more grippable. This is often more cost-effective than a complex custom gripper.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">vi</div>
+      <div class="step-body">
+        <div class="step-title">Specify and Design the Final Gripper</div>
+        <p>With all requirements known, specify the final gripper design with detailed drawings, material selections, and tolerances.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ §10 ══ -->
+<section id="s10">
+  <div class="section-label">Section 10</div>
+  <h2>Gripper Force Analysis</h2>
+
+  <div class="callout key">
+    <div class="callout-label">Core Concept</div>
+    The basic purpose of the gripper mechanism is to convert input power into the required <strong>motion and force</strong> to grasp and retain an object. Force analysis determines the minimum gripping force to prevent slippage.
+  </div>
+
+  <h3>Fundamental Concept</h3>
+  <p>For a rectangular block to be lifted, the gripping surface applies a force <strong>F_G</strong> along one axis through the centre of gravity of the block. The force preventing slippage due to gravity depends on:</p>
+  <ol>
+    <li>The <strong>angle θ</strong> subtended by the gripping surface with the horizontal</li>
+    <li>The <strong>coefficient of friction μ</strong> between the gripping surface and the load surface</li>
+  </ol>
+
+  <div class="callout formula">
+    <div class="callout-label">Static Gripping Force</div>
+    This force evaluated represents the <strong>static force</strong> — the minimum force that must be applied to a stationary object (load). It is the lower bound for design.
+  </div>
+
+  <!-- Visual: Force Diagram -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 600 300" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace" font-size="10">
+      <!-- Workpiece -->
+      <rect x="220" y="80" width="160" height="140" fill="none" stroke="#333" stroke-width="1.5"/>
+      <text x="300" y="153" text-anchor="middle" fill="#444" font-size="11">WORKPIECE</text>
+      <text x="300" y="167" text-anchor="middle" fill="#333" font-size="9">MASS = m</text>
+      <!-- Left finger -->
+      <rect x="140" y="110" width="80" height="20" fill="none" stroke="#444" stroke-width="1.5" rx="1"/>
+      <text x="110" y="123" text-anchor="middle" fill="#555" font-size="9">FINGER</text>
+      <!-- Right finger -->
+      <rect x="380" y="110" width="80" height="20" fill="none" stroke="#444" stroke-width="1.5" rx="1"/>
+      <text x="500" y="123" text-anchor="middle" fill="#555" font-size="9">FINGER</text>
+      <!-- Grip force arrows -->
+      <line x1="220" y1="120" x2="168" y2="120" stroke="#666" stroke-width="2.5" marker-end="url(#arr2)"/>
+      <line x1="380" y1="120" x2="434" y2="120" stroke="#666" stroke-width="2.5" marker-end="url(#arr3)"/>
+      <text x="145" y="142" fill="#555" font-size="9">F_G</text>
+      <text x="438" y="142" fill="#555" font-size="9">F_G</text>
+      <!-- Weight arrow -->
+      <line x1="300" y1="220" x2="300" y2="270" stroke="#555" stroke-width="2" marker-end="url(#arr4)"/>
+      <text x="310" y="256" fill="#444" font-size="9">W = mg</text>
+      <!-- Friction arrows (up) -->
+      <line x1="220" y1="190" x2="220" y2="145" stroke="#444" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr5)"/>
+      <line x1="380" y1="190" x2="380" y2="145" stroke="#444" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr5)"/>
+      <text x="120" y="175" fill="#444" font-size="9">μ·F_G</text>
+      <text x="385" y="175" fill="#444" font-size="9">μ·F_G</text>
+      <!-- Friction label -->
+      <text x="300" y="280" text-anchor="middle" fill="#333" font-size="9">EQUILIBRIUM: 2·μ·F_G ≥ mg</text>
+      <!-- CoF angle note -->
+      <defs>
+        <marker id="arr2" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#666"/></marker>
+        <marker id="arr3" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M5,0 L0,2.5 L5,5 Z" fill="#666"/></marker>
+        <marker id="arr4" markerWidth="5" markerHeight="5" refX="2.5" refY="0" orient="auto"><path d="M0,0 L5,0 L2.5,5 Z" fill="#555"/></marker>
+        <marker id="arr5" markerWidth="5" markerHeight="5" refX="2.5" refY="5" orient="auto"><path d="M0,5 L5,5 L2.5,0 Z" fill="#444"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-label">Fig. 5 — Static Force Analysis on a 2-Finger Gripper</div>
+  </div>
+
+  <h3>Minimum Gripping Force Formula</h3>
+  <div class="formula-block">
+    <div class="formula-main">F_G = m(g + a) / (2 × μ × nf)</div>
+    <div class="formula-vars">
+      Where:<br>
+      F_G = Gripping force per finger (N)<br>
+      m = Mass of object (kg)<br>
+      g = Acceleration due to gravity = 9.81 m/s²<br>
+      a = Robot acceleration (m/s²)<br>
+      μ = Coefficient of friction between gripper and part<br>
+      nf = Number of fingers
+    </div>
+  </div>
+
+  <h3>Dynamic Gripping Force</h3>
+  <div class="formula-block">
+    <div class="formula-main">F_g = m × g + a × F_s</div>
+    <div class="formula-vars">
+      Example — Parallel gripper CGS2-64-1:<br>
+      Specification = 295 N (at 6 bar)<br>
+      Acting force per finger = 147.5 N<br>
+      m = 1.475 kg, g = 9.81 m/s², a = 0.1<br>
+      Recommended handling weight = 1.475 kg (friction-locked connection)
+    </div>
+  </div>
+
+  <h3>Force Analysis — Pneumatic Cylinder Gripper</h3>
+  <p>For a pneumatic cylinder driving a gripper mechanism, the key variables are:</p>
+  <table>
+    <thead><tr><th>Symbol</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>M</td><td>Mass of object (kg)</td></tr>
+      <tr><td>g</td><td>Acceleration due to gravity</td></tr>
+      <tr><td>W</td><td>Weight of object = mg (N)</td></tr>
+      <tr><td>Pa</td><td>Force exerted by air on piston</td></tr>
+      <tr><td>P</td><td>Pressure of air needed</td></tr>
+      <tr><td>dp</td><td>Piston diameter</td></tr>
+      <tr><td>Pg</td><td>Gripper force (N)</td></tr>
+      <tr><td>P1</td><td>Linkage force</td></tr>
+      <tr><td>μ</td><td>Coefficient of friction</td></tr>
+      <tr><td>nf</td><td>Number of fingers</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-label">Worked Example</div>
+    <strong>Q.</strong> A 5 kg rectangular block is gripped in a two-finger gripper and lifted vertically at an acceleration of 27.5 m/s². The coefficient of friction between the two surfaces is 0.48. Calculate the minimum force that would prevent slippage.<br><br>
+    <strong>Solution:</strong><br>
+    F_G = m(g + a) / (2 × μ)<br>
+    F_G = 5 × (9.81 + 27.5) / (2 × 0.48)<br>
+    F_G = 5 × 37.31 / 0.96<br>
+    <strong>F_G ≈ 194.3 N per finger</strong>
+  </div>
+
+  <h3>Pivot-Type Grippers — Moment Equilibrium</h3>
+  <p>For simple pivot-type grips holding boxes: apply moments of forces on one arm and sum them to zero (ΣM = 0). The actuating force required:</p>
+  <div class="formula-block">
+    <div class="formula-main">F_act × L_act = F_grip × L_grip</div>
+    <div class="formula-vars">
+      Example: If F_act = 20 kgf and L_act/L_grip ratio = 4,<br>
+      then F_piston = 80 kgf to close the gripper
+    </div>
+  </div>
+  <p>The gripping force is the <strong>arithmetic sum of the individual forces</strong> produced by each gripping element.</p>
+</section>
+
+<!-- ══════════════════════════════════════════ §11 ══ -->
+<section id="s11">
+  <div class="section-label">Section 11</div>
+  <h2>Gripper vs. End Effector</h2>
+  <table>
+    <thead>
+      <tr><th>Aspect</th><th>Gripper</th><th>End Effector (Tool)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Definition</td>
+        <td>Device mounted on robot wrist to hold objects</td>
+        <td>Any device at the end of a robot arm — includes grippers and tools</td>
+      </tr>
+      <tr>
+        <td>Function</td>
+        <td>Enables holding, tightening, handling, and releasing objects</td>
+        <td>Performs a specific task (welding, painting, drilling, or gripping)</td>
+      </tr>
+      <tr>
+        <td>Classification</td>
+        <td>Classified by power used: pneumatic, hydraulic, electric, magnetic, vacuum</td>
+        <td>Two major types: (1) Grippers (2) Tools (process end effectors)</td>
+      </tr>
+      <tr>
+        <td>Analogy</td>
+        <td>Like a human hand</td>
+        <td>Like anything held in the human hand — could be a pen, hammer, or the hand itself</td>
+      </tr>
+      <tr>
+        <td>Used for</td>
+        <td>Pick-and-place, machine tending, part transfer</td>
+        <td>Welding, painting, dispensing, inspection, gripping</td>
+      </tr>
+      <tr>
+        <td>Key distinction</td>
+        <td>A gripper IS an end effector</td>
+        <td>An end effector is NOT always a gripper</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════════════════════════════════════════ §12 ══ -->
+<section id="s12">
+  <div class="section-label">Section 12</div>
+  <h2>Robot Control Systems</h2>
+
+  <p>Control systems for robots can be classified into two fundamental groups: <strong>open-loop</strong> and <strong>closed-loop</strong>.</p>
+
+  <h3>Open-Loop Control System</h3>
+  <div class="callout">
+    <div class="callout-label">Definition</div>
+    In an open-loop system, <strong>NO feedback is used</strong>. The controller must independently determine what signal to send to the actuator. The controller never actually knows if the actuator did what it was supposed to do.
+  </div>
+
+  <!-- Visual: Open Loop Block Diagram -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 100" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace" font-size="10">
+      <defs>
+        <marker id="arrH" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#444"/>
+        </marker>
+      </defs>
+      <!-- Set Point -->
+      <rect x="10" y="30" width="100" height="40" fill="none" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="60" y="52" text-anchor="middle" fill="#666" font-size="9">SET POINT</text>
+      <text x="60" y="64" text-anchor="middle" fill="#444" font-size="8">(DESIRED OUTPUT)</text>
+      <!-- Arrow -->
+      <line x1="110" y1="50" x2="145" y2="50" stroke="#333" stroke-width="1.2" marker-end="url(#arrH)"/>
+      <!-- Controller -->
+      <rect x="145" y="30" width="110" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="200" y="52" text-anchor="middle" fill="#888" font-size="10">CONTROLLER</text>
+      <!-- Arrow -->
+      <line x1="255" y1="50" x2="290" y2="50" stroke="#333" stroke-width="1.2" marker-end="url(#arrH)"/>
+      <!-- Actuator -->
+      <rect x="290" y="30" width="110" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="345" y="52" text-anchor="middle" fill="#888" font-size="10">ACTUATOR</text>
+      <!-- Arrow -->
+      <line x1="400" y1="50" x2="435" y2="50" stroke="#333" stroke-width="1.2" marker-end="url(#arrH)"/>
+      <!-- Process -->
+      <rect x="435" y="30" width="110" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="490" y="52" text-anchor="middle" fill="#888" font-size="10">PROCESS</text>
+      <!-- Arrow -->
+      <line x1="545" y1="50" x2="580" y2="50" stroke="#333" stroke-width="1.2" marker-end="url(#arrH)"/>
+      <!-- Output -->
+      <rect x="580" y="30" width="100" height="40" fill="none" stroke="#222" stroke-width="1"/>
+      <text x="630" y="52" text-anchor="middle" fill="#555" font-size="9">OUTPUT</text>
+      <text x="630" y="64" text-anchor="middle" fill="#333" font-size="8">(NO FEEDBACK)</text>
+    </svg>
+    <div class="diagram-label">Fig. 6 — Open-Loop Control System Block Diagram</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">✓ Advantages — Open Loop</div>
+      <ul style="padding-left:14px;margin:8px 0;font-size:12px;">
+        <li>Simple in construction and design</li>
+        <li>Economic in nature</li>
+        <li>Easy to maintain</li>
+        <li>Generally stable</li>
+        <li>Convenient when output is difficult to measure</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">✗ Disadvantages — Open Loop</div>
+      <ul style="padding-left:14px;margin:8px 0;font-size:12px;">
+        <li>Not accurate</li>
+        <li>Unreliable — errors accumulate</li>
+        <li>Any change in output cannot be corrected automatically</li>
+        <li>Not suitable for precision tasks</li>
+      </ul>
+    </div>
+  </div>
+
+  <p><span class="badge">EXAMPLES</span> Washing machine timer, toaster, traffic light, stepper motor systems</p>
+
+  <div class="divider"></div>
+
+  <h3>Closed-Loop (Feedback) Control System</h3>
+  <div class="callout">
+    <div class="callout-label">Definition</div>
+    In a closed-loop system, the output of the process is <strong>constantly monitored by a sensor</strong>. The sensor samples the output and passes the information back to the controller. Because the controller knows what the system is actually doing, it can make any adjustments necessary to keep the output where it belongs.
+  </div>
+
+  <!-- Visual: Closed Loop Block Diagram -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 160" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace" font-size="10">
+      <defs>
+        <marker id="arrCL" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#444"/>
+        </marker>
+        <marker id="arrCL2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#333"/>
+        </marker>
+      </defs>
+      <!-- Set Point -->
+      <rect x="10" y="35" width="90" height="40" fill="none" stroke="#222" stroke-width="1.5"/>
+      <text x="55" y="57" text-anchor="middle" fill="#555" font-size="9">SET POINT</text>
+      <text x="55" y="69" text-anchor="middle" fill="#444" font-size="8">(SP)</text>
+      <!-- Comparator circle -->
+      <circle cx="140" cy="55" r="18" fill="none" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="140" y="58" text-anchor="middle" fill="#555" font-size="13">Σ</text>
+      <text x="140" y="72" text-anchor="middle" fill="#444" font-size="8">ERROR</text>
+      <!-- Arrow SP to comparator -->
+      <line x1="100" y1="55" x2="122" y2="55" stroke="#333" stroke-width="1.2" marker-end="url(#arrCL)"/>
+      <!-- Arrow comparator to controller -->
+      <line x1="158" y1="55" x2="195" y2="55" stroke="#333" stroke-width="1.2" marker-end="url(#arrCL)"/>
+      <!-- Controller -->
+      <rect x="195" y="35" width="100" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="245" y="57" text-anchor="middle" fill="#888" font-size="10">CONTROLLER</text>
+      <!-- Arrow -->
+      <line x1="295" y1="55" x2="330" y2="55" stroke="#333" stroke-width="1.2" marker-end="url(#arrCL)"/>
+      <!-- Actuator -->
+      <rect x="330" y="35" width="100" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="380" y="57" text-anchor="middle" fill="#888" font-size="10">ACTUATOR</text>
+      <!-- Arrow -->
+      <line x1="430" y1="55" x2="465" y2="55" stroke="#333" stroke-width="1.2" marker-end="url(#arrCL)"/>
+      <!-- Process -->
+      <rect x="465" y="35" width="100" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="515" y="57" text-anchor="middle" fill="#888" font-size="10">PROCESS</text>
+      <!-- Arrow -->
+      <line x1="565" y1="55" x2="620" y2="55" stroke="#333" stroke-width="1.2" marker-end="url(#arrCL)"/>
+      <!-- Output -->
+      <rect x="620" y="35" width="70" height="40" fill="none" stroke="#222" stroke-width="1"/>
+      <text x="655" y="57" text-anchor="middle" fill="#555" font-size="9">OUTPUT</text>
+      <!-- Feedback path -->
+      <line x1="655" y1="75" x2="655" y2="130" stroke="#333" stroke-width="1.2"/>
+      <line x1="655" y1="130" x2="140" y2="130" stroke="#333" stroke-width="1.2" marker-end="url(#arrCL2)"/>
+      <line x1="140" y1="130" x2="140" y2="73" stroke="#333" stroke-width="1.2" marker-end="url(#arrCL)"/>
+      <!-- Sensor box on feedback path -->
+      <rect x="350" y="115" width="90" height="30" fill="#0d0d0d" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="395" y="132" text-anchor="middle" fill="#555" font-size="9">SENSOR</text>
+      <text x="655" y="148" text-anchor="middle" fill="#333" font-size="8">FEEDBACK</text>
+    </svg>
+    <div class="diagram-label">Fig. 7 — Closed-Loop (Feedback) Control System</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">✓ Advantages — Closed Loop</div>
+      <ul style="padding-left:14px;margin:8px 0;font-size:12px;">
+        <li>More accurate even in presence of non-linearities</li>
+        <li>Any error is corrected due to feedback</li>
+        <li>Large bandwidth range</li>
+        <li>Facilitates automation; makes system stable</li>
+        <li>Sensitivity to noise is reduced</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">✗ Disadvantages — Closed Loop</div>
+      <ul style="padding-left:14px;margin:8px 0;font-size:12px;">
+        <li>More complex and expensive</li>
+        <li>Overall gain is reduced</li>
+        <li>May become unstable if poorly designed</li>
+        <li>Requires sensors and feedback hardware</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Servomechanism (Position Control)</h3>
+  <p>In a <strong>servomechanism</strong>, the job of the controller is to have the controlled variable <strong>track a moving set point</strong> — for example, moving a robot arm from one position to another. The "heart" of the control system is the <strong>controller</strong> — an analog or digital circuit that:</p>
+  <ol>
+    <li>Accepts data from sensors</li>
+    <li>Makes a decision based on the error signal</li>
+    <li>Sends appropriate commands to the actuator</li>
+  </ol>
+  <p>The <strong>error signal (E)</strong> = Set Point (SP) − Actual Output. Based on E, the controller decides the <em>magnitude and direction</em> of the signal to the actuator.</p>
+
+  <h3>Typical Robot Control System Components</h3>
+  <table>
+    <thead><tr><th>Component</th><th>Function</th></tr></thead>
+    <tbody>
+      <tr><td>Power Supply</td><td>Powers all system components</td></tr>
+      <tr><td>Manipulator</td><td>The physical robot arm structure</td></tr>
+      <tr><td>Task Control Unit</td><td>High-level robot program execution</td></tr>
+      <tr><td>Sequence Sensor Interface</td><td>Interfaces external sensors with control system</td></tr>
+      <tr><td>Memory Unit</td><td>Stores robot programs and sensor data</td></tr>
+      <tr><td>Sequencer</td><td>Controls order of operations</td></tr>
+      <tr><td>Servo Controller</td><td>Controls joint position, velocity, torque via feedback</td></tr>
+      <tr><td>Amplifier</td><td>Amplifies control signals to drive actuators</td></tr>
+      <tr><td>External Sensor</td><td>Vision, force, proximity sensors for environment interaction</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════════════════════════════════════════ §13 ══ -->
+<section id="s13">
+  <div class="section-label">Section 13</div>
+  <h2>PID Control Actions</h2>
+
+  <p>The relationship between the error signal and the controlled output is called the <strong>controller action</strong>. This action may be Proportional, Derivative, or Integral of the error.</p>
+
+  <!-- Visual: PID block -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 220" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace" font-size="10">
+      <defs>
+        <marker id="arrP" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#444"/>
+        </marker>
+      </defs>
+      <!-- Error input -->
+      <text x="10" y="112" fill="#555" font-size="11">E(t)</text>
+      <text x="10" y="126" fill="#444" font-size="9">ERROR</text>
+      <line x1="40" y1="110" x2="75" y2="110" stroke="#333" stroke-width="1.2" marker-end="url(#arrP)"/>
+      <!-- Three branch lines -->
+      <line x1="75" y1="110" x2="75" y2="40" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="75" y1="110" x2="75" y2="180" stroke="#2a2a2a" stroke-width="1"/>
+      <!-- P box -->
+      <line x1="75" y1="40" x2="120" y2="40" stroke="#2a2a2a" stroke-width="1"/>
+      <rect x="120" y="20" width="150" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="195" y="37" text-anchor="middle" fill="#aaa" font-size="11" font-family="Syne">P — PROPORTIONAL</text>
+      <text x="195" y="52" text-anchor="middle" fill="#555" font-size="9">Output ∝ Error(t)   →   Kp × E(t)</text>
+      <!-- I box -->
+      <rect x="120" y="90" width="150" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="195" y="107" text-anchor="middle" fill="#aaa" font-size="11" font-family="Syne">I — INTEGRAL</text>
+      <text x="195" y="122" text-anchor="middle" fill="#555" font-size="9">Output ∝ ∫E(t)dt   →   Ki × ∫E dt</text>
+      <!-- D box -->
+      <line x1="75" y1="180" x2="120" y2="180" stroke="#2a2a2a" stroke-width="1"/>
+      <rect x="120" y="160" width="150" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="195" y="177" text-anchor="middle" fill="#aaa" font-size="11" font-family="Syne">D — DERIVATIVE</text>
+      <text x="195" y="192" text-anchor="middle" fill="#555" font-size="9">Output ∝ dE/dt   →   Kd × dE/dt</text>
+      <!-- Arrows out -->
+      <line x1="270" y1="40" x2="380" y2="40" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="270" y1="110" x2="380" y2="110" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="270" y1="180" x2="380" y2="180" stroke="#2a2a2a" stroke-width="1"/>
+      <!-- Sum circle -->
+      <circle cx="400" cy="110" r="20" fill="none" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="400" y="114" text-anchor="middle" fill="#555" font-size="16">Σ</text>
+      <!-- Connect lines to sum -->
+      <line x1="380" y1="40" x2="380" y2="110" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="380" y1="180" x2="380" y2="110" stroke="#2a2a2a" stroke-width="1"/>
+      <line x1="380" y1="110" x2="380" y2="110" stroke="#2a2a2a" stroke-width="1" marker-end="url(#arrP)"/>
+      <!-- Output -->
+      <line x1="420" y1="110" x2="480" y2="110" stroke="#333" stroke-width="1.2" marker-end="url(#arrP)"/>
+      <rect x="480" y="90" width="130" height="40" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+      <text x="545" y="107" text-anchor="middle" fill="#aaa" font-size="10">CONTROL</text>
+      <text x="545" y="121" text-anchor="middle" fill="#555" font-size="9">OUTPUT → ACTUATOR</text>
+    </svg>
+    <div class="diagram-label">Fig. 8 — PID Controller Structure</div>
+  </div>
+
+  <h3>Controller Types &amp; Their Actions</h3>
+  <table>
+    <thead>
+      <tr><th>Controller</th><th>Action</th><th>Effect</th><th>Use Case</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>P (Proportional)</td>
+        <td>Output ∝ Error · Kp</td>
+        <td>Reduces error but may leave steady-state error</td>
+        <td>Basic speed/position control</td>
+      </tr>
+      <tr>
+        <td>I (Integral)</td>
+        <td>Output ∝ ∫Error · dt · Ki</td>
+        <td>Eliminates steady-state error; can cause overshoot</td>
+        <td>Eliminating offset errors</td>
+      </tr>
+      <tr>
+        <td>D (Derivative)</td>
+        <td>Output ∝ (dError/dt) · Kd</td>
+        <td>Anticipates future error; reduces overshoot and oscillation</td>
+        <td>Damping oscillations</td>
+      </tr>
+      <tr>
+        <td>PI</td>
+        <td>P + I combined</td>
+        <td>No steady-state error, good tracking</td>
+        <td>Most industrial processes</td>
+      </tr>
+      <tr>
+        <td>PD</td>
+        <td>P + D combined</td>
+        <td>Fast response with damping</td>
+        <td>Robot joint control</td>
+      </tr>
+      <tr>
+        <td>PID</td>
+        <td>All three combined</td>
+        <td>Best overall performance — accurate, fast, stable</td>
+        <td>Most demanding control tasks</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-label">Controller Action Summary</div>
+    (1) The error is sent to the controller → controller generates output to operate the actuator.<br>
+    (2) The relation between error and controlled output = <strong>controller action</strong>.<br>
+    (3) This action may be: <strong>P</strong> (proportional to error), <strong>D</strong> (rate of change of error), <strong>I</strong> (integral of error).<br>
+    (4) Accordingly, P, PI, PD, and PID combinations are used to manipulate control parameters.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ §14 ══ -->
+<section id="s14">
+  <div class="section-label">Section 14</div>
+  <h2>Performance Criteria of Control Systems</h2>
+
+  <p>When a step input is applied to a control system, the transient response is characterized by several key parameters before reaching steady state.</p>
+
+  <!-- Visual: Step Response Plot -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 640 300" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace" font-size="10">
+      <!-- Axes -->
+      <line x1="60" y1="260" x2="580" y2="260" stroke="#222" stroke-width="1.5"/>
+      <line x1="60" y1="260" x2="60" y2="20" stroke="#222" stroke-width="1.5"/>
+      <!-- Axis labels -->
+      <text x="600" y="264" fill="#444" font-size="10">TIME</text>
+      <text x="30" y="50" fill="#444" font-size="10" transform="rotate(-90,30,150)">OUTPUT</text>
+      <!-- Desired output line (1.00) -->
+      <line x1="60" y1="120" x2="580" y2="120" stroke="#2a2a2a" stroke-width="1" stroke-dasharray="6 4"/>
+      <text x="584" y="123" fill="#444" font-size="9">DESIRED = 1.0</text>
+      <!-- Overshoot line -->
+      <line x1="60" y1="80" x2="580" y2="80" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="3 5"/>
+      <text x="584" y="83" fill="#333" font-size="9">PEAK</text>
+      <!-- 50% line -->
+      <line x1="60" y1="190" x2="580" y2="190" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="2 6"/>
+      <text x="584" y="193" fill="#2a2a2a" font-size="9">50%</text>
+      <!-- Response curve (approximated SVG path) -->
+      <path d="M60,260 C80,260 100,250 130,190 C155,140 165,90 200,78 C220,73 240,75 260,90 C280,105 290,118 310,118 C340,118 360,118 580,120" 
+            fill="none" stroke="#555" stroke-width="2"/>
+      <!-- Delay time vertical -->
+      <line x1="130" y1="260" x2="130" y2="190" stroke="#333" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="100" y="278" fill="#444" font-size="9">Td</text>
+      <text x="85" y="289" fill="#333" font-size="8">DELAY</text>
+      <!-- Rise time vertical -->
+      <line x1="200" y1="260" x2="200" y2="120" stroke="#333" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="196" y="278" fill="#444" font-size="9">Tr</text>
+      <text x="182" y="289" fill="#333" font-size="8">RISE</text>
+      <!-- Peak time vertical -->
+      <line x1="200" y1="260" x2="200" y2="80" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="2 5"/>
+      <line x1="255" y1="260" x2="255" y2="78" stroke="#333" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="246" y="278" fill="#444" font-size="9">Tp</text>
+      <text x="235" y="289" fill="#333" font-size="8">PEAK</text>
+      <!-- Settling time vertical -->
+      <line x1="350" y1="260" x2="350" y2="122" stroke="#333" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="342" y="278" fill="#444" font-size="9">Ts</text>
+      <text x="327" y="289" fill="#333" font-size="8">SETTLING</text>
+      <!-- Peak overshoot annotation -->
+      <line x1="200" y1="80" x2="200" y2="120" stroke="#444" stroke-width="1.2"/>
+      <line x1="193" y1="80" x2="207" y2="80" stroke="#444" stroke-width="1"/>
+      <line x1="193" y1="120" x2="207" y2="120" stroke="#444" stroke-width="1"/>
+      <text x="30" y="99" fill="#555" font-size="9">PEAK</text>
+      <text x="25" y="111" fill="#555" font-size="9">OVERSHOOT</text>
+      <!-- Steady state error note -->
+      <line x1="460" y1="120" x2="460" y2="130" stroke="#333" stroke-width="1"/>
+      <text x="465" y="125" fill="#333" font-size="9">SSE</text>
+      <!-- Labels for phases -->
+      <text x="220" y="50" fill="#444" font-size="9">TRANSIENT PHASE</text>
+      <text x="420" y="100" fill="#333" font-size="9">STEADY STATE</text>
+    </svg>
+    <div class="diagram-label">Fig. 9 — Step Response of a Control System (Unit Step Input)</div>
+  </div>
+
+  <h3>Performance Parameters Defined</h3>
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">Delay Time (T_d)</div>
+      <p>Time for the response to reach <strong>50%</strong> of the desired output for the first time.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Rise Time (T_r)</div>
+      <p>Time for the response to rise from <strong>10% to 90%</strong> of the desired output (for underdamped systems). Indicates speed of response.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Peak Time (T_p)</div>
+      <p>Time at which the <strong>peak overshoot</strong> is observed — the time at which the response first reaches its maximum value.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Peak Overshoot (M_p)</div>
+      <p>The <strong>maximum deviation</strong> of the response above the desired output. Expressed as a percentage: M_p (%) = [(C_max − C_ss) / C_ss] × 100</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Settling Time (T_s)</div>
+      <p>Time at which the <strong>transient phase dies out</strong> and steady state is reached. Usually defined as when response stays within ±2% or ±5% of desired output.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Steady-State Error (SSE)</div>
+      <p>The <strong>constant difference</strong> between the actual response and the desired output in the steady state region. A perfect controller has SSE = 0.</p>
+    </div>
+  </div>
+
+  <h3>Transient vs. Steady State</h3>
+  <div class="compare">
+    <div class="compare-col">
+      <div class="compare-head">Transient Phase</div>
+      <ul>
+        <li>Initial response after input applied</li>
+        <li>System output oscillates or overshoots</li>
+        <li>Involves delay time, rise time, peak time, settling time</li>
+        <li>Characterized by T_d, T_r, T_p, M_p, T_s</li>
+        <li>Ends when response "settles" within tolerance band</li>
+      </ul>
+    </div>
+    <div class="compare-col">
+      <div class="compare-head">Steady State</div>
+      <ul>
+        <li>Long-term behavior after transients die out</li>
+        <li>Output should equal (or be close to) set point</li>
+        <li>Characterized by Steady State Error (SSE)</li>
+        <li>SSE = SP − actual output in steady state</li>
+        <li>Integral action in controller eliminates SSE</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-label">Quick Exam Reference — Key Relationships</div>
+    <strong>Faster rise time → larger overshoot</strong> (trade-off)<br>
+    <strong>P control alone</strong> → always has SSE<br>
+    <strong>I control</strong> → eliminates SSE but can cause instability<br>
+    <strong>D control</strong> → reduces overshoot and oscillation<br>
+    <strong>PID</strong> → best balance: fast response + minimal overshoot + zero SSE
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ FOOTER ══ -->
+<div style="padding: 48px 0 0; border-top: 1px solid var(--border); margin-top: 48px;">
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+    <div>
+      <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">AEM · Unit III</div>
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--accent);">Grippers &amp; Robot Controls</div>
+    </div>
+    <div style="font-size:10px;color:var(--muted);text-align:right;">
+      FY · DESH · VIT<br>
+      <span style="color:var(--dim);">Sections 01–14 · All topics covered</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrapper -->
+</body>
+</html>
