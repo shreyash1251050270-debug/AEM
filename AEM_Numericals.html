@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEM Numericals — Formula Sheet & Solved Problems</title>
+<meta name="description" content="Complete AEM numerical problems with formulas, step-by-step solutions, tips and tricks for exam preparation. Covers DC Motors, Grippers, and Transistors.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a25;
+  --surface3: #22222f;
+  --border: #2a2a3a;
+  --border-light: #3a3a4a;
+  --text: #d4d4e0;
+  --text-dim: #8888a0;
+  --text-bright: #f0f0ff;
+  --highlight: #ffffff;
+  --accent-blue: #60a5fa;
+  --accent-green: #34d399;
+  --accent-amber: #fbbf24;
+  --accent-purple: #c084fc;
+  --accent-red: #f87171;
+  --accent-orange: #fb923c;
+  --accent-cyan: #22d3ee;
+  --accent-pink: #f472b6;
+  --glow-blue: rgba(96, 165, 250, 0.15);
+  --glow-green: rgba(52, 211, 153, 0.15);
+  --glow-amber: rgba(251, 191, 36, 0.15);
+  --glow-purple: rgba(192, 132, 252, 0.15);
+  --glow-red: rgba(248, 113, 113, 0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 15px; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Hero Header ── */
+.site-header {
+  text-align: center;
+  padding: 4rem 2rem 3rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(96,165,250,0.04) 0%, transparent 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.site-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(96,165,250,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.site-header h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  margin-bottom: .5rem;
+  background: linear-gradient(135deg, #fff 0%, #60a5fa 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.site-header .subtitle {
+  font-size: .95rem;
+  color: var(--text-dim);
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.header-badges {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  padding: .35rem 1rem;
+  border-radius: 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.header-badge.formulas { color: var(--accent-blue); }
+.header-badge.solved { color: var(--accent-green); }
+.header-badge.tips { color: var(--accent-amber); }
+
+/* ── Quick Stats ── */
+.quick-stats {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.quick-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 100px;
+  transition: all .25s;
+}
+
+.quick-stat:hover {
+  border-color: var(--border-light);
+  transform: translateY(-2px);
+}
+
+.quick-stat .num {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--highlight);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.quick-stat .label {
+  font-size: .75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Navigation ── */
+.nav-bar {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-btn {
+  padding: 8px 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 500;
+  transition: all .2s;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.nav-btn:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  background: var(--glow-blue);
+}
+
+.nav-btn.active {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  background: var(--glow-blue);
+}
+
+/* ── Content ── */
+.content {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+
+/* ── Unit Section ── */
+.unit-section {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+}
+
+.unit-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.unit-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.unit-header h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--highlight);
+  letter-spacing: -.5px;
+  line-height: 1.3;
+}
+
+.unit-header .unit-tag {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.unit-header .unit-tag.u2 { color: var(--accent-green); }
+.unit-header .unit-tag.u3 { color: var(--accent-amber); }
+.unit-header .unit-tag.u4 { color: var(--accent-red); }
+.unit-header .unit-tag.u5 { color: var(--accent-purple); }
+.unit-header .unit-tag.u6 { color: var(--accent-cyan); }
+
+/* ── Formula Card ── */
+.formula-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.formula-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+  opacity: 0.7;
+}
+
+.formula-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.formula-card h3 .icon { font-size: 1.1rem; }
+
+.formula-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.formula-cell {
+  background: var(--surface2);
+  padding: .65rem 1rem;
+  font-size: .88rem;
+}
+
+.formula-cell.header {
+  background: var(--surface3);
+  font-weight: 600;
+  color: var(--accent-blue);
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.formula-cell code {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-green);
+  font-size: .85rem;
+}
+
+.formula-inline {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-blue);
+  padding: 1rem 1.5rem;
+  margin: .75rem 0;
+  border-radius: 0 8px 8px 0;
+  font-size: .88rem;
+  white-space: pre-wrap;
+  color: var(--text-bright);
+  line-height: 1.8;
+}
+
+.formula-inline strong { color: var(--accent-green); }
+.formula-inline .label-tag {
+  display: inline-block;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: .7rem;
+  color: var(--accent-amber);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+
+/* ── Solved Problem ── */
+.problem {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .3s;
+}
+
+.problem:hover { border-color: var(--border-light); }
+
+.problem-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.problem-label .num-tag { color: var(--accent-green); }
+.problem-label .marks-tag { color: var(--accent-amber); }
+.problem-label .difficulty {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: .65rem;
+  letter-spacing: 1px;
+  border: 1px solid;
+}
+
+.difficulty.easy { color: var(--accent-green); border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.08); }
+.difficulty.medium { color: var(--accent-amber); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.08); }
+.difficulty.hard { color: var(--accent-red); border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
+
+.problem > h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--highlight);
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.problem h4 {
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--accent-blue);
+  margin: 1.2rem 0 .6rem;
+}
+
+/* ── Given Data Box ── */
+.given-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-amber);
+  padding: 1rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: .75rem 0;
+  font-size: .9rem;
+}
+
+.given-box .tag {
+  display: inline-block;
+  font-size: .65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-amber);
+  font-weight: 600;
+  margin-bottom: .4rem;
+}
+
+.given-box strong { color: var(--text-bright); }
+
+/* ── Step Box ── */
+.step-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-blue);
+  padding: 1rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: .75rem 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .85rem;
+  white-space: pre-wrap;
+  line-height: 1.8;
+}
+
+.step-box .step-label {
+  display: block;
+  font-size: .65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin-bottom: .4rem;
+}
+
+.step-box strong { color: var(--accent-green); }
+.step-box em { color: var(--accent-amber); font-style: normal; }
+
+/* ── Answer Box ── */
+.answer-box {
+  background: linear-gradient(135deg, rgba(52,211,153,0.08), rgba(96,165,250,0.06));
+  border: 1px solid rgba(52,211,153,0.25);
+  border-left: 4px solid var(--accent-green);
+  padding: 1rem 1.5rem;
+  border-radius: 0 10px 10px 0;
+  margin: 1rem 0;
+  font-size: .95rem;
+}
+
+.answer-box strong { color: var(--accent-green); }
+
+.answer-box .answer-tag {
+  display: inline-block;
+  font-size: .65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-green);
+  font-weight: 600;
+  margin-bottom: .3rem;
+}
+
+/* ── Answer Table ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: .9rem;
+}
+
+th {
+  background: var(--surface3);
+  color: var(--accent-blue);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: .75rem;
+  letter-spacing: 1px;
+  padding: .7rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+td {
+  padding: .6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:hover td { background: var(--surface2); }
+
+/* ── Tips Card ── */
+.tips-card {
+  background: linear-gradient(135deg, rgba(251,191,36,0.06), rgba(192,132,252,0.04));
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.tips-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-amber), var(--accent-orange));
+}
+
+.tips-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent-amber);
+  margin-bottom: .8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tips-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tips-card li {
+  padding: .4rem 0 .4rem 1.5rem;
+  position: relative;
+  font-size: .9rem;
+  margin-bottom: .25rem;
+}
+
+.tips-card li::before {
+  content: '💡';
+  position: absolute;
+  left: 0;
+  font-size: .8rem;
+}
+
+.tips-card .warning-tip {
+  color: var(--accent-red);
+  font-weight: 500;
+}
+
+.tips-card .exam-tip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: .6rem 1rem;
+  border-radius: 6px;
+  margin-top: .5rem;
+  font-size: .85rem;
+}
+
+/* ── Practice Badge ── */
+.practice-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid rgba(192,132,252,0.3);
+  padding: .3rem .8rem;
+  border-radius: 6px;
+  font-size: .72rem;
+  color: var(--accent-purple);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: .5rem;
+}
+
+/* ── Separator ── */
+.unit-sep {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 4rem 0 1rem;
+}
+
+.unit-sep .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+}
+
+.unit-sep .sep-label {
+  font-size: .7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+/* ── Quick Reference Card ── */
+.quick-ref {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+}
+
+.quick-ref h3 {
+  font-size: .95rem;
+  color: var(--accent-purple);
+  font-weight: 700;
+  margin-bottom: .8rem;
+}
+
+.quick-ref ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.quick-ref li {
+  padding: .3rem 0;
+  font-size: .88rem;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.quick-ref li::before {
+  content: '▸';
+  color: var(--accent-purple);
+  font-size: .7rem;
+}
+
+/* ── Footer ── */
+.footer {
+  margin-top: 5rem;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: .82rem;
+  padding: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.footer a {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+.footer a:hover { text-decoration: underline; }
+
+/* ── Back to Top ── */
+.back-top {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-size: .78rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+
+.back-top:hover { color: var(--highlight); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+p { margin-bottom: .75rem; }
+ul, ol { margin: .5rem 0 1rem 1.5rem; }
+li { margin-bottom: .3rem; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  html { font-size: 14px; }
+  .site-header h1 { font-size: 2rem; }
+  .site-header { padding: 2.5rem 1rem 2rem; }
+  .formula-grid { grid-template-columns: 1fr; }
+  .content { padding: 0 1rem 4rem; }
+  .problem { padding: 1.2rem; }
+  .nav-bar { padding: 1rem; gap: 8px; }
+  .nav-btn { padding: 6px 14px; font-size: .8rem; }
+  .unit-header h2 { font-size: 1.3rem; }
+}
+
+@media print {
+  body { background: #fff; color: #111; }
+  .nav-bar { display: none; }
+  .problem, .formula-card, .tips-card { break-inside: avoid; border-color: #ccc; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <h1>AEM Numericals</h1>
+  <p class="subtitle">Formulas · Solved Problems · Tips & Tricks</p>
+  <div class="header-badges">
+    <span class="header-badge formulas">📐 All Formulas</span>
+    <span class="header-badge solved">✅ Step-by-Step Solutions</span>
+    <span class="header-badge tips">💡 Exam Tips & Tricks</span>
+  </div>
+  <div class="quick-stats">
+    <div class="quick-stat"><span class="num">4</span><span class="label">Units</span></div>
+    <div class="quick-stat"><span class="num">12+</span><span class="label">Numericals</span></div>
+    <div class="quick-stat"><span class="num">25+</span><span class="label">Formulas</span></div>
+    <div class="quick-stat"><span class="num">100%</span><span class="label">Solved</span></div>
+  </div>
+</header>
+
+<nav class="nav-bar" id="navbar">
+  <a class="nav-btn" href="#unit2">⚡ Unit 2 — DC Motors</a>
+  <a class="nav-btn" href="#unit3">🤖 Unit 3 — Grippers</a>
+  <a class="nav-btn" href="#unit4">🔌 Unit 4 — Transistors</a>
+  <a class="nav-btn" href="#unit5">🎛️ Unit 5 — Timers & PWM</a>
+  <a class="nav-btn" href="index.html">← Home</a>
+</nav>
+
+<main class="content">
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- UNIT 2: DC MOTORS                                          -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<section class="unit-section" id="unit2">
+  <div class="unit-header">
+    <div class="unit-icon">⚡</div>
+    <div>
+      <div class="unit-tag u2">Unit 2 — Actuators</div>
+      <h2>DC Motor Numericals</h2>
+    </div>
+  </div>
+
+  <!-- Formula Card -->
+  <div class="formula-card">
+    <h3><span class="icon">📐</span> DC Motor — Key Formulas</h3>
+    
+    <div class="formula-grid">
+      <div class="formula-cell header">Formula</div>
+      <div class="formula-cell header">Description</div>
+      
+      <div class="formula-cell"><code>V = E<sub>b</sub> + I<sub>a</sub> × R<sub>a</sub></code></div>
+      <div class="formula-cell">Voltage equation (Shunt motor)</div>
+      
+      <div class="formula-cell"><code>I = I<sub>a</sub> + I<sub>sh</sub></code></div>
+      <div class="formula-cell">Current relation (Shunt motor)</div>
+      
+      <div class="formula-cell"><code>I<sub>sh</sub> = V / R<sub>sh</sub></code></div>
+      <div class="formula-cell">Shunt field current</div>
+      
+      <div class="formula-cell"><code>E<sub>b</sub> = (Φ × Z × N × P) / (60 × A)</code></div>
+      <div class="formula-cell">Back EMF formula</div>
+      
+      <div class="formula-cell"><code>T = (Φ × Z × I<sub>a</sub> × P) / (2π × A)</code></div>
+      <div class="formula-cell">Torque developed</div>
+      
+      <div class="formula-cell"><code>P = E<sub>b</sub> × I<sub>a</sub></code></div>
+      <div class="formula-cell">Power developed</div>
+      
+      <div class="formula-cell"><code>T = P / ω = P / (2πN/60)</code></div>
+      <div class="formula-cell">Torque from power</div>
+      
+      <div class="formula-cell"><code>N = (E<sub>b</sub> × 60 × A) / (Φ × Z × P)</code></div>
+      <div class="formula-cell">Speed of motor</div>
+    </div>
+
+    <div class="quick-ref">
+      <h3>📌 Quick Reference — Winding Types</h3>
+      <ul>
+        <li><strong>Wave winding:</strong> A = 2 (always 2 parallel paths, regardless of poles)</li>
+        <li><strong>Lap winding:</strong> A = P (parallel paths equal to number of poles)</li>
+        <li><strong>Shunt motor:</strong> Field winding in parallel → I = I<sub>a</sub> + I<sub>sh</sub></li>
+        <li><strong>Series motor:</strong> Field winding in series → I = I<sub>a</sub> = I<sub>se</sub></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Tips Card -->
+  <div class="tips-card">
+    <h3>💡 Exam Tips — DC Motor Numericals</h3>
+    <ul>
+      <li><strong>First step always:</strong> Identify motor type (Shunt/Series) and winding type (Wave/Lap) — this determines A and current equations.</li>
+      <li><strong>For Shunt motor:</strong> Always calculate I<sub>sh</sub> first, then I<sub>a</sub> = I − I<sub>sh</sub>. Never assume I<sub>a</sub> = I!</li>
+      <li><strong>Wave winding → A = 2. Lap winding → A = P.</strong> This is the most frequently tested fact.</li>
+      <li><strong>Verify your answer</strong> by cross-checking using the Power method: P = E<sub>b</sub> × I<sub>a</sub>, then T = P/ω.</li>
+      <li class="warning-tip"><strong>⚠️ Common mistake:</strong> Forgetting to subtract I<sub>sh</sub> from total current I to get armature current I<sub>a</sub>.</li>
+    </ul>
+  </div>
+
+  <!-- Problem 1 -->
+  <div class="problem" id="u2q1">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 01</span>
+      <span class="difficulty easy">EASY</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>A DC motor connected to 450V supply takes 120A on full load. R<sub>a</sub> = 0.15Ω, R<sub>sh</sub> = 150Ω. Calculate back EMF.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>V</strong> = 450 V (Supply voltage)<br>
+      <strong>I</strong> = 120 A (Total current on full load)<br>
+      <strong>R<sub>a</sub></strong> = 0.15 Ω (Armature resistance)<br>
+      <strong>R<sub>sh</sub></strong> = 150 Ω (Field resistance)
+    </div>
+
+    <h4>Step 1: Find Shunt Field Current (I<sub>sh</sub>)</h4>
+    <div class="step-box">
+<span class="step-label">Formula</span>
+I<sub>sh</sub> = V / R<sub>sh</sub>
+I<sub>sh</sub> = 450 / 150
+<strong>I<sub>sh</sub> = 3 A</strong></div>
+
+    <h4>Step 2: Find Armature Current (I<sub>a</sub>)</h4>
+    <div class="step-box">
+<span class="step-label">Formula</span>
+I<sub>a</sub> = I − I<sub>sh</sub>
+I<sub>a</sub> = 120 − 3
+<strong>I<sub>a</sub> = 117 A</strong></div>
+
+    <h4>Step 3: Calculate Back EMF (E<sub>b</sub>)</h4>
+    <div class="step-box">
+<span class="step-label">Formula</span>
+E<sub>b</sub> = V − I<sub>a</sub> × R<sub>a</sub>
+E<sub>b</sub> = 450 − (117 × 0.15)
+E<sub>b</sub> = 450 − 17.55
+<strong>E<sub>b</sub> = 432.45 V ✓</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answer</span><br>
+      <strong>Back EMF at full load = 432.45 V</strong>
+    </div>
+  </div>
+
+  <!-- Problem 2 -->
+  <div class="problem" id="u2q2">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 02</span>
+      <span class="difficulty hard">HARD — MULTI-PART</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>A 4-pole, 500V DC shunt motor takes I<sub>a</sub> = 80A. R<sub>a</sub> = 0.4Ω. Wave wound, Z = 522 conductors, Φ = 0.025 Wb. Find (a) Back EMF (b) Speed (c) Torque.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>P</strong> = 4 poles<br>
+      <strong>V</strong> = 500 V<br>
+      <strong>I<sub>a</sub></strong> = 80 A (Armature current)<br>
+      <strong>R<sub>a</sub></strong> = 0.4 Ω<br>
+      <strong>Z</strong> = 522 conductors<br>
+      <strong>Φ</strong> = 0.025 Wb (flux per pole)<br>
+      <strong>Winding:</strong> Wave wound → <strong>A = 2</strong>
+    </div>
+
+    <h4>(a) Back EMF (E<sub>b</sub>)</h4>
+    <div class="step-box">
+<span class="step-label">Step 1</span>
+E<sub>b</sub> = V − I<sub>a</sub> × R<sub>a</sub>
+E<sub>b</sub> = 500 − (80 × 0.4)
+E<sub>b</sub> = 500 − 32
+<strong>E<sub>b</sub> = 468 V</strong></div>
+
+    <h4>(b) Speed of Motor (N)</h4>
+    <div class="step-box">
+<span class="step-label">Step 2</span>
+Using: E<sub>b</sub> = (Φ × Z × N × P) / (60 × A)
+
+Rearranging for N:
+N = (E<sub>b</sub> × 60 × A) / (Φ × Z × P)
+N = (468 × 60 × 2) / (0.025 × 522 × 4)
+N = 56,160 / 52.2
+<strong>N ≈ 1076 RPM</strong></div>
+
+    <h4>(c) Torque Developed (T)</h4>
+    <div class="step-box">
+<span class="step-label">Step 3 — Method 1 (Direct Formula)</span>
+T = (Φ × Z × I<sub>a</sub> × P) / (2π × A)
+T = (0.025 × 522 × 80 × 4) / (2 × 3.14159 × 2)
+T = 4176 / 12.566
+<strong>T = 332.27 N·m</strong>
+
+<span class="step-label">Verification — Method 2 (Power Method)</span>
+P = E<sub>b</sub> × I<sub>a</sub> = 468 × 80 = 37,440 W
+ω = 2πN/60 = 2π × 1076/60 = 112.68 rad/s
+T = P / ω = 37440 / 112.68
+<strong>T = 332.27 N·m ✓ (Verified!)</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answers</span>
+      <table>
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>(a) Back EMF</td><td><strong>468 V</strong></td></tr>
+        <tr><td>(b) Speed</td><td><strong>1076 RPM</strong></td></tr>
+        <tr><td>(c) Torque</td><td><strong>332.27 N·m</strong></td></tr>
+      </table>
+    </div>
+
+    <span class="practice-badge">🎯 Most Important — Frequently Asked</span>
+  </div>
+
+  <!-- Extra Practice Problem -->
+  <div class="problem" id="u2q3">
+    <div class="problem-label">
+      <span class="num-tag">Practice Numerical 03</span>
+      <span class="difficulty medium">MEDIUM</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>A 6-pole DC shunt motor has a lap winding with 600 conductors. Supply voltage = 240V, I<sub>a</sub> = 50A, R<sub>a</sub> = 0.3Ω, Φ = 0.02 Wb. Find back EMF and speed.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>P</strong> = 6 poles<br>
+      <strong>V</strong> = 240 V<br>
+      <strong>I<sub>a</sub></strong> = 50 A<br>
+      <strong>R<sub>a</sub></strong> = 0.3 Ω<br>
+      <strong>Z</strong> = 600 conductors<br>
+      <strong>Φ</strong> = 0.02 Wb<br>
+      <strong>Winding:</strong> Lap wound → <strong>A = P = 6</strong>
+    </div>
+
+    <h4>Step 1: Back EMF</h4>
+    <div class="step-box">
+<span class="step-label">Formula</span>
+E<sub>b</sub> = V − I<sub>a</sub> × R<sub>a</sub>
+E<sub>b</sub> = 240 − (50 × 0.3)
+E<sub>b</sub> = 240 − 15
+<strong>E<sub>b</sub> = 225 V</strong></div>
+
+    <h4>Step 2: Speed</h4>
+    <div class="step-box">
+<span class="step-label">Formula</span>
+N = (E<sub>b</sub> × 60 × A) / (Φ × Z × P)
+N = (225 × 60 × 6) / (0.02 × 600 × 6)
+N = 81,000 / 72
+<strong>N = 1125 RPM</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answers</span><br>
+      <strong>E<sub>b</sub> = 225 V, N = 1125 RPM</strong>
+    </div>
+
+    <div class="tips-card" style="margin-top: 1rem;">
+      <h3>💡 Key Insight — Lap vs Wave</h3>
+      <ul>
+        <li><strong>Notice:</strong> For lap winding, A = P = 6. This is the critical difference from wave winding where A = 2.</li>
+        <li>If this same problem had wave winding, speed would be N = (225 × 60 × 2) / (0.02 × 600 × 6) = 27,000 / 72 = <strong>375 RPM</strong> — much slower!</li>
+        <li>This shows why <strong>winding type drastically affects speed</strong>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- UNIT 3: GRIPPERS                                           -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="unit-sep"><span class="line"></span><span class="sep-label">Next Unit</span><span class="line"></span></div>
+
+<section class="unit-section" id="unit3">
+  <div class="unit-header">
+    <div class="unit-icon">🤖</div>
+    <div>
+      <div class="unit-tag u3">Unit 3 — End Effectors & Controls</div>
+      <h2>Gripper Force & Pneumatics Numericals</h2>
+    </div>
+  </div>
+
+  <!-- Formula Card -->
+  <div class="formula-card">
+    <h3><span class="icon">📐</span> Gripper Force — Key Formulas</h3>
+    
+    <div class="formula-grid">
+      <div class="formula-cell header">Formula</div>
+      <div class="formula-cell header">Description</div>
+      
+      <div class="formula-cell"><code>W = m × g</code></div>
+      <div class="formula-cell">Weight of object (g = 9.81 m/s²)</div>
+      
+      <div class="formula-cell"><code>F<sub>total</sub> = m × (g + a)</code></div>
+      <div class="formula-cell">Total force when lifting with acceleration</div>
+      
+      <div class="formula-cell"><code>F<sub>design</sub> = W × FOS</code></div>
+      <div class="formula-cell">Design force with Factor of Safety</div>
+      
+      <div class="formula-cell"><code>F<sub>grip</sub> = F / (μ × n)</code></div>
+      <div class="formula-cell">Gripping force per finger</div>
+      
+      <div class="formula-cell"><code>A = π/4 × d²</code></div>
+      <div class="formula-cell">Piston cross-sectional area</div>
+      
+      <div class="formula-cell"><code>F = P × A</code></div>
+      <div class="formula-cell">Force from pneumatic pressure</div>
+      
+      <div class="formula-cell"><code>P = F / A</code></div>
+      <div class="formula-cell">Required air pressure</div>
+    </div>
+
+    <div class="formula-inline">
+<span class="label-tag">Master Formula</span>
+<strong>F<sub>grip</sub> = m × (g + a) × FOS / (μ × n)</strong>
+
+Where:
+  m   = mass of object (kg)
+  g   = 9.81 m/s²
+  a   = acceleration (m/s²), use 0 if stationary
+  FOS = Factor of Safety (default = 1 if not given)
+  μ   = coefficient of friction
+  n   = number of gripper fingers</div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-card">
+    <h3>💡 Exam Tips — Gripper Numericals</h3>
+    <ul>
+      <li><strong>Always check:</strong> Is there acceleration? If yes, use F = m(g + a). If only gravity, use F = mg.</li>
+      <li><strong>Factor of Safety:</strong> Only apply FOS if explicitly given. Multiply it with the weight, NOT with the final answer.</li>
+      <li><strong>Units matter:</strong> Convert piston diameter from mm to m before calculating area. 40 mm = 0.04 m.</li>
+      <li><strong>Pressure conversion:</strong> 1 bar = 100,000 Pa = 100 kPa. 1 psi = 6895 Pa.</li>
+      <li class="warning-tip"><strong>⚠️ Common mistake:</strong> F<sub>grip</sub> is <em>per finger</em>. Don't forget to divide by n (number of fingers)!</li>
+      <li class="warning-tip"><strong>⚠️ Common mistake:</strong> Using acceleration but forgetting to add g. The total acceleration is always (g + a), not just a.</li>
+    </ul>
+  </div>
+
+  <!-- Problem 1 -->
+  <div class="problem" id="u3q1">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 01</span>
+      <span class="difficulty easy">EASY</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>A gripper lifts a 4 kg object upward with acceleration 2 m/s². μ = 0.4, n = 2 fingers. Find gripping force per finger.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>m</strong> = 4 kg<br>
+      <strong>a</strong> = 2 m/s² (upward acceleration)<br>
+      <strong>μ</strong> = 0.4 (coefficient of friction)<br>
+      <strong>n</strong> = 2 fingers<br>
+      <strong>g</strong> = 9.81 m/s²
+    </div>
+
+    <h4>Step 1: Total Force on Object</h4>
+    <div class="step-box">
+<span class="step-label">Key: Object is accelerating upward</span>
+F<sub>total</sub> = m × (g + a)
+F<sub>total</sub> = 4 × (9.81 + 2)
+F<sub>total</sub> = 4 × 11.81
+<strong>F<sub>total</sub> = 47.24 N</strong></div>
+
+    <h4>Step 2: Gripping Force per Finger</h4>
+    <div class="step-box">
+<span class="step-label">Friction equilibrium: F<sub>total</sub> = F<sub>grip</sub> × μ × n</span>
+F<sub>grip</sub> = F<sub>total</sub> / (μ × n)
+F<sub>grip</sub> = 47.24 / (0.4 × 2)
+F<sub>grip</sub> = 47.24 / 0.8
+<strong>F<sub>grip</sub> = 59.05 N per finger</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answer</span><br>
+      <strong>Gripping force per finger = 59.05 N</strong>
+    </div>
+  </div>
+
+  <!-- Problem 2 -->
+  <div class="problem" id="u3q2">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 02</span>
+      <span class="difficulty medium">MEDIUM — WITH FOS</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>10 kg workpiece handled by a 3-finger gripper. μ = 0.3, Factor of Safety = 2. Calculate gripping force per finger.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>m</strong> = 10 kg<br>
+      <strong>n</strong> = 3 fingers<br>
+      <strong>μ</strong> = 0.3<br>
+      <strong>FOS</strong> = 2<br>
+      <strong>g</strong> = 9.81 m/s²<br>
+      <em>Note: No acceleration mentioned → a = 0</em>
+    </div>
+
+    <h4>Step 1: Weight of Workpiece</h4>
+    <div class="step-box">
+<span class="step-label">Weight</span>
+W = m × g
+W = 10 × 9.81
+<strong>W = 98.1 N</strong></div>
+
+    <h4>Step 2: Apply Factor of Safety</h4>
+    <div class="step-box">
+<span class="step-label">Design Force</span>
+F<sub>design</sub> = W × FOS
+F<sub>design</sub> = 98.1 × 2
+<strong>F<sub>design</sub> = 196.2 N</strong></div>
+
+    <h4>Step 3: Gripping Force per Finger</h4>
+    <div class="step-box">
+<span class="step-label">Formula</span>
+F<sub>grip</sub> = F<sub>design</sub> / (μ × n)
+F<sub>grip</sub> = 196.2 / (0.3 × 3)
+F<sub>grip</sub> = 196.2 / 0.9
+<strong>F<sub>grip</sub> = 218 N per finger</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answer</span><br>
+      <strong>Gripping force per finger = 218 N</strong>
+    </div>
+  </div>
+
+  <!-- Problem 3: Pneumatic -->
+  <div class="problem" id="u3q3">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 03</span>
+      <span class="difficulty hard">HARD — PNEUMATIC</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>A pneumatic gripper lifts 6 kg object, 2 fingers. μ = 0.5, piston diameter = 40 mm. Find required air pressure.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>m</strong> = 6 kg<br>
+      <strong>n</strong> = 2 fingers<br>
+      <strong>μ</strong> = 0.5<br>
+      <strong>d</strong> = 40 mm = 0.04 m<br>
+      <strong>g</strong> = 9.81 m/s²
+    </div>
+
+    <h4>Step 1: Weight of Object</h4>
+    <div class="step-box">
+<span class="step-label">Weight</span>
+W = m × g = 6 × 9.81
+<strong>W = 58.86 N</strong></div>
+
+    <h4>Step 2: Gripping Force per Finger</h4>
+    <div class="step-box">
+<span class="step-label">Grip Force</span>
+F<sub>grip</sub> = W / (μ × n)
+F<sub>grip</sub> = 58.86 / (0.5 × 2)
+F<sub>grip</sub> = 58.86 / 1.0
+<strong>F<sub>grip</sub> = 58.86 N per finger</strong></div>
+
+    <h4>Step 3: Piston Area</h4>
+    <div class="step-box">
+<span class="step-label">Area of circular piston</span>
+A = π/4 × d²
+A = (3.14159/4) × (0.04)²
+A = 0.7854 × 0.0016
+<strong>A = 1.2566 × 10⁻³ m²</strong></div>
+
+    <h4>Step 4: Required Air Pressure</h4>
+    <div class="step-box">
+<span class="step-label">Pressure = Force / Area</span>
+P = F<sub>grip</sub> / A
+P = 58.86 / (1.2566 × 10⁻³)
+<strong>P = 46,840 Pa</strong>
+<strong>P ≈ 46.84 kPa ≈ 0.468 bar ≈ 6.8 psi</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answer</span><br>
+      <strong>Air pressure required = 46.84 kPa (≈ 0.468 bar ≈ 6.8 psi)</strong>
+    </div>
+
+    <div class="tips-card" style="margin-top: 1rem;">
+      <h3>💡 Pro Tip — Unit Conversions for Pressure</h3>
+      <ul>
+        <li><strong>Always convert diameter to meters</strong> before calculating area. 40 mm = 0.04 m, NOT 40.</li>
+        <li>Final answer in <strong>kPa</strong> is most common in exams. Divide Pa by 1000.</li>
+        <li>If asked in bar: divide kPa by 100. If asked in psi: multiply bar by 14.5.</li>
+      </ul>
+      <div class="exam-tip">
+        <strong>🎯 Exam shortcut:</strong> For d = 40mm, remember A ≈ 1.257 × 10⁻³ m². For d = 50mm, A ≈ 1.963 × 10⁻³ m².
+      </div>
+    </div>
+
+    <span class="practice-badge">🎯 Most Important — Frequently Asked</span>
+  </div>
+
+  <!-- Extra Practice -->
+  <div class="problem" id="u3q4">
+    <div class="problem-label">
+      <span class="num-tag">Practice Numerical 04</span>
+      <span class="difficulty medium">MEDIUM</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>A 2-finger gripper lifts a 8 kg object with upward acceleration of 3 m/s². μ = 0.35, FOS = 1.5. Find gripping force per finger.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>m</strong> = 8 kg, <strong>a</strong> = 3 m/s², <strong>μ</strong> = 0.35, <strong>n</strong> = 2, <strong>FOS</strong> = 1.5
+    </div>
+
+    <h4>Step 1: Total Force</h4>
+    <div class="step-box">
+<span class="step-label">Force with acceleration</span>
+F = m × (g + a) = 8 × (9.81 + 3) = 8 × 12.81
+<strong>F = 102.48 N</strong></div>
+
+    <h4>Step 2: Apply FOS</h4>
+    <div class="step-box">
+<span class="step-label">Design Force</span>
+F<sub>design</sub> = F × FOS = 102.48 × 1.5
+<strong>F<sub>design</sub> = 153.72 N</strong></div>
+
+    <h4>Step 3: Gripping Force per Finger</h4>
+    <div class="step-box">
+<span class="step-label">Per Finger</span>
+F<sub>grip</sub> = F<sub>design</sub> / (μ × n) = 153.72 / (0.35 × 2)
+F<sub>grip</sub> = 153.72 / 0.7
+<strong>F<sub>grip</sub> = 219.6 N per finger</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answer</span><br>
+      <strong>Gripping force per finger = 219.6 N</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- UNIT 4: TRANSISTORS (BJT)                                  -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="unit-sep"><span class="line"></span><span class="sep-label">Next Unit</span><span class="line"></span></div>
+
+<section class="unit-section" id="unit4">
+  <div class="unit-header">
+    <div class="unit-icon">🔌</div>
+    <div>
+      <div class="unit-tag u4">Unit 4 — Electronic Devices</div>
+      <h2>BJT Transistor Numericals</h2>
+    </div>
+  </div>
+
+  <!-- Formula Card -->
+  <div class="formula-card">
+    <h3><span class="icon">📐</span> Transistor — Key Formulas</h3>
+    
+    <div class="formula-grid">
+      <div class="formula-cell header">Formula</div>
+      <div class="formula-cell header">Description</div>
+      
+      <div class="formula-cell"><code>I<sub>e</sub> = I<sub>c</sub> + I<sub>b</sub></code></div>
+      <div class="formula-cell">KCL at transistor (always true)</div>
+      
+      <div class="formula-cell"><code>α = I<sub>c</sub> / I<sub>e</sub></code></div>
+      <div class="formula-cell">Common Base current gain (< 1)</div>
+      
+      <div class="formula-cell"><code>β = I<sub>c</sub> / I<sub>b</sub></code></div>
+      <div class="formula-cell">Common Emitter current gain (> 1)</div>
+      
+      <div class="formula-cell"><code>γ = I<sub>e</sub> / I<sub>b</sub></code></div>
+      <div class="formula-cell">Common Collector current gain</div>
+      
+      <div class="formula-cell"><code>α = β / (β + 1)</code></div>
+      <div class="formula-cell">α in terms of β</div>
+      
+      <div class="formula-cell"><code>β = α / (1 − α)</code></div>
+      <div class="formula-cell">β in terms of α</div>
+      
+      <div class="formula-cell"><code>γ = β + 1 = 1/(1 − α)</code></div>
+      <div class="formula-cell">γ in terms of β or α</div>
+    </div>
+
+    <div class="formula-inline">
+<span class="label-tag">Memory Aid — The Holy Trinity</span>
+<strong>I<sub>e</sub> = I<sub>c</sub> + I<sub>b</sub></strong>       ← Start here ALWAYS
+
+<strong>α = I<sub>c</sub>/I<sub>e</sub></strong>  →  α is always < 1 (0.95–0.99)
+<strong>β = I<sub>c</sub>/I<sub>b</sub></strong>  →  β is always > 1 (20–500)
+<strong>γ = I<sub>e</sub>/I<sub>b</sub></strong>  →  γ = β + 1
+
+<em>Quick check: α + (1/γ) must never exceed 1</em></div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-card">
+    <h3>💡 Exam Tips — Transistor Numericals</h3>
+    <ul>
+      <li><strong>Three types of problems:</strong> Given (β, I<sub>b</sub>), Given (I<sub>e</sub>, I<sub>c</sub>), Given (α, I<sub>c</sub>). Identify which type and pick the right starting formula.</li>
+      <li><strong>Always find I<sub>c</sub> first</strong> if not given. Everything else follows from I<sub>c</sub>.</li>
+      <li><strong>Cross-verify α:</strong> Calculate using both α = I<sub>c</sub>/I<sub>e</sub> AND α = β/(β+1). Both must match.</li>
+      <li><strong>Unit conversion:</strong> μA = 10⁻⁶ A, mA = 10⁻³ A. Keep consistent units throughout.</li>
+      <li class="warning-tip"><strong>⚠️ Common mistake:</strong> Writing I<sub>e</sub> = I<sub>c</sub> − I<sub>b</sub> (WRONG!). It's always I<sub>e</sub> = I<sub>c</sub> + I<sub>b</sub>.</li>
+      <li class="warning-tip"><strong>⚠️ Common mistake:</strong> Confusing α and β. Remember: α < 1, β > 1. If your answer has α > 1, you've swapped them!</li>
+    </ul>
+    <div class="exam-tip">
+      <strong>🎯 Fastest approach:</strong> For any problem, write I<sub>e</sub> = I<sub>c</sub> + I<sub>b</sub> first. Then compute whatever is asked using the three ratios.
+    </div>
+  </div>
+
+  <!-- Problem 1 -->
+  <div class="problem" id="u4q1">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 01</span>
+      <span class="difficulty easy">EASY</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>Given: β = 75, I<sub>b</sub> = 40 μA (CE configuration). Find I<sub>c</sub>, I<sub>e</sub>, α and γ.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>β</strong> = 75<br>
+      <strong>I<sub>b</sub></strong> = 40 μA = 40 × 10⁻⁶ A
+    </div>
+
+    <h4>Step 1: Collector Current (I<sub>c</sub>)</h4>
+    <div class="step-box">
+<span class="step-label">From β definition</span>
+I<sub>c</sub> = β × I<sub>b</sub>
+I<sub>c</sub> = 75 × 40 μA
+<strong>I<sub>c</sub> = 3000 μA = 3 mA</strong></div>
+
+    <h4>Step 2: Emitter Current (I<sub>e</sub>)</h4>
+    <div class="step-box">
+<span class="step-label">KCL</span>
+I<sub>e</sub> = I<sub>c</sub> + I<sub>b</sub>
+I<sub>e</sub> = 3000 + 40
+<strong>I<sub>e</sub> = 3040 μA = 3.04 mA</strong></div>
+
+    <h4>Step 3: Alpha (α)</h4>
+    <div class="step-box">
+<span class="step-label">Two methods (both must match)</span>
+Method 1: α = I<sub>c</sub> / I<sub>e</sub> = 3000/3040 = <strong>0.9868</strong>
+Method 2: α = β/(β+1) = 75/76 = <strong>0.9868 ✓</strong></div>
+
+    <h4>Step 4: Gamma (γ)</h4>
+    <div class="step-box">
+<span class="step-label">Two methods</span>
+Method 1: γ = I<sub>e</sub> / I<sub>b</sub> = 3040/40 = <strong>76</strong>
+Method 2: γ = β + 1 = 75 + 1 = <strong>76 ✓</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answers</span>
+      <table>
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>I<sub>c</sub></td><td><strong>3 mA</strong></td></tr>
+        <tr><td>I<sub>e</sub></td><td><strong>3.04 mA</strong></td></tr>
+        <tr><td>α</td><td><strong>0.9868</strong></td></tr>
+        <tr><td>γ</td><td><strong>76</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Problem 2 -->
+  <div class="problem" id="u4q2">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 02</span>
+      <span class="difficulty medium">MEDIUM</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>Given: I<sub>e</sub> = 2.5 mA, I<sub>c</sub> = 2.4 mA (CE configuration). Find α, β, γ and I<sub>b</sub>.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>I<sub>e</sub></strong> = 2.5 mA<br>
+      <strong>I<sub>c</sub></strong> = 2.4 mA
+    </div>
+
+    <h4>Step 1: Base Current (I<sub>b</sub>)</h4>
+    <div class="step-box">
+<span class="step-label">KCL</span>
+I<sub>b</sub> = I<sub>e</sub> − I<sub>c</sub>
+I<sub>b</sub> = 2.5 − 2.4
+<strong>I<sub>b</sub> = 0.1 mA = 100 μA</strong></div>
+
+    <h4>Step 2: Alpha (α)</h4>
+    <div class="step-box">
+<span class="step-label">Definition</span>
+α = I<sub>c</sub> / I<sub>e</sub>
+α = 2.4 / 2.5
+<strong>α = 0.96</strong></div>
+
+    <h4>Step 3: Beta (β)</h4>
+    <div class="step-box">
+<span class="step-label">Two methods</span>
+Method 1: β = I<sub>c</sub> / I<sub>b</sub> = 2.4/0.1 = <strong>24</strong>
+Method 2: β = α/(1−α) = 0.96/0.04 = <strong>24 ✓</strong></div>
+
+    <h4>Step 4: Gamma (γ)</h4>
+    <div class="step-box">
+<span class="step-label">Definition</span>
+γ = I<sub>e</sub> / I<sub>b</sub> = 2.5/0.1 = <strong>25</strong>
+<em>Verify: γ = β + 1 = 24 + 1 = 25 ✓</em></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answers</span>
+      <table>
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>I<sub>b</sub></td><td><strong>0.1 mA (100 μA)</strong></td></tr>
+        <tr><td>α</td><td><strong>0.96</strong></td></tr>
+        <tr><td>β</td><td><strong>24</strong></td></tr>
+        <tr><td>γ</td><td><strong>25</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Problem 3 -->
+  <div class="problem" id="u4q3">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 03</span>
+      <span class="difficulty medium">MEDIUM</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>Given: α = 0.995, I<sub>c</sub> = 2A (Common Base). Find I<sub>e</sub>, I<sub>b</sub> and β.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>α</strong> = 0.995<br>
+      <strong>I<sub>c</sub></strong> = 2 A
+    </div>
+
+    <h4>Step 1: Emitter Current (I<sub>e</sub>)</h4>
+    <div class="step-box">
+<span class="step-label">From α definition</span>
+α = I<sub>c</sub> / I<sub>e</sub>
+I<sub>e</sub> = I<sub>c</sub> / α
+I<sub>e</sub> = 2 / 0.995
+<strong>I<sub>e</sub> = 2.01 A</strong></div>
+
+    <h4>Step 2: Base Current (I<sub>b</sub>)</h4>
+    <div class="step-box">
+<span class="step-label">KCL</span>
+I<sub>b</sub> = I<sub>e</sub> − I<sub>c</sub>
+I<sub>b</sub> = 2.01 − 2
+<strong>I<sub>b</sub> = 0.01 A = 10 mA</strong></div>
+
+    <h4>Step 3: Beta (β)</h4>
+    <div class="step-box">
+<span class="step-label">Two methods</span>
+Method 1: β = I<sub>c</sub> / I<sub>b</sub> = 2/0.01 = <strong>200</strong>
+Method 2: β = α/(1−α) = 0.995/0.005 = <strong>199 ≈ 200 ✓</strong>
+
+<em>Note: Small rounding difference is acceptable in exams</em></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answers</span>
+      <table>
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>I<sub>e</sub></td><td><strong>2.01 A</strong></td></tr>
+        <tr><td>I<sub>b</sub></td><td><strong>0.01 A (10 mA)</strong></td></tr>
+        <tr><td>β</td><td><strong>200</strong></td></tr>
+      </table>
+    </div>
+
+    <div class="tips-card" style="margin-top: 1rem;">
+      <h3>💡 Key Insight — High α means High β</h3>
+      <ul>
+        <li>When α = 0.995 (very close to 1), β = 200 (very high). This is a good quality transistor.</li>
+        <li>When α = 0.96, β = 24 (moderate). Lower quality but still usable.</li>
+        <li>A small increase in α causes a <strong>huge increase</strong> in β. That's why high-α transistors are preferred.</li>
+      </ul>
+    </div>
+
+    <span class="practice-badge">🎯 Most Important — Frequently Asked</span>
+  </div>
+
+  <!-- Extra Practice Problem -->
+  <div class="problem" id="u4q4">
+    <div class="problem-label">
+      <span class="num-tag">Practice Numerical 04</span>
+      <span class="difficulty easy">EASY</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>Given: β = 150, I<sub>c</sub> = 6 mA. Find I<sub>b</sub>, I<sub>e</sub>, α and γ.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>β</strong> = 150, <strong>I<sub>c</sub></strong> = 6 mA
+    </div>
+
+    <h4>Step 1: Base Current</h4>
+    <div class="step-box">
+<span class="step-label">From β</span>
+I<sub>b</sub> = I<sub>c</sub> / β = 6/150
+<strong>I<sub>b</sub> = 0.04 mA = 40 μA</strong></div>
+
+    <h4>Step 2: Emitter Current</h4>
+    <div class="step-box">
+<span class="step-label">KCL</span>
+I<sub>e</sub> = I<sub>c</sub> + I<sub>b</sub> = 6 + 0.04
+<strong>I<sub>e</sub> = 6.04 mA</strong></div>
+
+    <h4>Step 3: α and γ</h4>
+    <div class="step-box">
+<span class="step-label">Ratios</span>
+α = β/(β+1) = 150/151 = <strong>0.9934</strong>
+γ = β + 1 = <strong>151</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answers</span><br>
+      <strong>I<sub>b</sub> = 40 μA, I<sub>e</sub> = 6.04 mA, α = 0.9934, γ = 151</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- UNIT 5: MICROCONTROLLER TIMERS & PWM                       -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="unit-sep"><span class="line"></span><span class="sep-label">Next Unit</span><span class="line"></span></div>
+
+<section class="unit-section" id="unit5">
+  <div class="unit-header">
+    <div class="unit-icon">🎛️</div>
+    <div>
+      <div class="unit-tag u5">Unit 5 — Microcontroller (ATmega328P)</div>
+      <h2>Timer, PWM & ADC Calculations</h2>
+    </div>
+  </div>
+
+  <!-- Formula Card -->
+  <div class="formula-card">
+    <h3><span class="icon">📐</span> ATmega328P Timer & PWM — Key Formulas</h3>
+    
+    <div class="formula-grid">
+      <div class="formula-cell header">Formula</div>
+      <div class="formula-cell header">Description</div>
+      
+      <div class="formula-cell"><code>f<sub>timer</sub> = f<sub>clk</sub> / Prescaler</code></div>
+      <div class="formula-cell">Timer tick frequency</div>
+      
+      <div class="formula-cell"><code>T<sub>tick</sub> = 1 / f<sub>timer</sub></code></div>
+      <div class="formula-cell">Time per timer tick</div>
+      
+      <div class="formula-cell"><code>Timer0/2: Max = 256 (8-bit)</code></div>
+      <div class="formula-cell">Counts from 0 to 255</div>
+      
+      <div class="formula-cell"><code>Timer1: Max = 65536 (16-bit)</code></div>
+      <div class="formula-cell">Counts from 0 to 65535</div>
+      
+      <div class="formula-cell"><code>T<sub>overflow</sub> = Max × T<sub>tick</sub></code></div>
+      <div class="formula-cell">Time per overflow</div>
+      
+      <div class="formula-cell"><code>f<sub>PWM</sub> = f<sub>clk</sub> / (Prescaler × TOP)</code></div>
+      <div class="formula-cell">PWM frequency</div>
+      
+      <div class="formula-cell"><code>Duty% = (OCR / TOP) × 100</code></div>
+      <div class="formula-cell">PWM duty cycle</div>
+      
+      <div class="formula-cell"><code>ADC = (V<sub>in</sub> / V<sub>ref</sub>) × 1024</code></div>
+      <div class="formula-cell">ADC digital output (10-bit)</div>
+      
+      <div class="formula-cell"><code>Resolution = V<sub>ref</sub> / 1024</code></div>
+      <div class="formula-cell">ADC voltage per step</div>
+    </div>
+
+    <div class="quick-ref">
+      <h3>📌 Quick Reference — Prescaler Values</h3>
+      <ul>
+        <li>ATmega328P clock: <strong>f<sub>clk</sub> = 16 MHz</strong> (Arduino Uno)</li>
+        <li>Available prescalers: <strong>1, 8, 64, 256, 1024</strong></li>
+        <li>Timer0: 8-bit (0–255), Timer1: 16-bit (0–65535), Timer2: 8-bit (0–255)</li>
+        <li>ADC resolution: 10-bit → 1024 levels (0 to 1023)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-card">
+    <h3>💡 Exam Tips — Timer & PWM Calculations</h3>
+    <ul>
+      <li><strong>Approach for "generate X ms delay":</strong> Choose prescaler → calculate T<sub>tick</sub> → find counts needed → check if fits in timer (8-bit: ≤256, 16-bit: ≤65536).</li>
+      <li><strong>For PWM:</strong> Duty cycle = OCR/TOP × 100%. If TOP = 255 (8-bit fast PWM), OCR = 127 gives 50% duty.</li>
+      <li><strong>ADC shortcut:</strong> For 5V ref, each step = 5/1024 ≈ 4.88 mV. So ADC reading × 4.88mV = voltage.</li>
+      <li class="warning-tip"><strong>⚠️ Common mistake:</strong> Using 1023 instead of 1024 for ADC calculations. The ADC has 1024 levels (0–1023), but the divisor is 1024.</li>
+    </ul>
+  </div>
+
+  <!-- Problem 1 -->
+  <div class="problem" id="u5q1">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 01</span>
+      <span class="difficulty medium">MEDIUM</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>ATmega328P runs at 16 MHz. Using Timer1 (16-bit) with prescaler = 64, calculate (a) Timer tick period, (b) Maximum delay possible before overflow.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>f<sub>clk</sub></strong> = 16 MHz = 16 × 10⁶ Hz<br>
+      <strong>Prescaler</strong> = 64<br>
+      <strong>Timer1</strong> = 16-bit → Max count = 65536
+    </div>
+
+    <h4>(a) Timer Tick Period</h4>
+    <div class="step-box">
+<span class="step-label">Step 1: Timer frequency</span>
+f<sub>timer</sub> = f<sub>clk</sub> / Prescaler
+f<sub>timer</sub> = 16,000,000 / 64
+<strong>f<sub>timer</sub> = 250,000 Hz = 250 kHz</strong>
+
+<span class="step-label">Step 2: Tick period</span>
+T<sub>tick</sub> = 1 / f<sub>timer</sub>
+T<sub>tick</sub> = 1 / 250,000
+<strong>T<sub>tick</sub> = 4 μs (4 microseconds)</strong></div>
+
+    <h4>(b) Maximum Delay (Overflow Time)</h4>
+    <div class="step-box">
+<span class="step-label">Maximum time before overflow</span>
+T<sub>overflow</sub> = Max count × T<sub>tick</sub>
+T<sub>overflow</sub> = 65536 × 4 μs
+T<sub>overflow</sub> = 262,144 μs
+<strong>T<sub>overflow</sub> ≈ 262.14 ms ≈ 0.262 seconds</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answers</span>
+      <table>
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>(a) Timer tick period</td><td><strong>4 μs</strong></td></tr>
+        <tr><td>(b) Max delay (overflow)</td><td><strong>262.14 ms</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Problem 2: PWM -->
+  <div class="problem" id="u5q2">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 02</span>
+      <span class="difficulty easy">EASY</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>Using Timer0 in Fast PWM mode (8-bit, TOP = 255), f<sub>clk</sub> = 16 MHz, prescaler = 64. Find (a) PWM frequency, (b) OCR value for 75% duty cycle.</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>f<sub>clk</sub></strong> = 16 MHz<br>
+      <strong>Prescaler</strong> = 64<br>
+      <strong>TOP</strong> = 255 (8-bit fast PWM)<br>
+      <strong>Duty cycle</strong> = 75%
+    </div>
+
+    <h4>(a) PWM Frequency</h4>
+    <div class="step-box">
+<span class="step-label">Fast PWM frequency formula</span>
+f<sub>PWM</sub> = f<sub>clk</sub> / (Prescaler × (TOP + 1))
+f<sub>PWM</sub> = 16,000,000 / (64 × 256)
+f<sub>PWM</sub> = 16,000,000 / 16,384
+<strong>f<sub>PWM</sub> ≈ 976.56 Hz ≈ 977 Hz</strong></div>
+
+    <h4>(b) OCR for 75% Duty Cycle</h4>
+    <div class="step-box">
+<span class="step-label">Duty cycle formula</span>
+Duty% = (OCR + 1) / (TOP + 1) × 100
+
+0.75 = (OCR + 1) / 256
+OCR + 1 = 0.75 × 256 = 192
+<strong>OCR = 191</strong>
+
+<em>Verify: (191+1)/256 × 100 = 75% ✓</em></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answers</span>
+      <table>
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>(a) PWM frequency</td><td><strong>977 Hz</strong></td></tr>
+        <tr><td>(b) OCR value</td><td><strong>191</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Problem 3: ADC -->
+  <div class="problem" id="u5q3">
+    <div class="problem-label">
+      <span class="num-tag">Numerical 03</span>
+      <span class="difficulty easy">EASY</span>
+      <span class="marks-tag">5 Marks</span>
+    </div>
+    <h3>ATmega328P ADC has 10-bit resolution with V<sub>ref</sub> = 5V. (a) What is the ADC resolution in mV? (b) If ADC reads 512, what is the input voltage? (c) What ADC value corresponds to 3.3V input?</h3>
+
+    <h4>Given Data</h4>
+    <div class="given-box">
+      <span class="tag">Given</span><br>
+      <strong>ADC</strong> = 10-bit → 1024 levels (0 to 1023)<br>
+      <strong>V<sub>ref</sub></strong> = 5V
+    </div>
+
+    <h4>(a) ADC Resolution</h4>
+    <div class="step-box">
+<span class="step-label">Voltage per step</span>
+Resolution = V<sub>ref</sub> / 2<sup>10</sup> = 5 / 1024
+<strong>Resolution = 4.883 mV per step</strong></div>
+
+    <h4>(b) ADC Value 512 → Voltage</h4>
+    <div class="step-box">
+<span class="step-label">Convert digital to analog</span>
+V<sub>in</sub> = (ADC / 1024) × V<sub>ref</sub>
+V<sub>in</sub> = (512 / 1024) × 5
+V<sub>in</sub> = 0.5 × 5
+<strong>V<sub>in</sub> = 2.5 V</strong></div>
+
+    <h4>(c) 3.3V → ADC Value</h4>
+    <div class="step-box">
+<span class="step-label">Convert analog to digital</span>
+ADC = (V<sub>in</sub> / V<sub>ref</sub>) × 1024
+ADC = (3.3 / 5) × 1024
+ADC = 0.66 × 1024
+<strong>ADC ≈ 676</strong></div>
+
+    <div class="answer-box">
+      <span class="answer-tag">✅ Answers</span>
+      <table>
+        <tr><th>Part</th><th>Answer</th></tr>
+        <tr><td>(a) Resolution</td><td><strong>4.883 mV/step</strong></td></tr>
+        <tr><td>(b) V at ADC=512</td><td><strong>2.5 V</strong></td></tr>
+        <tr><td>(c) ADC at 3.3V</td><td><strong>676</strong></td></tr>
+      </table>
+    </div>
+
+    <div class="tips-card" style="margin-top: 1rem;">
+      <h3>💡 ADC Quick Shortcuts</h3>
+      <ul>
+        <li><strong>ADC = 0</strong> → 0V, <strong>ADC = 512</strong> → 2.5V (half), <strong>ADC = 1023</strong> → ~5V</li>
+        <li><strong>Each step ≈ 4.88 mV</strong> for 5V reference. Multiply ADC value by ~0.00488 for quick conversion.</li>
+        <li>Arduino's <code>analogRead()</code> returns 0–1023. Use <code>voltage = analogRead(pin) * 5.0 / 1024;</code></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- COMPREHENSIVE FORMULA CHEAT SHEET                          -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="unit-sep"><span class="line"></span><span class="sep-label">Quick Revision</span><span class="line"></span></div>
+
+<section class="unit-section" id="cheatsheet">
+  <div class="unit-header">
+    <div class="unit-icon">📋</div>
+    <div>
+      <div class="unit-tag" style="color: var(--accent-cyan);">All Units</div>
+      <h2>Complete Formula Cheat Sheet</h2>
+    </div>
+  </div>
+
+  <div class="formula-card">
+    <h3><span class="icon">⚡</span> Unit 2 — DC Motor Quick Formulas</h3>
+    <div class="formula-inline">
+<strong>E<sub>b</sub> = V − I<sub>a</sub>R<sub>a</sub></strong>         Back EMF
+<strong>I<sub>sh</sub> = V/R<sub>sh</sub></strong>              Shunt field current
+<strong>I<sub>a</sub> = I − I<sub>sh</sub></strong>              Armature current (Shunt)
+<strong>N = (E<sub>b</sub>×60×A)/(Φ×Z×P)</strong>   Speed (RPM)
+<strong>T = (Φ×Z×I<sub>a</sub>×P)/(2π×A)</strong>   Torque (N·m)
+<strong>P = E<sub>b</sub>×I<sub>a</sub> = T×ω</strong>       Power (W)
+
+<em>Wave: A=2 | Lap: A=P</em></div>
+  </div>
+
+  <div class="formula-card">
+    <h3><span class="icon">🤖</span> Unit 3 — Gripper Force Quick Formulas</h3>
+    <div class="formula-inline">
+<strong>F<sub>grip</sub> = m(g+a)×FOS / (μ×n)</strong>  Master formula
+
+<strong>W = mg</strong>                      Weight
+<strong>F = m(g+a)</strong>                  Force with acceleration  
+<strong>P = F/A</strong>                     Pneumatic pressure
+<strong>A = πd²/4</strong>                   Piston area</div>
+  </div>
+
+  <div class="formula-card">
+    <h3><span class="icon">🔌</span> Unit 4 — Transistor Quick Formulas</h3>
+    <div class="formula-inline">
+<strong>I<sub>e</sub> = I<sub>c</sub> + I<sub>b</sub></strong>               KCL (ALWAYS!)
+<strong>α = I<sub>c</sub>/I<sub>e</sub></strong>                CB gain (< 1)
+<strong>β = I<sub>c</sub>/I<sub>b</sub></strong>                CE gain (> 1)
+<strong>γ = I<sub>e</sub>/I<sub>b</sub> = β+1</strong>         CC gain
+<strong>α = β/(β+1)</strong>              α from β
+<strong>β = α/(1−α)</strong>              β from α</div>
+  </div>
+
+  <div class="formula-card">
+    <h3><span class="icon">🎛️</span> Unit 5 — Timer/PWM/ADC Quick Formulas</h3>
+    <div class="formula-inline">
+<strong>T<sub>tick</sub> = Prescaler / f<sub>clk</sub></strong>         Timer tick period
+<strong>T<sub>ovf</sub> = 2<sup>n</sup> × T<sub>tick</sub></strong>             Overflow time (n = bits)
+<strong>f<sub>PWM</sub> = f<sub>clk</sub>/(Pre × TOP)</strong>      PWM frequency
+<strong>Duty = OCR/TOP × 100%</strong>          PWM duty cycle
+<strong>ADC = V<sub>in</sub>/V<sub>ref</sub> × 1024</strong>          ADC output
+<strong>V<sub>in</sub> = ADC × V<sub>ref</sub> / 1024</strong>        Voltage from ADC</div>
+  </div>
+
+  <div class="tips-card">
+    <h3>🎯 Final Exam Strategy — Numericals</h3>
+    <ul>
+      <li><strong>Read the problem twice.</strong> Identify all given values and note what's asked.</li>
+      <li><strong>Write all given data first.</strong> This earns marks even if the calculation goes wrong.</li>
+      <li><strong>Write the formula before substituting.</strong> Examiners award marks for correct formula.</li>
+      <li><strong>Show every step.</strong> Never skip — each step can earn partial marks.</li>
+      <li><strong>Box your final answer.</strong> Make it clearly visible.</li>
+      <li><strong>Include units.</strong> V, A, N, RPM, N·m, Pa, kPa — always write units with answers.</li>
+      <li><strong>Cross-verify</strong> using an alternative method when possible (especially DC Motor torque and transistor α).</li>
+    </ul>
+  </div>
+</section>
+
+<a href="#top" class="back-top">↑ Back to top</a>
+
+</main>
+
+<div class="footer">
+  <p>AEM Numericals — Formula Sheet & Solved Problems</p>
+  <p><a href="index.html">← Back to Home</a> · Hosted with GitHub Pages</p>
+</div>
+
+<script>
+// Smooth scroll for nav buttons & highlight active section
+const navBtns = document.querySelectorAll('.nav-btn[href^="#"]');
+const sections = document.querySelectorAll('.unit-section');
+
+function highlightNav() {
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.getBoundingClientRect().top;
+    if (top < 200) current = sec.id;
+  });
+  navBtns.forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('href') === '#' + current) btn.classList.add('active');
+  });
+}
+
+window.addEventListener('scroll', highlightNav);
+highlightNav();
+</script>
+
+</body>
+</html>
