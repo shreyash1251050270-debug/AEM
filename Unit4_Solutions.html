@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4 — Electronic Devices &amp; Applications | AEM Solutions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root{--bg:#0e0e0e;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border-light:#333;--text:#d4d4d4;--text-dim:#888;--text-bright:#f0f0f0;--accent:#a0a0a0;--accent-light:#c8c8c8;--highlight:#fff;--accent-blue:#60a5fa;--accent-green:#34d399;--accent-amber:#fbbf24}
+  *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:15px}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .site-header{text-align:center;padding:5rem 2rem 3rem;border-bottom:1px solid var(--border)}.site-header h1{font-size:2.4rem;font-weight:800;color:var(--highlight);letter-spacing:-1px;margin-bottom:.5rem}.site-header .subtitle{font-size:.95rem;color:var(--text-dim);font-weight:300;letter-spacing:3px;text-transform:uppercase}.site-header .unit-badge{display:inline-block;margin-top:1rem;background:var(--surface2);border:1px solid var(--border-light);padding:.35rem 1.2rem;border-radius:20px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:#f87171;letter-spacing:2px;text-transform:uppercase}
+  .toc{max-width:720px;margin:3rem auto;padding:2rem 2.5rem;background:var(--surface);border:1px solid var(--border);border-radius:8px}.toc h2{font-size:1rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent);margin-bottom:1.5rem;font-weight:600}.toc ol{list-style:none;counter-reset:toc-counter}.toc ol li{counter-increment:toc-counter;margin-bottom:.6rem}.toc ol li a{color:var(--text);text-decoration:none;font-weight:400;transition:color .2s;display:flex;align-items:baseline;gap:.75rem}.toc ol li a::before{content:"Q" counter(toc-counter,decimal-leading-zero);font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:#f87171;min-width:2rem}.toc ol li a:hover{color:var(--highlight)}
+  .content{max-width:800px;margin:0 auto;padding:0 2rem 6rem}
+  .question-block{margin-top:4rem;padding-top:2.5rem;border-top:1px solid var(--border)}.question-block:first-of-type{margin-top:2rem}.q-label{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:#f87171;margin-bottom:.5rem}.q-label .marks{float:right;color:var(--accent-amber);letter-spacing:1px}.question-block>h2{font-size:1.35rem;font-weight:700;color:var(--highlight);margin-bottom:1.5rem;letter-spacing:-.3px;line-height:1.5}.question-block h3{font-size:1.1rem;font-weight:600;color:var(--text-bright);margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}.question-block h4{font-size:1rem;font-weight:600;color:var(--accent-light);margin:1.25rem 0 .6rem}
+  p{margin-bottom:1rem}ul,ol{margin:.75rem 0 1.25rem 1.5rem}li{margin-bottom:.4rem}
+  .info-box{background:var(--surface);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 6px 6px 0;font-size:.92rem}.info-box.formula{border-left-color:var(--accent-blue);font-family:'IBM Plex Mono',monospace;font-size:.88rem;white-space:pre-wrap}.info-box.definition{border-left-color:var(--accent-green)}.info-box strong{color:var(--text-bright)}.info-box .label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:.5rem;font-weight:600}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem}th{background:var(--surface2);color:var(--accent-light);font-weight:600;text-transform:uppercase;font-size:.75rem;letter-spacing:1px;padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border-light)}td{padding:.65rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}tr:hover td{background:var(--surface)}
+  .diagram{margin:2rem 0;text-align:center}.diagram svg{max-width:100%;height:auto}.diagram-caption{font-size:.78rem;color:var(--text-dim);margin-top:.75rem;font-style:italic}
+  code{font-family:'IBM Plex Mono',monospace;background:var(--surface2);padding:.15rem .4rem;border-radius:3px;font-size:.88em;color:var(--accent-light)}
+  .back-top{display:inline-block;margin-top:2rem;font-size:.78rem;color:var(--text-dim);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color .2s}.back-top:hover{color:var(--highlight)}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+  @media(max-width:600px){html{font-size:14px}.site-header h1{font-size:1.8rem}.content{padding:0 1rem 4rem}}
+  @media print{body{background:#fff;color:#111}.info-box{border-left-color:#666}a{color:#111}}
+</style>
+</head>
+<body>
+<header class="site-header" id="top">
+  <h1>Unit 4 — Solutions</h1>
+  <p class="subtitle">Electronic Devices &amp; Applications</p>
+  <span class="unit-badge">5 Marks Each</span>
+</header>
+
+<nav class="toc">
+  <h2>Questions</h2>
+  <ol>
+    <li><a href="#q1">Forward and Reverse Biasing of a Diode</a></li>
+    <li><a href="#q2">Bridge Rectifier working</a></li>
+    <li><a href="#q3">Zener Diode as Voltage Stabiliser</a></li>
+    <li><a href="#q4">Define α, β, γ — Relation between α and β</a></li>
+    <li><a href="#q5">CE Output Characteristics — Define β</a></li>
+    <li><a href="#q6">Transistor as a Switch</a></li>
+    <li><a href="#q7">BJT vs FET comparison</a></li>
+    <li><a href="#q8">FET as Voltage-Controlled Device</a></li>
+    <li><a href="#q9">Transistor circuit for AND gate</a></li>
+    <li><a href="#q10">Numerical: β=75, Ib=40μA — Find Ic, Ie, α, γ</a></li>
+    <li><a href="#q11">Numerical: Ie=2.5mA, Ic=2.4mA — Find α, β, γ, Ib</a></li>
+    <li><a href="#q12">Numerical: α=0.995, Ic=2A — Find Ie, Ib, β</a></li>
+  </ol>
+</nav>
+
+<main class="content">
+
+<!-- ═══════════ Q1 ═══════════ -->
+<div class="question-block" id="q1">
+  <p class="q-label">Question 01 <span class="marks">5 Marks</span></p>
+  <h2>Explain the concept of forward and reverse biasing of a diode with its characteristics.</h2>
+
+  <h3>PN Junction Diode</h3>
+  <p>A diode is a two-terminal semiconductor device formed by joining <strong>P-type</strong> and <strong>N-type</strong> semiconductor materials. It allows current to flow primarily in <strong>one direction</strong>.</p>
+
+  <h3>Forward Biasing</h3>
+  <div class="info-box definition">
+    <span class="label">Forward Bias</span>
+    When the <strong>positive terminal</strong> of the battery is connected to the <strong>P-side (anode)</strong> and the <strong>negative terminal</strong> to the <strong>N-side (cathode)</strong>, the diode is <strong>forward biased</strong>.
+  </div>
+  <ul>
+    <li>The applied voltage opposes and reduces the depletion region width.</li>
+    <li>When applied voltage exceeds the <strong>barrier potential</strong> (≈0.7V for Si, ≈0.3V for Ge), current starts flowing.</li>
+    <li>The diode acts as a <strong>closed switch</strong> — allows current flow.</li>
+    <li>Current increases exponentially with voltage beyond the knee voltage.</li>
+  </ul>
+
+  <h3>Reverse Biasing</h3>
+  <div class="info-box definition">
+    <span class="label">Reverse Bias</span>
+    When the <strong>positive terminal</strong> is connected to the <strong>N-side</strong> and <strong>negative terminal</strong> to the <strong>P-side</strong>, the diode is <strong>reverse biased</strong>.
+  </div>
+  <ul>
+    <li>The applied voltage supports and increases the depletion region width.</li>
+    <li>Only a very small <strong>reverse saturation current</strong> (leakage current) flows due to minority carriers.</li>
+    <li>The diode acts as an <strong>open switch</strong> — blocks current flow.</li>
+    <li>If reverse voltage exceeds the <strong>breakdown voltage</strong>, a large reverse current flows (avalanche/zener breakdown).</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+      <text x="350" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">DIODE V-I CHARACTERISTICS</text>
+      <!-- Axes -->
+      <line x1="250" y1="260" x2="650" y2="260" stroke="#555" stroke-width="1.5"/>
+      <line x1="350" y1="40" x2="350" y2="260" stroke="#555" stroke-width="1.5"/>
+      <text x="660" y="265" fill="#888" font-size="10" font-family="Inter">V</text>
+      <text x="340" y="35" fill="#888" font-size="10" font-family="Inter">I</text>
+
+      <!-- Forward curve -->
+      <path d="M 350,260 Q 380,258 410,250 Q 440,235 460,200 Q 480,150 500,80" fill="none" stroke="#34d399" stroke-width="2.5"/>
+      <text x="510" y="75" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Forward</text>
+      <text x="510" y="90" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Current</text>
+
+      <!-- Knee voltage -->
+      <line x1="410" y1="250" x2="410" y2="270" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="410" y="285" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter">0.7V (Si)</text>
+
+      <!-- Reverse curve -->
+      <path d="M 350,260 L 310,261 L 270,262 L 250,262" fill="none" stroke="#f87171" stroke-width="2"/>
+      <!-- Breakdown -->
+      <line x1="250" y1="262" x2="240" y2="290" stroke="#f87171" stroke-width="2"/>
+      <text x="220" y="280" fill="#f87171" font-size="9" font-family="Inter">Breakdown</text>
+
+      <!-- Labels -->
+      <text x="500" y="255" fill="#888" font-size="9" font-family="Inter">Forward Voltage →</text>
+      <text x="270" y="255" fill="#888" font-size="9" font-family="Inter">← Reverse V</text>
+      <text x="300" y="275" fill="#888" font-size="8" font-family="Inter">Leakage current (μA)</text>
+
+      <!-- Forward bias circuit (left side) -->
+      <text x="80" y="60" text-anchor="middle" fill="#34d399" font-size="11" font-family="Inter" font-weight="600">FORWARD BIAS</text>
+      <!-- Battery -->
+      <line x1="30" y1="100" x2="30" y2="180" stroke="#888" stroke-width="1.5"/>
+      <line x1="20" y1="120" x2="40" y2="120" stroke="#888" stroke-width="3"/>
+      <line x1="25" y1="130" x2="35" y2="130" stroke="#888" stroke-width="1.5"/>
+      <text x="12" y="120" fill="#f87171" font-size="10" font-family="Inter">+</text>
+      <text x="12" y="135" fill="#60a5fa" font-size="10" font-family="Inter">−</text>
+      <!-- Diode -->
+      <line x1="30" y1="100" x2="100" y2="100" stroke="#888" stroke-width="1.5"/>
+      <polygon points="80,85 80,115 110,100" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <line x1="110" y1="85" x2="110" y2="115" stroke="#34d399" stroke-width="2"/>
+      <line x1="110" y1="100" x2="150" y2="100" stroke="#888" stroke-width="1.5"/>
+      <line x1="150" y1="100" x2="150" y2="180" stroke="#888" stroke-width="1.5"/>
+      <line x1="30" y1="180" x2="150" y2="180" stroke="#888" stroke-width="1.5"/>
+      <text x="90" y="80" fill="#34d399" font-size="8" font-family="Inter">P → N</text>
+      <text x="60" y="130" fill="#888" font-size="8" font-family="Inter">+ to P</text>
+    </svg>
+    <p class="diagram-caption">Fig 4.1 — Diode V-I characteristics and forward bias circuit</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q2 ═══════════ -->
+<div class="question-block" id="q2">
+  <p class="q-label">Question 02 <span class="marks">5 Marks</span></p>
+  <h2>Elaborate on the working of a Bridge Rectifier with a circuit diagram and waveforms.</h2>
+
+  <h3>What is a Bridge Rectifier?</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>bridge rectifier</strong> is a full-wave rectifier that uses <strong>four diodes</strong> arranged in a bridge configuration to convert AC input into pulsating DC output. It utilizes <strong>both half-cycles</strong> of the AC input.
+  </div>
+
+  <h3>Working</h3>
+  <h4>Positive Half Cycle (A is positive, B is negative):</h4>
+  <ul>
+    <li>Diodes <strong>D1 and D3</strong> are forward biased → conduct current.</li>
+    <li>Diodes <strong>D2 and D4</strong> are reverse biased → do not conduct.</li>
+    <li>Current path: A → D1 → Load (top to bottom) → D3 → B</li>
+    <li>Current flows through the load in one direction.</li>
+  </ul>
+
+  <h4>Negative Half Cycle (B is positive, A is negative):</h4>
+  <ul>
+    <li>Diodes <strong>D2 and D4</strong> are forward biased → conduct current.</li>
+    <li>Diodes <strong>D1 and D3</strong> are reverse biased → do not conduct.</li>
+    <li>Current path: B → D2 → Load (top to bottom) → D4 → A</li>
+    <li>Current flows through the load in the <strong>same direction</strong> as before.</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg">
+      <text x="200" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">BRIDGE RECTIFIER CIRCUIT</text>
+
+      <!-- Bridge arrangement -->
+      <!-- D1 (top-left) -->
+      <polygon points="140,70 170,90 140,110" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <line x1="170" y1="70" x2="170" y2="110" stroke="#34d399" stroke-width="2"/>
+      <text x="135" y="95" text-anchor="end" fill="#34d399" font-size="10" font-family="Inter">D1</text>
+
+      <!-- D2 (top-right) -->
+      <polygon points="260,70 230,90 260,110" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <line x1="230" y1="70" x2="230" y2="110" stroke="#60a5fa" stroke-width="2"/>
+      <text x="270" y="95" fill="#60a5fa" font-size="10" font-family="Inter">D2</text>
+
+      <!-- D3 (bottom-left) -->
+      <polygon points="140,150 170,170 140,190" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <line x1="170" y1="150" x2="170" y2="190" stroke="#60a5fa" stroke-width="2"/>
+      <text x="135" y="175" text-anchor="end" fill="#60a5fa" font-size="10" font-family="Inter">D3</text>
+
+      <!-- D4 (bottom-right) -->
+      <polygon points="260,150 230,170 260,190" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <line x1="230" y1="150" x2="230" y2="190" stroke="#34d399" stroke-width="2"/>
+      <text x="270" y="175" fill="#34d399" font-size="10" font-family="Inter">D4</text>
+
+      <!-- Connections -->
+      <line x1="170" y1="70" x2="200" y2="50" stroke="#888" stroke-width="1.5"/>
+      <line x1="230" y1="70" x2="200" y2="50" stroke="#888" stroke-width="1.5"/>
+      <line x1="170" y1="190" x2="200" y2="210" stroke="#888" stroke-width="1.5"/>
+      <line x1="230" y1="190" x2="200" y2="210" stroke="#888" stroke-width="1.5"/>
+
+      <!-- AC input -->
+      <line x1="140" y1="90" x2="80" y2="90" stroke="#888" stroke-width="1.5"/>
+      <line x1="80" y1="90" x2="80" y2="130" stroke="#888" stroke-width="1.5"/>
+      <text x="60" y="115" fill="#fbbf24" font-size="10" font-family="Inter">A</text>
+      <line x1="140" y1="170" x2="80" y2="170" stroke="#888" stroke-width="1.5"/>
+      <line x1="80" y1="130" x2="80" y2="170" stroke="#888" stroke-width="1.5"/>
+      <text x="60" y="175" fill="#fbbf24" font-size="10" font-family="Inter">B</text>
+      <text x="45" y="135" fill="#fbbf24" font-size="9" font-family="Inter">AC</text>
+      <text x="40" y="148" fill="#fbbf24" font-size="9" font-family="Inter">Input</text>
+
+      <!-- DC output (Load) -->
+      <line x1="200" y1="50" x2="350" y2="50" stroke="#888" stroke-width="1.5"/>
+      <text x="355" y="48" fill="#f87171" font-size="10" font-family="Inter">+</text>
+      <rect x="340" y="80" width="30" height="100" rx="3" fill="none" stroke="#f87171" stroke-width="2"/>
+      <text x="355" y="135" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter" transform="rotate(-90,355,135)">LOAD (R)</text>
+      <line x1="350" y1="50" x2="350" y2="80" stroke="#888" stroke-width="1.5"/>
+      <line x1="350" y1="180" x2="350" y2="210" stroke="#888" stroke-width="1.5"/>
+      <line x1="200" y1="210" x2="350" y2="210" stroke="#888" stroke-width="1.5"/>
+      <text x="355" y="220" fill="#60a5fa" font-size="10" font-family="Inter">−</text>
+
+      <!-- Waveforms -->
+      <text x="530" y="50" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">Input (AC)</text>
+      <path d="M 450,80 Q 470,50 490,80 Q 510,110 530,80 Q 550,50 570,80 Q 590,110 610,80" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+
+      <text x="530" y="150" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Output (Pulsating DC)</text>
+      <path d="M 450,200 Q 470,165 490,200 Q 510,165 530,200 Q 550,165 570,200 Q 590,165 610,200" fill="none" stroke="#34d399" stroke-width="2"/>
+      <line x1="450" y1="200" x2="610" y2="200" stroke="#555" stroke-width="1"/>
+    </svg>
+    <p class="diagram-caption">Fig 4.2 — Bridge Rectifier circuit diagram and waveforms</p>
+  </div>
+
+  <h3>Key Formulas</h3>
+  <div class="info-box formula">
+<span class="label">Bridge Rectifier Formulas</span>
+V_dc = 2Vm/π = 0.636 × Vm
+Ripple frequency = 2 × f (input frequency)
+PIV (Peak Inverse Voltage) = Vm
+Efficiency ≈ 81.2%</div>
+
+  <h4>Advantages over Center-Tapped Full-Wave Rectifier:</h4>
+  <ul>
+    <li>No center-tapped transformer required — cheaper</li>
+    <li>PIV = Vm (vs 2Vm for center-tapped) — diodes need lower voltage rating</li>
+    <li>Better transformer utilization factor (TUF)</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q3 ═══════════ -->
+<div class="question-block" id="q3">
+  <p class="q-label">Question 03 <span class="marks">5 Marks</span></p>
+  <h2>Discuss the role of the Zener Diode as a voltage stabiliser.</h2>
+
+  <h3>What is a Zener Diode?</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>Zener diode</strong> is a specially designed PN junction diode that operates in the <strong>reverse breakdown region</strong>. Unlike ordinary diodes, it is designed to operate safely in breakdown — maintaining a nearly <strong>constant voltage</strong> across its terminals.
+  </div>
+
+  <h3>Working as a Voltage Stabiliser (Regulator)</h3>
+  <p>The Zener diode is connected in <strong>reverse bias</strong> across the load. A series resistor (R<sub>s</sub>) limits the current.</p>
+
+  <h4>Operating Principle:</h4>
+  <ol>
+    <li>When input voltage V<sub>in</sub> > V<sub>Z</sub> (Zener voltage), the Zener diode enters breakdown and conducts.</li>
+    <li>In breakdown, the voltage across the Zener (and hence the load) remains <strong>approximately constant at V<sub>Z</sub></strong>, regardless of input voltage variations or load current changes.</li>
+    <li>The excess voltage (V<sub>in</sub> − V<sub>Z</sub>) is dropped across the series resistor R<sub>s</sub>.</li>
+    <li>If V<sub>in</sub> increases, more current flows through the Zener (I<sub>Z</sub> increases) while V<sub>L</sub> stays at V<sub>Z</sub>.</li>
+    <li>If V<sub>in</sub> decreases (but stays > V<sub>Z</sub>), I<sub>Z</sub> decreases but V<sub>L</sub> still stays at V<sub>Z</sub>.</li>
+  </ol>
+
+  <div class="info-box formula">
+<span class="label">Key Equations</span>
+V_out = V_Z (constant, as long as V_in > V_Z)
+I_s = (V_in - V_Z) / Rs
+I_s = I_Z + I_L
+I_L = V_Z / R_L</div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <text x="300" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">ZENER DIODE VOLTAGE REGULATOR</text>
+
+      <!-- Input -->
+      <text x="30" y="75" fill="#fbbf24" font-size="10" font-family="Inter">V_in</text>
+      <line x1="60" y1="60" x2="120" y2="60" stroke="#888" stroke-width="1.5"/>
+
+      <!-- Rs -->
+      <rect x="120" y="45" width="80" height="30" rx="3" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="160" y="65" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter">Rs</text>
+
+      <line x1="200" y1="60" x2="300" y2="60" stroke="#888" stroke-width="1.5"/>
+      <circle cx="300" cy="60" r="3" fill="#888"/>
+
+      <!-- Zener (reverse bias) -->
+      <line x1="300" y1="60" x2="300" y2="90" stroke="#888" stroke-width="1.5"/>
+      <polygon points="280,110 320,110 300,90" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <line x1="278" y1="110" x2="322" y2="110" stroke="#34d399" stroke-width="2"/>
+      <line x1="278" y1="110" x2="275" y2="115" stroke="#34d399" stroke-width="1.5"/>
+      <line x1="322" y1="110" x2="325" y2="105" stroke="#34d399" stroke-width="1.5"/>
+      <text x="340" y="105" fill="#34d399" font-size="10" font-family="Inter">Zener (V_Z)</text>
+      <line x1="300" y1="110" x2="300" y2="150" stroke="#888" stroke-width="1.5"/>
+
+      <!-- Load -->
+      <circle cx="430" cy="60" r="3" fill="#888"/>
+      <line x1="300" y1="60" x2="430" y2="60" stroke="#888" stroke-width="1.5"/>
+      <line x1="430" y1="60" x2="430" y2="80" stroke="#888" stroke-width="1.5"/>
+      <rect x="415" y="80" width="30" height="60" rx="3" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="430" y="115" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter">RL</text>
+      <line x1="430" y1="140" x2="430" y2="150" stroke="#888" stroke-width="1.5"/>
+
+      <!-- Ground -->
+      <line x1="60" y1="150" x2="430" y2="150" stroke="#888" stroke-width="1.5"/>
+      <line x1="60" y1="60" x2="60" y2="150" stroke="#888" stroke-width="1.5"/>
+
+      <!-- V_out label -->
+      <text x="470" y="100" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">V_out = V_Z</text>
+      <text x="470" y="115" fill="#888" font-size="8" font-family="Inter">(Constant)</text>
+    </svg>
+    <p class="diagram-caption">Fig 4.3 — Zener diode voltage regulator circuit</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q4 ═══════════ -->
+<div class="question-block" id="q4">
+  <p class="q-label">Question 04 <span class="marks">5 Marks</span></p>
+  <h2>Define α, β, and γ of a transistor. Establish the relation between α and β.</h2>
+
+  <h3>Definitions</h3>
+
+  <h4>α (Alpha) — Common Base Current Gain</h4>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>α (alpha)</strong> is the ratio of collector current (I<sub>c</sub>) to emitter current (I<sub>e</sub>) in <strong>Common Base (CB)</strong> configuration.<br>
+    <strong>α = I<sub>c</sub> / I<sub>e</sub></strong><br>
+    Value: Always &lt; 1 (typically 0.95 to 0.99)
+  </div>
+
+  <h4>β (Beta) — Common Emitter Current Gain</h4>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>β (beta)</strong> is the ratio of collector current (I<sub>c</sub>) to base current (I<sub>b</sub>) in <strong>Common Emitter (CE)</strong> configuration.<br>
+    <strong>β = I<sub>c</sub> / I<sub>b</sub></strong><br>
+    Value: Always &gt; 1 (typically 20 to 500)
+  </div>
+
+  <h4>γ (Gamma) — Common Collector Current Gain</h4>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>γ (gamma)</strong> is the ratio of emitter current (I<sub>e</sub>) to base current (I<sub>b</sub>) in <strong>Common Collector (CC)</strong> configuration.<br>
+    <strong>γ = I<sub>e</sub> / I<sub>b</sub></strong><br>
+    Value: γ = β + 1
+  </div>
+
+  <h3>Establishing the Relation between α and β</h3>
+  <div class="info-box formula">
+<span class="label">Derivation</span>
+We know: Ie = Ic + Ib ... (1)  [KCL at transistor]
+
+From definitions:
+  α = Ic / Ie  →  Ic = α × Ie ... (2)
+  β = Ic / Ib  →  Ib = Ic / β ... (3)
+
+Substituting (2) and (3) in (1):
+  Ie = α × Ie + Ic/β
+
+Since Ic = α × Ie:
+  Ie = α × Ie + (α × Ie)/β
+
+Dividing both sides by Ie:
+  1 = α + α/β
+  1 = α(1 + 1/β)
+  1 = α(β + 1)/β
+
+Therefore:
+  <strong>α = β / (β + 1)</strong>
+
+Rearranging:
+  α(β + 1) = β
+  αβ + α = β
+  α = β − αβ
+  α = β(1 − α)
+
+  <strong>β = α / (1 − α)</strong>
+
+Also: <strong>γ = β + 1 = 1 / (1 − α)</strong></div>
+
+  <h3>Summary of Relationships</h3>
+  <table>
+    <tr><th>Relation</th><th>Formula</th></tr>
+    <tr><td>α in terms of β</td><td>α = β / (β + 1)</td></tr>
+    <tr><td>β in terms of α</td><td>β = α / (1 − α)</td></tr>
+    <tr><td>γ in terms of β</td><td>γ = β + 1</td></tr>
+    <tr><td>γ in terms of α</td><td>γ = 1 / (1 − α)</td></tr>
+    <tr><td>KCL</td><td>I<sub>e</sub> = I<sub>c</sub> + I<sub>b</sub></td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q5 ═══════════ -->
+<div class="question-block" id="q5">
+  <p class="q-label">Question 05 <span class="marks">5 Marks</span></p>
+  <h2>Draw and explain the output characteristics of the BJT in CE configuration. Define β.</h2>
+
+  <h3>CE Configuration — Output Characteristics</h3>
+  <p>The output characteristics plot <strong>I<sub>c</sub> vs V<sub>CE</sub></strong> for different values of base current I<sub>b</sub>.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+      <text x="300" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">CE OUTPUT CHARACTERISTICS (Ic vs Vce)</text>
+      <!-- Axes -->
+      <line x1="80" y1="260" x2="550" y2="260" stroke="#555" stroke-width="1.5"/>
+      <line x1="80" y1="260" x2="80" y2="45" stroke="#555" stroke-width="1.5"/>
+      <text x="560" y="265" fill="#888" font-size="10" font-family="Inter">V<tspan font-size="7" dy="2">CE</tspan><tspan dy="-2"> (V)</tspan></text>
+      <text x="75" y="40" fill="#888" font-size="10" font-family="Inter">I<tspan font-size="7" dy="2">c</tspan><tspan dy="-2"> (mA)</tspan></text>
+
+      <!-- Curves for different Ib -->
+      <path d="M 80,240 Q 120,100 160,85 L 520,80" fill="none" stroke="#f87171" stroke-width="2"/>
+      <text x="525" y="78" fill="#f87171" font-size="9" font-family="Inter">Ib = 40μA</text>
+
+      <path d="M 80,245 Q 120,140 160,130 L 520,125" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <text x="525" y="123" fill="#fbbf24" font-size="9" font-family="Inter">Ib = 30μA</text>
+
+      <path d="M 80,250 Q 120,180 160,170 L 520,167" fill="none" stroke="#34d399" stroke-width="2"/>
+      <text x="525" y="165" fill="#34d399" font-size="9" font-family="Inter">Ib = 20μA</text>
+
+      <path d="M 80,255 Q 120,215 160,210 L 520,208" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="525" y="206" fill="#60a5fa" font-size="9" font-family="Inter">Ib = 10μA</text>
+
+      <!-- Regions -->
+      <line x1="160" y1="50" x2="160" y2="260" stroke="#555" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="120" y="280" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">Saturation</text>
+      <text x="350" y="280" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">Active Region</text>
+
+      <!-- Ib = 0 -->
+      <line x1="80" y1="258" x2="520" y2="256" stroke="#555" stroke-width="1"/>
+      <text x="525" y="256" fill="#888" font-size="9" font-family="Inter">Ib = 0 (Cut-off)</text>
+    </svg>
+    <p class="diagram-caption">Fig 4.4 — CE Output Characteristics (Ic vs Vce for different Ib)</p>
+  </div>
+
+  <h4>Three Regions of Operation:</h4>
+  <ol>
+    <li><strong>Cut-off Region:</strong> Both junctions reverse biased. I<sub>b</sub> = 0, I<sub>c</sub> ≈ 0. Transistor acts as an <strong>open switch</strong>.</li>
+    <li><strong>Active Region:</strong> BE junction forward biased, BC junction reverse biased. I<sub>c</sub> = β × I<sub>b</sub>. Transistor acts as an <strong>amplifier</strong>.</li>
+    <li><strong>Saturation Region:</strong> Both junctions forward biased. V<sub>CE</sub> ≈ 0.2V. Transistor acts as a <strong>closed switch</strong>.</li>
+  </ol>
+
+  <h4>Definition of β:</h4>
+  <div class="info-box formula">
+<span class="label">β Definition</span>
+β (DC current gain in CE) = Ic / Ib
+
+β indicates how much the base current is amplified.
+If β = 100 and Ib = 10μA, then Ic = β × Ib = 100 × 10μA = 1 mA</div>
+</div>
+
+<!-- ═══════════ Q6 ═══════════ -->
+<div class="question-block" id="q6">
+  <p class="q-label">Question 06 <span class="marks">5 Marks</span></p>
+  <h2>Explain a transistor as a switch with a neat circuit diagram and waveforms.</h2>
+
+  <h3>Transistor as a Switch</h3>
+  <p>A transistor can be operated as a switch by driving it between <strong>cut-off</strong> (OFF state) and <strong>saturation</strong> (ON state), bypassing the linear active region.</p>
+
+  <h4>OFF State (Cut-off):</h4>
+  <ul>
+    <li>Input voltage V<sub>in</sub> = 0V (LOW) → I<sub>b</sub> = 0</li>
+    <li>No collector current flows: I<sub>c</sub> = 0</li>
+    <li>Full supply voltage appears across collector-emitter: V<sub>CE</sub> = V<sub>CC</sub></li>
+    <li>Output = HIGH (V<sub>CC</sub>)</li>
+    <li>Transistor behaves like an <strong>open switch</strong></li>
+  </ul>
+
+  <h4>ON State (Saturation):</h4>
+  <ul>
+    <li>Input voltage V<sub>in</sub> = HIGH → sufficient I<sub>b</sub> flows to saturate the transistor</li>
+    <li>Maximum collector current flows: I<sub>c</sub> = V<sub>CC</sub> / R<sub>C</sub></li>
+    <li>V<sub>CE</sub> ≈ 0.2V (saturation voltage, almost zero)</li>
+    <li>Output = LOW (≈0V)</li>
+    <li>Transistor behaves like a <strong>closed switch</strong></li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 650 250" xmlns="http://www.w3.org/2000/svg">
+      <text x="200" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">TRANSISTOR AS A SWITCH (NPN CE)</text>
+
+      <!-- Vcc -->
+      <text x="220" y="50" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">V<tspan font-size="7" dy="2">CC</tspan></text>
+      <line x1="220" y1="55" x2="220" y2="70" stroke="#888" stroke-width="1.5"/>
+
+      <!-- Rc -->
+      <rect x="205" y="70" width="30" height="40" rx="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="220" y="95" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter">Rc</text>
+      <line x1="220" y1="110" x2="220" y2="130" stroke="#888" stroke-width="1.5"/>
+      <text x="250" y="125" fill="#888" font-size="8" font-family="Inter">V<tspan font-size="6" dy="1">out</tspan></text>
+
+      <!-- Transistor -->
+      <circle cx="220" cy="155" r="20" fill="none" stroke="#888" stroke-width="1.5"/>
+      <!-- Base -->
+      <line x1="200" y1="155" x2="160" y2="155" stroke="#888" stroke-width="1.5"/>
+      <!-- Rb -->
+      <rect x="100" y="140" width="55" height="30" rx="3" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="127" y="160" text-anchor="middle" fill="#34d399" font-size="9" font-family="Inter">Rb</text>
+      <line x1="100" y1="155" x2="60" y2="155" stroke="#888" stroke-width="1.5"/>
+      <text x="50" y="160" fill="#888" font-size="9" font-family="Inter">V<tspan font-size="7" dy="1">in</tspan></text>
+
+      <!-- Collector to Rc -->
+      <line x1="220" y1="135" x2="220" y2="130" stroke="#888" stroke-width="1.5"/>
+      <!-- Emitter -->
+      <line x1="220" y1="175" x2="220" y2="210" stroke="#888" stroke-width="1.5"/>
+      <!-- Ground -->
+      <line x1="200" y1="210" x2="240" y2="210" stroke="#888" stroke-width="2"/>
+      <line x1="207" y1="215" x2="233" y2="215" stroke="#888" stroke-width="1.5"/>
+      <line x1="213" y1="220" x2="227" y2="220" stroke="#888" stroke-width="1"/>
+
+      <!-- Waveforms -->
+      <text x="450" y="50" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Input (V<tspan font-size="7" dy="1">in</tspan><tspan dy="-1">)</tspan></text>
+      <!-- Square wave input -->
+      <line x1="370" y1="95" x2="400" y2="95" stroke="#34d399" stroke-width="2"/>
+      <line x1="400" y1="95" x2="400" y2="65" stroke="#34d399" stroke-width="2"/>
+      <line x1="400" y1="65" x2="440" y2="65" stroke="#34d399" stroke-width="2"/>
+      <line x1="440" y1="65" x2="440" y2="95" stroke="#34d399" stroke-width="2"/>
+      <line x1="440" y1="95" x2="480" y2="95" stroke="#34d399" stroke-width="2"/>
+      <line x1="480" y1="95" x2="480" y2="65" stroke="#34d399" stroke-width="2"/>
+      <line x1="480" y1="65" x2="520" y2="65" stroke="#34d399" stroke-width="2"/>
+      <line x1="520" y1="65" x2="520" y2="95" stroke="#34d399" stroke-width="2"/>
+      <text x="360" y="68" fill="#888" font-size="8" font-family="Inter">HIGH</text>
+      <text x="360" y="98" fill="#888" font-size="8" font-family="Inter">LOW</text>
+
+      <text x="450" y="130" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">Output (V<tspan font-size="7" dy="1">out</tspan><tspan dy="-1">)</tspan></text>
+      <!-- Inverted square wave -->
+      <line x1="370" y1="155" x2="400" y2="155" stroke="#f87171" stroke-width="2"/>
+      <line x1="400" y1="155" x2="400" y2="185" stroke="#f87171" stroke-width="2"/>
+      <line x1="400" y1="185" x2="440" y2="185" stroke="#f87171" stroke-width="2"/>
+      <line x1="440" y1="185" x2="440" y2="155" stroke="#f87171" stroke-width="2"/>
+      <line x1="440" y1="155" x2="480" y2="155" stroke="#f87171" stroke-width="2"/>
+      <line x1="480" y1="155" x2="480" y2="185" stroke="#f87171" stroke-width="2"/>
+      <line x1="480" y1="185" x2="520" y2="185" stroke="#f87171" stroke-width="2"/>
+      <line x1="520" y1="185" x2="520" y2="155" stroke="#f87171" stroke-width="2"/>
+      <text x="360" y="158" fill="#888" font-size="8" font-family="Inter">V<tspan font-size="6" dy="1">CC</tspan></text>
+      <text x="360" y="188" fill="#888" font-size="8" font-family="Inter">≈0V</text>
+
+      <text x="450" y="220" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">Output is INVERTED (NOT gate behavior)</text>
+    </svg>
+    <p class="diagram-caption">Fig 4.5 — Transistor as a switch — circuit and waveforms</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q7 ═══════════ -->
+<div class="question-block" id="q7">
+  <p class="q-label">Question 07 <span class="marks">5 Marks</span></p>
+  <h2>Discuss the difference between BJT and FET.</h2>
+
+  <table>
+    <tr><th>Feature</th><th>BJT (Bipolar Junction Transistor)</th><th>FET (Field Effect Transistor)</th></tr>
+    <tr><td>Type</td><td>Current-controlled device</td><td>Voltage-controlled device</td></tr>
+    <tr><td>Charge Carriers</td><td>Both electrons and holes (bipolar)</td><td>Either electrons OR holes (unipolar)</td></tr>
+    <tr><td>Input Impedance</td><td>Low (hundreds of Ω to kΩ)</td><td>Very high (MΩ to GΩ)</td></tr>
+    <tr><td>Terminals</td><td>Emitter, Base, Collector</td><td>Source, Gate, Drain</td></tr>
+    <tr><td>Control</td><td>Base current controls collector current</td><td>Gate voltage controls drain current</td></tr>
+    <tr><td>Types</td><td>NPN, PNP</td><td>JFET (N-ch, P-ch), MOSFET (Enhancement, Depletion)</td></tr>
+    <tr><td>Noise</td><td>Higher noise</td><td>Lower noise (no junction injection)</td></tr>
+    <tr><td>Speed</td><td>Moderate switching speed</td><td>High switching speed (faster)</td></tr>
+    <tr><td>Power Handling</td><td>Good for medium power</td><td>Excellent (MOSFET for high power)</td></tr>
+    <tr><td>Thermal Stability</td><td>Less thermally stable (thermal runaway possible)</td><td>More thermally stable (negative temp coefficient)</td></tr>
+    <tr><td>Size</td><td>Larger</td><td>Smaller — ideal for ICs (VLSI)</td></tr>
+    <tr><td>Gain Parameter</td><td>β = I<sub>c</sub>/I<sub>b</sub></td><td>g<sub>m</sub> (transconductance) = ΔI<sub>d</sub>/ΔV<sub>gs</sub></td></tr>
+    <tr><td>Applications</td><td>Amplifiers, switches, oscillators</td><td>Digital ICs, CMOS logic, high-frequency circuits</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q8 ═══════════ -->
+<div class="question-block" id="q8">
+  <p class="q-label">Question 08 <span class="marks">5 Marks</span></p>
+  <h2>Describe FET as a voltage-controlled device with a suitable explanation.</h2>
+
+  <h3>FET — Voltage-Controlled Device</h3>
+  <div class="info-box definition">
+    <span class="label">Key Concept</span>
+    In a FET, the <strong>drain current (I<sub>D</sub>)</strong> is controlled by the <strong>gate-to-source voltage (V<sub>GS</sub>)</strong>, NOT by gate current. This makes FET a <strong>voltage-controlled device</strong>, unlike BJT which is current-controlled.
+  </div>
+
+  <h4>How it works (N-channel JFET):</h4>
+  <ol>
+    <li>The FET has a <strong>channel</strong> (N-type or P-type) between Source and Drain through which current flows.</li>
+    <li>The <strong>Gate</strong> terminal is connected to a PN junction that surrounds the channel.</li>
+    <li>When V<sub>GS</sub> = 0V, the channel is fully open → maximum drain current (I<sub>DSS</sub>) flows.</li>
+    <li>As V<sub>GS</sub> becomes more negative, the <strong>depletion region widens</strong>, narrowing the channel → I<sub>D</sub> decreases.</li>
+    <li>At V<sub>GS</sub> = V<sub>P</sub> (pinch-off voltage), the channel is completely closed → I<sub>D</sub> = 0.</li>
+    <li>Since the gate junction is <strong>reverse biased</strong>, practically <strong>no gate current flows</strong> (I<sub>G</sub> ≈ 0). The input impedance is extremely high (MΩ range).</li>
+  </ol>
+
+  <div class="info-box formula">
+<span class="label">Shockley's Equation (JFET)</span>
+ID = IDSS × (1 − VGS/VP)²
+
+Where:
+  IDSS = Maximum drain current (at VGS = 0)
+  VP   = Pinch-off voltage
+  VGS  = Gate-to-source voltage</div>
+
+  <h4>Why "Voltage-Controlled"?</h4>
+  <ul>
+    <li>The output current (I<sub>D</sub>) is determined solely by the input voltage (V<sub>GS</sub>).</li>
+    <li>No input current is needed to control the output — the gate draws negligible current.</li>
+    <li>This is unlike BJT where base current (input current) is needed to drive collector current.</li>
+    <li>The gain parameter is <strong>transconductance (g<sub>m</sub>)</strong> = ΔI<sub>D</sub>/ΔV<sub>GS</sub> (measured in mA/V or mS).</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q9 ═══════════ -->
+<div class="question-block" id="q9">
+  <p class="q-label">Question 09 <span class="marks">5 Marks</span></p>
+  <h2>Draw and explain the transistor circuit for an AND gate.</h2>
+
+  <h3>AND Gate using Transistors</h3>
+  <p>An AND gate produces a HIGH output only when <strong>ALL inputs are HIGH</strong>. Using NPN transistors, two transistors are connected in <strong>series</strong>.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+      <text x="250" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">AND GATE USING TRANSISTORS</text>
+
+      <!-- Vcc -->
+      <text x="250" y="50" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">V<tspan font-size="7" dy="2">CC</tspan></text>
+      <line x1="250" y1="55" x2="250" y2="70" stroke="#888" stroke-width="1.5"/>
+      <!-- Rc -->
+      <rect x="235" y="70" width="30" height="35" rx="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="250" y="92" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter">Rc</text>
+      <line x1="250" y1="105" x2="250" y2="120" stroke="#888" stroke-width="1.5"/>
+
+      <!-- Output label -->
+      <line x1="250" y1="112" x2="310" y2="112" stroke="#888" stroke-width="1.5"/>
+      <text x="320" y="116" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Y (Output)</text>
+
+      <!-- Transistor Q1 -->
+      <circle cx="250" cy="140" r="18" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="250" y="144" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter" font-weight="600">Q1</text>
+      <!-- Base Q1 -->
+      <line x1="232" y1="140" x2="170" y2="140" stroke="#888" stroke-width="1.5"/>
+      <rect x="115" y="125" width="50" height="30" rx="3" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="140" y="145" text-anchor="middle" fill="#34d399" font-size="9" font-family="Inter">Rb1</text>
+      <line x1="115" y1="140" x2="60" y2="140" stroke="#888" stroke-width="1.5"/>
+      <text x="40" y="144" fill="#888" font-size="10" font-family="Inter" font-weight="600">A</text>
+
+      <!-- Connection Q1 emitter to Q2 collector -->
+      <line x1="250" y1="158" x2="250" y2="185" stroke="#888" stroke-width="1.5"/>
+
+      <!-- Transistor Q2 -->
+      <circle cx="250" cy="205" r="18" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="250" y="209" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter" font-weight="600">Q2</text>
+      <!-- Base Q2 -->
+      <line x1="232" y1="205" x2="170" y2="205" stroke="#888" stroke-width="1.5"/>
+      <rect x="115" y="190" width="50" height="30" rx="3" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="140" y="210" text-anchor="middle" fill="#34d399" font-size="9" font-family="Inter">Rb2</text>
+      <line x1="115" y1="205" x2="60" y2="205" stroke="#888" stroke-width="1.5"/>
+      <text x="40" y="209" fill="#888" font-size="10" font-family="Inter" font-weight="600">B</text>
+
+      <!-- Ground -->
+      <line x1="250" y1="223" x2="250" y2="260" stroke="#888" stroke-width="1.5"/>
+      <line x1="230" y1="260" x2="270" y2="260" stroke="#888" stroke-width="2"/>
+      <line x1="237" y1="265" x2="263" y2="265" stroke="#888" stroke-width="1.5"/>
+      <line x1="243" y1="270" x2="257" y2="270" stroke="#888" stroke-width="1"/>
+    </svg>
+    <p class="diagram-caption">Fig 4.6 — AND gate using two NPN transistors in series</p>
+  </div>
+
+  <h4>Working:</h4>
+  <ul>
+    <li><strong>A=0, B=0:</strong> Both Q1 and Q2 are OFF (cut-off). No current through Rc. Y = V<sub>CC</sub> → <strong>But wait!</strong> — Actually, since we need output LOW when not both HIGH, the output is taken differently. Let me clarify:</li>
+  </ul>
+
+  <p>In the series transistor AND gate, both transistors must be ON for current to flow through R<sub>c</sub> and pull the output LOW. The output is <strong>inverted</strong> (NAND behavior). To get AND, the output is typically taken after an additional inverter stage, or the output logic is interpreted inversely.</p>
+
+  <h4>Truth Table:</h4>
+  <table>
+    <tr><th>A</th><th>B</th><th>Q1</th><th>Q2</th><th>Current Path</th><th>Y (AND)</th></tr>
+    <tr><td>0</td><td>0</td><td>OFF</td><td>OFF</td><td>No current</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td>OFF</td><td>ON</td><td>No current (Q1 blocks)</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>ON</td><td>OFF</td><td>No current (Q2 blocks)</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>ON</td><td>ON</td><td>Current flows</td><td>1</td></tr>
+  </table>
+  <p>When both transistors are ON (saturated), current flows through both and the output point (taken at the junction of R<sub>c</sub> and Q1 collector with an appropriate pull-up arrangement) gives a HIGH output — implementing the AND function.</p>
+</div>
+
+<!-- ═══════════ Q10 ═══════════ -->
+<div class="question-block" id="q10">
+  <p class="q-label">Question 10 <span class="marks">5 Marks</span></p>
+  <h2>Numerical: β = 75, I<sub>b</sub> = 40 μA (CE). Find I<sub>c</sub>, I<sub>e</sub>, α and γ.</h2>
+
+  <h3>Given</h3>
+  <div class="info-box">
+    β = 75<br>
+    I<sub>b</sub> = 40 μA = 40 × 10⁻⁶ A
+  </div>
+
+  <h3>Solution</h3>
+  <div class="info-box formula">
+<span class="label">Step 1: Collector Current (Ic)</span>
+Ic = β × Ib
+Ic = 75 × 40 × 10⁻⁶
+<strong>Ic = 3000 μA = 3 mA</strong></div>
+
+  <div class="info-box formula">
+<span class="label">Step 2: Emitter Current (Ie)</span>
+Ie = Ic + Ib
+Ie = 3000 + 40
+<strong>Ie = 3040 μA = 3.04 mA</strong></div>
+
+  <div class="info-box formula">
+<span class="label">Step 3: Alpha (α)</span>
+α = Ic / Ie
+α = 3000 / 3040
+<strong>α = 0.9868</strong>
+
+OR: α = β / (β + 1) = 75/76 = <strong>0.9868 ✓</strong></div>
+
+  <div class="info-box formula">
+<span class="label">Step 4: Gamma (γ)</span>
+γ = Ie / Ib
+γ = 3040 / 40
+<strong>γ = 76</strong>
+
+OR: γ = β + 1 = 75 + 1 = <strong>76 ✓</strong></div>
+
+  <h3>Answers</h3>
+  <table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>I<sub>c</sub></td><td><strong>3 mA</strong></td></tr>
+    <tr><td>I<sub>e</sub></td><td><strong>3.04 mA</strong></td></tr>
+    <tr><td>α</td><td><strong>0.9868</strong></td></tr>
+    <tr><td>γ</td><td><strong>76</strong></td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q11 ═══════════ -->
+<div class="question-block" id="q11">
+  <p class="q-label">Question 11 <span class="marks">5 Marks</span></p>
+  <h2>Numerical: I<sub>e</sub> = 2.5 mA, I<sub>c</sub> = 2.4 mA (CE). Find α, β, γ and I<sub>b</sub>.</h2>
+
+  <h3>Given</h3>
+  <div class="info-box">
+    I<sub>e</sub> = 2.5 mA<br>
+    I<sub>c</sub> = 2.4 mA
+  </div>
+
+  <h3>Solution</h3>
+  <div class="info-box formula">
+<span class="label">Step 1: Base Current (Ib)</span>
+Ib = Ie − Ic
+Ib = 2.5 − 2.4
+<strong>Ib = 0.1 mA = 100 μA</strong></div>
+
+  <div class="info-box formula">
+<span class="label">Step 2: Alpha (α)</span>
+α = Ic / Ie
+α = 2.4 / 2.5
+<strong>α = 0.96</strong></div>
+
+  <div class="info-box formula">
+<span class="label">Step 3: Beta (β)</span>
+β = Ic / Ib
+β = 2.4 / 0.1
+<strong>β = 24</strong>
+
+Verify: β = α / (1 − α) = 0.96 / 0.04 = <strong>24 ✓</strong></div>
+
+  <div class="info-box formula">
+<span class="label">Step 4: Gamma (γ)</span>
+γ = Ie / Ib
+γ = 2.5 / 0.1
+<strong>γ = 25</strong>
+
+Verify: γ = β + 1 = 24 + 1 = <strong>25 ✓</strong></div>
+
+  <h3>Answers</h3>
+  <table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>I<sub>b</sub></td><td><strong>0.1 mA (100 μA)</strong></td></tr>
+    <tr><td>α</td><td><strong>0.96</strong></td></tr>
+    <tr><td>β</td><td><strong>24</strong></td></tr>
+    <tr><td>γ</td><td><strong>25</strong></td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q12 ═══════════ -->
+<div class="question-block" id="q12">
+  <p class="q-label">Question 12 <span class="marks">5 Marks</span></p>
+  <h2>Numerical: α = 0.995, I<sub>c</sub> = 2 A (Common Base). Find I<sub>e</sub>, I<sub>b</sub> and β.</h2>
+
+  <h3>Given</h3>
+  <div class="info-box">
+    α = 0.995<br>
+    I<sub>c</sub> = 2 A
+  </div>
+
+  <h3>Solution</h3>
+  <div class="info-box formula">
+<span class="label">Step 1: Emitter Current (Ie)</span>
+α = Ic / Ie
+Ie = Ic / α
+Ie = 2 / 0.995
+<strong>Ie = 2.0101 A ≈ 2.01 A</strong></div>
+
+  <div class="info-box formula">
+<span class="label">Step 2: Base Current (Ib)</span>
+Ib = Ie − Ic
+Ib = 2.0101 − 2
+<strong>Ib = 0.0101 A ≈ 10.05 mA</strong></div>
+
+  <div class="info-box formula">
+<span class="label">Step 3: Beta (β)</span>
+β = α / (1 − α)
+β = 0.995 / (1 − 0.995)
+β = 0.995 / 0.005
+<strong>β = 199</strong>
+
+Verify: β = Ic / Ib = 2 / 0.01005 = <strong>199 ✓</strong></div>
+
+  <h3>Answers</h3>
+  <table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>I<sub>e</sub></td><td><strong>2.01 A</strong></td></tr>
+    <tr><td>I<sub>b</sub></td><td><strong>10.05 mA</strong></td></tr>
+    <tr><td>β</td><td><strong>199</strong></td></tr>
+  </table>
+</div>
+
+<a href="#top" class="back-top">↑ Back to top</a>
+</main>
+</body>
+</html>

@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 6 — Sensors | AEM Solutions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root{--bg:#0e0e0e;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border-light:#333;--text:#d4d4d4;--text-dim:#888;--text-bright:#f0f0f0;--accent:#a0a0a0;--accent-light:#c8c8c8;--highlight:#fff;--accent-blue:#60a5fa;--accent-green:#34d399;--accent-amber:#fbbf24}
+  *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:15px}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .site-header{text-align:center;padding:5rem 2rem 3rem;border-bottom:1px solid var(--border)}.site-header h1{font-size:2.4rem;font-weight:800;color:var(--highlight);letter-spacing:-1px;margin-bottom:.5rem}.site-header .subtitle{font-size:.95rem;color:var(--text-dim);font-weight:300;letter-spacing:3px;text-transform:uppercase}.site-header .unit-badge{display:inline-block;margin-top:1rem;background:var(--surface2);border:1px solid var(--border-light);padding:.35rem 1.2rem;border-radius:20px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:#fb923c;letter-spacing:2px;text-transform:uppercase}
+  .toc{max-width:720px;margin:3rem auto;padding:2rem 2.5rem;background:var(--surface);border:1px solid var(--border);border-radius:8px}.toc h2{font-size:1rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent);margin-bottom:1.5rem;font-weight:600}.toc ol{list-style:none;counter-reset:toc-counter}.toc ol li{counter-increment:toc-counter;margin-bottom:.6rem}.toc ol li a{color:var(--text);text-decoration:none;font-weight:400;transition:color .2s;display:flex;align-items:baseline;gap:.75rem}.toc ol li a::before{content:"Q" counter(toc-counter,decimal-leading-zero);font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:#fb923c;min-width:2rem}.toc ol li a:hover{color:var(--highlight)}
+  .content{max-width:800px;margin:0 auto;padding:0 2rem 6rem}
+  .question-block{margin-top:4rem;padding-top:2.5rem;border-top:1px solid var(--border)}.question-block:first-of-type{margin-top:2rem}.q-label{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:#fb923c;margin-bottom:.5rem}.q-label .marks{float:right;color:var(--accent-amber);letter-spacing:1px}.question-block>h2{font-size:1.35rem;font-weight:700;color:var(--highlight);margin-bottom:1.5rem;letter-spacing:-.3px;line-height:1.5}.question-block h3{font-size:1.1rem;font-weight:600;color:var(--text-bright);margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}.question-block h4{font-size:1rem;font-weight:600;color:var(--accent-light);margin:1.25rem 0 .6rem}
+  p{margin-bottom:1rem}ul,ol{margin:.75rem 0 1.25rem 1.5rem}li{margin-bottom:.4rem}
+  .info-box{background:var(--surface);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 6px 6px 0;font-size:.92rem}.info-box.formula{border-left-color:var(--accent-blue);font-family:'IBM Plex Mono',monospace;font-size:.88rem;white-space:pre-wrap}.info-box.definition{border-left-color:var(--accent-green)}.info-box strong{color:var(--text-bright)}.info-box .label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:.5rem;font-weight:600}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem}th{background:var(--surface2);color:var(--accent-light);font-weight:600;text-transform:uppercase;font-size:.75rem;letter-spacing:1px;padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border-light)}td{padding:.65rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}tr:hover td{background:var(--surface)}
+  .diagram{margin:2rem 0;text-align:center}.diagram svg{max-width:100%;height:auto}.diagram-caption{font-size:.78rem;color:var(--text-dim);margin-top:.75rem;font-style:italic}
+  code{font-family:'IBM Plex Mono',monospace;background:var(--surface2);padding:.15rem .4rem;border-radius:3px;font-size:.88em;color:var(--accent-light)}
+  pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.25rem 1.5rem;overflow-x:auto;font-family:'IBM Plex Mono',monospace;font-size:.85rem;line-height:1.6;margin:1.5rem 0;color:var(--text)}
+  .back-top{display:inline-block;margin-top:2rem;font-size:.78rem;color:var(--text-dim);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color .2s}.back-top:hover{color:var(--highlight)}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+  @media(max-width:600px){html{font-size:14px}.site-header h1{font-size:1.8rem}.content{padding:0 1rem 4rem}}
+  @media print{body{background:#fff;color:#111}.info-box{border-left-color:#666}a{color:#111}}
+</style>
+</head>
+<body>
+<header class="site-header" id="top">
+  <h1>Unit 6 — Solutions</h1>
+  <p class="subtitle">Sensors</p>
+  <span class="unit-badge">5 Marks Each</span>
+</header>
+
+<nav class="toc">
+  <h2>Questions</h2>
+  <ol>
+    <li><a href="#q1">Define Sensor and Transducer</a></li>
+    <li><a href="#q2">Construction &amp; Working — Tactile / Ultrasonic / IR Sensor</a></li>
+    <li><a href="#q3">Proximity Sensors — Types &amp; Working</a></li>
+    <li><a href="#q4">Compare Inductive and Capacitive Proximity Sensors</a></li>
+    <li><a href="#q5">Temperature Sensors — Types &amp; Working</a></li>
+    <li><a href="#q6">Optocouplers — Advantages, Disadvantages, Applications</a></li>
+    <li><a href="#q7">Hall Effect Sensor — Working Principle</a></li>
+    <li><a href="#q8">What is an Optocoupler? Advantages</a></li>
+    <li><a href="#q9">Optocoupler — Construction &amp; Working</a></li>
+    <li><a href="#q10">IR Sensor — Connection with Arduino Uno</a></li>
+    <li><a href="#q11">Ultrasonic Sensor — Connection with Arduino Uno</a></li>
+    <li><a href="#q12">Rotary Encoder — Construction &amp; Working</a></li>
+  </ol>
+</nav>
+
+<main class="content">
+
+<!-- ═══════════ Q1 ═══════════ -->
+<div class="question-block" id="q1">
+  <p class="q-label">Question 01 <span class="marks">5 Marks</span></p>
+  <h2>Define the following: (a) Sensor (b) Transducer.</h2>
+
+  <h3>(a) Sensor</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>sensor</strong> is a device that <strong>detects or measures</strong> a physical quantity (such as temperature, pressure, light, proximity, motion) from the environment and provides a corresponding output signal (usually electrical) that can be read by an observer or an instrument.
+  </div>
+  <ul>
+    <li>A sensor responds to a <strong>stimulus</strong> (physical input) and produces a measurable output.</li>
+    <li>Sensors are the "sense organs" of a robotic or automated system.</li>
+    <li><strong>Examples:</strong> Thermocouple (temperature), LDR (light), Strain gauge (force), Proximity sensor (distance), Accelerometer (acceleration).</li>
+  </ul>
+
+  <h3>(b) Transducer</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>transducer</strong> is a device that <strong>converts one form of energy into another</strong>. In engineering, it specifically converts a physical quantity into a proportional electrical signal (or vice versa).
+  </div>
+  <ul>
+    <li>All sensors are transducers, but not all transducers are sensors.</li>
+    <li>A transducer can work in <strong>both directions</strong>:
+      <ul>
+        <li><strong>Input Transducer (Sensor):</strong> Converts physical quantity → electrical signal. Example: Microphone (sound → voltage).</li>
+        <li><strong>Output Transducer (Actuator):</strong> Converts electrical signal → physical quantity. Example: Speaker (voltage → sound), Motor (current → motion).</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>Sensor vs Transducer — Comparison</h3>
+  <table>
+    <tr><th>Feature</th><th>Sensor</th><th>Transducer</th></tr>
+    <tr><td>Function</td><td>Detects/measures a physical quantity</td><td>Converts one form of energy to another</td></tr>
+    <tr><td>Direction</td><td>Typically input device only</td><td>Can be input or output device</td></tr>
+    <tr><td>Output</td><td>Always produces electrical signal</td><td>May produce electrical or non-electrical output</td></tr>
+    <tr><td>Relationship</td><td>A sensor is a type of transducer</td><td>A transducer is a broader term</td></tr>
+    <tr><td>Example</td><td>Thermistor, LDR, IR sensor</td><td>Piezoelectric crystal (can sense and actuate)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q2 ═══════════ -->
+<div class="question-block" id="q2">
+  <p class="q-label">Question 02 <span class="marks">5 Marks</span></p>
+  <h2>Explain the construction and working of any one: (a) Tactile (b) Ultrasonic (c) IR Sensor.</h2>
+
+  <p><em>All three sensors are explained below. Answer any one in the exam.</em></p>
+
+  <h3>(a) Tactile Sensor</h3>
+  <h4>Construction:</h4>
+  <ul>
+    <li>Consists of a <strong>flexible membrane</strong> on top, a <strong>spacer layer</strong> in the middle, and a <strong>conductive layer</strong> at the bottom.</li>
+    <li>The conductive layers are made of <strong>conductive ink or resistive material</strong> printed on flexible substrates.</li>
+    <li>When no pressure is applied, the spacer keeps the layers separated (high resistance).</li>
+  </ul>
+  <h4>Working:</h4>
+  <ul>
+    <li>When an object presses on the sensor, the flexible membrane deforms and makes contact with the bottom conductive layer through the spacer openings.</li>
+    <li>This <strong>decreases the resistance</strong> between the two conductive layers proportionally to the applied force.</li>
+    <li>The resistance change is measured as a voltage change using a voltage divider circuit.</li>
+    <li>Used to detect <strong>touch, pressure, force</strong> — gives robots a "sense of touch."</li>
+  </ul>
+  <p><strong>Applications:</strong> Robotic grippers (detect object contact), prosthetic hands, touchscreens, human-robot interaction safety.</p>
+
+  <hr>
+
+  <h3>(b) Ultrasonic Sensor (HC-SR04)</h3>
+  <h4>Construction:</h4>
+  <ul>
+    <li>Contains a <strong>transmitter</strong> (T) and a <strong>receiver</strong> (R) — both are <strong>piezoelectric transducers</strong>.</li>
+    <li>The transmitter converts electrical signals into <strong>40 kHz ultrasonic sound waves</strong>.</li>
+    <li>The receiver converts reflected ultrasonic waves back into electrical signals.</li>
+    <li>Has 4 pins: <strong>VCC</strong> (5V), <strong>Trig</strong> (trigger input), <strong>Echo</strong> (output pulse), <strong>GND</strong>.</li>
+  </ul>
+  <h4>Working:</h4>
+  <ol>
+    <li>A <strong>10 μs HIGH pulse</strong> is sent to the Trigger pin.</li>
+    <li>The sensor transmits <strong>8 bursts of 40 kHz</strong> ultrasonic pulses.</li>
+    <li>The pulses travel through air, hit an object, and <strong>reflect back</strong>.</li>
+    <li>The receiver detects the echo. The <strong>Echo pin goes HIGH</strong> for a duration proportional to the round-trip time.</li>
+    <li>Distance is calculated using:</li>
+  </ol>
+  <div class="info-box formula">
+<span class="label">Distance Formula</span>
+Distance = (Time × Speed of Sound) / 2
+Distance (cm) = (duration in μs × 0.034) / 2
+Distance (cm) = duration / 58.2
+
+Speed of sound ≈ 340 m/s = 0.034 cm/μs
+Divide by 2 because sound travels TO object and BACK.</div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 650 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a6a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker></defs>
+      <text x="325" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">ULTRASONIC SENSOR — WORKING PRINCIPLE</text>
+
+      <!-- Sensor body -->
+      <rect x="30" y="60" width="100" height="100" rx="6" fill="none" stroke="#fb923c" stroke-width="2"/>
+      <text x="80" y="100" text-anchor="middle" fill="#fb923c" font-size="10" font-family="Inter" font-weight="600">HC-SR04</text>
+      <!-- Transmitter -->
+      <circle cx="55" cy="80" r="12" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="55" y="84" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">T</text>
+      <!-- Receiver -->
+      <circle cx="105" cy="80" r="12" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="105" y="84" text-anchor="middle" fill="#34d399" font-size="8" font-family="Inter">R</text>
+
+      <!-- Transmitted wave -->
+      <path d="M 130,75 Q 200,50 280,60 Q 350,70 400,60" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <text x="260" y="45" fill="#60a5fa" font-size="9" font-family="Inter">Transmitted pulse (40kHz)</text>
+
+      <!-- Object -->
+      <rect x="420" y="40" width="30" height="120" rx="4" fill="none" stroke="#f87171" stroke-width="2"/>
+      <text x="435" y="105" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter" transform="rotate(-90,435,105)">OBJECT</text>
+
+      <!-- Reflected wave -->
+      <path d="M 420,100 Q 350,130 280,120 Q 200,110 130,100" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <text x="260" y="145" fill="#34d399" font-size="9" font-family="Inter">Reflected echo</text>
+
+      <!-- Distance label -->
+      <line x1="130" y1="175" x2="420" y2="175" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#a6a)"/>
+      <line x1="420" y1="175" x2="130" y2="175" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#a6a)"/>
+      <text x="275" y="190" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">Distance (d)</text>
+
+      <!-- Pins -->
+      <text x="50" y="140" fill="#888" font-size="7" font-family="Inter">VCC</text>
+      <text x="70" y="140" fill="#888" font-size="7" font-family="Inter">Trig</text>
+      <text x="90" y="140" fill="#888" font-size="7" font-family="Inter">Echo</text>
+      <text x="110" y="140" fill="#888" font-size="7" font-family="Inter">GND</text>
+    </svg>
+    <p class="diagram-caption">Fig 6.1 — Ultrasonic sensor working principle (echo-based distance measurement)</p>
+  </div>
+
+  <p><strong>Range:</strong> 2 cm to 400 cm. <strong>Applications:</strong> Obstacle avoidance robots, parking sensors, level measurement, security systems.</p>
+
+  <hr>
+
+  <h3>(c) IR Sensor (Infrared Sensor)</h3>
+  <h4>Construction:</h4>
+  <ul>
+    <li>Consists of an <strong>IR LED (emitter)</strong> and a <strong>photodiode or phototransistor (receiver/detector)</strong>.</li>
+    <li>The IR LED emits infrared light (wavelength ~940 nm) invisible to the human eye.</li>
+    <li>The photodiode detects reflected IR light.</li>
+    <li>Often mounted on a module with a <strong>comparator IC (LM393)</strong> and a potentiometer for adjustable sensitivity.</li>
+  </ul>
+  <h4>Working:</h4>
+  <ol>
+    <li>The IR LED continuously emits infrared light.</li>
+    <li>If an <strong>object is present</strong> in front, the IR light reflects off the object and hits the photodiode.</li>
+    <li>The photodiode's resistance decreases → voltage changes.</li>
+    <li>The comparator IC compares this voltage with a threshold (set by potentiometer).</li>
+    <li>If reflected light is detected → <strong>Output = LOW (object detected)</strong>.</li>
+    <li>If no object → <strong>Output = HIGH</strong>.</li>
+  </ol>
+  <p><strong>Range:</strong> 2–30 cm (adjustable). <strong>Applications:</strong> Line-following robots, obstacle detection, proximity detection, object counting, edge detection.</p>
+</div>
+
+<!-- ═══════════ Q3 ═══════════ -->
+<div class="question-block" id="q3">
+  <p class="q-label">Question 03 <span class="marks">5 Marks</span></p>
+  <h2>Illustrate the different types of proximity sensors. Explain the working principle of any one in detail.</h2>
+
+  <h3>What is a Proximity Sensor?</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>proximity sensor</strong> detects the presence or absence of an object <strong>without physical contact</strong>. It emits an electromagnetic field or beam and detects changes when an object enters the sensing range.
+  </div>
+
+  <h3>Types of Proximity Sensors</h3>
+  <table>
+    <tr><th>Type</th><th>Detection Principle</th><th>Target Materials</th><th>Range</th></tr>
+    <tr><td><strong>Inductive</strong></td><td>Electromagnetic induction (eddy currents)</td><td>Metals only (ferrous &amp; non-ferrous)</td><td>1–50 mm</td></tr>
+    <tr><td><strong>Capacitive</strong></td><td>Change in capacitance</td><td>All materials (metal, plastic, liquid, wood)</td><td>1–25 mm</td></tr>
+    <tr><td><strong>Ultrasonic</strong></td><td>Sound wave reflection (echo)</td><td>All solid &amp; liquid materials</td><td>20 mm–8 m</td></tr>
+    <tr><td><strong>Infrared (IR)</strong></td><td>IR light reflection</td><td>Most materials (non-transparent)</td><td>2–30 cm</td></tr>
+    <tr><td><strong>Photoelectric</strong></td><td>Visible/IR light beam interruption or reflection</td><td>All opaque materials</td><td>Up to 100 m</td></tr>
+    <tr><td><strong>Magnetic</strong></td><td>Magnetic field detection (Reed switch/Hall effect)</td><td>Magnetic materials, magnets</td><td>5–50 mm</td></tr>
+  </table>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg">
+      <text x="350" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">TYPES OF PROXIMITY SENSORS</text>
+      <rect x="250" y="35" width="200" height="32" rx="16" fill="none" stroke="#fb923c" stroke-width="2"/>
+      <text x="350" y="56" text-anchor="middle" fill="#fb923c" font-size="11" font-family="Inter" font-weight="700">PROXIMITY SENSORS</text>
+
+      <line x1="350" y1="67" x2="350" y2="85" stroke="#555" stroke-width="1.5"/>
+      <line x1="70" y1="85" x2="630" y2="85" stroke="#555" stroke-width="1.5"/>
+
+      <line x1="70" y1="85" x2="70" y2="100" stroke="#555" stroke-width="1"/>
+      <rect x="15" y="100" width="110" height="28" rx="4" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="70" y="119" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter" font-weight="600">Inductive</text>
+      <text x="70" y="145" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">Metals only</text>
+
+      <line x1="190" y1="85" x2="190" y2="100" stroke="#555" stroke-width="1"/>
+      <rect x="135" y="100" width="110" height="28" rx="4" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="190" y="119" text-anchor="middle" fill="#34d399" font-size="9" font-family="Inter" font-weight="600">Capacitive</text>
+      <text x="190" y="145" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">All materials</text>
+
+      <line x1="310" y1="85" x2="310" y2="100" stroke="#555" stroke-width="1"/>
+      <rect x="255" y="100" width="110" height="28" rx="4" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="310" y="119" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter" font-weight="600">Ultrasonic</text>
+      <text x="310" y="145" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">Sound waves</text>
+
+      <line x1="430" y1="85" x2="430" y2="100" stroke="#555" stroke-width="1"/>
+      <rect x="375" y="100" width="110" height="28" rx="4" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="430" y="119" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter" font-weight="600">Infrared (IR)</text>
+      <text x="430" y="145" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">Light reflection</text>
+
+      <line x1="550" y1="85" x2="550" y2="100" stroke="#555" stroke-width="1"/>
+      <rect x="495" y="100" width="110" height="28" rx="4" fill="none" stroke="#c084fc" stroke-width="1.5"/>
+      <text x="550" y="119" text-anchor="middle" fill="#c084fc" font-size="9" font-family="Inter" font-weight="600">Photoelectric</text>
+      <text x="550" y="145" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">Light beam</text>
+
+      <line x1="630" y1="85" x2="630" y2="100" stroke="#555" stroke-width="1"/>
+      <rect x="580" y="100" width="100" height="28" rx="4" fill="none" stroke="#888" stroke-width="1.5"/>
+      <text x="630" y="119" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter" font-weight="600">Magnetic</text>
+      <text x="630" y="145" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">Hall/Reed</text>
+    </svg>
+    <p class="diagram-caption">Fig 6.2 — Types of Proximity Sensors</p>
+  </div>
+
+  <h3>Detailed Working: Inductive Proximity Sensor</h3>
+  <h4>Working Principle:</h4>
+  <ol>
+    <li>An <strong>oscillator circuit</strong> inside the sensor generates a high-frequency alternating magnetic field at the <strong>sensing face</strong> (coil).</li>
+    <li>When a <strong>metallic object</strong> enters this field, <strong>eddy currents</strong> are induced in the metal surface.</li>
+    <li>These eddy currents cause <strong>energy loss</strong> in the oscillator circuit, reducing its amplitude.</li>
+    <li>A <strong>trigger circuit</strong> detects when the oscillation amplitude drops below a threshold.</li>
+    <li>The <strong>output switches</strong> (ON/OFF) indicating object presence.</li>
+  </ol>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a6b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <text x="300" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">INDUCTIVE PROXIMITY SENSOR — BLOCK DIAGRAM</text>
+
+      <rect x="30" y="60" width="100" height="50" rx="5" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="80" y="82" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter" font-weight="600">Oscillator</text>
+      <text x="80" y="97" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">(Coil + LC)</text>
+
+      <rect x="170" y="60" width="100" height="50" rx="5" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="220" y="82" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter" font-weight="600">Demodulator</text>
+      <text x="220" y="97" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">(Amplitude detect)</text>
+
+      <rect x="310" y="60" width="100" height="50" rx="5" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="360" y="82" text-anchor="middle" fill="#34d399" font-size="9" font-family="Inter" font-weight="600">Trigger</text>
+      <text x="360" y="97" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">(Schmitt)</text>
+
+      <rect x="450" y="60" width="100" height="50" rx="5" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="500" y="82" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter" font-weight="600">Output</text>
+      <text x="500" y="97" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">(NPN/PNP)</text>
+
+      <line x1="130" y1="85" x2="170" y2="85" stroke="#555" stroke-width="1.2" marker-end="url(#a6b)"/>
+      <line x1="270" y1="85" x2="310" y2="85" stroke="#555" stroke-width="1.2" marker-end="url(#a6b)"/>
+      <line x1="410" y1="85" x2="450" y2="85" stroke="#555" stroke-width="1.2" marker-end="url(#a6b)"/>
+
+      <!-- Metal object approaching -->
+      <rect x="20" y="130" width="60" height="25" rx="3" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="50" y="147" text-anchor="middle" fill="#f87171" font-size="8" font-family="Inter">Metal</text>
+      <line x1="80" y1="142" x2="80" y2="110" stroke="#555" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#a6b)"/>
+      <text x="95" y="130" fill="#888" font-size="7" font-family="Inter">Eddy currents</text>
+
+      <text x="555" y="85" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">→ ON/OFF</text>
+    </svg>
+    <p class="diagram-caption">Fig 6.3 — Block diagram of an Inductive Proximity Sensor</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q4 ═══════════ -->
+<div class="question-block" id="q4">
+  <p class="q-label">Question 04 <span class="marks">5 Marks</span></p>
+  <h2>Compare Inductive and Capacitive type Proximity Sensors.</h2>
+
+  <table>
+    <tr><th>Feature</th><th>Inductive Proximity Sensor</th><th>Capacitive Proximity Sensor</th></tr>
+    <tr><td><strong>Principle</strong></td><td>Electromagnetic induction (eddy currents)</td><td>Change in capacitance of a sensing plate</td></tr>
+    <tr><td><strong>Target Material</strong></td><td><strong>Metals only</strong> (ferrous gives best range; non-ferrous reduced range)</td><td><strong>All materials</strong> — metals, plastics, wood, liquids, powders, glass</td></tr>
+    <tr><td><strong>Sensing Element</strong></td><td>Coil (inductor) that generates oscillating magnetic field</td><td>Capacitor plates that form an electric field</td></tr>
+    <tr><td><strong>Sensing Range</strong></td><td>Typically 1–50 mm</td><td>Typically 1–25 mm</td></tr>
+    <tr><td><strong>Response to Ferrous Metals</strong></td><td>Best response (highest range)</td><td>Good response</td></tr>
+    <tr><td><strong>Response to Non-metals</strong></td><td>Cannot detect</td><td>Can detect</td></tr>
+    <tr><td><strong>Environmental Sensitivity</strong></td><td>Not affected by dust, moisture, oil</td><td>Sensitive to moisture, humidity, dust (can cause false triggers)</td></tr>
+    <tr><td><strong>Cost</strong></td><td>Moderate</td><td>Slightly higher</td></tr>
+    <tr><td><strong>Applications</strong></td><td>Metal detection in conveyors, machine tool positioning, gear tooth counting</td><td>Liquid level sensing, plastic detection, grain level in silos, packaging detection</td></tr>
+    <tr><td><strong>Mounting</strong></td><td>Flush &amp; non-flush</td><td>Flush &amp; non-flush</td></tr>
+  </table>
+
+  <div class="info-box">
+    <span class="label">Key Difference</span>
+    <strong>Inductive</strong> sensors detect only <strong>metals</strong> using electromagnetic fields. <strong>Capacitive</strong> sensors detect <strong>any material</strong> (including liquids and powders) using electrostatic fields. Choose inductive when you only need metal detection (more reliable, less noise-sensitive). Choose capacitive when you need to detect non-metallic materials.
+  </div>
+</div>
+
+<!-- ═══════════ Q5 ═══════════ -->
+<div class="question-block" id="q5">
+  <p class="q-label">Question 05 <span class="marks">5 Marks</span></p>
+  <h2>What are the different types of Temperature Sensors? Elaborate the working principle and application of any one.</h2>
+
+  <h3>Types of Temperature Sensors</h3>
+  <table>
+    <tr><th>Type</th><th>Principle</th><th>Range</th></tr>
+    <tr><td><strong>Thermocouple</strong></td><td>Seebeck effect (voltage generated at junction of two different metals)</td><td>−200°C to +2000°C</td></tr>
+    <tr><td><strong>RTD (Resistance Temperature Detector)</strong></td><td>Resistance of metal (Pt, Ni, Cu) changes linearly with temperature</td><td>−200°C to +850°C</td></tr>
+    <tr><td><strong>Thermistor</strong></td><td>Resistance of semiconductor changes exponentially with temperature (NTC/PTC)</td><td>−50°C to +300°C</td></tr>
+    <tr><td><strong>IC Temperature Sensor</strong></td><td>Semiconductor junction voltage varies linearly with temperature</td><td>−55°C to +150°C</td></tr>
+    <tr><td><strong>Infrared (IR) Pyrometer</strong></td><td>Measures thermal radiation emitted by object (non-contact)</td><td>−50°C to +3000°C</td></tr>
+  </table>
+
+  <h3>Detailed: Thermocouple</h3>
+  <h4>Construction:</h4>
+  <ul>
+    <li>Two wires of <strong>different metals</strong> (e.g., Chromel and Alumel for Type K) are joined at one end to form a <strong>junction</strong>.</li>
+    <li>The joined end is the <strong>measuring (hot) junction</strong> — placed at the point where temperature is to be measured.</li>
+    <li>The free ends form the <strong>reference (cold) junction</strong> — kept at a known temperature (often 0°C or ambient with compensation).</li>
+  </ul>
+
+  <h4>Working Principle — Seebeck Effect:</h4>
+  <ol>
+    <li>When two dissimilar metals are joined and the junction is heated, a <strong>voltage (EMF) is generated</strong> across the free ends.</li>
+    <li>This voltage is <strong>proportional to the temperature difference</strong> between the hot and cold junctions.</li>
+    <li>The EMF is typically in the range of <strong>microvolt to millivolt per degree</strong>.</li>
+    <li>A voltmeter or signal conditioning circuit measures this EMF and converts it to a temperature reading.</li>
+  </ol>
+
+  <div class="diagram">
+    <svg viewBox="0 0 550 160" xmlns="http://www.w3.org/2000/svg">
+      <text x="275" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">THERMOCOUPLE — CONSTRUCTION</text>
+
+      <!-- Metal A wire -->
+      <line x1="80" y1="60" x2="250" y2="80" stroke="#f87171" stroke-width="3"/>
+      <text x="160" y="55" fill="#f87171" font-size="10" font-family="Inter">Metal A (Chromel)</text>
+      <!-- Metal B wire -->
+      <line x1="80" y1="100" x2="250" y2="80" stroke="#60a5fa" stroke-width="3"/>
+      <text x="160" y="125" fill="#60a5fa" font-size="10" font-family="Inter">Metal B (Alumel)</text>
+
+      <!-- Hot junction -->
+      <circle cx="250" cy="80" r="8" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <text x="275" y="75" fill="#fbbf24" font-size="9" font-family="Inter" font-weight="600">Hot Junction</text>
+      <text x="275" y="90" fill="#888" font-size="8" font-family="Inter">(Measuring)</text>
+
+      <!-- Flame/heat -->
+      <text x="250" y="115" text-anchor="middle" fill="#f87171" font-size="14" font-family="Inter">🔥</text>
+
+      <!-- Cold junction / Voltmeter -->
+      <rect x="30" y="55" width="50" height="50" rx="4" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="55" y="75" text-anchor="middle" fill="#34d399" font-size="8" font-family="Inter">Volt</text>
+      <text x="55" y="90" text-anchor="middle" fill="#34d399" font-size="8" font-family="Inter">meter</text>
+      <text x="55" y="120" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">Cold Junction</text>
+
+      <!-- EMF label -->
+      <text x="400" y="80" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">EMF ∝ (T_hot − T_cold)</text>
+    </svg>
+    <p class="diagram-caption">Fig 6.4 — Thermocouple construction and principle</p>
+  </div>
+
+  <h4>Applications:</h4>
+  <p>Industrial furnace monitoring, engine exhaust temperature, boiler temperature control, HVAC systems, scientific research, food processing.</p>
+</div>
+
+<!-- ═══════════ Q6 ═══════════ -->
+<div class="question-block" id="q6">
+  <p class="q-label">Question 06 <span class="marks">5 Marks</span></p>
+  <h2>Discuss advantages, disadvantages, and applications of Optocouplers.</h2>
+
+  <h3>What is an Optocoupler?</h3>
+  <p>An optocoupler (also called opto-isolator) is a device that transfers electrical signals between two isolated circuits using <strong>light</strong>. It contains an LED (input) and a phototransistor/photodiode (output) in a single package, with no electrical connection between them.</p>
+
+  <h3>Advantages</h3>
+  <ol>
+    <li><strong>Electrical Isolation:</strong> Provides complete galvanic isolation between input and output (typically 2,500V to 7,500V isolation). Protects sensitive circuits from high voltages.</li>
+    <li><strong>Noise Immunity:</strong> Since the coupling is optical, electrical noise and interference from the input side does not transfer to the output side.</li>
+    <li><strong>Signal Level Shifting:</strong> Can interface circuits operating at different voltage levels (e.g., 5V microcontroller to 220V AC relay).</li>
+    <li><strong>Safety:</strong> Prevents electric shock and equipment damage by isolating high-voltage circuits from low-voltage control circuits.</li>
+    <li><strong>Compact Size:</strong> Available in small DIP packages (e.g., 4N35, PC817).</li>
+    <li><strong>High Speed:</strong> Can switch at frequencies up to MHz range (for high-speed optocouplers).</li>
+    <li><strong>No Mechanical Parts:</strong> Solid-state device — no wear, long life.</li>
+  </ol>
+
+  <h3>Disadvantages</h3>
+  <ol>
+    <li><strong>LED Degradation:</strong> The internal LED degrades over time, reducing the Current Transfer Ratio (CTR).</li>
+    <li><strong>Temperature Sensitivity:</strong> Performance varies with temperature changes.</li>
+    <li><strong>Limited Bandwidth:</strong> Standard optocouplers are slower than direct electrical connections.</li>
+    <li><strong>Power Consumption:</strong> The LED requires current to operate (5–20 mA).</li>
+    <li><strong>Non-Linear CTR:</strong> The Current Transfer Ratio is not perfectly linear — not ideal for analog signal transmission.</li>
+  </ol>
+
+  <h3>Applications</h3>
+  <ul>
+    <li><strong>Microcontroller-to-relay interface</strong> — Isolating Arduino from high-voltage relay circuits.</li>
+    <li><strong>Switch-mode power supplies (SMPS)</strong> — Feedback isolation between primary (AC) and secondary (DC) sides.</li>
+    <li><strong>Motor drive circuits</strong> — Isolating control logic from power stage.</li>
+    <li><strong>Medical equipment</strong> — Patient safety isolation between instruments and mains power.</li>
+    <li><strong>Industrial PLCs</strong> — Isolating field I/O from controller.</li>
+    <li><strong>Digital communication</strong> — RS-232, RS-485 isolation.</li>
+    <li><strong>AC mains sensing</strong> — Zero-cross detection with isolation.</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q7 ═══════════ -->
+<div class="question-block" id="q7">
+  <p class="q-label">Question 07 <span class="marks">5 Marks</span></p>
+  <h2>Explain the working principle of a Hall Effect Sensor with a neat diagram.</h2>
+
+  <h3>Hall Effect Principle</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    The <strong>Hall Effect</strong> states that when a current-carrying conductor is placed in a <strong>perpendicular magnetic field</strong>, a voltage (called the <strong>Hall voltage</strong>) is developed across the conductor in a direction perpendicular to both the current and the magnetic field.
+  </div>
+
+  <h4>Working of a Hall Effect Sensor:</h4>
+  <ol>
+    <li>A thin <strong>semiconductor plate</strong> (Hall element) carries a current (I) in one direction.</li>
+    <li>When a <strong>magnetic field (B)</strong> is applied perpendicular to the plate, the charge carriers (electrons/holes) experience a <strong>Lorentz force</strong>.</li>
+    <li>This force deflects the charge carriers to one side of the plate, creating a <strong>charge accumulation</strong> on one edge and a deficit on the other.</li>
+    <li>This charge separation produces a <strong>potential difference (Hall Voltage, V<sub>H</sub>)</strong> across the plate.</li>
+    <li>The Hall voltage is <strong>proportional to the magnetic field strength</strong> and the current.</li>
+  </ol>
+
+  <div class="info-box formula">
+<span class="label">Hall Voltage Formula</span>
+V_H = (B × I × t) / (n × e × A)
+
+Simplified: V_H = K_H × B × I
+
+Where:
+  B = Magnetic flux density (Tesla)
+  I = Current through the Hall element
+  t = Thickness of the Hall element
+  K_H = Hall coefficient (material property)</div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a6c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker></defs>
+      <text x="300" y="25" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">HALL EFFECT SENSOR — WORKING PRINCIPLE</text>
+
+      <!-- Hall element (rectangle) -->
+      <rect x="150" y="70" width="250" height="100" rx="4" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <text x="275" y="125" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Inter" font-weight="600">Hall Element (Semiconductor)</text>
+
+      <!-- Current flow (left to right) -->
+      <line x1="100" y1="120" x2="150" y2="120" stroke="#f87171" stroke-width="2" marker-end="url(#a6c)"/>
+      <line x1="400" y1="120" x2="460" y2="120" stroke="#f87171" stroke-width="2" marker-end="url(#a6c)"/>
+      <text x="80" y="125" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">I →</text>
+      <text x="470" y="125" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">I →</text>
+
+      <!-- Magnetic field (into the page / downward) -->
+      <text x="275" y="55" text-anchor="middle" fill="#60a5fa" font-size="11" font-family="Inter" font-weight="600">Magnetic Field B ↓</text>
+      <line x1="275" y1="58" x2="275" y2="70" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#a6c)"/>
+      <line x1="225" y1="58" x2="225" y2="70" stroke="#60a5fa" stroke-width="1" marker-end="url(#a6c)"/>
+      <line x1="325" y1="58" x2="325" y2="70" stroke="#60a5fa" stroke-width="1" marker-end="url(#a6c)"/>
+
+      <!-- Hall Voltage (top to bottom across plate) -->
+      <line x1="275" y1="70" x2="275" y2="50" stroke="#34d399" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="460" y="75" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">V_H (+)</text>
+      <text x="460" y="175" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">V_H (−)</text>
+      <line x1="435" y1="70" x2="435" y2="170" stroke="#34d399" stroke-width="2" stroke-dasharray="5,3"/>
+
+      <!-- Charge deflection illustration -->
+      <text x="275" y="85" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">+ + + + + + (charge accumulation)</text>
+      <text x="275" y="160" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">− − − − − − (charge deficit)</text>
+
+      <!-- Formula -->
+      <text x="275" y="210" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter">V<tspan font-size="7" dy="2">H</tspan><tspan dy="-2"> = K × B × I</tspan></text>
+      <text x="275" y="230" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">Hall Voltage ∝ Magnetic Field × Current</text>
+    </svg>
+    <p class="diagram-caption">Fig 6.5 — Hall Effect sensor — magnetic field deflects charge carriers creating Hall voltage</p>
+  </div>
+
+  <h3>Applications</h3>
+  <ul>
+    <li><strong>Speed measurement:</strong> Magnetic gear tooth counting (RPM sensor in engines).</li>
+    <li><strong>Position detection:</strong> Detecting magnet position (brushless DC motor commutation).</li>
+    <li><strong>Current sensing:</strong> Measuring current through a conductor by detecting its magnetic field (non-contact).</li>
+    <li><strong>Proximity detection:</strong> Detecting the presence of a magnet.</li>
+    <li><strong>Automotive:</strong> Ignition timing, wheel speed (ABS), throttle position.</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q8 ═══════════ -->
+<div class="question-block" id="q8">
+  <p class="q-label">Question 08 <span class="marks">5 Marks</span></p>
+  <h2>What is an Optocoupler? What are the advantages of an optocoupler?</h2>
+
+  <h3>Definition</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    An <strong>optocoupler</strong> (or opto-isolator) is an electronic component that transfers electrical signals between two electrically isolated circuits using <strong>light as the coupling medium</strong>. It contains an <strong>infrared LED</strong> on the input side and a <strong>phototransistor (or photodiode)</strong> on the output side, sealed in a light-tight package.
+  </div>
+
+  <h4>Working Summary:</h4>
+  <ul>
+    <li>When current flows through the <strong>input LED</strong>, it emits infrared light.</li>
+    <li>This light falls on the <strong>phototransistor</strong> on the output side.</li>
+    <li>The phototransistor turns ON, allowing current to flow in the output circuit.</li>
+    <li>There is <strong>no electrical connection</strong> between input and output — only optical coupling.</li>
+  </ul>
+
+  <h3>Advantages of Optocoupler</h3>
+  <ol>
+    <li><strong>Complete Electrical Isolation:</strong> Provides galvanic isolation of 2,500–7,500 V between input and output circuits. Protects sensitive microcontrollers from high-voltage damage.</li>
+    <li><strong>Noise Rejection:</strong> Optical coupling eliminates electrical noise, ground loops, and electromagnetic interference (EMI) from transferring between circuits.</li>
+    <li><strong>Voltage Level Translation:</strong> Can interface different voltage domains (e.g., 3.3V to 24V, or 5V to 230V AC).</li>
+    <li><strong>Protection:</strong> Isolates the control circuit from surges, spikes, and transients in the power circuit.</li>
+    <li><strong>Compact Size:</strong> Available in small IC packages (DIP-4, DIP-6, SMD). Common ICs: PC817, 4N35, 6N137.</li>
+    <li><strong>Unidirectional Signal Transfer:</strong> Signal flows only from LED (input) to phototransistor (output) — prevents back-flow of power surges.</li>
+    <li><strong>No Moving Parts:</strong> Solid-state device with long operational life and high reliability.</li>
+    <li><strong>Fast Switching:</strong> High-speed optocouplers (like 6N137) can operate at up to 10 MHz.</li>
+  </ol>
+</div>
+
+<!-- ═══════════ Q9 ═══════════ -->
+<div class="question-block" id="q9">
+  <p class="q-label">Question 09 <span class="marks">5 Marks</span></p>
+  <h2>Explain the construction and working of an Optocoupler with a neat diagram.</h2>
+
+  <h3>Construction</h3>
+  <p>An optocoupler consists of the following main parts enclosed in a <strong>light-tight package</strong> (usually DIP-4 or DIP-6 IC):</p>
+  <ol>
+    <li><strong>Input Side — Infrared LED:</strong> When current flows through the LED (pins 1 and 2), it emits infrared light proportional to the input current.</li>
+    <li><strong>Optical Channel:</strong> A transparent medium (air gap or transparent resin) allows IR light to travel from the LED to the detector.</li>
+    <li><strong>Output Side — Phototransistor:</strong> Receives the IR light on its base region. When illuminated, it becomes conductive, allowing current to flow between collector and emitter (pins 3 and 4).</li>
+    <li><strong>Light-Tight Package:</strong> Opaque plastic or ceramic housing prevents external light from entering while keeping internal light paths intact.</li>
+  </ol>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a6d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/></marker></defs>
+      <text x="300" y="25" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">OPTOCOUPLER — INTERNAL CONSTRUCTION</text>
+
+      <!-- Package outline -->
+      <rect x="100" y="50" width="400" height="160" rx="8" fill="none" stroke="#555" stroke-width="2"/>
+      <text x="300" y="225" text-anchor="middle" fill="#888" font-size="10" font-family="Inter">Light-tight Package (e.g., PC817)</text>
+
+      <!-- Isolation barrier (dashed line) -->
+      <line x1="300" y1="55" x2="300" y2="205" stroke="#f87171" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <text x="300" y="45" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter" font-weight="600">Isolation Barrier</text>
+
+      <!-- Input side - LED -->
+      <text x="190" y="75" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Inter" font-weight="600">INPUT SIDE</text>
+      <!-- LED symbol (triangle with line) -->
+      <polygon points="180,110 180,150 220,130" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="220" y1="110" x2="220" y2="150" stroke="#60a5fa" stroke-width="2"/>
+      <text x="195" y="175" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter">IR LED</text>
+
+      <!-- Light arrows -->
+      <line x1="225" y1="125" x2="270" y2="125" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#a6d)"/>
+      <line x1="225" y1="135" x2="270" y2="135" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#a6d)"/>
+      <text x="248" y="118" fill="#fbbf24" font-size="8" font-family="Inter">IR Light</text>
+
+      <!-- Output side - Phototransistor -->
+      <text x="400" y="75" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">OUTPUT SIDE</text>
+      <!-- Simplified phototransistor -->
+      <line x1="340" y1="130" x2="370" y2="130" stroke="#34d399" stroke-width="2"/>
+      <line x1="370" y1="110" x2="370" y2="150" stroke="#34d399" stroke-width="2"/>
+      <line x1="370" y1="115" x2="400" y2="100" stroke="#34d399" stroke-width="2"/>
+      <line x1="370" y1="145" x2="400" y2="160" stroke="#34d399" stroke-width="2"/>
+      <text x="400" y="180" text-anchor="middle" fill="#34d399" font-size="9" font-family="Inter">Phototransistor</text>
+
+      <!-- Pins -->
+      <line x1="140" y1="110" x2="180" y2="110" stroke="#888" stroke-width="1.5"/>
+      <line x1="140" y1="150" x2="180" y2="150" stroke="#888" stroke-width="1.5"/>
+      <text x="120" y="114" fill="#888" font-size="8" font-family="Inter">Pin 1 (Anode)</text>
+      <text x="120" y="154" fill="#888" font-size="8" font-family="Inter">Pin 2 (Cathode)</text>
+
+      <line x1="400" y1="100" x2="460" y2="100" stroke="#888" stroke-width="1.5"/>
+      <line x1="400" y1="160" x2="460" y2="160" stroke="#888" stroke-width="1.5"/>
+      <text x="465" y="104" fill="#888" font-size="8" font-family="Inter">Pin 4 (Collector)</text>
+      <text x="465" y="164" fill="#888" font-size="8" font-family="Inter">Pin 3 (Emitter)</text>
+    </svg>
+    <p class="diagram-caption">Fig 6.6 — Internal construction of an optocoupler</p>
+  </div>
+
+  <h3>Working</h3>
+  <ol>
+    <li><strong>Input Signal Applied:</strong> A current-limited signal is applied to the LED (pins 1 and 2). When sufficient forward current flows (~5–20 mA), the LED emits infrared light.</li>
+    <li><strong>Optical Coupling:</strong> The IR light crosses the isolation barrier (air gap or transparent resin) and strikes the base region of the phototransistor.</li>
+    <li><strong>Output Activation:</strong> The photons generate electron-hole pairs in the phototransistor's base, causing it to conduct. Current flows from collector (pin 4) to emitter (pin 3).</li>
+    <li><strong>Signal Transfer:</strong> The output current is proportional to the input LED current (governed by the <strong>Current Transfer Ratio, CTR</strong> — typically 50–200%).</li>
+    <li><strong>Isolation Maintained:</strong> Throughout this process, there is <strong>zero electrical connection</strong> between input and output — only light couples the signal.</li>
+  </ol>
+
+  <div class="info-box formula">
+<span class="label">Current Transfer Ratio (CTR)</span>
+CTR = (I_output / I_input) × 100%
+
+Example: If CTR = 100%, I_LED = 10 mA
+Then I_collector = 10 mA</div>
+</div>
+
+<!-- ═══════════ Q10 ═══════════ -->
+<div class="question-block" id="q10">
+  <p class="q-label">Question 10 <span class="marks">5 Marks</span></p>
+  <h2>What is an IR Sensor? Draw connection diagram of IR sensor with Arduino Uno.</h2>
+
+  <h3>What is an IR Sensor?</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    An <strong>IR (Infrared) sensor</strong> is a proximity/object detection sensor that uses <strong>infrared light</strong> to detect objects. It consists of an IR LED (emitter) and a photodiode (receiver). When IR light reflected from an object hits the photodiode, the sensor detects the object's presence.
+  </div>
+
+  <h4>IR Sensor Module Pins:</h4>
+  <ul>
+    <li><strong>VCC</strong> — 3.3V–5V power supply</li>
+    <li><strong>GND</strong> — Ground</li>
+    <li><strong>OUT</strong> — Digital output (LOW when object detected, HIGH when no object)</li>
+  </ul>
+
+  <h3>Connection Diagram: IR Sensor with Arduino Uno</h3>
+  <div class="diagram">
+    <svg viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg">
+      <text x="325" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">IR SENSOR — ARDUINO UNO CONNECTION</text>
+
+      <!-- Arduino Uno -->
+      <rect x="300" y="50" width="200" height="200" rx="8" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="400" y="80" text-anchor="middle" fill="#60a5fa" font-size="14" font-family="Inter" font-weight="700">ARDUINO UNO</text>
+      <text x="400" y="100" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">(ATmega328P)</text>
+
+      <!-- Arduino pins -->
+      <text x="315" y="140" fill="#aaa" font-size="9" font-family="Inter">5V</text>
+      <text x="315" y="170" fill="#aaa" font-size="9" font-family="Inter">GND</text>
+      <text x="315" y="200" fill="#aaa" font-size="9" font-family="Inter">D7</text>
+
+      <!-- Pin dots -->
+      <circle cx="305" cy="137" r="3" fill="#f87171"/>
+      <circle cx="305" cy="167" r="3" fill="#333"/>
+      <circle cx="305" cy="197" r="3" fill="#34d399"/>
+
+      <!-- IR Sensor Module -->
+      <rect x="50" y="100" width="140" height="120" rx="8" fill="none" stroke="#fb923c" stroke-width="2"/>
+      <text x="120" y="135" text-anchor="middle" fill="#fb923c" font-size="12" font-family="Inter" font-weight="700">IR SENSOR</text>
+      <text x="120" y="155" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">MODULE</text>
+
+      <!-- IR Sensor pins -->
+      <text x="170" y="130" fill="#aaa" font-size="9" font-family="Inter">VCC</text>
+      <text x="170" y="160" fill="#aaa" font-size="9" font-family="Inter">GND</text>
+      <text x="170" y="190" fill="#aaa" font-size="9" font-family="Inter">OUT</text>
+
+      <!-- Wires -->
+      <!-- VCC (Red) -->
+      <line x1="195" y1="127" x2="305" y2="137" stroke="#f87171" stroke-width="2"/>
+      <text x="250" y="125" fill="#f87171" font-size="8" font-family="Inter">Red (5V)</text>
+
+      <!-- GND (Black) -->
+      <line x1="195" y1="157" x2="305" y2="167" stroke="#888" stroke-width="2"/>
+      <text x="250" y="155" fill="#888" font-size="8" font-family="Inter">Black (GND)</text>
+
+      <!-- Signal (Green) -->
+      <line x1="195" y1="187" x2="305" y2="197" stroke="#34d399" stroke-width="2"/>
+      <text x="250" y="195" fill="#34d399" font-size="8" font-family="Inter">Signal (D7)</text>
+
+      <!-- IR emitter and receiver illustration -->
+      <circle cx="80" cy="185" r="8" fill="none" stroke="#c084fc" stroke-width="1.2"/>
+      <text x="80" y="188" text-anchor="middle" fill="#c084fc" font-size="7" font-family="Inter">TX</text>
+      <circle cx="110" cy="185" r="8" fill="none" stroke="#fbbf24" stroke-width="1.2"/>
+      <text x="110" y="188" text-anchor="middle" fill="#fbbf24" font-size="7" font-family="Inter">RX</text>
+    </svg>
+    <p class="diagram-caption">Fig 6.7 — IR Sensor module connected to Arduino Uno</p>
+  </div>
+
+  <h4>Arduino Code:</h4>
+<pre>
+int irPin = 7;       // IR sensor OUT connected to D7
+
+void setup() {
+  pinMode(irPin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int val = digitalRead(irPin);
+  if (val == LOW) {
+    Serial.println("Object Detected!");
+  } else {
+    Serial.println("No Object");
+  }
+  delay(200);
+}
+</pre>
+</div>
+
+<!-- ═══════════ Q11 ═══════════ -->
+<div class="question-block" id="q11">
+  <p class="q-label">Question 11 <span class="marks">5 Marks</span></p>
+  <h2>What is an Ultrasonic Sensor? Draw connection diagram with Arduino Uno.</h2>
+
+  <h3>What is an Ultrasonic Sensor?</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    An <strong>ultrasonic sensor</strong> measures distance by emitting <strong>40 kHz ultrasonic sound pulses</strong> and measuring the time taken for the echo to return. The most common module is the <strong>HC-SR04</strong>.
+  </div>
+
+  <h4>HC-SR04 Specifications:</h4>
+  <ul>
+    <li>Operating Voltage: 5V DC</li>
+    <li>Range: 2 cm to 400 cm</li>
+    <li>Accuracy: ±3 mm</li>
+    <li>Trigger Input: 10 μs HIGH pulse</li>
+    <li>Echo Output: Pulse width proportional to distance</li>
+  </ul>
+
+  <h3>Connection Diagram: HC-SR04 with Arduino Uno</h3>
+  <div class="diagram">
+    <svg viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg">
+      <text x="325" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">HC-SR04 ULTRASONIC SENSOR — ARDUINO CONNECTION</text>
+
+      <!-- Arduino Uno -->
+      <rect x="320" y="50" width="200" height="200" rx="8" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="420" y="80" text-anchor="middle" fill="#60a5fa" font-size="14" font-family="Inter" font-weight="700">ARDUINO UNO</text>
+
+      <!-- Arduino pins -->
+      <text x="335" y="125" fill="#aaa" font-size="9" font-family="Inter">5V</text>
+      <text x="335" y="155" fill="#aaa" font-size="9" font-family="Inter">GND</text>
+      <text x="335" y="185" fill="#aaa" font-size="9" font-family="Inter">D9 (Trig)</text>
+      <text x="335" y="215" fill="#aaa" font-size="9" font-family="Inter">D10 (Echo)</text>
+
+      <circle cx="325" cy="122" r="3" fill="#f87171"/>
+      <circle cx="325" cy="152" r="3" fill="#333"/>
+      <circle cx="325" cy="182" r="3" fill="#fbbf24"/>
+      <circle cx="325" cy="212" r="3" fill="#34d399"/>
+
+      <!-- HC-SR04 -->
+      <rect x="50" y="80" width="150" height="160" rx="8" fill="none" stroke="#fb923c" stroke-width="2"/>
+      <text x="125" y="115" text-anchor="middle" fill="#fb923c" font-size="12" font-family="Inter" font-weight="700">HC-SR04</text>
+      <!-- TX RX circles -->
+      <circle cx="95" cy="145" r="16" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="95" y="149" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">T</text>
+      <circle cx="155" cy="145" r="16" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="155" y="149" text-anchor="middle" fill="#34d399" font-size="8" font-family="Inter">R</text>
+
+      <!-- Sensor pins -->
+      <text x="175" y="180" fill="#aaa" font-size="9" font-family="Inter">VCC</text>
+      <text x="175" y="195" fill="#aaa" font-size="9" font-family="Inter">Trig</text>
+      <text x="175" y="210" fill="#aaa" font-size="9" font-family="Inter">Echo</text>
+      <text x="175" y="225" fill="#aaa" font-size="9" font-family="Inter">GND</text>
+
+      <!-- Wires -->
+      <line x1="205" y1="177" x2="325" y2="122" stroke="#f87171" stroke-width="2"/>
+      <line x1="205" y1="192" x2="325" y2="182" stroke="#fbbf24" stroke-width="2"/>
+      <line x1="205" y1="207" x2="325" y2="212" stroke="#34d399" stroke-width="2"/>
+      <line x1="205" y1="222" x2="325" y2="152" stroke="#888" stroke-width="2"/>
+    </svg>
+    <p class="diagram-caption">Fig 6.8 — HC-SR04 Ultrasonic Sensor connected to Arduino Uno</p>
+  </div>
+
+  <h4>Connection Summary:</h4>
+  <table>
+    <tr><th>HC-SR04 Pin</th><th>Arduino Pin</th><th>Wire Color</th></tr>
+    <tr><td>VCC</td><td>5V</td><td>Red</td></tr>
+    <tr><td>Trig</td><td>D9</td><td>Yellow</td></tr>
+    <tr><td>Echo</td><td>D10</td><td>Green</td></tr>
+    <tr><td>GND</td><td>GND</td><td>Black</td></tr>
+  </table>
+
+  <h4>Arduino Code:</h4>
+<pre>
+int trigPin = 9;
+int echoPin = 10;
+
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Send 10μs trigger pulse
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Read echo pulse duration
+  long duration = pulseIn(echoPin, HIGH);
+
+  // Calculate distance in cm
+  float distance = duration * 0.034 / 2;
+
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  delay(500);
+}
+</pre>
+</div>
+
+<!-- ═══════════ Q12 ═══════════ -->
+<div class="question-block" id="q12">
+  <p class="q-label">Question 12 <span class="marks">5 Marks</span></p>
+  <h2>With a suitable diagram, illustrate the construction and working of a Rotary Encoder.</h2>
+
+  <h3>What is a Rotary Encoder?</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>rotary encoder</strong> is an electromechanical sensor that converts the <strong>angular position or rotation</strong> of a shaft into <strong>digital electrical signals</strong> (pulses). It measures rotation direction, speed, and position.
+  </div>
+
+  <h3>Types</h3>
+  <ul>
+    <li><strong>Incremental Encoder:</strong> Generates pulses as the shaft rotates. Measures relative change in position (direction + speed). Requires a reference point for absolute position.</li>
+    <li><strong>Absolute Encoder:</strong> Provides a unique digital code for each angular position. Knows the exact position even after power-off.</li>
+  </ul>
+
+  <h3>Construction (Incremental Optical Encoder)</h3>
+  <ol>
+    <li><strong>Light Source (LED):</strong> An infrared LED emits light towards the disc.</li>
+    <li><strong>Code Disc:</strong> A disc with alternating <strong>opaque and transparent slots</strong> (or patterns) is attached to the rotating shaft. As the shaft rotates, the slots alternately block and pass light.</li>
+    <li><strong>Photodetector:</strong> A photodiode or phototransistor on the other side of the disc detects the light pattern.</li>
+    <li><strong>Two Channels (A and B):</strong> Two photo-sensors are placed 90° out of phase. This produces two square wave signals (Channel A and Channel B) that are shifted by 90° — this is called <strong>quadrature encoding</strong>.</li>
+  </ol>
+
+  <div class="diagram">
+    <svg viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg">
+      <text x="325" y="25" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">ROTARY ENCODER — CONSTRUCTION &amp; QUADRATURE OUTPUT</text>
+
+      <!-- Disc -->
+      <circle cx="160" cy="150" r="70" fill="none" stroke="#888" stroke-width="2"/>
+      <circle cx="160" cy="150" r="55" fill="none" stroke="#555" stroke-width="1"/>
+      <!-- Slots (alternating) -->
+      <path d="M 160,80 L 160,95" stroke="#fbbf24" stroke-width="6"/>
+      <path d="M 215,105 L 205,115" stroke="#fbbf24" stroke-width="6"/>
+      <path d="M 230,150 L 215,150" stroke="#fbbf24" stroke-width="6"/>
+      <path d="M 215,195 L 205,185" stroke="#fbbf24" stroke-width="6"/>
+      <path d="M 160,220 L 160,205" stroke="#fbbf24" stroke-width="6"/>
+      <path d="M 105,195 L 115,185" stroke="#fbbf24" stroke-width="6"/>
+      <path d="M 90,150 L 105,150" stroke="#fbbf24" stroke-width="6"/>
+      <path d="M 105,105 L 115,115" stroke="#fbbf24" stroke-width="6"/>
+
+      <text x="160" y="155" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter" font-weight="600">CODE DISC</text>
+
+      <!-- Shaft -->
+      <circle cx="160" cy="150" r="8" fill="none" stroke="#aaa" stroke-width="2"/>
+      <text x="160" y="154" text-anchor="middle" fill="#aaa" font-size="7" font-family="Inter">Shaft</text>
+
+      <!-- LED -->
+      <rect x="55" y="82" width="20" height="15" rx="2" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="65" y="80" text-anchor="middle" fill="#f87171" font-size="7" font-family="Inter">LED</text>
+
+      <!-- Photodetector -->
+      <rect x="225" y="82" width="30" height="15" rx="2" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="240" y="80" text-anchor="middle" fill="#34d399" font-size="7" font-family="Inter">Sensor A</text>
+
+      <rect x="225" y="100" width="30" height="15" rx="2" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="240" y="128" text-anchor="middle" fill="#60a5fa" font-size="7" font-family="Inter">Sensor B</text>
+
+      <!-- Quadrature output waveforms -->
+      <text x="450" y="70" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Channel A</text>
+      <!-- Channel A square wave -->
+      <line x1="350" y1="100" x2="380" y2="100" stroke="#34d399" stroke-width="2"/>
+      <line x1="380" y1="100" x2="380" y2="80" stroke="#34d399" stroke-width="2"/>
+      <line x1="380" y1="80" x2="420" y2="80" stroke="#34d399" stroke-width="2"/>
+      <line x1="420" y1="80" x2="420" y2="100" stroke="#34d399" stroke-width="2"/>
+      <line x1="420" y1="100" x2="460" y2="100" stroke="#34d399" stroke-width="2"/>
+      <line x1="460" y1="100" x2="460" y2="80" stroke="#34d399" stroke-width="2"/>
+      <line x1="460" y1="80" x2="500" y2="80" stroke="#34d399" stroke-width="2"/>
+      <line x1="500" y1="80" x2="500" y2="100" stroke="#34d399" stroke-width="2"/>
+      <line x1="500" y1="100" x2="540" y2="100" stroke="#34d399" stroke-width="2"/>
+
+      <text x="450" y="130" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Inter" font-weight="600">Channel B (90° shifted)</text>
+      <!-- Channel B square wave (shifted by 90°) -->
+      <line x1="350" y1="165" x2="400" y2="165" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="400" y1="165" x2="400" y2="145" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="400" y1="145" x2="440" y2="145" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="440" y1="145" x2="440" y2="165" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="440" y1="165" x2="480" y2="165" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="480" y1="165" x2="480" y2="145" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="480" y1="145" x2="520" y2="145" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="520" y1="145" x2="520" y2="165" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="520" y1="165" x2="540" y2="165" stroke="#60a5fa" stroke-width="2"/>
+
+      <!-- 90° phase shift indicator -->
+      <line x1="380" y1="105" x2="380" y2="170" stroke="#555" stroke-width="0.8" stroke-dasharray="3,3"/>
+      <line x1="400" y1="105" x2="400" y2="170" stroke="#555" stroke-width="0.8" stroke-dasharray="3,3"/>
+      <text x="390" y="185" text-anchor="middle" fill="#fbbf24" font-size="8" font-family="Inter">90°</text>
+
+      <!-- Direction info -->
+      <text x="450" y="210" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">If A leads B → Clockwise (CW)</text>
+      <text x="450" y="228" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">If B leads A → Counter-Clockwise (CCW)</text>
+    </svg>
+    <p class="diagram-caption">Fig 6.9 — Rotary encoder construction with quadrature (Channel A &amp; B) output waveforms</p>
+  </div>
+
+  <h3>Working</h3>
+  <ol>
+    <li>As the shaft rotates, the code disc passes light alternately through transparent and opaque sections.</li>
+    <li>The photodetectors produce <strong>square wave pulses</strong> — the number of pulses indicates the angle of rotation.</li>
+    <li>Two sensors (A and B) produce waveforms shifted by <strong>90° (quadrature)</strong>. By analyzing which signal leads, the <strong>direction of rotation</strong> is determined:
+      <ul>
+        <li><strong>A leads B</strong> → Clockwise rotation</li>
+        <li><strong>B leads A</strong> → Counter-clockwise rotation</li>
+      </ul>
+    </li>
+    <li>The <strong>frequency of pulses</strong> indicates the speed of rotation.</li>
+    <li>Resolution is expressed as <strong>PPR (Pulses Per Revolution)</strong> — e.g., 360 PPR = 1° resolution.</li>
+  </ol>
+
+  <h3>Applications</h3>
+  <ul>
+    <li><strong>Robotic joint position feedback</strong> — measuring servo motor shaft angle</li>
+    <li><strong>CNC machines</strong> — tracking spindle and axis position</li>
+    <li><strong>Automotive</strong> — steering angle, throttle position</li>
+    <li><strong>User input devices</strong> — volume knobs, scroll wheels</li>
+    <li><strong>Industrial conveyors</strong> — speed and length measurement</li>
+  </ul>
+</div>
+
+<a href="#top" class="back-top">↑ Back to top</a>
+</main>
+</body>
+</html>

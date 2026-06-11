@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2 — Actuators | AEM Solutions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root{--bg:#0e0e0e;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border-light:#333;--text:#d4d4d4;--text-dim:#888;--text-bright:#f0f0f0;--accent:#a0a0a0;--accent-light:#c8c8c8;--highlight:#fff;--tag:#3a3a3a;--accent-blue:#60a5fa;--accent-green:#34d399;--accent-amber:#fbbf24}
+  *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:15px}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .site-header{text-align:center;padding:5rem 2rem 3rem;border-bottom:1px solid var(--border)}.site-header h1{font-size:2.4rem;font-weight:800;color:var(--highlight);letter-spacing:-1px;margin-bottom:.5rem}.site-header .subtitle{font-size:.95rem;color:var(--text-dim);font-weight:300;letter-spacing:3px;text-transform:uppercase}.site-header .unit-badge{display:inline-block;margin-top:1rem;background:var(--surface2);border:1px solid var(--border-light);padding:.35rem 1.2rem;border-radius:20px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--accent-green);letter-spacing:2px;text-transform:uppercase}
+  .toc{max-width:720px;margin:3rem auto;padding:2rem 2.5rem;background:var(--surface);border:1px solid var(--border);border-radius:8px}.toc h2{font-size:1rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent);margin-bottom:1.5rem;font-weight:600}.toc ol{list-style:none;counter-reset:toc-counter}.toc ol li{counter-increment:toc-counter;margin-bottom:.6rem}.toc ol li a{color:var(--text);text-decoration:none;font-weight:400;transition:color .2s;display:flex;align-items:baseline;gap:.75rem}.toc ol li a::before{content:"Q" counter(toc-counter,decimal-leading-zero);font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--accent-green);min-width:2rem}.toc ol li a:hover{color:var(--highlight)}
+  .content{max-width:800px;margin:0 auto;padding:0 2rem 6rem}
+  .question-block{margin-top:4rem;padding-top:2.5rem;border-top:1px solid var(--border)}.question-block:first-of-type{margin-top:2rem}.q-label{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent-green);margin-bottom:.5rem}.q-label .marks{float:right;color:var(--accent-amber);letter-spacing:1px}.question-block>h2{font-size:1.35rem;font-weight:700;color:var(--highlight);margin-bottom:1.5rem;letter-spacing:-.3px;line-height:1.5}.question-block h3{font-size:1.1rem;font-weight:600;color:var(--text-bright);margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}.question-block h4{font-size:1rem;font-weight:600;color:var(--accent-light);margin:1.25rem 0 .6rem}
+  p{margin-bottom:1rem}ul,ol{margin:.75rem 0 1.25rem 1.5rem}li{margin-bottom:.4rem}
+  .def-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:1.5rem 0}.def-grid .cell{background:var(--surface);padding:.75rem 1rem;font-size:.9rem}.def-grid .cell.header{background:var(--surface2);font-weight:600;color:var(--accent-light);font-size:.8rem;text-transform:uppercase;letter-spacing:1px}
+  .info-box{background:var(--surface);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 6px 6px 0;font-size:.92rem}.info-box.formula{border-left-color:var(--accent-blue);font-family:'IBM Plex Mono',monospace;font-size:.88rem;white-space:pre-wrap}.info-box.definition{border-left-color:var(--accent-green)}.info-box strong{color:var(--text-bright)}.info-box .label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:.5rem;font-weight:600}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem}th{background:var(--surface2);color:var(--accent-light);font-weight:600;text-transform:uppercase;font-size:.75rem;letter-spacing:1px;padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border-light)}td{padding:.65rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}tr:hover td{background:var(--surface)}
+  .diagram{margin:2rem 0;text-align:center}.diagram svg{max-width:100%;height:auto}.diagram-caption{font-size:.78rem;color:var(--text-dim);margin-top:.75rem;font-style:italic}
+  code{font-family:'IBM Plex Mono',monospace;background:var(--surface2);padding:.15rem .4rem;border-radius:3px;font-size:.88em;color:var(--accent-light)}
+  hr{border:none;border-top:1px solid var(--border);margin:2.5rem 0}
+  .back-top{display:inline-block;margin-top:2rem;font-size:.78rem;color:var(--text-dim);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color .2s}.back-top:hover{color:var(--highlight)}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+  @media(max-width:600px){html{font-size:14px}.site-header h1{font-size:1.8rem}.def-grid{grid-template-columns:1fr}.content{padding:0 1rem 4rem}}
+  @media print{body{background:#fff;color:#111}.info-box{border-left-color:#666}a{color:#111}}
+</style>
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <h1>Unit 2 — Solutions</h1>
+  <p class="subtitle">Actuators</p>
+  <span class="unit-badge">5 Marks Each</span>
+</header>
+
+<nav class="toc">
+  <h2>Questions</h2>
+  <ol>
+    <li><a href="#q1">Construction of DC Motor</a></li>
+    <li><a href="#q2">Types of DC motors — DC Shunt Motor working</a></li>
+    <li><a href="#q3">Numerical — Back EMF calculation (450V)</a></li>
+    <li><a href="#q4">Numerical — Back EMF, Speed, Torque (4-pole 500V)</a></li>
+    <li><a href="#q5">Transducer and its role in Robot Actuator System</a></li>
+    <li><a href="#q6">Merits and Demerits of Hydraulic Actuators</a></li>
+    <li><a href="#q7">Merits and Demerits of Pneumatic Actuators</a></li>
+    <li><a href="#q8">Merits and Demerits of Stepper Motors</a></li>
+    <li><a href="#q9">Merits and Demerits of Electric Actuators</a></li>
+    <li><a href="#q10">Merits and Demerits of Servo Motors</a></li>
+    <li><a href="#q11">Multiple Actuators of Different Types</a></li>
+    <li><a href="#q12">Hydraulic Actuator System Block Diagram</a></li>
+    <li><a href="#q13">Pneumatic Actuator System Block Diagram</a></li>
+    <li><a href="#q14">Actuators for Medical Robotics</a></li>
+  </ol>
+</nav>
+
+<main class="content">
+
+<!-- ═══════════ Q1 ═══════════ -->
+<div class="question-block" id="q1">
+  <p class="q-label">Question 01 <span class="marks">5 Marks</span></p>
+  <h2>Sketch the construction of a DC Motor.</h2>
+
+  <h3>Construction of a DC Motor</h3>
+  <p>A DC motor converts <strong>electrical energy into mechanical energy</strong>. It works on the principle that a current-carrying conductor placed in a magnetic field experiences a force (Fleming's Left Hand Rule).</p>
+
+  <h4>Main Parts</h4>
+  <ol>
+    <li><strong>Yoke (Frame)</strong> — Outermost cylindrical frame made of cast iron or steel. Provides mechanical support and acts as a return path for magnetic flux.</li>
+    <li><strong>Pole Core &amp; Pole Shoe</strong> — Creates the magnetic field. Pole shoes spread the flux uniformly in the air gap.</li>
+    <li><strong>Field Winding</strong> — Copper coils wound around the pole core. When current flows, they produce the main magnetic field.</li>
+    <li><strong>Armature Core</strong> — Cylindrical core of laminated silicon steel. Houses the armature windings and rotates in the magnetic field.</li>
+    <li><strong>Armature Winding</strong> — Conductors placed in slots of the armature core. Types: Lap winding and Wave winding.</li>
+    <li><strong>Commutator</strong> — Cylindrical assembly of copper segments insulated from each other. Converts AC induced in the armature into DC output (acts as a mechanical rectifier).</li>
+    <li><strong>Brushes</strong> — Carbon or graphite blocks that press against the commutator. Carry current between external circuit and armature.</li>
+    <li><strong>Shaft &amp; Bearings</strong> — Shaft transmits mechanical power. Bearings support the shaft and reduce friction.</li>
+  </ol>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#888"/></marker></defs>
+      <text x="350" y="25" text-anchor="middle" fill="#ccc" font-size="14" font-family="Inter" font-weight="700">CONSTRUCTION OF A DC MOTOR</text>
+
+      <!-- Yoke (outer circle) -->
+      <circle cx="300" cy="210" r="150" fill="none" stroke="#888" stroke-width="4"/>
+      <text x="300" y="380" text-anchor="middle" fill="#888" font-size="10" font-family="Inter" font-weight="600">YOKE (Frame)</text>
+
+      <!-- Pole Core + Shoe (left) -->
+      <rect x="155" y="170" width="40" height="80" rx="3" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <rect x="195" y="175" width="15" height="70" rx="2" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="130" y="215" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">Field</text>
+      <text x="130" y="227" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">Winding</text>
+
+      <!-- Pole Core + Shoe (right) -->
+      <rect x="405" y="170" width="40" height="80" rx="3" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <rect x="390" y="175" width="15" height="70" rx="2" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="470" y="215" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">Field</text>
+      <text x="470" y="227" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">Winding</text>
+
+      <!-- N and S labels -->
+      <text x="175" y="160" text-anchor="middle" fill="#f87171" font-size="14" font-family="Inter" font-weight="700">N</text>
+      <text x="425" y="160" text-anchor="middle" fill="#34d399" font-size="14" font-family="Inter" font-weight="700">S</text>
+
+      <!-- Armature (inner circle) -->
+      <circle cx="300" cy="210" r="65" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+      <text x="300" y="295" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter" font-weight="600">Armature Core</text>
+
+      <!-- Armature winding slots (simplified) -->
+      <line x1="260" y1="150" x2="260" y2="270" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="340" y1="150" x2="340" y2="270" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="240" y1="165" x2="360" y2="255" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="360" y1="165" x2="240" y2="255" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- Commutator -->
+      <rect x="282" y="275" width="36" height="20" rx="3" fill="none" stroke="#c084fc" stroke-width="2"/>
+      <text x="300" y="310" text-anchor="middle" fill="#c084fc" font-size="9" font-family="Inter">Commutator</text>
+
+      <!-- Brushes -->
+      <rect x="270" y="295" width="12" height="18" rx="1" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <rect x="318" y="295" width="12" height="18" rx="1" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="300" y="330" text-anchor="middle" fill="#f87171" font-size="8" font-family="Inter">Brushes</text>
+
+      <!-- Shaft -->
+      <line x1="300" y1="145" x2="300" y2="100" stroke="#aaa" stroke-width="4" stroke-linecap="round"/>
+      <text x="320" y="105" fill="#aaa" font-size="9" font-family="Inter">Shaft</text>
+
+      <!-- Air gap labels -->
+      <line x1="210" y1="210" x2="235" y2="210" stroke="#555" stroke-width="1" stroke-dasharray="2,2"/>
+      <text x="222" y="205" text-anchor="middle" fill="#666" font-size="7" font-family="Inter">Air gap</text>
+
+      <!-- Legend -->
+      <rect x="530" y="50" width="150" height="130" rx="4" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+      <text x="540" y="70" fill="#ccc" font-size="9" font-family="Inter" font-weight="600">LEGEND</text>
+      <line x1="545" y1="85" x2="565" y2="85" stroke="#888" stroke-width="3"/>
+      <text x="575" y="89" fill="#888" font-size="8" font-family="Inter">Yoke</text>
+      <line x1="545" y1="105" x2="565" y2="105" stroke="#60a5fa" stroke-width="2"/>
+      <text x="575" y="109" fill="#888" font-size="8" font-family="Inter">Pole &amp; Winding</text>
+      <line x1="545" y1="125" x2="565" y2="125" stroke="#fbbf24" stroke-width="2"/>
+      <text x="575" y="129" fill="#888" font-size="8" font-family="Inter">Armature</text>
+      <line x1="545" y1="145" x2="565" y2="145" stroke="#c084fc" stroke-width="2"/>
+      <text x="575" y="149" fill="#888" font-size="8" font-family="Inter">Commutator</text>
+      <line x1="545" y1="165" x2="565" y2="165" stroke="#f87171" stroke-width="2"/>
+      <text x="575" y="169" fill="#888" font-size="8" font-family="Inter">Brushes</text>
+    </svg>
+    <p class="diagram-caption">Fig 2.1 — Cross-sectional view of a DC Motor construction</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q2 ═══════════ -->
+<div class="question-block" id="q2">
+  <p class="q-label">Question 02 <span class="marks">5 Marks</span></p>
+  <h2>Classify different types of DC motors and explain with a neat diagram the working of a DC Shunt Motor.</h2>
+
+  <h3>Classification of DC Motors</h3>
+  <table>
+    <tr><th>Type</th><th>Field Winding Connection</th><th>Characteristics</th></tr>
+    <tr><td><strong>DC Series Motor</strong></td><td>Field winding in <strong>series</strong> with armature</td><td>High starting torque, speed varies with load</td></tr>
+    <tr><td><strong>DC Shunt Motor</strong></td><td>Field winding in <strong>parallel</strong> with armature</td><td>Constant speed, moderate starting torque</td></tr>
+    <tr><td><strong>DC Compound Motor</strong></td><td>Both series &amp; shunt field windings</td><td>Combines characteristics of both</td></tr>
+    <tr><td><strong>Permanent Magnet DC</strong></td><td>Permanent magnets (no field winding)</td><td>Small motors, simple design</td></tr>
+  </table>
+
+  <h3>Working of DC Shunt Motor</h3>
+  <p>In a DC Shunt Motor, the <strong>field winding is connected in parallel (shunt)</strong> with the armature winding across the supply voltage.</p>
+
+  <h4>Working Principle:</h4>
+  <ol>
+    <li>When DC supply voltage V is applied, current flows through both the field winding (I<sub>sh</sub>) and the armature winding (I<sub>a</sub>).</li>
+    <li>The field winding current creates a <strong>stationary magnetic field</strong> (flux Φ).</li>
+    <li>The armature conductors carry current I<sub>a</sub> and are placed in this magnetic field.</li>
+    <li>By <strong>Fleming's Left Hand Rule</strong>, a force acts on each conductor, producing torque.</li>
+    <li>As the armature rotates, a <strong>back EMF (E<sub>b</sub>)</strong> is generated that opposes the supply voltage.</li>
+    <li>At steady state: <strong>V = E<sub>b</sub> + I<sub>a</sub>R<sub>a</sub></strong></li>
+  </ol>
+
+  <div class="info-box formula">
+<span class="label">Key Equations — DC Shunt Motor</span>
+Supply voltage:    V = Eb + Ia × Ra
+Supply current:    I = Ia + Ish
+Shunt field:       Ish = V / Rsh
+Back EMF:          Eb = (Φ × Z × N × P) / (60 × A)
+Torque:            T = (Φ × Z × Ia × P) / (2π × A)
+
+Where: Φ = flux/pole, Z = total conductors, N = speed (RPM)
+       P = poles, A = parallel paths, Ra = armature resistance</div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker></defs>
+      <text x="325" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">DC SHUNT MOTOR — CIRCUIT DIAGRAM</text>
+
+      <!-- Supply lines -->
+      <line x1="50" y1="60" x2="50" y2="240" stroke="#888" stroke-width="2"/>
+      <text x="30" y="150" text-anchor="middle" fill="#f87171" font-size="12" font-family="Inter" font-weight="700">+</text>
+      <text x="30" y="250" text-anchor="middle" fill="#60a5fa" font-size="12" font-family="Inter" font-weight="700">−</text>
+
+      <!-- V label -->
+      <text x="38" y="155" fill="#fbbf24" font-size="11" font-family="Inter" font-weight="600">V</text>
+
+      <!-- Top line -->
+      <line x1="50" y1="60" x2="500" y2="60" stroke="#888" stroke-width="1.5"/>
+      <!-- Bottom line -->
+      <line x1="50" y1="240" x2="500" y2="240" stroke="#888" stroke-width="1.5"/>
+
+      <!-- I arrow -->
+      <line x1="80" y1="52" x2="130" y2="52" stroke="#60a5fa" stroke-width="1.2" marker-end="url(#arr2a)"/>
+      <text x="105" y="47" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Inter">I</text>
+
+      <!-- Branch point top -->
+      <circle cx="250" cy="60" r="3" fill="#888"/>
+      <!-- Branch point bottom -->
+      <circle cx="250" cy="240" r="3" fill="#888"/>
+
+      <!-- Shunt field winding (left branch) -->
+      <line x1="250" y1="60" x2="250" y2="100" stroke="#888" stroke-width="1.5"/>
+      <rect x="230" y="100" width="40" height="80" rx="4" fill="none" stroke="#34d399" stroke-width="2"/>
+      <text x="250" y="135" text-anchor="middle" fill="#34d399" font-size="9" font-family="Inter" font-weight="600">Rsh</text>
+      <text x="250" y="150" text-anchor="middle" fill="#34d399" font-size="8" font-family="Inter">(Field)</text>
+      <line x1="250" y1="180" x2="250" y2="240" stroke="#888" stroke-width="1.5"/>
+      <!-- Ish label -->
+      <text x="218" y="95" fill="#34d399" font-size="9" font-family="Inter">I<tspan font-size="7" dy="2">sh</tspan></text>
+
+      <!-- Armature branch (right) -->
+      <line x1="250" y1="60" x2="420" y2="60" stroke="#888" stroke-width="1.5"/>
+      <line x1="420" y1="60" x2="420" y2="100" stroke="#888" stroke-width="1.5"/>
+      <!-- Armature resistance -->
+      <rect x="400" y="100" width="40" height="40" rx="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="420" y="125" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter" font-weight="600">Ra</text>
+      <line x1="420" y1="140" x2="420" y2="160" stroke="#888" stroke-width="1.5"/>
+      <!-- Armature (motor circle) -->
+      <circle cx="420" cy="185" r="25" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="420" y="182" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Inter" font-weight="700">M</text>
+      <text x="420" y="196" text-anchor="middle" fill="#60a5fa" font-size="7" font-family="Inter">Eb</text>
+      <line x1="420" y1="210" x2="420" y2="240" stroke="#888" stroke-width="1.5"/>
+      <!-- Ia label -->
+      <text x="440" y="85" fill="#fbbf24" font-size="9" font-family="Inter">I<tspan font-size="7" dy="2">a</tspan></text>
+
+      <!-- Equations -->
+      <text x="550" y="100" fill="#888" font-size="10" font-family="Inter">V = Eb + Ia·Ra</text>
+      <text x="550" y="120" fill="#888" font-size="10" font-family="Inter">I = Ia + Ish</text>
+      <text x="550" y="140" fill="#888" font-size="10" font-family="Inter">Ish = V / Rsh</text>
+    </svg>
+    <p class="diagram-caption">Fig 2.2 — DC Shunt Motor circuit diagram</p>
+  </div>
+
+  <h4>Characteristics of DC Shunt Motor:</h4>
+  <ul>
+    <li><strong>Speed:</strong> Approximately constant (slightly drops with load increase)</li>
+    <li><strong>Torque:</strong> Proportional to armature current (T ∝ I<sub>a</sub>)</li>
+    <li><strong>Applications:</strong> Lathes, drilling machines, fans, blowers, centrifugal pumps</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q3 ═══════════ -->
+<div class="question-block" id="q3">
+  <p class="q-label">Question 03 <span class="marks">5 Marks</span></p>
+  <h2>Numerical: A DC motor connected to 450V supply takes 120A on full load. R<sub>a</sub> = 0.15Ω, R<sub>sh</sub> = 150Ω. Calculate back EMF.</h2>
+
+  <h3>Given Data</h3>
+  <div class="info-box">
+    <strong>Supply voltage (V)</strong> = 450 V<br>
+    <strong>Total current (I)</strong> = 120 A<br>
+    <strong>Armature resistance (R<sub>a</sub>)</strong> = 0.15 Ω<br>
+    <strong>Field resistance (R<sub>sh</sub>)</strong> = 150 Ω
+  </div>
+
+  <h3>Solution</h3>
+  <h4>Step 1: Calculate Shunt Field Current (I<sub>sh</sub>)</h4>
+  <div class="info-box formula">
+<span class="label">Formula</span>
+Ish = V / Rsh
+Ish = 450 / 150
+<strong>Ish = 3 A</strong></div>
+
+  <h4>Step 2: Calculate Armature Current (I<sub>a</sub>)</h4>
+  <div class="info-box formula">
+<span class="label">Formula</span>
+Ia = I − Ish
+Ia = 120 − 3
+<strong>Ia = 117 A</strong></div>
+
+  <h4>Step 3: Calculate Back EMF (E<sub>b</sub>)</h4>
+  <div class="info-box formula">
+<span class="label">Formula</span>
+V = Eb + Ia × Ra
+Eb = V − Ia × Ra
+Eb = 450 − (117 × 0.15)
+Eb = 450 − 17.55
+<strong>Eb = 432.45 V</strong></div>
+
+  <h3>Answer</h3>
+  <div class="info-box definition">
+    The <strong>Back EMF at full load = 432.45 V</strong>
+  </div>
+</div>
+
+<!-- ═══════════ Q4 ═══════════ -->
+<div class="question-block" id="q4">
+  <p class="q-label">Question 04 <span class="marks">5 Marks</span></p>
+  <h2>Numerical: 4-pole, 500V DC shunt motor, I<sub>a</sub>=80A, R<sub>a</sub>=0.4Ω, Wave wound, Z=522, Φ=0.025 Wb. Find E<sub>b</sub>, Speed, Torque.</h2>
+
+  <h3>Given Data</h3>
+  <div class="info-box">
+    <strong>P</strong> = 4 poles<br>
+    <strong>V</strong> = 500 V<br>
+    <strong>I<sub>a</sub></strong> = 80 A<br>
+    <strong>R<sub>a</sub></strong> = 0.4 Ω<br>
+    <strong>Z</strong> = 522 conductors<br>
+    <strong>Φ</strong> = 0.025 Wb<br>
+    <strong>Winding:</strong> Wave wound → <strong>A = 2</strong> (parallel paths)
+  </div>
+
+  <h3>Solution</h3>
+  <h4>(a) Back EMF (E<sub>b</sub>)</h4>
+  <div class="info-box formula">
+<span class="label">Formula</span>
+Eb = V − Ia × Ra
+Eb = 500 − (80 × 0.4)
+Eb = 500 − 32
+<strong>Eb = 468 V</strong></div>
+
+  <h4>(b) Speed of the Motor (N)</h4>
+  <div class="info-box formula">
+<span class="label">Formula</span>
+Eb = (Φ × Z × N × P) / (60 × A)
+
+Rearranging:
+N = (Eb × 60 × A) / (Φ × Z × P)
+N = (468 × 60 × 2) / (0.025 × 522 × 4)
+N = 56,160 / 52.2
+<strong>N = 1076.44 RPM ≈ 1076 RPM</strong></div>
+
+  <h4>(c) Torque (T)</h4>
+  <div class="info-box formula">
+<span class="label">Formula</span>
+T = (Φ × Z × Ia × P) / (2π × A)
+T = (0.025 × 522 × 80 × 4) / (2 × 3.14159 × 2)
+T = (4176) / (12.566)
+<strong>T = 332.27 N·m</strong>
+
+Verification using Power:
+P = Eb × Ia = 468 × 80 = 37,440 W
+T = P / ω = P / (2πN/60) = 37440 / (2π × 1076/60)
+T = 37440 / 112.68 = <strong>332.27 N·m ✓</strong></div>
+
+  <h3>Answers</h3>
+  <table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>(a) Back EMF (E<sub>b</sub>)</td><td><strong>468 V</strong></td></tr>
+    <tr><td>(b) Speed (N)</td><td><strong>1076 RPM</strong></td></tr>
+    <tr><td>(c) Torque (T)</td><td><strong>332.27 N·m</strong></td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q5 ═══════════ -->
+<div class="question-block" id="q5">
+  <p class="q-label">Question 05 <span class="marks">5 Marks</span></p>
+  <h2>What is a Transducer? What role does it play in a Robot Actuator System? Illustrate with an example.</h2>
+
+  <h3>Definition of Transducer</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>transducer</strong> is a device that converts one form of energy into another. In robotics, transducers typically convert a <strong>physical quantity</strong> (displacement, force, temperature, pressure) into a proportional <strong>electrical signal</strong> (voltage, current, resistance change) for processing by the controller.
+  </div>
+
+  <h3>Role in Robot Actuator System</h3>
+  <p>In a robotic system, transducers serve as the <strong>sensory interface</strong> between the physical world and the electronic controller. Their role in the actuator system is:</p>
+
+  <ol>
+    <li><strong>Feedback Sensing:</strong> Transducers measure the actual output (position, velocity, force) of the actuator and send this information back to the controller for closed-loop control.</li>
+    <li><strong>Error Detection:</strong> By comparing the desired output with the actual output (measured by the transducer), the controller computes the error signal to correct the actuator's behavior.</li>
+    <li><strong>Safety Monitoring:</strong> Transducers can detect excessive force, overheating, or over-speed conditions to trigger safety stops.</li>
+    <li><strong>Signal Conditioning:</strong> Some transducers convert non-electrical signals into electrical signals that the digital controller can process.</li>
+  </ol>
+
+  <div class="diagram">
+    <svg viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr2b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <text x="325" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">TRANSDUCER ROLE IN ACTUATOR SYSTEM</text>
+
+      <rect x="20" y="50" width="100" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="70" y="74" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Desired Input</text>
+
+      <circle cx="155" cy="70" r="12" fill="none" stroke="#777" stroke-width="1.2"/>
+      <text x="155" y="74" text-anchor="middle" fill="#aaa" font-size="12" font-family="Inter">Σ</text>
+
+      <rect x="200" y="50" width="110" height="40" rx="4" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="255" y="74" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Inter" font-weight="600">Controller</text>
+
+      <rect x="345" y="50" width="110" height="40" rx="4" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="400" y="74" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Actuator</text>
+
+      <rect x="490" y="50" width="100" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="540" y="74" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Output (Motion)</text>
+
+      <line x1="120" y1="70" x2="143" y2="70" stroke="#555" stroke-width="1.2" marker-end="url(#arr2b)"/>
+      <line x1="167" y1="70" x2="200" y2="70" stroke="#555" stroke-width="1.2" marker-end="url(#arr2b)"/>
+      <line x1="310" y1="70" x2="345" y2="70" stroke="#555" stroke-width="1.2" marker-end="url(#arr2b)"/>
+      <line x1="455" y1="70" x2="490" y2="70" stroke="#555" stroke-width="1.2" marker-end="url(#arr2b)"/>
+
+      <!-- Feedback path with transducer -->
+      <rect x="260" y="130" width="130" height="30" rx="4" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <text x="325" y="150" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">TRANSDUCER</text>
+      <line x1="540" y1="90" x2="540" y2="145" stroke="#555" stroke-width="1"/>
+      <line x1="540" y1="145" x2="390" y2="145" stroke="#555" stroke-width="1"/>
+      <line x1="260" y1="145" x2="155" y2="145" stroke="#555" stroke-width="1"/>
+      <line x1="155" y1="145" x2="155" y2="82" stroke="#555" stroke-width="1" marker-end="url(#arr2b)"/>
+      <text x="200" y="165" fill="#888" font-size="8" font-family="Inter">Feedback (electrical signal)</text>
+    </svg>
+    <p class="diagram-caption">Fig 2.3 — Role of transducer in the actuator feedback loop</p>
+  </div>
+
+  <h3>Example: Rotary Encoder in a Servo Motor System</h3>
+  <p>A <strong>rotary encoder</strong> (optical transducer) is attached to the shaft of a servo motor:</p>
+  <ul>
+    <li>The encoder converts <strong>mechanical rotation (angle)</strong> into <strong>digital electrical pulses</strong>.</li>
+    <li>The controller reads these pulses to determine the actual angular position of the motor shaft.</li>
+    <li>If the desired angle is 90° but the encoder reads 85°, the error signal (5°) drives the motor further.</li>
+    <li>This closed-loop operation ensures precise positioning — essential in robotic arm joint control.</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q6 ═══════════ -->
+<div class="question-block" id="q6">
+  <p class="q-label">Question 06 <span class="marks">5 Marks</span></p>
+  <h2>Discuss merits and demerits of Hydraulic Actuators used in Robotic Systems.</h2>
+
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Hydraulic actuators</strong> use pressurized fluid (oil) to generate linear or rotary motion. They operate on <strong>Pascal's Law</strong>: pressure applied to a confined fluid is transmitted equally in all directions.
+  </div>
+
+  <h3>Merits (Advantages)</h3>
+  <ol>
+    <li><strong>Very high force/torque output:</strong> Can produce extremely large forces with relatively small actuator size — ideal for heavy-duty industrial robots.</li>
+    <li><strong>Excellent power-to-weight ratio:</strong> Hydraulic motors are much lighter than electric motors of equivalent power.</li>
+    <li><strong>Smooth and precise control:</strong> Fluid flow can be precisely controlled using servo valves for accurate motion.</li>
+    <li><strong>High stiffness:</strong> Oil is nearly incompressible, providing rigid and stable positioning under heavy loads.</li>
+    <li><strong>Self-lubricating:</strong> The hydraulic fluid itself lubricates all moving parts, reducing wear.</li>
+    <li><strong>Overload protection:</strong> Pressure relief valves automatically protect the system from damage due to excessive load.</li>
+    <li><strong>Can hold loads without energy:</strong> Check valves can lock the actuator in position without continuous energy supply.</li>
+  </ol>
+
+  <h3>Demerits (Disadvantages)</h3>
+  <ol>
+    <li><strong>Oil leakage:</strong> Hydraulic seals can develop leaks, causing environmental contamination and mess.</li>
+    <li><strong>High maintenance cost:</strong> Requires regular fluid changes, filter replacements, and seal inspections.</li>
+    <li><strong>Bulky system:</strong> Needs reservoir, pump, valves, filters — large footprint.</li>
+    <li><strong>Fire hazard:</strong> Hydraulic oils are flammable; leaks near hot surfaces can cause fire.</li>
+    <li><strong>Noise:</strong> Hydraulic pumps and valves generate moderate to high noise levels.</li>
+    <li><strong>Temperature sensitivity:</strong> Oil viscosity changes with temperature, affecting performance.</li>
+    <li><strong>Slow response time:</strong> Compared to electric actuators, hydraulic systems have slower dynamic response.</li>
+    <li><strong>Environmental concerns:</strong> Disposal of hydraulic fluid is an environmental issue.</li>
+  </ol>
+
+  <h4>Applications in Robotics:</h4>
+  <p>Heavy-duty industrial robots, construction robots, excavators, car manufacturing (spot welding), and heavy material handling robots.</p>
+</div>
+
+<!-- ═══════════ Q7 ═══════════ -->
+<div class="question-block" id="q7">
+  <p class="q-label">Question 07 <span class="marks">5 Marks</span></p>
+  <h2>Discuss merits and demerits of Pneumatic Actuators used in Robotic Systems.</h2>
+
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Pneumatic actuators</strong> use compressed air to produce linear or rotary motion. The air is compressed by a compressor, filtered, regulated, and directed to actuators through control valves.
+  </div>
+
+  <h3>Merits (Advantages)</h3>
+  <ol>
+    <li><strong>High speed of operation:</strong> Pneumatic actuators can achieve very fast motion — ideal for rapid pick-and-place operations.</li>
+    <li><strong>Clean operation:</strong> Air is the working medium — no contamination risk (ideal for food, pharmaceutical, and clean-room industries).</li>
+    <li><strong>Low cost:</strong> Pneumatic components are inexpensive compared to hydraulic and high-end electric systems.</li>
+    <li><strong>Simple design:</strong> Fewer components and simpler construction than hydraulic systems.</li>
+    <li><strong>Safe operation:</strong> No risk of fire or electrical shock. Compressed air is non-flammable.</li>
+    <li><strong>Works in extreme temperatures:</strong> Pneumatic systems can function in very hot or cold environments.</li>
+    <li><strong>Lightweight:</strong> Pneumatic actuators are generally lighter than hydraulic equivalents.</li>
+    <li><strong>Overload safe:</strong> Pneumatic actuators simply stall under overload without damage.</li>
+  </ol>
+
+  <h3>Demerits (Disadvantages)</h3>
+  <ol>
+    <li><strong>Low force output:</strong> Compressed air has low power density — cannot produce forces as high as hydraulic actuators.</li>
+    <li><strong>Air compressibility:</strong> Air is compressible, making precise speed and position control very difficult.</li>
+    <li><strong>Air leakage:</strong> Leaks at joints and fittings reduce efficiency and cause noise.</li>
+    <li><strong>Moisture contamination:</strong> Atmospheric air contains moisture that can cause corrosion in actuators — requires air dryers.</li>
+    <li><strong>Noisy operation:</strong> Air exhaust creates significant noise (requires mufflers/silencers).</li>
+    <li><strong>Limited stroke length:</strong> Practical limitations on cylinder bore size and stroke.</li>
+    <li><strong>Poor position control:</strong> Due to air compressibility, intermediate positioning is difficult without additional mechanisms.</li>
+  </ol>
+
+  <h4>Applications in Robotics:</h4>
+  <p>Light-duty pick-and-place robots, packaging robots, pneumatic grippers, assembly line automation, food processing robots.</p>
+</div>
+
+<!-- ═══════════ Q8 ═══════════ -->
+<div class="question-block" id="q8">
+  <p class="q-label">Question 08 <span class="marks">5 Marks</span></p>
+  <h2>Discuss merits and demerits of Stepper Motors used in Robotic Systems.</h2>
+
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>stepper motor</strong> is a brushless DC electric motor that divides a full rotation into a number of equal <strong>discrete steps</strong>. The motor can be commanded to move and hold at any one of these steps without requiring feedback.
+  </div>
+
+  <h3>Merits (Advantages)</h3>
+  <ol>
+    <li><strong>Open-loop position control:</strong> Can achieve precise angular positioning without encoders or feedback — reduces system complexity.</li>
+    <li><strong>Discrete step movement:</strong> Each pulse moves the motor by a fixed angle (e.g., 1.8° per step = 200 steps/revolution).</li>
+    <li><strong>High holding torque:</strong> Can hold position firmly at rest without consuming extra power (detent torque).</li>
+    <li><strong>Excellent repeatability:</strong> No cumulative error — positional accuracy is purely a function of step angle.</li>
+    <li><strong>Simple digital interface:</strong> Responds directly to digital pulse signals — easy to interface with microcontrollers.</li>
+    <li><strong>Low cost:</strong> Cheaper than servo motors for low-to-medium performance applications.</li>
+    <li><strong>Long life:</strong> No brushes or commutator — fewer wearing parts.</li>
+    <li><strong>Works at low speeds:</strong> Provides good torque at low speeds without gearing.</li>
+  </ol>
+
+  <h3>Demerits (Disadvantages)</h3>
+  <ol>
+    <li><strong>Resonance issues:</strong> At certain speeds, stepper motors can vibrate or resonate, causing loss of steps.</li>
+    <li><strong>Step loss at high speeds:</strong> If the load exceeds the motor's torque at high speeds, steps are missed — no feedback means no error correction.</li>
+    <li><strong>Torque decreases with speed:</strong> Torque drops significantly as speed increases.</li>
+    <li><strong>Noisy operation:</strong> Stepping action produces audible noise and vibration.</li>
+    <li><strong>Limited speed range:</strong> Not suitable for very high-speed applications.</li>
+    <li><strong>Energy inefficient:</strong> Draws full current even when idle (holding torque), generating heat.</li>
+    <li><strong>No feedback (open-loop):</strong> Cannot detect or correct errors — if a step is missed, the error accumulates.</li>
+  </ol>
+
+  <h4>Applications in Robotics:</h4>
+  <p>3D printers, CNC machines, camera positioning systems, robotic arms (low-cost), automated stages, plotters.</p>
+</div>
+
+<!-- ═══════════ Q9 ═══════════ -->
+<div class="question-block" id="q9">
+  <p class="q-label">Question 09 <span class="marks">5 Marks</span></p>
+  <h2>Discuss merits and demerits of Electric Actuators used in Robotic Systems.</h2>
+
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Electric actuators</strong> convert electrical energy into mechanical motion (linear or rotary) using electric motors (DC, AC, stepper, servo, BLDC). They are the most commonly used actuators in modern robotics.
+  </div>
+
+  <h3>Merits (Advantages)</h3>
+  <ol>
+    <li><strong>Highest precision and accuracy:</strong> With encoders and servo control, electric actuators achieve the finest positioning accuracy (±0.01 mm).</li>
+    <li><strong>Clean and quiet operation:</strong> No oil or compressed air — suitable for clean rooms, labs, and medical applications.</li>
+    <li><strong>Easy speed and position control:</strong> Speed, position, and torque can be precisely controlled using PWM, PID controllers.</li>
+    <li><strong>Compact and lightweight:</strong> Electric motors are compact with high power density (especially BLDC motors).</li>
+    <li><strong>Energy efficient:</strong> Convert electrical energy to mechanical energy with high efficiency (80–95%).</li>
+    <li><strong>Easy integration:</strong> Directly interface with digital controllers, microprocessors, and PLCs.</li>
+    <li><strong>Low maintenance:</strong> No fluid to change, no filters, no compressors needed.</li>
+    <li><strong>Programmable:</strong> Easily reprogrammed for different tasks and trajectories.</li>
+  </ol>
+
+  <h3>Demerits (Disadvantages)</h3>
+  <ol>
+    <li><strong>Lower force/torque compared to hydraulic:</strong> Cannot match the raw power output of hydraulic actuators for heavy loads.</li>
+    <li><strong>Overheating risk:</strong> Continuous operation under heavy load can cause motor overheating.</li>
+    <li><strong>Higher initial cost:</strong> High-performance servo motors and drives are expensive.</li>
+    <li><strong>Gear reduction often needed:</strong> Most electric motors run at high speed/low torque — gearboxes required, adding weight, backlash, and complexity.</li>
+    <li><strong>Dependent on electricity:</strong> Cannot operate during power failure without battery backup.</li>
+    <li><strong>Limited in hazardous environments:</strong> Sparking from brushes (in DC motors) can be dangerous in explosive atmospheres.</li>
+  </ol>
+
+  <h4>Applications in Robotics:</h4>
+  <p>Almost all modern robots — industrial manipulators, collaborative robots (cobots), mobile robots, humanoids, surgical robots, drones.</p>
+</div>
+
+<!-- ═══════════ Q10 ═══════════ -->
+<div class="question-block" id="q10">
+  <p class="q-label">Question 10 <span class="marks">5 Marks</span></p>
+  <h2>Discuss the merits and demerits of Servo Motors used in Robotic Systems.</h2>
+
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>servo motor</strong> is a rotary actuator that allows precise control of <strong>angular position, velocity, and acceleration</strong>. It consists of a DC/AC motor, a feedback sensor (encoder/potentiometer), and a control circuit that continuously adjusts the motor to match the desired output.
+  </div>
+
+  <h3>Merits (Advantages)</h3>
+  <ol>
+    <li><strong>Precise position control:</strong> Built-in feedback (encoder) enables accurate angular positioning — essential for robotic joints.</li>
+    <li><strong>Closed-loop operation:</strong> Continuously corrects errors — if the arm is pushed off position, the servo corrects it automatically.</li>
+    <li><strong>High torque at low speed:</strong> Can deliver high torque even at standstill and low speeds.</li>
+    <li><strong>Fast response time:</strong> Quick acceleration and deceleration — dynamic performance is excellent.</li>
+    <li><strong>Wide speed range:</strong> Maintains good performance across a wide range of speeds.</li>
+    <li><strong>Smooth operation:</strong> Provides smooth, vibration-free motion compared to stepper motors.</li>
+    <li><strong>Compact design:</strong> High power-to-size ratio with integrated electronics.</li>
+    <li><strong>Programmable:</strong> Speed, position, and torque profiles can be programmed digitally.</li>
+  </ol>
+
+  <h3>Demerits (Disadvantages)</h3>
+  <ol>
+    <li><strong>High cost:</strong> Servo motors with encoders and drivers are significantly more expensive than stepper motors.</li>
+    <li><strong>Complex control:</strong> Requires sophisticated control algorithms (PID tuning), driver electronics.</li>
+    <li><strong>Requires tuning:</strong> PID parameters need careful tuning for optimal performance — can oscillate or become unstable if poorly tuned.</li>
+    <li><strong>Gear backlash:</strong> Geared servos can have backlash, reducing effective precision.</li>
+    <li><strong>Overheating:</strong> Under heavy continuous load, servo motors can overheat.</li>
+    <li><strong>Not suitable for open-loop:</strong> Cannot operate without feedback — if the encoder fails, the system loses control.</li>
+    <li><strong>Limited rotation:</strong> Standard hobby servos are limited to 180° or 270° (though industrial servos can rotate continuously).</li>
+  </ol>
+
+  <h4>Applications in Robotics:</h4>
+  <p>Industrial robot arm joints, CNC machines, RC vehicles, humanoid robots, robotic grippers, camera pan-tilt systems.</p>
+</div>
+
+<!-- ═══════════ Q11 ═══════════ -->
+<div class="question-block" id="q11">
+  <p class="q-label">Question 11 <span class="marks">5 Marks</span></p>
+  <h2>Can a robotic system have multiple actuators? Can they be of different types? How?</h2>
+
+  <h3>Answer: Yes — Multiple and Mixed Actuators</h3>
+  <p>A robotic system <strong>can absolutely have multiple actuators</strong>, and they <strong>can be of different types</strong>. In fact, most practical robots use <strong>multiple actuators of varying types</strong> to optimize performance for different functions.</p>
+
+  <h4>Why Multiple Actuators?</h4>
+  <ul>
+    <li>Each <strong>degree of freedom (DOF)</strong> requires at least one actuator. A 6-DOF robot arm has a minimum of 6 actuators.</li>
+    <li>The <strong>end effector</strong> (gripper) requires its own actuator(s), separate from the arm joints.</li>
+    <li>Mobile robots need actuators for <strong>locomotion</strong> (wheels/legs) in addition to manipulation.</li>
+  </ul>
+
+  <h4>Why Different Types of Actuators?</h4>
+  <ul>
+    <li>Different joints and functions have <strong>different requirements</strong> — some need high force (hydraulic), some need speed (pneumatic), some need precision (electric servo).</li>
+    <li><strong>Optimization:</strong> Using the right actuator type for each function improves overall performance, cost, and efficiency.</li>
+  </ul>
+
+  <h4>Example: Hybrid Robotic Excavator</h4>
+  <table>
+    <tr><th>Function</th><th>Actuator Type</th><th>Reason</th></tr>
+    <tr><td>Boom &amp; Arm movement</td><td>Hydraulic cylinders</td><td>Very high force needed to lift heavy loads</td></tr>
+    <tr><td>Cab rotation (slew)</td><td>Hydraulic motor</td><td>High torque for rotating heavy upper structure</td></tr>
+    <tr><td>Gripper/Bucket</td><td>Pneumatic cylinder</td><td>Fast opening/closing for material handling</td></tr>
+    <tr><td>Track drive</td><td>Electric motor</td><td>Precise speed control for locomotion</td></tr>
+    <tr><td>Control panel positioning</td><td>Servo motor</td><td>Precise angular positioning</td></tr>
+  </table>
+
+  <h4>Example: Surgical Robot (Da Vinci System)</h4>
+  <ul>
+    <li><strong>Electric servo motors</strong> for arm joint positioning (precision)</li>
+    <li><strong>Small DC motors</strong> for instrument rotation</li>
+    <li><strong>Pneumatic actuators</strong> for gripper jaws (quick, gentle gripping)</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 650 200" xmlns="http://www.w3.org/2000/svg">
+      <text x="325" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">ROBOT WITH MULTIPLE ACTUATOR TYPES</text>
+
+      <rect x="250" y="40" width="150" height="40" rx="20" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="325" y="65" text-anchor="middle" fill="#60a5fa" font-size="11" font-family="Inter" font-weight="700">CENTRAL CONTROLLER</text>
+
+      <line x1="250" y1="60" x2="100" y2="110" stroke="#555" stroke-width="1"/>
+      <line x1="300" y1="80" x2="250" y2="120" stroke="#555" stroke-width="1"/>
+      <line x1="350" y1="80" x2="400" y2="120" stroke="#555" stroke-width="1"/>
+      <line x1="400" y1="60" x2="550" y2="110" stroke="#555" stroke-width="1"/>
+
+      <rect x="30" y="105" width="140" height="35" rx="4" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="100" y="127" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">Hydraulic (Force)</text>
+
+      <rect x="180" y="115" width="140" height="35" rx="4" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="250" y="137" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Pneumatic (Speed)</text>
+
+      <rect x="335" y="115" width="140" height="35" rx="4" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="405" y="137" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">Servo (Precision)</text>
+
+      <rect x="480" y="105" width="140" height="35" rx="4" fill="none" stroke="#c084fc" stroke-width="1.5"/>
+      <text x="550" y="127" text-anchor="middle" fill="#c084fc" font-size="10" font-family="Inter" font-weight="600">Stepper (Position)</text>
+
+      <text x="325" y="180" text-anchor="middle" fill="#888" font-size="10" font-family="Inter">Each actuator type is selected based on the specific requirement of that DOF</text>
+    </svg>
+    <p class="diagram-caption">Fig 2.4 — A robot system with multiple actuator types controlled centrally</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q12 ═══════════ -->
+<div class="question-block" id="q12">
+  <p class="q-label">Question 12 <span class="marks">5 Marks</span></p>
+  <h2>Draw a block diagram for a typical Hydraulic Actuator system.</h2>
+
+  <h3>Hydraulic Actuator System</h3>
+  <p>A hydraulic actuator system uses pressurized oil (fluid) to generate linear or rotary motion. It works on <strong>Pascal's Law</strong>: F = P × A.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr2c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <text x="350" y="25" text-anchor="middle" fill="#ccc" font-size="14" font-family="Inter" font-weight="700">HYDRAULIC ACTUATOR SYSTEM — BLOCK DIAGRAM</text>
+
+      <!-- Reservoir -->
+      <rect x="30" y="60" width="120" height="55" rx="5" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="90" y="85" text-anchor="middle" fill="#60a5fa" font-size="11" font-family="Inter" font-weight="600">Reservoir</text>
+      <text x="90" y="100" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Oil Tank)</text>
+
+      <!-- Pump -->
+      <rect x="190" y="60" width="120" height="55" rx="5" fill="none" stroke="#34d399" stroke-width="2"/>
+      <text x="250" y="85" text-anchor="middle" fill="#34d399" font-size="11" font-family="Inter" font-weight="600">Hydraulic Pump</text>
+      <text x="250" y="100" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Pressurizes Oil)</text>
+
+      <!-- Filter -->
+      <rect x="350" y="60" width="100" height="55" rx="5" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="400" y="85" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">Filter</text>
+      <text x="400" y="100" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Cleans Oil)</text>
+
+      <!-- Pressure Control Valve -->
+      <rect x="490" y="60" width="130" height="55" rx="5" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="555" y="82" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter" font-weight="600">Pressure Control</text>
+      <text x="555" y="97" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter" font-weight="600">Valve (Relief)</text>
+
+      <!-- Direction Control Valve -->
+      <rect x="250" y="160" width="160" height="55" rx="5" fill="none" stroke="#c084fc" stroke-width="2"/>
+      <text x="330" y="185" text-anchor="middle" fill="#c084fc" font-size="10" font-family="Inter" font-weight="600">Direction Control Valve</text>
+      <text x="330" y="200" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(DCV — Solenoid operated)</text>
+
+      <!-- Flow Control Valve -->
+      <rect x="250" y="250" width="160" height="45" rx="5" fill="none" stroke="#888" stroke-width="1.5"/>
+      <text x="330" y="278" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter" font-weight="600">Flow Control Valve</text>
+
+      <!-- Actuator -->
+      <rect x="490" y="250" width="130" height="50" rx="5" fill="none" stroke="#60a5fa" stroke-width="2.5"/>
+      <text x="555" y="272" text-anchor="middle" fill="#60a5fa" font-size="11" font-family="Inter" font-weight="700">ACTUATOR</text>
+      <text x="555" y="290" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Cylinder / Motor)</text>
+
+      <!-- Arrows -->
+      <line x1="150" y1="87" x2="190" y2="87" stroke="#555" stroke-width="1.5" marker-end="url(#arr2c)"/>
+      <line x1="310" y1="87" x2="350" y2="87" stroke="#555" stroke-width="1.5" marker-end="url(#arr2c)"/>
+      <line x1="450" y1="87" x2="490" y2="87" stroke="#555" stroke-width="1.5" marker-end="url(#arr2c)"/>
+      <line x1="555" y1="115" x2="555" y2="135" stroke="#555" stroke-width="1"/>
+      <line x1="555" y1="135" x2="330" y2="135" stroke="#555" stroke-width="1"/>
+      <line x1="330" y1="135" x2="330" y2="160" stroke="#555" stroke-width="1.5" marker-end="url(#arr2c)"/>
+      <line x1="330" y1="215" x2="330" y2="250" stroke="#555" stroke-width="1.5" marker-end="url(#arr2c)"/>
+      <line x1="410" y1="275" x2="490" y2="275" stroke="#555" stroke-width="1.5" marker-end="url(#arr2c)"/>
+
+      <!-- Return line -->
+      <line x1="490" y1="290" x2="90" y2="290" stroke="#555" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="90" y1="290" x2="90" y2="115" stroke="#555" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr2c)"/>
+      <text x="300" y="308" text-anchor="middle" fill="#666" font-size="8" font-family="Inter">Return line (oil back to reservoir)</text>
+
+      <!-- Output label -->
+      <text x="635" y="275" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">→ Motion</text>
+    </svg>
+    <p class="diagram-caption">Fig 2.5 — Block diagram of a typical Hydraulic Actuator system</p>
+  </div>
+
+  <h4>Flow of Operation:</h4>
+  <ol>
+    <li>Oil is stored in the <strong>reservoir</strong></li>
+    <li>The <strong>pump</strong> draws oil and pressurizes it</li>
+    <li>Oil passes through the <strong>filter</strong> (removes contaminants)</li>
+    <li>The <strong>pressure control valve</strong> maintains safe operating pressure</li>
+    <li>The <strong>DCV</strong> directs oil to the correct port of the actuator</li>
+    <li>The <strong>flow control valve</strong> regulates speed</li>
+    <li>The <strong>actuator</strong> converts hydraulic pressure into mechanical motion</li>
+    <li>Spent oil returns to the reservoir through the return line</li>
+  </ol>
+</div>
+
+<!-- ═══════════ Q13 ═══════════ -->
+<div class="question-block" id="q13">
+  <p class="q-label">Question 13 <span class="marks">5 Marks</span></p>
+  <h2>Draw a block diagram for a typical Pneumatic Actuator system.</h2>
+
+  <h3>Pneumatic Actuator System</h3>
+  <p>A pneumatic system uses <strong>compressed air</strong> to produce motion. It is widely used in light-duty and high-speed robotic applications.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr2d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <text x="350" y="25" text-anchor="middle" fill="#ccc" font-size="14" font-family="Inter" font-weight="700">PNEUMATIC ACTUATOR SYSTEM — BLOCK DIAGRAM</text>
+
+      <!-- Compressor -->
+      <rect x="30" y="60" width="110" height="55" rx="5" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="85" y="85" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Inter" font-weight="600">Air Compressor</text>
+      <text x="85" y="100" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Compresses Air)</text>
+
+      <!-- Air Receiver -->
+      <rect x="175" y="60" width="100" height="55" rx="5" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="225" y="85" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Air Receiver</text>
+      <text x="225" y="100" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Storage Tank)</text>
+
+      <!-- FRL Unit -->
+      <rect x="310" y="60" width="120" height="55" rx="5" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <text x="370" y="82" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">FRL Unit</text>
+      <text x="370" y="97" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">Filter + Regulator</text>
+      <text x="370" y="108" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">+ Lubricator</text>
+
+      <!-- DCV -->
+      <rect x="470" y="60" width="130" height="55" rx="5" fill="none" stroke="#c084fc" stroke-width="2"/>
+      <text x="535" y="82" text-anchor="middle" fill="#c084fc" font-size="10" font-family="Inter" font-weight="600">Direction Control</text>
+      <text x="535" y="97" text-anchor="middle" fill="#c084fc" font-size="10" font-family="Inter" font-weight="600">Valve (DCV)</text>
+
+      <!-- Flow Control -->
+      <rect x="310" y="160" width="120" height="45" rx="5" fill="none" stroke="#888" stroke-width="1.5"/>
+      <text x="370" y="187" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter" font-weight="600">Flow Control Valve</text>
+
+      <!-- Actuator -->
+      <rect x="470" y="155" width="130" height="55" rx="5" fill="none" stroke="#60a5fa" stroke-width="2.5"/>
+      <text x="535" y="178" text-anchor="middle" fill="#60a5fa" font-size="11" font-family="Inter" font-weight="700">ACTUATOR</text>
+      <text x="535" y="198" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Cylinder / Motor)</text>
+
+      <!-- Exhaust -->
+      <rect x="470" y="235" width="130" height="30" rx="4" fill="none" stroke="#f87171" stroke-width="1.2"/>
+      <text x="535" y="254" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter">Exhaust / Muffler</text>
+
+      <!-- Arrows -->
+      <line x1="140" y1="87" x2="175" y2="87" stroke="#555" stroke-width="1.5" marker-end="url(#arr2d)"/>
+      <line x1="275" y1="87" x2="310" y2="87" stroke="#555" stroke-width="1.5" marker-end="url(#arr2d)"/>
+      <line x1="430" y1="87" x2="470" y2="87" stroke="#555" stroke-width="1.5" marker-end="url(#arr2d)"/>
+      <line x1="535" y1="115" x2="535" y2="155" stroke="#555" stroke-width="1.5" marker-end="url(#arr2d)"/>
+      <line x1="535" y1="210" x2="535" y2="235" stroke="#555" stroke-width="1.2" marker-end="url(#arr2d)"/>
+      <line x1="470" y1="182" x2="430" y2="182" stroke="#555" stroke-width="1.2" marker-end="url(#arr2d)"/>
+
+      <!-- Output -->
+      <text x="620" y="182" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">→ Motion</text>
+      <text x="535" y="275" text-anchor="middle" fill="#666" font-size="8" font-family="Inter">Air exhausted to atmosphere</text>
+    </svg>
+    <p class="diagram-caption">Fig 2.6 — Block diagram of a typical Pneumatic Actuator system</p>
+  </div>
+
+  <h4>Flow of Operation:</h4>
+  <ol>
+    <li><strong>Air compressor</strong> draws atmospheric air and compresses it to 6–10 bar</li>
+    <li>Compressed air is stored in the <strong>air receiver</strong> (acts as buffer)</li>
+    <li>The <strong>FRL unit</strong> filters contaminants, regulates pressure, and adds lubrication</li>
+    <li>The <strong>DCV</strong> (solenoid-operated) directs air to the correct port of the actuator</li>
+    <li>The <strong>flow control valve</strong> regulates the speed of the actuator</li>
+    <li>The <strong>actuator</strong> (cylinder/motor) converts air pressure into mechanical motion</li>
+    <li>Spent air is released through the <strong>exhaust muffler</strong> to the atmosphere</li>
+  </ol>
+</div>
+
+<!-- ═══════════ Q14 ═══════════ -->
+<div class="question-block" id="q14">
+  <p class="q-label">Question 14 <span class="marks">5 Marks</span></p>
+  <h2>Which type of actuators will be more preferred in Robotic Systems for medical applications? Why?</h2>
+
+  <h3>Answer: Electric Actuators (specifically Servo Motors and BLDC Motors)</h3>
+  <p>For medical robotic applications, <strong>electric actuators</strong> — particularly <strong>servo motors</strong> and <strong>brushless DC (BLDC) motors</strong> — are the most preferred choice. Here's why:</p>
+
+  <h4>Reasons for Preferring Electric Actuators in Medical Robotics:</h4>
+  <ol>
+    <li><strong>Extremely High Precision:</strong> Surgical robots require sub-millimeter accuracy. Electric servo motors with high-resolution encoders can achieve positioning accuracy of ±0.01 mm — critical for procedures like microsurgery.</li>
+    <li><strong>Clean Operation:</strong> Medical environments require sterile, contamination-free operation. Electric actuators have no oil (unlike hydraulic) or compressed air exhaust (unlike pneumatic) — no risk of contaminating the surgical field.</li>
+    <li><strong>Quiet Operation:</strong> Operating rooms require minimal noise. Electric motors are the quietest actuator type — no pump noise, no air exhaust noise.</li>
+    <li><strong>Smooth and Controlled Motion:</strong> Jerky movements are unacceptable in surgery. Servo motors provide smooth, vibration-free motion with precise speed control.</li>
+    <li><strong>Compact Size:</strong> Medical robots must fit in constrained operating room spaces. BLDC and servo motors have excellent power-to-size ratio.</li>
+    <li><strong>Safety — Force Limiting:</strong> Electric actuators can easily implement torque/force limiting through current control, preventing injury to patients. This is called <strong>compliant control</strong> or <strong>impedance control</strong>.</li>
+    <li><strong>Easy Integration with Control Systems:</strong> Medical robots use sophisticated computer control with real-time feedback. Electric actuators interface seamlessly with digital controllers.</li>
+    <li><strong>No Fire Hazard:</strong> No flammable oils (as in hydraulic systems) — safe in the presence of surgical gases.</li>
+  </ol>
+
+  <h4>Why NOT Hydraulic or Pneumatic?</h4>
+  <table>
+    <tr><th>Actuator Type</th><th>Why NOT suitable for medical robots</th></tr>
+    <tr><td>Hydraulic</td><td>Oil leakage risk, contamination, bulky, noisy pump, fire hazard</td></tr>
+    <tr><td>Pneumatic</td><td>Poor precision (air compressibility), noisy exhaust, imprecise position control</td></tr>
+  </table>
+
+  <h4>Real-World Example: Da Vinci Surgical System</h4>
+  <p>The <strong>Da Vinci Surgical Robot</strong> by Intuitive Surgical uses <strong>electric servo motors</strong> for all joint movements. It performs minimally invasive surgery with precision of &lt;1 mm, demonstrating why electric actuators are the gold standard in medical robotics.</p>
+</div>
+
+<a href="#top" class="back-top">↑ Back to top</a>
+
+</main>
+</body>
+</html>

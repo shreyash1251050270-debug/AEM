@@ -1,0 +1,1347 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Applied Electromechanics — Complete Study Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --border-light: #333;
+    --text: #d4d4d4;
+    --text-dim: #888;
+    --text-bright: #f0f0f0;
+    --accent: #a0a0a0;
+    --accent-light: #c8c8c8;
+    --highlight: #ffffff;
+    --tag: #3a3a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 15px;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    text-align: center;
+    padding: 5rem 2rem 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .site-header h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--highlight);
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+  }
+  .site-header .subtitle {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ─── TABLE OF CONTENTS ─── */
+  .toc {
+    max-width: 720px;
+    margin: 3rem auto;
+    padding: 2rem 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .toc h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc-counter;
+  }
+  .toc ol li {
+    counter-increment: toc-counter;
+    margin-bottom: 0.6rem;
+  }
+  .toc ol li a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .toc ol li a::before {
+    content: counter(toc-counter, decimal-leading-zero);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    min-width: 1.5rem;
+  }
+  .toc ol li a:hover { color: var(--highlight); }
+
+  /* ─── MAIN CONTENT ─── */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* ─── UNIT SECTIONS ─── */
+  .unit {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+  }
+  .unit-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+  }
+  .unit > h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--highlight);
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+  }
+
+  /* ─── TOPIC SECTIONS ─── */
+  .topic {
+    margin-bottom: 3rem;
+  }
+  .topic h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .topic h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  p { margin-bottom: 1rem; }
+
+  /* ─── LISTS ─── */
+  ul, ol {
+    margin: 0.75rem 0 1.25rem 1.5rem;
+  }
+  li {
+    margin-bottom: 0.4rem;
+  }
+
+  /* ─── KEY TERMS / DEFINITIONS ─── */
+  .def-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .def-grid .cell {
+    background: var(--surface);
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+  .def-grid .cell.header {
+    background: var(--surface2);
+    font-weight: 600;
+    color: var(--accent-light);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ─── INFO BOXES ─── */
+  .info-box {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.92rem;
+  }
+  .info-box.formula {
+    border-left-color: var(--highlight);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88rem;
+    white-space: pre-wrap;
+  }
+  .info-box strong {
+    color: var(--text-bright);
+  }
+  .info-box .label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  /* ─── COMPARISON TABLES ─── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+  th {
+    background: var(--surface2);
+    color: var(--accent-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+  }
+  td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--surface); }
+
+  /* ─── SVG DIAGRAMS ─── */
+  .diagram {
+    margin: 2rem 0;
+    text-align: center;
+  }
+  .diagram svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .diagram-caption {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 0.75rem;
+    font-style: italic;
+  }
+
+  /* ─── TAGS ─── */
+  .tag {
+    display: inline-block;
+    background: var(--tag);
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    margin-right: 0.3rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* ─── CODE / MONO ─── */
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--surface2);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: var(--accent-light);
+  }
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 1.5rem 0;
+    color: var(--text);
+  }
+
+  /* ─── SEPARATOR ─── */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+  /* ─── BACK TO TOP ─── */
+  .back-top {
+    display: inline-block;
+    margin-top: 2rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .back-top:hover { color: var(--highlight); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    html { font-size: 14px; }
+    .site-header h1 { font-size: 1.8rem; }
+    .def-grid { grid-template-columns: 1fr; }
+    .content { padding: 0 1rem 4rem; }
+  }
+
+  /* print styles */
+  @media print {
+    body { background: #fff; color: #111; }
+    .site-header, .toc, .unit, .topic, .info-box, table, .diagram { break-inside: avoid; }
+    .info-box { border-left-color: #666; }
+    a { color: #111; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  HEADER                                                -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<header class="site-header" id="top">
+  <h1>Applied Electromechanics</h1>
+  <p class="subtitle">Complete Exam Preparation Notes</p>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  TABLE OF CONTENTS                                     -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#u1">Electromechanical Systems &amp; Robotics</a></li>
+    <li><a href="#u2">Mechanical Components &amp; Actuators</a></li>
+    <li><a href="#u3">Grippers &amp; End Effectors</a></li>
+    <li><a href="#u4">Electronics — Diodes, Transistors &amp; Op-Amps</a></li>
+    <li><a href="#u5">Microcontrollers &amp; Arduino (ATmega328P)</a></li>
+    <li><a href="#u6">Sensors &amp; Transducers</a></li>
+  </ol>
+</nav>
+
+<main class="content">
+
+<!-- ╔═══════════════════════════════════════════════════════╗ -->
+<!-- ║  UNIT 1 — ELECTROMECHANICAL SYSTEMS & ROBOTICS        ║ -->
+<!-- ╚═══════════════════════════════════════════════════════╝ -->
+<section class="unit" id="u1">
+  <p class="unit-label">Unit 01</p>
+  <h2>Electromechanical Systems &amp; Robotics</h2>
+
+  <!-- 1.1 Systems -->
+  <div class="topic">
+    <h3>1.1 What is a System?</h3>
+    <p>A <strong>system</strong> is a set of interconnected components that work together to achieve a desired objective. Systems are classified based on their nature and how they interact with their environment.</p>
+
+    <h4>Classification of Systems</h4>
+    <ul>
+      <li><strong>Natural Systems</strong> — e.g., solar system, human body</li>
+      <li><strong>Man-made Systems</strong> — e.g., power plant, computer</li>
+      <li><strong>Open Systems</strong> — exchange matter/energy with environment</li>
+      <li><strong>Closed Systems</strong> — no exchange with environment</li>
+    </ul>
+
+    <div class="diagram">
+      <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="60" width="120" height="60" rx="6" fill="none" stroke="#666" stroke-width="1.5"/>
+        <text x="70" y="95" text-anchor="middle" fill="#aaa" font-size="12" font-family="Inter">Input</text>
+        <rect x="240" y="40" width="140" height="100" rx="6" fill="none" stroke="#888" stroke-width="2"/>
+        <text x="310" y="85" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="600">SYSTEM</text>
+        <text x="310" y="105" text-anchor="middle" fill="#777" font-size="10" font-family="Inter">(Processing)</text>
+        <rect x="480" y="60" width="110" height="60" rx="6" fill="none" stroke="#666" stroke-width="1.5"/>
+        <text x="535" y="95" text-anchor="middle" fill="#aaa" font-size="12" font-family="Inter">Output</text>
+        <line x1="130" y1="90" x2="240" y2="90" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="380" y1="90" x2="480" y2="90" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      </svg>
+      <p class="diagram-caption">Fig 1.1 — General block diagram of a system</p>
+    </div>
+  </div>
+
+  <!-- 1.2 Control Systems -->
+  <div class="topic">
+    <h3>1.2 Control Systems</h3>
+    <p>A <strong>control system</strong> provides the desired response by controlling the input and processing. It manages, commands, directs, or regulates the behaviour of other systems.</p>
+
+    <table>
+      <tr><th>Feature</th><th>Open Loop</th><th>Closed Loop</th></tr>
+      <tr><td>Feedback</td><td>No feedback path</td><td>Output is fed back to input</td></tr>
+      <tr><td>Accuracy</td><td>Less accurate</td><td>Highly accurate</td></tr>
+      <tr><td>Stability</td><td>Generally stable</td><td>Can become unstable</td></tr>
+      <tr><td>Complexity</td><td>Simple</td><td>Complex</td></tr>
+      <tr><td>Examples</td><td>Traffic light, washing machine</td><td>AC system, rocket guidance</td></tr>
+    </table>
+
+    <div class="diagram">
+      <svg viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- Open loop -->
+        <text x="10" y="20" fill="#888" font-size="11" font-family="Inter" font-weight="600">OPEN LOOP</text>
+        <rect x="10" y="35" width="90" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+        <text x="55" y="59" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Input</text>
+        <rect x="150" y="35" width="120" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+        <text x="210" y="59" text-anchor="middle" fill="#bbb" font-size="10" font-family="Inter">Controller</text>
+        <rect x="320" y="35" width="100" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+        <text x="370" y="59" text-anchor="middle" fill="#bbb" font-size="10" font-family="Inter">Plant</text>
+        <rect x="470" y="35" width="90" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+        <text x="515" y="59" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Output</text>
+        <line x1="100" y1="55" x2="150" y2="55" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="270" y1="55" x2="320" y2="55" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="420" y1="55" x2="470" y2="55" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <!-- Closed loop -->
+        <text x="10" y="130" fill="#888" font-size="11" font-family="Inter" font-weight="600">CLOSED LOOP</text>
+        <rect x="10" y="145" width="90" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+        <text x="55" y="169" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Input</text>
+        <circle cx="140" cy="165" r="12" fill="none" stroke="#777" stroke-width="1.2"/>
+        <text x="140" y="169" text-anchor="middle" fill="#aaa" font-size="12" font-family="Inter">Σ</text>
+        <rect x="190" y="145" width="110" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+        <text x="245" y="169" text-anchor="middle" fill="#bbb" font-size="10" font-family="Inter">Controller</text>
+        <rect x="340" y="145" width="100" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+        <text x="390" y="169" text-anchor="middle" fill="#bbb" font-size="10" font-family="Inter">Plant</text>
+        <rect x="480" y="145" width="90" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+        <text x="525" y="169" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Output</text>
+        <line x1="100" y1="165" x2="128" y2="165" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="152" y1="165" x2="190" y2="165" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="300" y1="165" x2="340" y2="165" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="440" y1="165" x2="480" y2="165" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <!-- Feedback path -->
+        <rect x="260" y="210" width="120" height="30" rx="4" fill="none" stroke="#555" stroke-width="1"/>
+        <text x="320" y="229" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">Feedback</text>
+        <line x1="525" y1="185" x2="525" y2="225" stroke="#555" stroke-width="1"/>
+        <line x1="525" y1="225" x2="380" y2="225" stroke="#555" stroke-width="1"/>
+        <line x1="260" y1="225" x2="140" y2="225" stroke="#555" stroke-width="1"/>
+        <line x1="140" y1="225" x2="140" y2="177" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+      </svg>
+      <p class="diagram-caption">Fig 1.2 — Open loop vs Closed loop control systems</p>
+    </div>
+  </div>
+
+  <!-- 1.3 Electromechanical Systems -->
+  <div class="topic">
+    <h3>1.3 Electromechanical (Mechatronic) Systems</h3>
+    <p>In 1969, a senior engineer at <strong>YASAKAWA (Japan)</strong> first coined the term "electromechanical" — the synergetic integration of mechanical engineering with electronics and intelligent computer control in design and manufacturing.</p>
+
+    <h4>Key Disciplines Involved</h4>
+    <div class="def-grid">
+      <div class="cell header">Discipline</div><div class="cell header">Role</div>
+      <div class="cell"><strong>Mechanical</strong></div><div class="cell">Hydraulic, pneumatic, rotational, translational systems; gears, chains, cylinders</div>
+      <div class="cell"><strong>Electrical</strong></div><div class="cell">Generators, transformers, relays, circuit breakers, switches</div>
+      <div class="cell"><strong>Electronic</strong></div><div class="cell">Analog circuits (R, L, C, diodes, transistors), Digital circuits (flip-flops, counters)</div>
+      <div class="cell"><strong>Instrumentation &amp; Control</strong></div><div class="cell">Transducers, signal conditioning, data acquisition, stepper motors, servo motors</div>
+      <div class="cell"><strong>Computer Science</strong></div><div class="cell">Programming, microprocessors, microcontrollers, communication networks</div>
+    </div>
+
+    <h4>Applications</h4>
+    <ul>
+      <li>Automatic washing machines, dishwashers</li>
+      <li>CD players, VCRs, camcorders</li>
+      <li>Robotics — industrial welding, assembly</li>
+      <li>IC manufacturing, flexible manufacturing systems</li>
+      <li>Air conditioners, elevator controls, automobiles</li>
+    </ul>
+  </div>
+
+  <!-- 1.4 Robotics -->
+  <div class="topic">
+    <h3>1.4 Robotics: Fundamentals</h3>
+
+    <div class="info-box">
+      <span class="label">Definition</span>
+      <strong>Robot:</strong> The word was coined by Czech novelist <strong>Karel Čapek</strong> in a 1920 play "Rossum's Universal Robots (RUR)." In Czech, "robot" means worker/servant.<br><br>
+      <strong>Robotics:</strong> The term was introduced by <strong>Isaac Asimov</strong> in 1942 in his story "Runaround." It is the science of designing, manufacturing, and using robots.
+    </div>
+
+    <h4>Asimov's Laws of Robotics</h4>
+    <ol>
+      <li><strong>Zeroth Law:</strong> A robot may not injure humanity or, through inaction, allow humanity to come to harm.</li>
+      <li><strong>First Law:</strong> A robot may not injure a human being or, through inaction, allow a human to come to harm — unless this violates a higher-order law.</li>
+      <li><strong>Second Law:</strong> A robot must obey orders from humans, except where such orders conflict with a higher-order law.</li>
+      <li><strong>Third Law:</strong> A robot must protect its own existence, as long as such protection does not conflict with a higher-order law.</li>
+    </ol>
+
+    <h4>Advantages &amp; Disadvantages</h4>
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Human safety</td><td>Creates unemployment</td></tr>
+      <tr><td>Speed &amp; accuracy</td><td>High initial cost</td></tr>
+      <tr><td>Consistency &amp; reliability</td><td>High expertise required</td></tr>
+      <tr><td>No fatigue</td><td>Restricted by programming</td></tr>
+      <tr><td>Works in dangerous/dirty environments</td><td>High maintenance cost</td></tr>
+      <tr><td>High productivity</td><td>Electricity is a must</td></tr>
+    </table>
+
+    <h4>Classification of Robots</h4>
+    <ul>
+      <li><strong>Industrial Robots</strong> — welding, painting, assembly, material handling</li>
+      <li><strong>Social/Domestic Robots</strong> — household assistance, companionship</li>
+      <li><strong>Humanoid Robots</strong> — ATLAS (Boston Dynamics), SOPHIA (Hanson Robotics)</li>
+      <li><strong>Mobile Robots</strong> — autonomous navigation, drones</li>
+    </ul>
+  </div>
+
+  <!-- 1.5 Robot Anatomy -->
+  <div class="topic">
+    <h3>1.5 Robot Anatomy &amp; Terminology</h3>
+    <p>Robot anatomy is the study of the skeleton (physical construction) of the manipulator structure. It consists of <strong>joints</strong> and <strong>links</strong>.</p>
+
+    <h4>Body Parts of a Robot</h4>
+    <div class="def-grid">
+      <div class="cell header">Part</div><div class="cell header">Description</div>
+      <div class="cell"><strong>Base</strong></div><div class="cell">Fixed or mobile platform on which the arm is mounted</div>
+      <div class="cell"><strong>Joint &amp; Arm</strong></div><div class="cell">Rigid bodies (links) connected by articulations (joints) ensuring mobility</div>
+      <div class="cell"><strong>Wrist</strong></div><div class="cell">Controls orientation (Roll, Pitch, Yaw)</div>
+      <div class="cell"><strong>End Effector</strong></div><div class="cell">Device at wrist to perform tasks — grippers, welding guns, spray guns</div>
+    </div>
+
+    <h4>Types of Joints</h4>
+    <table>
+      <tr><th>Joint Type</th><th>Symbol</th><th>Motion</th><th>Variable</th></tr>
+      <tr><td>Linear (L)</td><td>P</td><td>Translational — axes parallel</td><td>Distance d</td></tr>
+      <tr><td>Orthogonal (U)</td><td>P</td><td>Translational — axes perpendicular</td><td>Distance d</td></tr>
+      <tr><td>Rotational (R)</td><td>R</td><td>Rotary — axis ⊥ to links</td><td>Angle θ</td></tr>
+      <tr><td>Twisting (T)</td><td>R</td><td>Rotary — axis ∥ to links</td><td>Angle θ</td></tr>
+      <tr><td>Revolving (V)</td><td>R</td><td>Rotary — input ∥, output ⊥ to axis</td><td>Angle θ</td></tr>
+    </table>
+
+    <h4>End Effectors</h4>
+    <ul>
+      <li><strong>Mechanical Grippers</strong> — jaws that physically grasp</li>
+      <li><strong>Vacuum Grippers</strong> — suction cups for flat surfaces</li>
+      <li><strong>Magnetic Grippers</strong> — electromagnets for ferrous materials</li>
+      <li><strong>Tools</strong> — welding guns, spray paint guns, drills, screwdrivers</li>
+    </ul>
+
+    <h4>Key Terminology</h4>
+    <div class="def-grid">
+      <div class="cell header">Term</div><div class="cell header">Definition</div>
+      <div class="cell"><strong>Accuracy</strong></div><div class="cell">How close the robot reaches the <em>programmed</em> point (single event property)</div>
+      <div class="cell"><strong>Precision</strong></div><div class="cell">How close multiple targets are to <em>each other</em> (set of events property)</div>
+      <div class="cell"><strong>Repeatability</strong></div><div class="cell">Ability to perform the same task again with same accuracy &amp; precision</div>
+      <div class="cell"><strong>Resolution</strong></div><div class="cell">Smallest movement/measurement the robot is capable of making</div>
+    </div>
+  </div>
+
+  <!-- 1.6 Robot Configurations -->
+  <div class="topic">
+    <h3>1.6 Robot Configurations &amp; Workspace</h3>
+
+    <table>
+      <tr><th>Configuration</th><th>Joint Types</th><th>Workspace Shape</th></tr>
+      <tr><td>Cartesian (x-y-z)</td><td>PPP (3 Prismatic)</td><td>Rectangular</td></tr>
+      <tr><td>Cylindrical</td><td>RPP (1R + 2P)</td><td>Cylindrical</td></tr>
+      <tr><td>Polar / Spherical</td><td>RRP (2R + 1P)</td><td>Spherical</td></tr>
+      <tr><td>Articulated (Jointed-arm)</td><td>RRR (3 Revolute)</td><td>Complex, near-spherical</td></tr>
+      <tr><td>SCARA</td><td>RRP</td><td>Cylindrical</td></tr>
+    </table>
+
+    <div class="info-box">
+      <span class="label">Important</span>
+      <strong>Workspace (Work Envelope)</strong> — The set of all locations that can be reached by the robot's end effector. It depends on the configuration and the lengths of the links.
+    </div>
+
+    <h4>Roll, Pitch, Yaw</h4>
+    <ul>
+      <li><strong>Roll</strong> — Rotation about the arm's longitudinal axis (wrist rotation)</li>
+      <li><strong>Pitch</strong> — Up-down tilting (wrist bend)</li>
+      <li><strong>Yaw</strong> — Left-right rotation (wrist swivel)</li>
+    </ul>
+  </div>
+
+  <!-- 1.7 Kinematics -->
+  <div class="topic">
+    <h3>1.7 Robot Kinematics</h3>
+    <p><strong>Kinematics</strong> is the science of motion — studying positions, velocities, and accelerations of links and joints <em>without</em> considering forces.</p>
+
+    <h4>Degrees of Freedom (DOF)</h4>
+    <div class="info-box">
+      DOF is the number of independent displacements/motions a robot can perform. Each revolute or prismatic joint contributes <strong>1 DOF</strong>. The human arm has <strong>7 DOF</strong> (3 shoulder + 1 elbow + 3 wrist). The PUMA 560 robot has <strong>6 DOF</strong> (all revolute).
+    </div>
+
+    <h4>Forward Kinematics vs Inverse Kinematics</h4>
+    <table>
+      <tr><th>Forward Kinematics</th><th>Inverse Kinematics</th></tr>
+      <tr><td>Given: link lengths + joint angles</td><td>Given: link lengths + destination position</td></tr>
+      <tr><td>Find: end-effector position (coordinates)</td><td>Find: joint angles needed to reach destination</td></tr>
+      <tr><td>Unique solution</td><td>Multiple solutions possible</td></tr>
+      <tr><td>Analogy: given road map → find destination</td><td>Analogy: given destination → find the path</td></tr>
+    </table>
+
+    <h4>Reference Frames</h4>
+    <p>Different parts of the robot operate in different coordinate frames. Types include:</p>
+    <ul>
+      <li><strong>World Frame</strong> — fixed reference frame</li>
+      <li><strong>Joint Frame</strong> — attached to each joint</li>
+      <li><strong>Tool Frame</strong> — attached to the end effector</li>
+      <li><strong>Product Frame</strong> — attached to the workpiece</li>
+    </ul>
+
+    <h4>Transformation Matrices</h4>
+    <p>Finding coordinates of a point with respect to different frames is called <strong>transformation</strong>. This involves rotation and translation matrices.</p>
+
+    <div class="info-box formula">
+<span class="label">Rotation Matrix about Z-axis</span>
+R_z(θ) = | cos θ   -sin θ    0 |
+          | sin θ    cos θ    0 |
+          |   0        0      1 |</div>
+
+    <div class="info-box formula">
+<span class="label">Rotation Matrix about X-axis</span>
+R_x(θ) = |  1      0        0    |
+          |  0    cos θ   -sin θ  |
+          |  0    sin θ    cos θ  |</div>
+
+    <div class="info-box formula">
+<span class="label">Rotation Matrix about Y-axis</span>
+R_y(θ) = | cos θ    0    sin θ  |
+          |   0      1      0    |
+          |-sin θ    0    cos θ  |</div>
+
+    <h4>Homogeneous Transformation Matrix (4×4)</h4>
+    <p>Combines rotation and translation into a single matrix. Also known as <strong>Denavit-Hartenberg (D-H) Matrix</strong>.</p>
+    <div class="info-box formula">
+<span class="label">4×4 Homogeneous Transformation</span>
+T = | R₃ₓ₃    d₃ₓ₁ |     R = Rotation Matrix (3×3)
+    | 0₁ₓ₃      1   |     d = Translation Vector (3×1)
+                           Bottom row = Scaling Factor</div>
+  </div>
+
+  <a href="#top" class="back-top">↑ Back to top</a>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════╗ -->
+<!-- ║  UNIT 2 — MECHANICAL COMPONENTS & ACTUATORS           ║ -->
+<!-- ╚═══════════════════════════════════════════════════════╝ -->
+<section class="unit" id="u2">
+  <p class="unit-label">Unit 02</p>
+  <h2>Mechanical Components &amp; Actuators</h2>
+
+  <div class="topic">
+    <h3>2.1 Mechanical Components</h3>
+    <h4>Fasteners</h4>
+    <div class="def-grid">
+      <div class="cell header">Component</div><div class="cell header">Description</div>
+      <div class="cell"><strong>Nut &amp; Bolt</strong></div><div class="cell">Bolt has hexagonal head + threaded shaft; nut is internally threaded to receive bolt</div>
+      <div class="cell"><strong>Washer</strong></div><div class="cell">Plane washer (distributes load), Spring washer (prevents loosening due to vibration)</div>
+      <div class="cell"><strong>Screw</strong></div><div class="cell">Round head, Allen (hexagonal socket), grub (headless)</div>
+      <div class="cell"><strong>Rivet</strong></div><div class="cell">Permanent fastener made of soft material; used in aircraft, jeans, bridges</div>
+    </div>
+
+    <h4>Gears</h4>
+    <table>
+      <tr><th>Type</th><th>Shaft Arrangement</th><th>Key Feature</th></tr>
+      <tr><td>Spur Gears</td><td>Parallel shafts</td><td>Simplest gear; teeth are straight and parallel to axis</td></tr>
+      <tr><td>Bevel Gears</td><td>Intersecting shafts</td><td>Conical shape; transmit motion between angled shafts</td></tr>
+      <tr><td>Worm &amp; Worm Wheel</td><td>Perpendicular, non-intersecting</td><td>High reduction ratio; self-locking possible</td></tr>
+    </table>
+
+    <div class="info-box">
+      <span class="label">Gear Speed Relationship</span>
+      Gears of different sizes in a gear train run at different speeds. The <strong>smaller gear rotates faster</strong>. Speed ratio = N₁/N₂ where N is the number of teeth.
+    </div>
+  </div>
+
+  <div class="topic">
+    <h3>2.2 Actuators — Overview</h3>
+    <p>An <strong>actuator</strong> creates linear or rotational motion in a system. Actuators are the "artificial muscles" of a robot.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 600 130" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="10" width="100" height="40" rx="4" fill="none" stroke="#555"/>
+        <text x="70" y="34" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Sensor</text>
+        <rect x="160" y="10" width="110" height="40" rx="4" fill="none" stroke="#555"/>
+        <text x="215" y="34" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Transducer</text>
+        <rect x="310" y="10" width="110" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+        <text x="365" y="34" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter" font-weight="600">Controller</text>
+        <rect x="460" y="10" width="110" height="40" rx="4" fill="none" stroke="#555"/>
+        <text x="515" y="34" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Actuator</text>
+        <line x1="120" y1="30" x2="160" y2="30" stroke="#444" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="270" y1="30" x2="310" y2="30" stroke="#444" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="420" y1="30" x2="460" y2="30" stroke="#444" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <text x="300" y="90" text-anchor="middle" fill="#666" font-size="10" font-family="Inter">Flow of Information and Energy →</text>
+      </svg>
+      <p class="diagram-caption">Fig 2.1 — Signal flow in an electromechanical system</p>
+    </div>
+
+    <h4>Types of Actuators — Comparison</h4>
+    <table>
+      <tr><th>Feature</th><th>Hydraulic</th><th>Pneumatic</th><th>Electric</th></tr>
+      <tr><td>Medium</td><td>Oil/Water</td><td>Compressed air</td><td>Electricity</td></tr>
+      <tr><td>Force capacity</td><td>Very high</td><td>Low-medium</td><td>Medium</td></tr>
+      <tr><td>Speed</td><td>Slow</td><td>Fast</td><td>Variable</td></tr>
+      <tr><td>Precision</td><td>High</td><td>Low</td><td>Highest</td></tr>
+      <tr><td>Leakage issue</td><td>Yes (oil)</td><td>Yes (air)</td><td>No</td></tr>
+      <tr><td>Noise</td><td>Moderate</td><td>Noisy</td><td>Quiet</td></tr>
+      <tr><td>Environment</td><td>May contaminate</td><td>Clean (air)</td><td>Cleanest</td></tr>
+      <tr><td>Cost</td><td>Moderate</td><td>Low</td><td>High initial</td></tr>
+    </table>
+  </div>
+
+  <div class="topic">
+    <h3>2.3 Hydraulic Actuators</h3>
+    <p>Uses pressurized fluid (oil) to generate motion. Best for high-force applications.</p>
+    <h4>Components of Hydraulic System</h4>
+    <ol>
+      <li><strong>Reservoir</strong> — Oil storage and conditioning</li>
+      <li><strong>Pump</strong> — Pressurizes oil and sends it to actuator</li>
+      <li><strong>Direction Control Valve (DCV)</strong> — Directs flow to actuator ports</li>
+      <li><strong>Flow Control Valve</strong> — Controls flow rate → controls speed</li>
+      <li><strong>Pressure Control Valve</strong> — Maintains required pressure; releases excess oil</li>
+      <li><strong>Actuator</strong> — Piston-cylinder (linear) or hydraulic motor (rotary)</li>
+    </ol>
+
+    <div class="info-box formula">
+<span class="label">Pascal's Law</span>
+F = P × A
+Force = Pressure × Area of piston</div>
+  </div>
+
+  <div class="topic">
+    <h3>2.4 Pneumatic Actuators</h3>
+    <p>Uses compressed air. Fast operation, suitable for small robots and packaging.</p>
+    <ul>
+      <li><strong>Linear type</strong> — piston-cylinder arrangement</li>
+      <li><strong>Rotary type</strong> — vane-type motors</li>
+      <li><strong>Advantages</strong>: Fast, works in extreme temperatures</li>
+      <li><strong>Disadvantages</strong>: Limited stroke, air leakage, moisture contamination, noisy</li>
+    </ul>
+  </div>
+
+  <div class="topic">
+    <h3>2.5 Electric Actuators</h3>
+    <h4>Types of Electric Motors</h4>
+    <table>
+      <tr><th>Motor Type</th><th>Key Characteristic</th><th>Application</th></tr>
+      <tr><td>DC Motor (Brushed)</td><td>Commutator + brushes; simple control</td><td>General purpose</td></tr>
+      <tr><td>Brushless DC (BLDC)</td><td>Electronic commutation; Hall effect sensors; longer life</td><td>Fans, drones, EVs</td></tr>
+      <tr><td>Stepper Motor</td><td>Rotates in discrete steps (not continuous)</td><td>3D printers, CNC</td></tr>
+      <tr><td>Servo Motor</td><td>Rotates to specific angle; has feedback</td><td>Robotics, RC vehicles</td></tr>
+      <tr><td>Solenoid</td><td>Linear actuator; electromagnetic attraction/repulsion</td><td>Locks, valves</td></tr>
+    </table>
+  </div>
+
+  <div class="topic">
+    <h3>2.6 Electromagnetism — Key Concepts</h3>
+    <h4>Properties of Magnetic Lines of Force</h4>
+    <ol>
+      <li>Invisible, imaginary, elliptical lines that <strong>never cross</strong></li>
+      <li>Travel from <strong>N → S (external)</strong> and <strong>S → N (internal)</strong></li>
+      <li>Parallel lines travelling in same direction <strong>REPEL</strong></li>
+      <li>Act like stretched rubber bands — always try to <strong>contract</strong></li>
+      <li>Prefer a path of <strong>minimum reluctance</strong></li>
+    </ol>
+
+    <h4>Important Magnetic Quantities</h4>
+    <div class="def-grid">
+      <div class="cell header">Quantity</div><div class="cell header">Formula / Unit</div>
+      <div class="cell">Permeability (μ)</div><div class="cell">H/m — ability to allow magnetic flux</div>
+      <div class="cell">MMF (F)</div><div class="cell">F = N × I (Amp-Turns)</div>
+      <div class="cell">Flux Density (B)</div><div class="cell">B = Φ/A (Tesla = Wb/m²)</div>
+      <div class="cell">Field Intensity (H)</div><div class="cell">H = NI/l (A/m)</div>
+      <div class="cell">Reluctance (S)</div><div class="cell">S = l/(μA) — opposition to flux</div>
+    </div>
+
+    <h4>Faraday's Laws of Electromagnetic Induction</h4>
+    <div class="info-box">
+      <strong>First Law:</strong> When magnetic flux linking a conductor changes, an EMF is induced.<br>
+      <strong>Second Law:</strong> The magnitude of induced EMF is proportional to the rate of change of flux linkages.<br><br>
+      <strong>E = −N (dΦ/dt)</strong> — the negative sign is due to <strong>Lenz's Law</strong>.
+    </div>
+
+    <div class="info-box">
+      <span class="label">Lenz's Law</span>
+      The induced current flows in such a direction as to <strong>oppose the cause</strong> producing it (e.g., movement of magnet).
+    </div>
+
+    <h4>Motor Principle</h4>
+    <p>"When a current-carrying conductor is placed in a magnetic field, it experiences a mechanical force." Direction given by <strong>Fleming's Left Hand Rule</strong>.</p>
+
+    <h4>B-H Curve (Hysteresis Loop)</h4>
+    <ul>
+      <li><strong>Sluggish start</strong> → <strong>Linear rise</strong> → <strong>Saturation</strong></li>
+      <li><strong>Retentivity</strong> — residual magnetism when H is removed</li>
+      <li><strong>Coercivity</strong> — reverse H needed to demagnetize</li>
+      <li>Loop area ∝ energy loss per cycle</li>
+    </ul>
+  </div>
+
+  <a href="#top" class="back-top">↑ Back to top</a>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════╗ -->
+<!-- ║  UNIT 3 — GRIPPERS & END EFFECTORS                    ║ -->
+<!-- ╚═══════════════════════════════════════════════════════╝ -->
+<section class="unit" id="u3">
+  <p class="unit-label">Unit 03</p>
+  <h2>Grippers &amp; End Effectors</h2>
+
+  <div class="topic">
+    <h3>3.1 What is a Gripper?</h3>
+    <p>A <strong>gripper</strong> is a mechanical/robotic device that acts as the "hand" of a robot arm — enabling holding, tightening, handling, and releasing of objects. A gripper is a type of <strong>end effector</strong>, but not all end effectors are grippers.</p>
+
+    <h4>Modes of Grasp</h4>
+    <ul>
+      <li><strong>External Grip</strong> — fingers close around the outside of the object</li>
+      <li><strong>Internal Grip</strong> — fingers expand inside a cavity of the object</li>
+    </ul>
+
+    <h4>Gripping Categories</h4>
+    <table>
+      <tr><th>Category</th><th>Description</th><th>Example</th></tr>
+      <tr><td>No Gripping</td><td>Workpiece in jig; robot performs action on it</td><td>Spot welding, drilling</td></tr>
+      <tr><td>Coarse Gripping</td><td>Robot holds workpiece; precision not critical</td><td>Stacking boxes, dipping castings</td></tr>
+      <tr><td>Precise Gripping</td><td>Accurate positioning required</td><td>Loading/unloading machine tools</td></tr>
+      <tr><td>Assembly</td><td>Accurate positioning + sensory feedback</td><td>Parts assembly</td></tr>
+    </table>
+  </div>
+
+  <div class="topic">
+    <h3>3.2 General Classification of Grippers</h3>
+    <table>
+      <tr><th>Type</th><th>Principle</th><th>Usage</th></tr>
+      <tr><td><strong>Impactive</strong></td><td>Jaws/claws — direct physical impact</td><td>Most common industrial</td></tr>
+      <tr><td><strong>Ingressive</strong></td><td>Pins/needles penetrate surface</td><td>Textile, carbon fiber handling</td></tr>
+      <tr><td><strong>Astrictive</strong></td><td>Suction/vacuum/magneto/electro adhesion</td><td>Flat surfaces, sheet metal</td></tr>
+      <tr><td><strong>Contigutive</strong></td><td>Direct contact adhesion (glue, freezing)</td><td>Specialized handling</td></tr>
+    </table>
+  </div>
+
+  <div class="topic">
+    <h3>3.3 Mechanical Grippers — Actuation Methods</h3>
+
+    <div class="def-grid">
+      <div class="cell header">Type</div><div class="cell header">Mechanism</div>
+      <div class="cell"><strong>Linkage Grippers</strong></div><div class="cell">No cam/screw/gear; motion through links only. Input actuator motion → gripping at output</div>
+      <div class="cell"><strong>Gear &amp; Rack</strong></div><div class="cell">Gear rotation moves connecting links → gripping motion</div>
+      <div class="cell"><strong>Cam-actuated</strong></div><div class="cell">Reciprocating cam motion → follower → finger gripping. Profiles: constant velocity, circular arc, harmonic</div>
+      <div class="cell"><strong>Screw-driven</strong></div><div class="cell">Turning screw → motion to connecting links. Motor-controlled precision</div>
+    </div>
+
+    <h4>Jaw Types</h4>
+    <table>
+      <tr><th>Type</th><th>Features</th></tr>
+      <tr><td>Two-jaw</td><td>Most popular; two mounting locations; synchronized opening/closing</td></tr>
+      <tr><td>Three-jaw</td><td>Better centering; more contact area; self-centering</td></tr>
+      <tr><td>Multi-jaw</td><td>Most accurate centering; most expensive; complex</td></tr>
+    </table>
+  </div>
+
+  <div class="topic">
+    <h3>3.4 Vacuum Grippers</h3>
+    <p>Use suction cups powered by vacuum generators (Venturi effect). Ideal for flat, smooth, non-ferrous surfaces.</p>
+    <div class="info-box formula">
+<span class="label">Suction Force</span>
+F = K × P × A
+where F = force, K = constant,
+P = vacuum pressure, A = cup area</div>
+    <h4>Advantages</h4>
+    <ul>
+      <li>Require only one surface to grasp</li>
+      <li>Apply uniform pressure</li>
+      <li>Suitable for variety of materials</li>
+      <li>Low cost, easy maintenance</li>
+    </ul>
+  </div>
+
+  <div class="topic">
+    <h3>3.5 Magnetic Grippers</h3>
+    <p>Use electromagnets to attract <strong>ferrous materials</strong>. The magnetic head has a ferromagnetic core with conducting coils.</p>
+    <div class="info-box formula">
+<span class="label">Maxwell's Equation for Magnetic Force</span>
+P ≥ (a + g) × m × FoS
+where a = acceleration, g = gravity,
+m = mass, FoS = Factor of Safety</div>
+    <h4>Advantages</h4>
+    <ul><li>Fast pick-up</li><li>Tolerates size variations</li><li>Handles parts with holes</li><li>Needs only one surface</li></ul>
+    <h4>Disadvantages</h4>
+    <ul><li>Residual magnetism issues</li><li>May pick multiple parts from stack</li><li>Only works for ferrous materials</li></ul>
+  </div>
+
+  <div class="topic">
+    <h3>3.6 Adhesive Grippers</h3>
+    <p>Grasp objects by literally sticking to them using adhesive surfaces (e.g., two-sided tape, micro-fiber adhesion). Advantage: keep adhesive sticky for long time without maintenance.</p>
+  </div>
+
+  <a href="#top" class="back-top">↑ Back to top</a>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════╗ -->
+<!-- ║  UNIT 4 — ELECTRONICS                                 ║ -->
+<!-- ╚═══════════════════════════════════════════════════════╝ -->
+<section class="unit" id="u4">
+  <p class="unit-label">Unit 04</p>
+  <h2>Electronics — Diodes, Transistors &amp; Op-Amps</h2>
+
+  <div class="topic">
+    <h3>4.1 PN Junction Diode</h3>
+    <p>A diode is the simplest non-linear circuit element. It allows current flow in <strong>one direction only</strong>. Formed by joining P-type and N-type semiconductors.</p>
+
+    <h4>Biasing</h4>
+    <table>
+      <tr><th>Feature</th><th>Forward Bias</th><th>Reverse Bias</th></tr>
+      <tr><td>Connection</td><td>+ve to P-type, −ve to N-type</td><td>+ve to N-type, −ve to P-type</td></tr>
+      <tr><td>Depletion Region</td><td>Thin (small)</td><td>Thick (large)</td></tr>
+      <tr><td>Current</td><td>Maximum current flows</td><td>Extremely small (leakage)</td></tr>
+      <tr><td>Resistance</td><td>Low</td><td>Very high</td></tr>
+      <tr><td>Threshold (Si)</td><td>~0.6-0.7V</td><td>Breakdown voltage</td></tr>
+    </table>
+
+    <div class="diagram">
+      <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+        <!-- Diode symbol -->
+        <line x1="60" y1="60" x2="140" y2="60" stroke="#777" stroke-width="2"/>
+        <polygon points="140,35 140,85 200,60" fill="none" stroke="#aaa" stroke-width="2"/>
+        <line x1="200" y1="35" x2="200" y2="85" stroke="#aaa" stroke-width="2"/>
+        <line x1="200" y1="60" x2="300" y2="60" stroke="#777" stroke-width="2"/>
+        <text x="60" y="105" fill="#888" font-size="11" font-family="Inter">Anode (+)</text>
+        <text x="250" y="105" fill="#888" font-size="11" font-family="Inter">Cathode (−)</text>
+        <text x="155" y="25" fill="#666" font-size="10" font-family="Inter">Current flow →</text>
+      </svg>
+      <p class="diagram-caption">Fig 4.1 — PN Junction Diode symbol</p>
+    </div>
+
+    <h4>Diode Specifications</h4>
+    <div class="def-grid">
+      <div class="cell header">Parameter</div><div class="cell header">Description</div>
+      <div class="cell">V<sub>F</sub></div><div class="cell">Forward voltage at specific current</div>
+      <div class="cell">I<sub>F</sub></div><div class="cell">Maximum forward current</div>
+      <div class="cell">I<sub>R</sub></div><div class="cell">Maximum reverse current</div>
+      <div class="cell">PIV</div><div class="cell">Peak Inverse Voltage — max reverse voltage before failure</div>
+      <div class="cell">t<sub>rr</sub></div><div class="cell">Reverse recovery time</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <h3>4.2 Rectifier Circuits</h3>
+    <p>A <strong>rectifier</strong> converts AC to DC (rectification).</p>
+
+    <table>
+      <tr><th>Type</th><th>Diodes</th><th>Output</th><th>Efficiency</th></tr>
+      <tr><td>Half-wave</td><td>1</td><td>Pulsating DC (one half-cycle)</td><td>~40.6%</td></tr>
+      <tr><td>Full-wave (Center-tap)</td><td>2</td><td>Both half-cycles used</td><td>~81.2%</td></tr>
+      <tr><td>Bridge Rectifier</td><td>4</td><td>Full-wave without center-tap transformer</td><td>~81.2%</td></tr>
+    </table>
+
+    <div class="diagram">
+      <svg viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg">
+        <!-- Half wave input -->
+        <text x="10" y="15" fill="#888" font-size="10" font-family="Inter" font-weight="600">HALF-WAVE RECTIFIER</text>
+        <path d="M 20 70 Q 60 20 100 70 Q 140 120 180 70" fill="none" stroke="#666" stroke-width="1.5"/>
+        <text x="90" y="135" text-anchor="middle" fill="#666" font-size="9" font-family="Inter">AC Input</text>
+        <text x="245" y="50" fill="#777" font-size="20" font-family="Inter">→</text>
+        <!-- Half wave output -->
+        <path d="M 290 70 Q 330 20 370 70" fill="none" stroke="#aaa" stroke-width="1.5"/>
+        <line x1="370" y1="70" x2="450" y2="70" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="370" y="135" text-anchor="middle" fill="#666" font-size="9" font-family="Inter">DC Output (pulsating)</text>
+      </svg>
+      <p class="diagram-caption">Fig 4.2 — Half-wave rectification: only positive half-cycle passes through</p>
+    </div>
+  </div>
+
+  <div class="topic">
+    <h3>4.3 Zener Diode</h3>
+    <p>A <strong>heavily doped</strong> PN junction diode designed to operate in the <strong>reverse breakdown region</strong> without damage. The reverse voltage (V<sub>Z</sub>) remains constant — ideal for voltage regulation.</p>
+
+    <h4>Characteristics</h4>
+    <ul>
+      <li>Breakdown voltage range: <strong>2.4V to 200V</strong> (up to 1kV)</li>
+      <li>Voltage tolerance: typically <strong>±5%</strong></li>
+      <li>Best temperature stability around <strong>5V</strong></li>
+      <li>Forward characteristics same as normal PN diode</li>
+    </ul>
+
+    <h4>Breakdown Mechanisms</h4>
+    <table>
+      <tr><th>Zener Breakdown</th><th>Avalanche Breakdown</th></tr>
+      <tr><td>Due to heavy doping → high electric field</td><td>Due to collision of free electrons with atoms</td></tr>
+      <tr><td>Occurs at low voltages (&lt;5V)</td><td>Occurs at higher voltages (&gt;5V)</td></tr>
+      <tr><td>Electric field tears electrons from covalent bonds</td><td>Chain reaction of ionization</td></tr>
+    </table>
+
+    <h4>Applications</h4>
+    <ol>
+      <li><strong>Voltage Regulator:</strong> Maintains constant output voltage despite input variations</li>
+      <li><strong>Over-voltage Protection:</strong> Fuse + Zener combination protects circuits</li>
+      <li><strong>Clipping Circuits:</strong> Clips voltage at V<sub>Z</sub> level</li>
+      <li><strong>Voltage Shifter:</strong> V<sub>out</sub> = V<sub>in</sub> − V<sub>Z</sub></li>
+    </ol>
+
+    <div class="info-box formula">
+<span class="label">Voltage Shifter Example</span>
+V_in = 7V, V_Z = 3.3V
+V_out = V_in - V_Z = 7 - 3.3 = 3.7V</div>
+  </div>
+
+  <div class="topic">
+    <h3>4.4 Special Diodes</h3>
+    <table>
+      <tr><th>Diode</th><th>Principle</th><th>Application</th></tr>
+      <tr><td><strong>LED</strong></td><td>Emits light when forward biased (GaAs, GaAsP)</td><td>Indicators, displays, lighting</td></tr>
+      <tr><td><strong>Photodiode</strong></td><td>Converts light into current (reverse biased)</td><td>Light sensors, optical communication</td></tr>
+      <tr><td><strong>Zener</strong></td><td>Operates in reverse breakdown region</td><td>Voltage regulation, protection</td></tr>
+    </table>
+  </div>
+
+  <a href="#top" class="back-top">↑ Back to top</a>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════╗ -->
+<!-- ║  UNIT 5 — MICROCONTROLLERS & ARDUINO                  ║ -->
+<!-- ╚═══════════════════════════════════════════════════════╝ -->
+<section class="unit" id="u5">
+  <p class="unit-label">Unit 05</p>
+  <h2>Microcontrollers &amp; Arduino (ATmega328P)</h2>
+
+  <div class="topic">
+    <h3>5.1 Computing Fundamentals</h3>
+    <p><strong>Flip-flop</strong> — the basic building block of memory. A bistable multivibrator that stores a single bit of data. Many flip-flops together form the memory of a computing device.</p>
+
+    <h4>Microprocessor vs Microcontroller</h4>
+    <table>
+      <tr><th>Feature</th><th>Microprocessor</th><th>Microcontroller</th></tr>
+      <tr><td>Architecture</td><td>CPU only — external memory, I/O needed</td><td>CPU + Memory + I/O — all in single chip</td></tr>
+      <tr><td>Circuit Size</td><td>Large</td><td>Small</td></tr>
+      <tr><td>Cost</td><td>High</td><td>Low</td></tr>
+      <tr><td>Power</td><td>High consumption</td><td>Low consumption</td></tr>
+      <tr><td>Speed</td><td>Slower (external operations)</td><td>Faster (internal operations)</td></tr>
+      <tr><td>Application</td><td>General purpose (PCs)</td><td>Dedicated (washing machine, automobile)</td></tr>
+      <tr><td>Programming</td><td>Difficult</td><td>Easier</td></tr>
+    </table>
+  </div>
+
+  <div class="topic">
+    <h3>5.2 Embedded Systems</h3>
+    <p>An embedded system is a combination of hardware and software designed for a <strong>specific task</strong>. Program instructions are written in ROM as <strong>firmware</strong>.</p>
+
+    <h4>Features</h4>
+    <ul>
+      <li>Low power, highly stable and reliable</li>
+      <li>Time-specific, task-specific</li>
+      <li>Minimal user interface</li>
+      <li>Mass produced → cheap</li>
+    </ul>
+
+    <h4>Classification</h4>
+    <table>
+      <tr><th>Type</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Small Scale</td><td>8-bit MCU, few components</td><td>Simple sensor devices</td></tr>
+      <tr><td>Medium Scale</td><td>16/32-bit MCU, RTOS</td><td>Home appliances, security</td></tr>
+      <tr><td>Sophisticated</td><td>Complex H/W + S/W, multiple subsystems</td><td>Automobiles, defense</td></tr>
+      <tr><td>Stand Alone</td><td>Works independently, no computer needed</td><td>Calculator, digital watch</td></tr>
+      <tr><td>Real Time</td><td>Time-critical (Soft RT: oven; Hard RT: missile)</td><td>Robotics, space</td></tr>
+      <tr><td>Networked</td><td>Connected to LAN/WAN/Internet</td><td>ATM, card machines</td></tr>
+    </table>
+  </div>
+
+  <div class="topic">
+    <h3>5.3 ATmega328P — The Heart of Arduino UNO</h3>
+    <p>Part of the <strong>AVR (Advanced Virtual RISC)</strong> family by Atmel (now Microchip). Arduino is a development board on which the ATmega328P is mounted.</p>
+
+    <h4>Key Specifications</h4>
+    <div class="def-grid">
+      <div class="cell header">Feature</div><div class="cell header">Value</div>
+      <div class="cell">Architecture</div><div class="cell">8-bit AVR RISC</div>
+      <div class="cell">Pins</div><div class="cell">28 pins (23 I/O + 5 power)</div>
+      <div class="cell">Flash Memory (ROM)</div><div class="cell">32 KB</div>
+      <div class="cell">SRAM</div><div class="cell">2 KB</div>
+      <div class="cell">EEPROM</div><div class="cell">1 KB</div>
+      <div class="cell">Operating Voltage</div><div class="cell">3.3V – 5.5V (typically 5V)</div>
+      <div class="cell">Digital I/O</div><div class="cell">14 pins (6 PWM)</div>
+      <div class="cell">Analog Input</div><div class="cell">6 pins (10-bit ADC)</div>
+      <div class="cell">Timers</div><div class="cell">3 (two 8-bit + one 16-bit)</div>
+      <div class="cell">Communication</div><div class="cell">USART, SPI, I2C (TWI)</div>
+    </div>
+
+    <h4>Port Organization</h4>
+    <table>
+      <tr><th>Port</th><th>Pins (ATmega)</th><th>Arduino Mapping</th></tr>
+      <tr><td>Port B (8 pins)</td><td>PB0-PB7</td><td>Digital 8-13 + Crystal</td></tr>
+      <tr><td>Port C (7 pins)</td><td>PC0-PC6</td><td>A0-A5 + Reset</td></tr>
+      <tr><td>Port D (8 pins)</td><td>PD0-PD7</td><td>Digital 0-7</td></tr>
+    </table>
+
+    <h4>Memory Types</h4>
+    <div class="def-grid">
+      <div class="cell header">Memory</div><div class="cell header">Type &amp; Purpose</div>
+      <div class="cell"><strong>Flash (32KB)</strong></div><div class="cell">Non-volatile. Stores the program (sketch). Retains data after power off</div>
+      <div class="cell"><strong>SRAM (2KB)</strong></div><div class="cell">Volatile. Runtime variables, stack. Lost on power off</div>
+      <div class="cell"><strong>EEPROM (1KB)</strong></div><div class="cell">Non-volatile. User data storage. Byte-level read/write. Limited write cycles</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <h3>5.4 AREF (Analog Reference)</h3>
+    <p>The reference voltage that the ADC uses to convert analog signals to digital values.</p>
+    <div class="info-box formula">
+<span class="label">ADC Resolution</span>
+Resolution = V_ref / 1024
+For 5V:  5/1024 = 4.88 mV per step
+For 3.3V: 3.3/1024 = 3.22 mV per step</div>
+    <p>A lower AREF gives <strong>finer resolution</strong> for the same voltage range.</p>
+
+    <h4>Arduino Analog Functions</h4>
+    <pre>int val = analogRead(pin);     // reads 0–1023 (10-bit)
+analogWrite(pin, value);       // outputs PWM 0–255 (8-bit)
+analogReference(EXTERNAL);     // use external AREF
+analogReference(DEFAULT);      // use internal 5V</pre>
+  </div>
+
+  <div class="topic">
+    <h3>5.5 Interrupts</h3>
+
+    <h4>Polling vs Interrupt</h4>
+    <table>
+      <tr><th>Polling</th><th>Interrupt</th></tr>
+      <tr><td>CPU repeatedly checks port at intervals</td><td>Signal triggers ISR automatically</td></tr>
+      <tr><td>Simple to code</td><td>More complex to code</td></tr>
+      <tr><td>Inefficient (checks even when no change)</td><td>Efficient (only when event occurs)</td></tr>
+      <tr><td>Predictable timing</td><td>Less predictable timing</td></tr>
+    </table>
+
+    <h4>When Interrupt Occurs</h4>
+    <ol>
+      <li>Main process pauses; return address saved to stack</li>
+      <li>ISR (Interrupt Service Routine) executes</li>
+      <li>Main process resumes from saved address</li>
+    </ol>
+
+    <h4>Pin Change Interrupts (PCINT)</h4>
+    <p>ATmega328P has 3 PCINT groups sharing 3 vectors:</p>
+    <table>
+      <tr><th>Register</th><th>Group</th><th>Pins</th></tr>
+      <tr><td>PCIE0 / PCMSK0</td><td>PCINT0-7</td><td>Port B (Digital 8-13)</td></tr>
+      <tr><td>PCIE1 / PCMSK1</td><td>PCINT8-14</td><td>Port C (A0-A5)</td></tr>
+      <tr><td>PCIE2 / PCMSK2</td><td>PCINT16-23</td><td>Port D (Digital 0-7)</td></tr>
+    </table>
+
+    <h4>Interrupt Registers</h4>
+    <ul>
+      <li><code>PCICR</code> — Pin Change Interrupt Control Register (enables groups)</li>
+      <li><code>PCIFR</code> — Pin Change Interrupt Flag Register (set when triggered)</li>
+      <li><code>PCMSKx</code> — Pin Change Mask Register (selects specific pins)</li>
+    </ul>
+
+    <h4>Arduino Interrupt Example</h4>
+    <pre>const byte interruptPin = 3;
+volatile byte state = LOW;     // 'volatile' for ISR variables
+
+void blink() { state = !state; }
+
+void setup() {
+  pinMode(13, OUTPUT);
+  pinMode(interruptPin, INPUT_PULLUP);
+  attachInterrupt(
+    digitalPinToInterrupt(interruptPin),
+    blink, CHANGE
+  );
+}
+
+void loop() {
+  digitalWrite(13, state);
+}</pre>
+
+    <div class="info-box">
+      <span class="label">volatile keyword</span>
+      Directs the compiler to load the variable from RAM (not register cache). Essential for variables shared between ISR and main code.
+    </div>
+  </div>
+
+  <a href="#top" class="back-top">↑ Back to top</a>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════╗ -->
+<!-- ║  UNIT 6 — SENSORS & TRANSDUCERS                       ║ -->
+<!-- ╚═══════════════════════════════════════════════════════╝ -->
+<section class="unit" id="u6">
+  <p class="unit-label">Unit 06</p>
+  <h2>Sensors &amp; Transducers</h2>
+
+  <div class="topic">
+    <h3>6.1 Basic Principles</h3>
+    <div class="def-grid">
+      <div class="cell header">Term</div><div class="cell header">Definition</div>
+      <div class="cell"><strong>Sensor</strong></div><div class="cell">Device that detects a physical phenomenon (temp, force, displacement) and produces a proportional output signal</div>
+      <div class="cell"><strong>Transducer</strong></div><div class="cell">Device that converts one form of energy/signal into another (usually electrical)</div>
+    </div>
+
+    <h4>Active vs Passive Sensors</h4>
+    <table>
+      <tr><th>Active Sensors</th><th>Passive Sensors</th></tr>
+      <tr><td>No external power needed</td><td>Need external excitation signal</td></tr>
+      <tr><td>Generate signal directly</td><td>Modify excitation signal</td></tr>
+      <tr><td>Thermocouple, photodiode, piezoelectric</td><td>Strain gauge, thermistor</td></tr>
+    </table>
+  </div>
+
+  <div class="topic">
+    <h3>6.2 Proximity Sensors</h3>
+    <p>Detect the presence/absence of an object using <strong>non-contact</strong> methods.</p>
+
+    <h4>Types of Proximity Sensors</h4>
+    <table>
+      <tr><th>Type</th><th>Principle</th><th>Detects</th><th>Key Feature</th></tr>
+      <tr><td><strong>Inductive</strong></td><td>Electromagnetic induction; sensor generates magnetic field</td><td>Metallic objects only</td><td>High accuracy, harsh environments</td></tr>
+      <tr><td><strong>Capacitive</strong></td><td>Change in capacitance between sensor and object</td><td>All materials (except air)</td><td>Detects non-metals; affected by moisture</td></tr>
+      <tr><td><strong>Infrared (IR)</strong></td><td>IR emitter + receiver; reflected IR detected</td><td>Most objects</td><td>Line following, obstacle avoidance</td></tr>
+      <tr><td><strong>Ultrasonic</strong></td><td>Sound waves reflected from objects (echo)</td><td>Most objects</td><td>Distance measurement; immune to color</td></tr>
+    </table>
+
+    <h4>Inductive vs Capacitive — Detailed Comparison</h4>
+    <div class="def-grid">
+      <div class="cell header">Feature</div><div class="cell header">Inductive</div>
+      <div class="cell">Detection</div><div class="cell">Only metallic objects</div>
+      <div class="cell">Accuracy</div><div class="cell">More accurate</div>
+      <div class="cell">Switching rate</div><div class="cell">High</div>
+      <div class="cell">Environment</div><div class="cell">Works in harsh conditions</div>
+      <div class="cell">Range</div><div class="cell">Limited</div>
+    </div>
+    <div class="def-grid" style="margin-top:0">
+      <div class="cell header">Feature</div><div class="cell header">Capacitive</div>
+      <div class="cell">Detection</div><div class="cell">Both metallic and non-metallic</div>
+      <div class="cell">Stability</div><div class="cell">Good, moderate resolution</div>
+      <div class="cell">Speed</div><div class="cell">High</div>
+      <div class="cell">Sensitivity</div><div class="cell">Affected by temperature, humidity, dust</div>
+      <div class="cell">Power</div><div class="cell">Low usage</div>
+    </div>
+
+    <h4>NPN vs PNP Sensor Output</h4>
+    <ul>
+      <li><strong>NPN (Sinking):</strong> Current "sinks" down to ground through the sensor's internal switch. Load connected between +V and output.</li>
+      <li><strong>PNP (Sourcing):</strong> Current "sources" from +V through the sensor's switch to the load. Load connected between output and ground.</li>
+    </ul>
+  </div>
+
+  <div class="topic">
+    <h3>6.3 Infrared (IR) Sensors — Detailed</h3>
+
+    <div class="diagram">
+      <svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="30" width="80" height="60" rx="4" fill="none" stroke="#666" stroke-width="1.5"/>
+        <text x="60" y="55" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter">IR</text>
+        <text x="60" y="70" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter">Emitter</text>
+        <line x1="100" y1="50" x2="220" y2="30" stroke="#555" stroke-width="1" stroke-dasharray="4,3"/>
+        <rect x="220" y="15" width="60" height="35" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+        <text x="250" y="37" text-anchor="middle" fill="#bbb" font-size="9" font-family="Inter">Object</text>
+        <line x1="220" y1="40" x2="100" y2="70" stroke="#555" stroke-width="1" stroke-dasharray="4,3"/>
+        <rect x="340" y="30" width="80" height="60" rx="4" fill="none" stroke="#666" stroke-width="1.5"/>
+        <text x="380" y="55" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter">IR</text>
+        <text x="380" y="70" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter">Receiver</text>
+        <text x="165" y="20" fill="#555" font-size="8" font-family="Inter">Emitted IR</text>
+        <text x="140" y="90" fill="#555" font-size="8" font-family="Inter">Reflected IR</text>
+      </svg>
+      <p class="diagram-caption">Fig 6.1 — IR proximity sensor: reflective mode</p>
+    </div>
+
+    <h4>Three Types of IR Sensors</h4>
+    <ol>
+      <li><strong>Intensity-based:</strong> Simple reflective/break-beam; susceptible to ambient light</li>
+      <li><strong>Modulated IR (Proximity):</strong> Modulated signal; insensitive to ambient light</li>
+      <li><strong>IR Ranging (Distance):</strong> Uses position-sensitive detector; immune to color/reflectivity. Range: 10-80cm</li>
+    </ol>
+  </div>
+
+  <div class="topic">
+    <h3>6.4 Tactile Sensors</h3>
+    <p>Require <strong>physical touching</strong> between sensor and object. Critical for assembly, pick-and-place, and grasping operations.</p>
+
+    <h4>Capabilities</h4>
+    <ul>
+      <li>Presence detection, shape/location/orientation</li>
+      <li>Contact area pressure and distribution</li>
+      <li>Force magnitude, location, and direction</li>
+      <li>Surface texture monitoring, damage detection</li>
+      <li>Grasp verification, slip detection</li>
+    </ul>
+
+    <h4>Contact Sensors (Limit Switches)</h4>
+    <p>Simple switches (NO = Normally Open, NC = Normally Closed) that detect when a moving object physically touches and forces contacts open or closed.</p>
+  </div>
+
+  <div class="topic">
+    <h3>6.5 Other Important Sensors</h3>
+    <table>
+      <tr><th>Sensor</th><th>Measures</th><th>Principle</th></tr>
+      <tr><td><strong>Encoder</strong></td><td>Speed / position</td><td>Coded disk with opaque/transparent segments; LED + photo sensor counts pulses</td></tr>
+      <tr><td><strong>Current Sensor</strong></td><td>Electric current</td><td>Hall effect (ACS712); magnetic field proportional to current</td></tr>
+      <tr><td><strong>Ultrasonic (HC-SR04)</strong></td><td>Distance</td><td>Transmits ultrasonic pulse; measures echo time. Distance = (time × speed of sound) / 2</td></tr>
+      <tr><td><strong>Accelerometer</strong></td><td>Acceleration / tilt</td><td>MEMS — capacitance changes with movement</td></tr>
+      <tr><td><strong>Gyroscope</strong></td><td>Angular velocity</td><td>Coriolis effect in MEMS structure</td></tr>
+      <tr><td><strong>Hall Effect</strong></td><td>Magnetic field</td><td>Voltage generated proportional to magnetic field strength</td></tr>
+      <tr><td><strong>Temperature</strong></td><td>Temperature</td><td>Thermocouple (junction voltage), thermistor (resistance change), RTD</td></tr>
+      <tr><td><strong>Photodiode/LDR</strong></td><td>Light intensity</td><td>Resistance or current changes with light</td></tr>
+      <tr><td><strong>Piezoelectric</strong></td><td>Force/pressure/vibration</td><td>Generates voltage when mechanically stressed</td></tr>
+      <tr><td><strong>Gas Sensor</strong></td><td>Gas concentration</td><td>Resistance change when exposed to target gas</td></tr>
+    </table>
+
+    <div class="info-box formula">
+<span class="label">Ultrasonic Distance Calculation</span>
+Distance = (Echo Time × Speed of Sound) / 2
+         = (Echo Time × 343 m/s) / 2
+For HC-SR04: Range 2cm – 400cm</div>
+  </div>
+
+  <div class="topic">
+    <h3>6.6 Sensor Specifications Summary</h3>
+    <div class="def-grid">
+      <div class="cell header">Specification</div><div class="cell header">Meaning</div>
+      <div class="cell"><strong>Range</strong></div><div class="cell">Min to max measurable value</div>
+      <div class="cell"><strong>Resolution</strong></div><div class="cell">Smallest detectable change</div>
+      <div class="cell"><strong>Sensitivity</strong></div><div class="cell">Change in output per unit change in input</div>
+      <div class="cell"><strong>Linearity</strong></div><div class="cell">How close output-input relationship is to a straight line</div>
+      <div class="cell"><strong>Response Time</strong></div><div class="cell">Time to reach steady-state output after input change</div>
+      <div class="cell"><strong>Accuracy</strong></div><div class="cell">Closeness to true value</div>
+      <div class="cell"><strong>Repeatability</strong></div><div class="cell">Consistency of output for same input over time</div>
+    </div>
+  </div>
+
+  <a href="#top" class="back-top">↑ Back to top</a>
+</section>
+
+</main>
+
+<footer style="text-align:center; padding:3rem 2rem; border-top:1px solid #222; color:#555; font-size:0.78rem;">
+  Applied Electromechanics — Complete Exam Notes · Compiled June 2026
+</footer>
+
+</body>
+</html>

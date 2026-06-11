@@ -1,0 +1,115 @@
+
+## Unit 1: Electromechanical Systems / Robotics Basics
+**Faculty: Dr. Washimkar Sir, Dr. Ambhore Sir, Dr. Kotwal Sir**
+
+1. What is a robot? How are robots classified?
+2. Elaborate the terms workspace and degrees of freedom with a neat sketch.
+3. Explain with a neat sketch linear joint and twisting joint.
+4. Explain with a neat sketch orthogonal joint and rotational joint.
+5. Explain the analogy between a robot and the human body.
+6. What are the major components of a robot? Describe mechanical subsystems with a neat figure.
+7. Explain open-loop and closed-loop control systems in robotic manipulators with suitable block diagrams.
+8. What are the major components of a robot? Describe electrical subsystems with a neat figure.
+9. What are the major components of a robot? Describe pneumatic subsystems with a neat figure.
+10. Elaborate the terms accuracy, precision and repeatability.
+11. What is forward kinematics? Discuss its importance.
+12. Explain the applications of robots in areas that are unsafe or unreachable for humans.
+
+---
+
+## Unit 2: Actuators
+**Faculty: Dr. Bharsakade Sir, Prof. P.R. Vaidya, Dr. Dravid Madam**
+
+1. Sketch the construction of DC Motor?
+2. Classify different types of DC motors and explain with a neat diagram working of DC Shunt motor?
+3. A DC motor connected to a 450 V supply takes current of 120 A on full load. If the armature circuit resistance is 0.15 Ω and field circuit resistance is 150 Ω, calculate the value of back emf at this load.
+4. A 4-pole, 500 V dc shunt motor takes an armature current of 80 A when operated at rated voltage. Armature resistance is 0.4 Ω. The armature is wave wound with 522 conductors and useful flux per pole is 0.025 Wb. Calculate a) the back emf of the motor, b) the speed of the motor and c) torque in N-m developed by the armature.
+8. What is Transducer? What role does it play in Robot Actuator System? Illustrate with an example.
+9. Discuss merits and demerits of Hydraulic Actuators used in Robotic Systems.
+10. Discuss merits and demerits of Pneumatic Actuators used in Robotic Systems.
+11. Discuss merits and demerits of Stepper Motors used in Robotic Systems.
+12. Discuss merits and demerits of Electric Actuators used in Robotic Systems.
+13. Discuss the merits and demerits of Servo Motors used in Robotic Systems.
+14. Can a robotic system have multiple actuators? Can they be of different types? How?
+15. Draw a block diagram for a typical Hydraulic Actuator system.
+16. Draw a block diagram for a typical Pneumatic Actuator system.
+17. Which type of actuators will be more preferred in Robotic systems for the medical applications? Why?
+
+---
+
+## Unit 3: End Effectors and Robot Controls
+**Faculty: Dr. Rajesh Choudhari Sir, Dr. Gaigole Sir, Dr. Waikar Sir**
+
+1. Classify grippers and explain each type briefly.
+2. A gripper lifts a 4 kg object upward with acceleration 2 m/s². Coefficient of friction μ = 0.4, number of fingers = 2. Find gripping force per finger.
+3. A workpiece of mass 10 kg is handled by a 3-finger gripper. Coefficient of friction μ = 0.3. Factor of Safety = 2. Calculate gripping force per finger.
+4. Explain different types of mechanical grippers with neat sketches.
+5. Explain pneumatic, hydraulic, and electric grippers in detail.
+6. Explain factors considered in the design of grippers.
+7. Differentiate between open-loop and closed-loop control systems with diagrams.
+8. Explain performance criteria of control systems in detail.
+9. Explain factors required to consider in gripper selection.
+10. State advantages and limitations of Magnetic and Vacuum grippers.
+11. What is a coarse and precise gripping? List its applications.
+12. State method and applications of following grippers: (a) Impactive Grippers (b) Ingressive Grippers (c) Astristive Grippers (d) Contigutive Grippers.
+13. A pneumatic gripper lifts an object of mass 6 kg using two fingers. Coefficient of friction μ = 0.5. Piston diameter = 40 mm. Find air pressure required.
+
+---
+
+## Unit 4: Electronic Devices and Applications
+**Faculty: Prof. Pallavi Deshpande, Prof. Kurundkar Madam, Prof. Parkhi Madam**
+
+1. Explain the concept of forward and reverse biasing of a diode with its characteristics.
+2. Elaborate on the working of a bridge rectifier with a circuit diagram and waveforms.
+3. Discuss the role of the Zener diode as a voltage stabiliser.
+4. Define α, β, and γ of a transistor. Establish the relation between α and β.
+5. Draw and explain the output characteristics of the BJT in CE configuration. Define β of a transistor.
+6. Explain a transistor as a switch with a neat circuit diagram and waveforms.
+7. Discuss the difference between BJT and FET.
+8. Describe FET as a voltage-controlled device with a suitable explanation.
+9. Draw and explain the transistor circuit for an AND gate.
+10. Given: β = 75 and Ib = 40 µA (in CE configuration). Find: Ic, Ie, α and γ. *[Note: Image also had previous calculation Q11/Q12 in Unit 4]*.
+11. Given: In CE, Ie = 2.5 mA and Ic = 2.4 mA. Find: α, β, γ and Ib.
+12. Given: α = 0.995 and Ic = 2 A (common-base). Find: Ie, Ib and β.
+
+---
+
+## Unit 5: Microcontroller (ATmega328P)
+**Faculty: Prof. Sharda Desai, Dr. Archana Choudhari**
+
+1. Differentiate between RISC and CISC architectures. Where does the ATmega328P fit in it?
+2. Explain the function of the ALU and Program Counter in ATmega328P.
+3. Illustrate the different types of ports in Atmega328. Elaborate the use of digital and analog input and output pins for Atmega328 with suitable examples.
+4. Explain the difference between Flash, SRAM, and EEPROM.
+5. What is the difference between hardware and software interrupts? List the external interrupt and internal interrupts in ATmega328P.
+6. How does ATmega328P act as an I2C master?
+7. How is PWM generated using Timer/Counter modules?
+8. Explain the role of MOSI, MISO, SCK, and SS pins.
+9. Summarize any 5 features of Atmega328.
+10. What is the use of the following in Arduino IDE (Answer any 5): 
+    a. Void set() 
+    b. Void loop() 
+    c. pinMode() 
+    d. pluseln() *(Note: This is a typo in the source document. It is meant to be `pulseIn()`)*
+    e. digitalRead() 
+    f. digitalWrite()
+11. Explain the importance of the analog pin in Atmega328. Does Atmega328 have ADC? What is the resolution of the ADC?
+12. Explain the difference between Timer0, Timer1, and Timer2.
+
+---
+
+## Unit 6: Sensors
+**Faculty: Prof. Kadu Sir, Dr. Archana Choudhari**
+
+1. Define the following: a. Sensor b. Transducer.
+2. Explain the construction and working of any one of the following sensors: a. Tactile sensor b. Ultrasonic sensor c. IR sensor.
+3. Illustrate the different types of proximity sensors. Explain the working principle of any one in details.
+4. Compare Inductive and capacitive type proximity sensors.
+5. What are the different types of Temperature sensors? Elaborate the working principle and application of any one temperature sensor.
+6. Discuss advantages, disadvantages, and applications of optocouplers.
+7. Explain the working principle of a Hall effect sensor with a neat diagram.
+8. What is an optocoupler? What are the advantages of optocoupler?
+9. Explain the construction and working of an optocoupler with a neat diagram.
+10. What is IR Sensor and Draw connection diagram of IR sensor with Arduino Uno.
+11. What is Ultrasonic Sensor and Draw connection diagram of ultrasonic sensor with Arduino Uno.
+12. With a suitable diagram illustrate the construction, working of Rotary encoder.

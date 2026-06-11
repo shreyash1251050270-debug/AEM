@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 — End Effectors &amp; Robot Controls | AEM Solutions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root{--bg:#0e0e0e;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border-light:#333;--text:#d4d4d4;--text-dim:#888;--text-bright:#f0f0f0;--accent:#a0a0a0;--accent-light:#c8c8c8;--highlight:#fff;--tag:#3a3a3a;--accent-blue:#60a5fa;--accent-green:#34d399;--accent-amber:#fbbf24}
+  *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:15px}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .site-header{text-align:center;padding:5rem 2rem 3rem;border-bottom:1px solid var(--border)}.site-header h1{font-size:2.4rem;font-weight:800;color:var(--highlight);letter-spacing:-1px;margin-bottom:.5rem}.site-header .subtitle{font-size:.95rem;color:var(--text-dim);font-weight:300;letter-spacing:3px;text-transform:uppercase}.site-header .unit-badge{display:inline-block;margin-top:1rem;background:var(--surface2);border:1px solid var(--border-light);padding:.35rem 1.2rem;border-radius:20px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--accent-amber);letter-spacing:2px;text-transform:uppercase}
+  .toc{max-width:720px;margin:3rem auto;padding:2rem 2.5rem;background:var(--surface);border:1px solid var(--border);border-radius:8px}.toc h2{font-size:1rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent);margin-bottom:1.5rem;font-weight:600}.toc ol{list-style:none;counter-reset:toc-counter}.toc ol li{counter-increment:toc-counter;margin-bottom:.6rem}.toc ol li a{color:var(--text);text-decoration:none;font-weight:400;transition:color .2s;display:flex;align-items:baseline;gap:.75rem}.toc ol li a::before{content:"Q" counter(toc-counter,decimal-leading-zero);font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--accent-amber);min-width:2rem}.toc ol li a:hover{color:var(--highlight)}
+  .content{max-width:800px;margin:0 auto;padding:0 2rem 6rem}
+  .question-block{margin-top:4rem;padding-top:2.5rem;border-top:1px solid var(--border)}.question-block:first-of-type{margin-top:2rem}.q-label{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent-amber);margin-bottom:.5rem}.q-label .marks{float:right;color:var(--accent-amber);letter-spacing:1px}.question-block>h2{font-size:1.35rem;font-weight:700;color:var(--highlight);margin-bottom:1.5rem;letter-spacing:-.3px;line-height:1.5}.question-block h3{font-size:1.1rem;font-weight:600;color:var(--text-bright);margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}.question-block h4{font-size:1rem;font-weight:600;color:var(--accent-light);margin:1.25rem 0 .6rem}
+  p{margin-bottom:1rem}ul,ol{margin:.75rem 0 1.25rem 1.5rem}li{margin-bottom:.4rem}
+  .def-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:1.5rem 0}.def-grid .cell{background:var(--surface);padding:.75rem 1rem;font-size:.9rem}.def-grid .cell.header{background:var(--surface2);font-weight:600;color:var(--accent-light);font-size:.8rem;text-transform:uppercase;letter-spacing:1px}
+  .info-box{background:var(--surface);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 6px 6px 0;font-size:.92rem}.info-box.formula{border-left-color:var(--accent-blue);font-family:'IBM Plex Mono',monospace;font-size:.88rem;white-space:pre-wrap}.info-box.definition{border-left-color:var(--accent-green)}.info-box strong{color:var(--text-bright)}.info-box .label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:.5rem;font-weight:600}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem}th{background:var(--surface2);color:var(--accent-light);font-weight:600;text-transform:uppercase;font-size:.75rem;letter-spacing:1px;padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border-light)}td{padding:.65rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}tr:hover td{background:var(--surface)}
+  .diagram{margin:2rem 0;text-align:center}.diagram svg{max-width:100%;height:auto}.diagram-caption{font-size:.78rem;color:var(--text-dim);margin-top:.75rem;font-style:italic}
+  code{font-family:'IBM Plex Mono',monospace;background:var(--surface2);padding:.15rem .4rem;border-radius:3px;font-size:.88em;color:var(--accent-light)}
+  hr{border:none;border-top:1px solid var(--border);margin:2.5rem 0}
+  .back-top{display:inline-block;margin-top:2rem;font-size:.78rem;color:var(--text-dim);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color .2s}.back-top:hover{color:var(--highlight)}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+  @media(max-width:600px){html{font-size:14px}.site-header h1{font-size:1.8rem}.def-grid{grid-template-columns:1fr}.content{padding:0 1rem 4rem}}
+  @media print{body{background:#fff;color:#111}.info-box{border-left-color:#666}a{color:#111}}
+</style>
+</head>
+<body>
+<header class="site-header" id="top">
+  <h1>Unit 3 — Solutions</h1>
+  <p class="subtitle">End Effectors &amp; Robot Controls</p>
+  <span class="unit-badge">5 Marks Each</span>
+</header>
+
+<nav class="toc">
+  <h2>Questions</h2>
+  <ol>
+    <li><a href="#q1">Classify grippers and explain each type</a></li>
+    <li><a href="#q2">Numerical — Gripping force (4 kg, 2 fingers)</a></li>
+    <li><a href="#q3">Numerical — Gripping force (10 kg, 3 fingers, FOS)</a></li>
+    <li><a href="#q4">Types of mechanical grippers with sketches</a></li>
+    <li><a href="#q5">Pneumatic, Hydraulic, and Electric grippers</a></li>
+    <li><a href="#q6">Factors in gripper design</a></li>
+    <li><a href="#q7">Open-loop vs Closed-loop control systems</a></li>
+    <li><a href="#q8">Performance criteria of control systems</a></li>
+    <li><a href="#q9">Gripper selection factors</a></li>
+    <li><a href="#q10">Magnetic and Vacuum grippers — advantages &amp; limitations</a></li>
+    <li><a href="#q11">Coarse and Precise gripping</a></li>
+    <li><a href="#q12">Impactive, Ingressive, Astrictive, Contigutive grippers</a></li>
+    <li><a href="#q13">Numerical — Pneumatic gripper air pressure (6 kg)</a></li>
+  </ol>
+</nav>
+
+<main class="content">
+
+<!-- ═══════════ Q1 ═══════════ -->
+<div class="question-block" id="q1">
+  <p class="q-label">Question 01 <span class="marks">5 Marks</span></p>
+  <h2>Classify grippers and explain each type briefly.</h2>
+
+  <h3>What is a Gripper?</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>gripper</strong> is an end effector attached to the wrist of a robot arm, designed to <strong>grasp, hold, and release</strong> workpieces. It is analogous to the human hand.
+  </div>
+
+  <h3>Classification of Grippers</h3>
+
+  <h4>A. Based on Gripping Method (Primary Classification)</h4>
+  <table>
+    <tr><th>Type</th><th>Principle</th><th>Example</th></tr>
+    <tr><td><strong>Impactive</strong></td><td>Physical contact — jaws/fingers exert gripping force by impact/clamping</td><td>Mechanical jaw grippers, parallel grippers</td></tr>
+    <tr><td><strong>Ingressive</strong></td><td>Penetration into the object surface (pins, needles, hooks)</td><td>Needle grippers for textiles, pin-type for foam</td></tr>
+    <tr><td><strong>Astrictive</strong></td><td>Attractive force applied to the surface without penetration</td><td>Vacuum (suction), magnetic, electrostatic grippers</td></tr>
+    <tr><td><strong>Contigutive</strong></td><td>Direct contact requiring bonding or adhesion</td><td>Chemical adhesion, thermal (freezing), surface tension grippers</td></tr>
+  </table>
+
+  <h4>B. Based on Actuation Method</h4>
+  <ul>
+    <li><strong>Mechanical Grippers</strong> — Jaw/finger mechanism actuated by linkage, gears, or cams</li>
+    <li><strong>Pneumatic Grippers</strong> — Compressed air drives the fingers (fast, light-duty)</li>
+    <li><strong>Hydraulic Grippers</strong> — Oil pressure for heavy gripping forces</li>
+    <li><strong>Electric Grippers</strong> — Motor-driven (precise force &amp; position control)</li>
+    <li><strong>Vacuum Grippers</strong> — Suction cups for flat/smooth surfaces</li>
+    <li><strong>Magnetic Grippers</strong> — Electromagnets for ferrous materials</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+      <text x="350" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">GRIPPER CLASSIFICATION</text>
+      <rect x="250" y="35" width="200" height="35" rx="18" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <text x="350" y="58" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="Inter" font-weight="700">GRIPPERS</text>
+
+      <line x1="350" y1="70" x2="350" y2="90" stroke="#555" stroke-width="1.5"/>
+      <line x1="100" y1="90" x2="600" y2="90" stroke="#555" stroke-width="1.5"/>
+
+      <line x1="100" y1="90" x2="100" y2="110" stroke="#555" stroke-width="1"/>
+      <rect x="30" y="110" width="140" height="30" rx="4" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="100" y="130" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">Impactive</text>
+      <text x="100" y="155" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Jaws/Clamp)</text>
+
+      <line x1="270" y1="90" x2="270" y2="110" stroke="#555" stroke-width="1"/>
+      <rect x="200" y="110" width="140" height="30" rx="4" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="270" y="130" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Ingressive</text>
+      <text x="270" y="155" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Pins/Needles)</text>
+
+      <line x1="430" y1="90" x2="430" y2="110" stroke="#555" stroke-width="1"/>
+      <rect x="360" y="110" width="140" height="30" rx="4" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="430" y="130" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Inter" font-weight="600">Astrictive</text>
+      <text x="430" y="155" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Vacuum/Magnetic)</text>
+
+      <line x1="600" y1="90" x2="600" y2="110" stroke="#555" stroke-width="1"/>
+      <rect x="530" y="110" width="140" height="30" rx="4" fill="none" stroke="#c084fc" stroke-width="1.5"/>
+      <text x="600" y="130" text-anchor="middle" fill="#c084fc" font-size="10" font-family="Inter" font-weight="600">Contigutive</text>
+      <text x="600" y="155" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">(Adhesion/Thermal)</text>
+    </svg>
+    <p class="diagram-caption">Fig 3.1 — Primary classification of grippers</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q2 ═══════════ -->
+<div class="question-block" id="q2">
+  <p class="q-label">Question 02 <span class="marks">5 Marks</span></p>
+  <h2>Numerical: A gripper lifts a 4 kg object upward with acceleration 2 m/s². μ = 0.4, n = 2 fingers. Find gripping force per finger.</h2>
+
+  <h3>Given Data</h3>
+  <div class="info-box">
+    Mass (m) = 4 kg<br>
+    Acceleration (a) = 2 m/s² (upward)<br>
+    Coefficient of friction (μ) = 0.4<br>
+    Number of fingers (n) = 2<br>
+    g = 9.81 m/s²
+  </div>
+
+  <h3>Solution</h3>
+  <h4>Step 1: Calculate the total force acting on the object</h4>
+  <p>When the gripper lifts the object upward with acceleration, the total force the gripper must overcome is:</p>
+  <div class="info-box formula">
+<span class="label">Total Force</span>
+F_total = m × (g + a)
+F_total = 4 × (9.81 + 2)
+F_total = 4 × 11.81
+<strong>F_total = 47.24 N</strong></div>
+
+  <h4>Step 2: Calculate the gripping force</h4>
+  <p>The object is held by friction between the gripper fingers and the object. The friction force must equal the total force:</p>
+  <div class="info-box formula">
+<span class="label">Friction Equilibrium</span>
+Friction Force = Gripping Force × μ × n
+
+For equilibrium:
+F_total = F_grip × μ × n
+
+F_grip = F_total / (μ × n)
+F_grip = 47.24 / (0.4 × 2)
+F_grip = 47.24 / 0.8
+<strong>F_grip = 59.05 N per finger</strong></div>
+
+  <h3>Answer</h3>
+  <div class="info-box definition">
+    <strong>Gripping force per finger = 59.05 N</strong>
+  </div>
+</div>
+
+<!-- ═══════════ Q3 ═══════════ -->
+<div class="question-block" id="q3">
+  <p class="q-label">Question 03 <span class="marks">5 Marks</span></p>
+  <h2>Numerical: 10 kg workpiece, 3-finger gripper, μ = 0.3, FOS = 2. Calculate gripping force per finger.</h2>
+
+  <h3>Given Data</h3>
+  <div class="info-box">
+    Mass (m) = 10 kg<br>
+    Number of fingers (n) = 3<br>
+    Coefficient of friction (μ) = 0.3<br>
+    Factor of Safety (FOS) = 2<br>
+    g = 9.81 m/s²
+  </div>
+
+  <h3>Solution</h3>
+  <h4>Step 1: Calculate the weight of the workpiece</h4>
+  <div class="info-box formula">
+<span class="label">Weight</span>
+W = m × g
+W = 10 × 9.81
+<strong>W = 98.1 N</strong></div>
+
+  <h4>Step 2: Apply Factor of Safety</h4>
+  <div class="info-box formula">
+<span class="label">Design Force</span>
+F_design = W × FOS
+F_design = 98.1 × 2
+<strong>F_design = 196.2 N</strong></div>
+
+  <h4>Step 3: Calculate the gripping force per finger</h4>
+  <div class="info-box formula">
+<span class="label">Gripping Force</span>
+For equilibrium: F_design = F_grip × μ × n
+
+F_grip = F_design / (μ × n)
+F_grip = 196.2 / (0.3 × 3)
+F_grip = 196.2 / 0.9
+<strong>F_grip = 218 N per finger</strong></div>
+
+  <h3>Answer</h3>
+  <div class="info-box definition">
+    <strong>Gripping force per finger = 218 N</strong>
+  </div>
+</div>
+
+<!-- ═══════════ Q4 ═══════════ -->
+<div class="question-block" id="q4">
+  <p class="q-label">Question 04 <span class="marks">5 Marks</span></p>
+  <h2>Explain different types of mechanical grippers with neat sketches.</h2>
+
+  <h3>Mechanical Grippers</h3>
+  <p>Mechanical grippers use physical contact (jaws/fingers) to grasp objects. They are the most commonly used grippers in industry.</p>
+
+  <h4>1. Parallel Jaw Gripper</h4>
+  <ul>
+    <li>Two parallel fingers move linearly towards/away from each other</li>
+    <li>Maintains parallel grip throughout stroke — good for prismatic objects</li>
+    <li>Provides uniform grip force distribution</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker></defs>
+      <rect x="120" y="20" width="160" height="30" rx="4" fill="none" stroke="#888" stroke-width="2"/>
+      <text x="200" y="40" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Gripper Body</text>
+      <!-- Left finger -->
+      <rect x="130" y="50" width="20" height="80" rx="2" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="140" y="95" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">F1</text>
+      <!-- Right finger -->
+      <rect x="250" y="50" width="20" height="80" rx="2" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="260" y="95" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">F2</text>
+      <!-- Arrows -->
+      <line x1="155" y1="90" x2="185" y2="90" stroke="#60a5fa" stroke-width="1.2" marker-end="url(#a3a)"/>
+      <line x1="245" y1="90" x2="215" y2="90" stroke="#60a5fa" stroke-width="1.2" marker-end="url(#a3a)"/>
+      <!-- Object -->
+      <rect x="185" y="65" width="30" height="50" rx="3" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="200" y="95" text-anchor="middle" fill="#fbbf24" font-size="8" font-family="Inter">Obj</text>
+      <text x="200" y="145" text-anchor="middle" fill="#888" font-size="10" font-family="Inter" font-weight="600">PARALLEL JAW GRIPPER</text>
+    </svg>
+    <p class="diagram-caption">Fig 3.2 — Parallel Jaw Gripper</p>
+  </div>
+
+  <h4>2. Angular / Pivoting Gripper</h4>
+  <ul>
+    <li>Fingers pivot about a fixed point (like scissors)</li>
+    <li>Wider opening range — can handle larger size variations</li>
+    <li>Grip force varies with finger position</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+      <rect x="150" y="10" width="100" height="25" rx="4" fill="none" stroke="#888" stroke-width="2"/>
+      <text x="200" y="27" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter">Body</text>
+      <!-- Pivot -->
+      <circle cx="200" cy="50" r="6" fill="none" stroke="#34d399" stroke-width="2"/>
+      <!-- Left finger -->
+      <line x1="196" y1="54" x2="140" y2="130" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+      <!-- Right finger -->
+      <line x1="204" y1="54" x2="260" y2="130" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+      <!-- Arc arrows -->
+      <path d="M 160,100 A 30,30 0 0,1 175,85" fill="none" stroke="#34d399" stroke-width="1"/>
+      <path d="M 240,100 A 30,30 0 0,0 225,85" fill="none" stroke="#34d399" stroke-width="1"/>
+      <text x="200" y="155" text-anchor="middle" fill="#888" font-size="10" font-family="Inter" font-weight="600">ANGULAR / PIVOTING GRIPPER</text>
+    </svg>
+    <p class="diagram-caption">Fig 3.3 — Angular (Pivoting) Gripper</p>
+  </div>
+
+  <h4>3. Three-Finger (Self-Centering) Gripper</h4>
+  <ul>
+    <li>Three fingers arranged at 120° around a central axis</li>
+    <li>Self-centering — automatically centers cylindrical objects</li>
+    <li>Similar to a lathe chuck mechanism</li>
+  </ul>
+
+  <h4>4. Toggle / Linkage Gripper</h4>
+  <ul>
+    <li>Uses mechanical linkage mechanism to amplify gripping force</li>
+    <li>Toggle mechanism provides mechanical advantage at full closure</li>
+    <li>Used for heavy-duty gripping applications</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q5 ═══════════ -->
+<div class="question-block" id="q5">
+  <p class="q-label">Question 05 <span class="marks">5 Marks</span></p>
+  <h2>Explain pneumatic, hydraulic, and electric grippers in detail.</h2>
+
+  <h3>1. Pneumatic Grippers</h3>
+  <p>Use <strong>compressed air</strong> to actuate the gripper jaws/fingers.</p>
+  <ul>
+    <li><strong>Working:</strong> Compressed air enters a cylinder, pushing a piston that drives the fingers through a linkage mechanism.</li>
+    <li><strong>Advantages:</strong> Fast operation, clean, lightweight, simple design, low cost.</li>
+    <li><strong>Disadvantages:</strong> Limited gripping force, difficult to control intermediate positions, noisy.</li>
+    <li><strong>Applications:</strong> Pick-and-place, packaging, electronics assembly, food handling.</li>
+  </ul>
+
+  <h3>2. Hydraulic Grippers</h3>
+  <p>Use <strong>pressurized oil/fluid</strong> to actuate the gripper jaws.</p>
+  <ul>
+    <li><strong>Working:</strong> Hydraulic fluid enters a cylinder, creating high pressure that moves the piston and drives the gripper fingers with great force.</li>
+    <li><strong>Advantages:</strong> Very high gripping force, smooth motion, can hold heavy loads, self-lubricating.</li>
+    <li><strong>Disadvantages:</strong> Bulky, oil leakage, contamination risk, higher maintenance, slower than pneumatic.</li>
+    <li><strong>Applications:</strong> Heavy material handling, forging, die casting, automotive body panel handling.</li>
+  </ul>
+
+  <h3>3. Electric Grippers</h3>
+  <p>Use an <strong>electric motor</strong> (DC, stepper, or servo) to actuate the gripper mechanism.</p>
+  <ul>
+    <li><strong>Working:</strong> An electric motor drives a lead screw or rack-and-pinion mechanism that opens/closes the fingers. Encoder feedback enables precise force and position control.</li>
+    <li><strong>Advantages:</strong> Precise force and position control, programmable grip profiles, clean, quiet, energy efficient.</li>
+    <li><strong>Disadvantages:</strong> Higher cost, slower than pneumatic, limited force compared to hydraulic.</li>
+    <li><strong>Applications:</strong> Collaborative robots (cobots), electronics handling, laboratory automation, medical robotics.</li>
+  </ul>
+
+  <h3>Comparison Table</h3>
+  <table>
+    <tr><th>Feature</th><th>Pneumatic</th><th>Hydraulic</th><th>Electric</th></tr>
+    <tr><td>Actuation</td><td>Compressed air</td><td>Pressurized oil</td><td>Electric motor</td></tr>
+    <tr><td>Force</td><td>Low-Medium</td><td>Very High</td><td>Medium</td></tr>
+    <tr><td>Speed</td><td>Very Fast</td><td>Moderate</td><td>Moderate</td></tr>
+    <tr><td>Precision</td><td>Low</td><td>Medium</td><td>Very High</td></tr>
+    <tr><td>Cost</td><td>Low</td><td>High</td><td>Medium-High</td></tr>
+    <tr><td>Cleanliness</td><td>Clean (air)</td><td>Messy (oil)</td><td>Cleanest</td></tr>
+    <tr><td>Control</td><td>On/Off mostly</td><td>Proportional</td><td>Fully programmable</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q6 ═══════════ -->
+<div class="question-block" id="q6">
+  <p class="q-label">Question 06 <span class="marks">5 Marks</span></p>
+  <h2>Explain factors considered in the design of grippers.</h2>
+
+  <p>Designing a gripper requires careful consideration of multiple factors to ensure reliable and efficient operation:</p>
+
+  <h4>1. Workpiece Characteristics</h4>
+  <ul>
+    <li><strong>Shape:</strong> Regular (box, cylinder) vs irregular shapes — determines finger geometry.</li>
+    <li><strong>Size &amp; Weight:</strong> Determines gripper opening range and required gripping force.</li>
+    <li><strong>Material:</strong> Fragile (glass, electronics) vs robust (metal) — affects gripping method and force limits.</li>
+    <li><strong>Surface finish:</strong> Smooth, rough, oily, wet — affects friction coefficient and gripper pad selection.</li>
+  </ul>
+
+  <h4>2. Gripping Force Requirements</h4>
+  <ul>
+    <li>Must overcome gravity, acceleration forces, and dynamic loads during motion.</li>
+    <li>Factor of Safety (typically 2–3) must be applied.</li>
+    <li>Formula: F<sub>grip</sub> = (m × (g + a) × FOS) / (μ × n)</li>
+  </ul>
+
+  <h4>3. Type of Actuation</h4>
+  <ul>
+    <li>Pneumatic (fast, light duty), Hydraulic (heavy duty), Electric (precision), Vacuum (flat surfaces), Magnetic (ferrous metals).</li>
+  </ul>
+
+  <h4>4. Environmental Conditions</h4>
+  <ul>
+    <li>Temperature range, presence of dust/moisture, clean room requirements, explosive atmosphere.</li>
+  </ul>
+
+  <h4>5. Cycle Time &amp; Speed</h4>
+  <ul>
+    <li>Opening/closing time affects overall production cycle time.</li>
+  </ul>
+
+  <h4>6. Number of Fingers</h4>
+  <ul>
+    <li>2 fingers (most common), 3 fingers (self-centering), multi-finger (dexterous manipulation).</li>
+  </ul>
+
+  <h4>7. Compliance &amp; Adaptability</h4>
+  <ul>
+    <li>Ability to handle slight misalignment between gripper and workpiece.</li>
+    <li>Soft/compliant grippers for delicate objects.</li>
+  </ul>
+
+  <h4>8. Weight &amp; Size of Gripper</h4>
+  <ul>
+    <li>Must be lightweight to minimize payload on the robot arm.</li>
+    <li>Must fit within the workspace without collisions.</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q7 ═══════════ -->
+<div class="question-block" id="q7">
+  <p class="q-label">Question 07 <span class="marks">5 Marks</span></p>
+  <h2>Differentiate between open-loop and closed-loop control systems with diagrams.</h2>
+
+  <p><em>(This question is similar to Unit 1 Q7 — provided here with a robotics-controls focus.)</em></p>
+
+  <h3>Open-Loop Control System</h3>
+  <p>In open-loop control, the controller sends commands to the actuator <strong>without any feedback</strong> about the actual output. The system does not verify if the desired position/velocity was achieved.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 80" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a3b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <rect x="10" y="20" width="90" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="55" y="44" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Input</text>
+      <rect x="140" y="20" width="120" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+      <text x="200" y="44" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter">Controller</text>
+      <rect x="300" y="20" width="100" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+      <text x="350" y="44" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter">Plant</text>
+      <rect x="440" y="20" width="90" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="485" y="44" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Output</text>
+      <line x1="100" y1="40" x2="140" y2="40" stroke="#555" stroke-width="1.2" marker-end="url(#a3b)"/>
+      <line x1="260" y1="40" x2="300" y2="40" stroke="#555" stroke-width="1.2" marker-end="url(#a3b)"/>
+      <line x1="400" y1="40" x2="440" y2="40" stroke="#555" stroke-width="1.2" marker-end="url(#a3b)"/>
+    </svg>
+    <p class="diagram-caption">Fig 3.4 — Open-loop control — no feedback</p>
+  </div>
+
+  <h3>Closed-Loop Control System</h3>
+  <p>In closed-loop control, the actual output is <strong>measured by sensors and fed back</strong> to the input for comparison. The error signal drives the controller to correct the actuator output.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="20" width="80" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="50" y="44" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Input</text>
+      <circle cx="125" cy="40" r="12" fill="none" stroke="#777" stroke-width="1.2"/>
+      <text x="125" y="44" text-anchor="middle" fill="#aaa" font-size="12" font-family="Inter">Σ</text>
+      <rect x="170" y="20" width="110" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+      <text x="225" y="44" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter">Controller</text>
+      <rect x="320" y="20" width="90" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+      <text x="365" y="44" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter">Plant</text>
+      <rect x="450" y="20" width="80" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="490" y="44" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Output</text>
+      <line x1="90" y1="40" x2="113" y2="40" stroke="#555" stroke-width="1.2" marker-end="url(#a3b)"/>
+      <line x1="137" y1="40" x2="170" y2="40" stroke="#555" stroke-width="1.2" marker-end="url(#a3b)"/>
+      <line x1="280" y1="40" x2="320" y2="40" stroke="#555" stroke-width="1.2" marker-end="url(#a3b)"/>
+      <line x1="410" y1="40" x2="450" y2="40" stroke="#555" stroke-width="1.2" marker-end="url(#a3b)"/>
+
+      <rect x="220" y="110" width="120" height="25" rx="4" fill="none" stroke="#555" stroke-width="1"/>
+      <text x="280" y="127" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">Feedback Sensor</text>
+      <line x1="490" y1="60" x2="490" y2="122" stroke="#555" stroke-width="1"/>
+      <line x1="490" y1="122" x2="340" y2="122" stroke="#555" stroke-width="1"/>
+      <line x1="220" y1="122" x2="125" y2="122" stroke="#555" stroke-width="1"/>
+      <line x1="125" y1="122" x2="125" y2="52" stroke="#555" stroke-width="1" marker-end="url(#a3b)"/>
+    </svg>
+    <p class="diagram-caption">Fig 3.5 — Closed-loop control — with feedback</p>
+  </div>
+
+  <h3>Comparison</h3>
+  <table>
+    <tr><th>Feature</th><th>Open-Loop</th><th>Closed-Loop</th></tr>
+    <tr><td>Feedback</td><td>No feedback</td><td>Output is fed back</td></tr>
+    <tr><td>Accuracy</td><td>Low</td><td>High</td></tr>
+    <tr><td>Stability</td><td>Generally stable</td><td>May become unstable</td></tr>
+    <tr><td>Cost</td><td>Low</td><td>High</td></tr>
+    <tr><td>Complexity</td><td>Simple</td><td>Complex</td></tr>
+    <tr><td>Error correction</td><td>Not possible</td><td>Automatic</td></tr>
+    <tr><td>Example</td><td>Stepper motor (no encoder)</td><td>Servo motor (with encoder)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q8 ═══════════ -->
+<div class="question-block" id="q8">
+  <p class="q-label">Question 08 <span class="marks">5 Marks</span></p>
+  <h2>Explain performance criteria of control systems in detail.</h2>
+
+  <p>The performance of a control system is evaluated based on several key criteria:</p>
+
+  <h4>1. Stability</h4>
+  <p>A system is <strong>stable</strong> if its output reaches and remains at the desired value (steady state) after a disturbance. An <strong>unstable</strong> system produces an output that grows unbounded or oscillates indefinitely. Stability is the most fundamental requirement.</p>
+
+  <h4>2. Accuracy (Steady-State Error)</h4>
+  <p>The <strong>steady-state error</strong> is the difference between the desired output and the actual output after the system has settled. A good control system should have <strong>zero or minimal steady-state error</strong>.</p>
+
+  <h4>3. Speed of Response (Transient Response)</h4>
+  <ul>
+    <li><strong>Rise Time (t<sub>r</sub>):</strong> Time for the output to rise from 10% to 90% of the final value.</li>
+    <li><strong>Peak Time (t<sub>p</sub>):</strong> Time to reach the first peak (maximum overshoot).</li>
+    <li><strong>Settling Time (t<sub>s</sub>):</strong> Time for the output to settle within a specified tolerance band (typically ±2% or ±5%) of the final value.</li>
+  </ul>
+
+  <h4>4. Overshoot</h4>
+  <p>The maximum amount by which the output exceeds the desired value before settling. Expressed as a percentage of the final value. <strong>Less overshoot is desirable</strong> — excessive overshoot can damage the robot or workpiece.</p>
+
+  <h4>5. Sensitivity</h4>
+  <p>Measures how much the system's performance changes when system parameters (like gain or component values) vary. A robust system has <strong>low sensitivity</strong> to parameter changes.</p>
+
+  <h4>6. Bandwidth</h4>
+  <p>The range of frequencies over which the system can respond adequately. A <strong>higher bandwidth</strong> means the system can respond to faster-changing inputs.</p>
+
+  <h4>7. Robustness</h4>
+  <p>The ability of the control system to maintain acceptable performance despite uncertainties, disturbances, and parameter variations in the plant model.</p>
+</div>
+
+<!-- ═══════════ Q9 ═══════════ -->
+<div class="question-block" id="q9">
+  <p class="q-label">Question 09 <span class="marks">5 Marks</span></p>
+  <h2>Explain factors required to consider in gripper selection.</h2>
+
+  <p>Selecting the right gripper for a robotic application involves evaluating the following factors:</p>
+
+  <ol>
+    <li><strong>Workpiece Properties:</strong> Shape (regular/irregular), size, weight, material (fragile/robust), surface condition (smooth/rough/oily), temperature.</li>
+    <li><strong>Required Gripping Force:</strong> Must be sufficient to hold the object during all phases of robot motion (including acceleration, deceleration). Use F = m(g+a)×FOS / (μ×n).</li>
+    <li><strong>Type of Gripping Action:</strong> External grip (clamping outside), internal grip (expanding inside a hole), encompassing grip (wrapping around).</li>
+    <li><strong>Number of Workpieces:</strong> Single piece or multiple pieces per cycle.</li>
+    <li><strong>Actuation Method:</strong> Pneumatic (speed), hydraulic (force), electric (precision), vacuum (flat surfaces), magnetic (ferrous).</li>
+    <li><strong>Cycle Time Requirements:</strong> How fast the gripper must open/close to meet production speed.</li>
+    <li><strong>Precision Requirements:</strong> How accurately the object must be positioned in the gripper.</li>
+    <li><strong>Environmental Conditions:</strong> Clean room, underwater, high temperature, explosive atmosphere.</li>
+    <li><strong>Weight of Gripper:</strong> The gripper is part of the robot's payload — lighter gripper means more payload capacity for the workpiece.</li>
+    <li><strong>Compliance/Flexibility:</strong> Ability to handle misalignment and variations in workpiece position.</li>
+  </ol>
+</div>
+
+<!-- ═══════════ Q10 ═══════════ -->
+<div class="question-block" id="q10">
+  <p class="q-label">Question 10 <span class="marks">5 Marks</span></p>
+  <h2>State advantages and limitations of Magnetic and Vacuum Grippers.</h2>
+
+  <h3>Magnetic Grippers</h3>
+  <h4>Advantages:</h4>
+  <ol>
+    <li>Quick pick-up — instant activation (electromagnet) or no power needed (permanent magnet).</li>
+    <li>Can handle objects with holes, uneven surfaces, or hot parts.</li>
+    <li>No mechanical contact damage to the workpiece surface.</li>
+    <li>Simple construction with no moving parts (permanent magnet type).</li>
+    <li>Can pick up multiple small parts simultaneously.</li>
+  </ol>
+  <h4>Limitations:</h4>
+  <ol>
+    <li>Only works with <strong>ferromagnetic materials</strong> (steel, iron, nickel) — cannot grip aluminium, plastic, wood, etc.</li>
+    <li>Residual magnetism may cause small parts to stick even after release.</li>
+    <li>Electromagnets generate heat during continuous operation.</li>
+    <li>Part may retain unwanted magnetism after handling.</li>
+    <li>Gripping force depends on surface area and air gap — irregular surfaces reduce force.</li>
+  </ol>
+
+  <h3>Vacuum Grippers</h3>
+  <h4>Advantages:</h4>
+  <ol>
+    <li>Can handle a wide variety of materials — glass, plastic, metal, cardboard, wood.</li>
+    <li>No damage to workpiece surface — gentle handling.</li>
+    <li>Can handle flat, smooth, and even slightly curved surfaces.</li>
+    <li>Simple and lightweight construction.</li>
+    <li>Fast pick-up and release cycle.</li>
+    <li>Can pick up large flat objects (sheets, panels) that jaws cannot grip.</li>
+  </ol>
+  <h4>Limitations:</h4>
+  <ol>
+    <li>Requires a <strong>smooth, non-porous, clean surface</strong> — cannot grip rough, textured, or porous surfaces.</li>
+    <li>Object must have a <strong>flat area</strong> large enough for the suction cup.</li>
+    <li>Cannot handle very heavy objects (limited by vacuum pressure × cup area).</li>
+    <li>Sensitive to surface contamination (dust, oil, moisture).</li>
+    <li>Cannot grip objects with holes or perforations.</li>
+    <li>Requires a continuous vacuum source (pump/venturi).</li>
+  </ol>
+</div>
+
+<!-- ═══════════ Q11 ═══════════ -->
+<div class="question-block" id="q11">
+  <p class="q-label">Question 11 <span class="marks">5 Marks</span></p>
+  <h2>What is coarse and precise gripping? List its applications.</h2>
+
+  <h3>Coarse Gripping (Power Grasp)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Coarse gripping</strong> (also called <strong>power grasp</strong>) is a type of grip where the entire hand/gripper wraps around the object to provide maximum gripping force. The emphasis is on <strong>holding strength</strong> rather than fine manipulation.
+  </div>
+  <ul>
+    <li>Uses large contact area between fingers and object</li>
+    <li>Object is firmly locked in the gripper — minimal object movement possible</li>
+    <li>Low dexterity — cannot perform fine adjustments while holding</li>
+    <li><strong>Human analogy:</strong> Holding a hammer handle or gripping a heavy bag</li>
+  </ul>
+  <h4>Applications:</h4>
+  <ul>
+    <li>Material handling and transportation of heavy parts</li>
+    <li>Loading/unloading machine tools (CNC lathes, press brakes)</li>
+    <li>Palletizing and depalletizing operations</li>
+    <li>Construction and demolition robots</li>
+    <li>Forging and casting part handling</li>
+  </ul>
+
+  <h3>Precise Gripping (Precision Grasp)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Precise gripping</strong> (also called <strong>precision grasp</strong>) uses only the <strong>fingertips</strong> to hold the object with controlled, delicate force. The emphasis is on <strong>accuracy and dexterity</strong> rather than force.
+  </div>
+  <ul>
+    <li>Uses small contact area — fingertips only</li>
+    <li>Allows fine manipulation and reorientation of the object while held</li>
+    <li>Requires force sensors for controlled, gentle gripping</li>
+    <li><strong>Human analogy:</strong> Holding a pen, threading a needle, picking up a small screw</li>
+  </ul>
+  <h4>Applications:</h4>
+  <ul>
+    <li>Electronics assembly (placing ICs on PCBs)</li>
+    <li>Surgical robotics (handling tissues, sutures)</li>
+    <li>Laboratory automation (handling test tubes, slides)</li>
+    <li>Watchmaking and jewelry assembly</li>
+    <li>Micro-assembly operations</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q12 ═══════════ -->
+<div class="question-block" id="q12">
+  <p class="q-label">Question 12 <span class="marks">5 Marks</span></p>
+  <h2>State method and applications of: (a) Impactive (b) Ingressive (c) Astrictive (d) Contigutive Grippers.</h2>
+
+  <h4>(a) Impactive Grippers</h4>
+  <ul>
+    <li><strong>Method:</strong> Grips by <strong>physical clamping/squeezing</strong> using jaws or fingers that exert force through mechanical contact. The object is held by friction and mechanical interlocking between the fingers and the object surface.</li>
+    <li><strong>Examples:</strong> Parallel jaw, angular jaw, three-finger chuck, toggle grippers.</li>
+    <li><strong>Applications:</strong> Machine tending, pick-and-place, assembly, welding fixture holding, CNC machine loading.</li>
+  </ul>
+
+  <h4>(b) Ingressive Grippers</h4>
+  <ul>
+    <li><strong>Method:</strong> Grips by <strong>penetrating into the object surface</strong> using pins, needles, or hooks. The gripping elements physically enter the material.</li>
+    <li><strong>Examples:</strong> Needle grippers, pin-type grippers, hook arrays.</li>
+    <li><strong>Applications:</strong> Textile and fabric handling (needles pierce fabric), foam material handling, carpet handling, agricultural harvesting (hooks for fruits).</li>
+  </ul>
+
+  <h4>(c) Astrictive Grippers</h4>
+  <ul>
+    <li><strong>Method:</strong> Grips by applying an <strong>attractive force to the object surface without penetration</strong>. Uses vacuum, magnetism, or electrostatic attraction.</li>
+    <li><strong>Types:</strong>
+      <ul>
+        <li><strong>Vacuum (suction):</strong> Creates negative pressure to hold flat surfaces</li>
+        <li><strong>Magnetic:</strong> Uses electromagnetic or permanent magnetic attraction (ferrous materials only)</li>
+        <li><strong>Electrostatic:</strong> Uses electric charge to attract lightweight objects</li>
+      </ul>
+    </li>
+    <li><strong>Applications:</strong> Sheet metal handling, glass panel handling, PCB handling, paper/cardboard handling, automotive body panel assembly.</li>
+  </ul>
+
+  <h4>(d) Contigutive Grippers</h4>
+  <ul>
+    <li><strong>Method:</strong> Grips by establishing a <strong>direct bonding or adhesion</strong> between the gripper and the object surface. Requires surface-to-surface contact and some form of bonding mechanism.</li>
+    <li><strong>Types:</strong>
+      <ul>
+        <li><strong>Chemical adhesion:</strong> Glue or adhesive applied to grip surface</li>
+        <li><strong>Thermal (Freeze gripping):</strong> Water between gripper and object is frozen to create a bond</li>
+        <li><strong>Surface tension:</strong> Liquid film between surfaces creates capillary adhesion</li>
+      </ul>
+    </li>
+    <li><strong>Applications:</strong> Handling of thin silicon wafers (freeze gripping), micro-part handling, fabric handling, food handling (surface tension).</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q13 ═══════════ -->
+<div class="question-block" id="q13">
+  <p class="q-label">Question 13 <span class="marks">5 Marks</span></p>
+  <h2>Numerical: Pneumatic gripper lifts 6 kg object, 2 fingers, μ = 0.5, piston diameter = 40 mm. Find air pressure required.</h2>
+
+  <h3>Given Data</h3>
+  <div class="info-box">
+    Mass (m) = 6 kg<br>
+    Number of fingers (n) = 2<br>
+    Coefficient of friction (μ) = 0.5<br>
+    Piston diameter (d) = 40 mm = 0.04 m<br>
+    g = 9.81 m/s²
+  </div>
+
+  <h3>Solution</h3>
+  <h4>Step 1: Calculate the weight of the object</h4>
+  <div class="info-box formula">
+<span class="label">Weight</span>
+W = m × g
+W = 6 × 9.81
+<strong>W = 58.86 N</strong></div>
+
+  <h4>Step 2: Calculate the gripping force per finger</h4>
+  <div class="info-box formula">
+<span class="label">Gripping Force</span>
+For equilibrium: W = F_grip × μ × n
+
+F_grip = W / (μ × n)
+F_grip = 58.86 / (0.5 × 2)
+F_grip = 58.86 / 1.0
+<strong>F_grip = 58.86 N per finger</strong></div>
+
+  <h4>Step 3: Calculate the piston area</h4>
+  <div class="info-box formula">
+<span class="label">Piston Area</span>
+A = π/4 × d²
+A = π/4 × (0.04)²
+A = π/4 × 0.0016
+A = 0.7854 × 0.0016
+<strong>A = 1.2566 × 10⁻³ m²</strong></div>
+
+  <h4>Step 4: Calculate the required air pressure</h4>
+  <p>The pneumatic piston must produce the gripping force. Since the piston drives one finger:</p>
+  <div class="info-box formula">
+<span class="label">Pressure</span>
+F_grip = P × A
+
+P = F_grip / A
+P = 58.86 / (1.2566 × 10⁻³)
+<strong>P = 46,840 Pa ≈ 46.84 kPa ≈ 0.468 bar</strong></div>
+
+  <h3>Answer</h3>
+  <div class="info-box definition">
+    <strong>Air pressure required = 46.84 kPa (≈ 0.468 bar or ≈ 6.8 psi)</strong>
+  </div>
+</div>
+
+<a href="#top" class="back-top">↑ Back to top</a>
+</main>
+</body>
+</html>

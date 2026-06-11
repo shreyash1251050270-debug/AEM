@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1 — Electromechanical Systems &amp; Robotics | AEM Solutions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --border-light: #333;
+    --text: #d4d4d4;
+    --text-dim: #888;
+    --text-bright: #f0f0f0;
+    --accent: #a0a0a0;
+    --accent-light: #c8c8c8;
+    --highlight: #ffffff;
+    --tag: #3a3a3a;
+    --accent-blue: #60a5fa;
+    --accent-green: #34d399;
+    --accent-amber: #fbbf24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; font-size: 15px; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .site-header {
+    text-align: center;
+    padding: 5rem 2rem 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .site-header h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--highlight);
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+  }
+  .site-header .subtitle {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .site-header .unit-badge {
+    display: inline-block;
+    margin-top: 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border-light);
+    padding: 0.35rem 1.2rem;
+    border-radius: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent-blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .toc {
+    max-width: 720px;
+    margin: 3rem auto;
+    padding: 2rem 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .toc h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  .toc ol { list-style: none; counter-reset: toc-counter; }
+  .toc ol li { counter-increment: toc-counter; margin-bottom: 0.6rem; }
+  .toc ol li a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .toc ol li a::before {
+    content: "Q" counter(toc-counter, decimal-leading-zero);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-blue);
+    min-width: 2rem;
+  }
+  .toc ol li a:hover { color: var(--highlight); }
+
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  .question-block {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .question-block:first-of-type { margin-top: 2rem; }
+
+  .q-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 0.5rem;
+  }
+  .q-label .marks {
+    float: right;
+    color: var(--accent-amber);
+    letter-spacing: 1px;
+  }
+  .question-block > h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--highlight);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.3px;
+    line-height: 1.5;
+  }
+  .question-block h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .question-block h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    margin: 1.25rem 0 0.6rem;
+  }
+
+  p { margin-bottom: 1rem; }
+
+  ul, ol { margin: 0.75rem 0 1.25rem 1.5rem; }
+  li { margin-bottom: 0.4rem; }
+
+  .def-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .def-grid .cell {
+    background: var(--surface);
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+  .def-grid .cell.header {
+    background: var(--surface2);
+    font-weight: 600;
+    color: var(--accent-light);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .info-box {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.92rem;
+  }
+  .info-box.formula {
+    border-left-color: var(--accent-blue);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88rem;
+    white-space: pre-wrap;
+  }
+  .info-box.definition {
+    border-left-color: var(--accent-green);
+  }
+  .info-box strong { color: var(--text-bright); }
+  .info-box .label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+  th {
+    background: var(--surface2);
+    color: var(--accent-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+  }
+  td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--surface); }
+
+  .diagram {
+    margin: 2rem 0;
+    text-align: center;
+  }
+  .diagram svg { max-width: 100%; height: auto; }
+  .diagram-caption {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 0.75rem;
+    font-style: italic;
+  }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--surface2);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: var(--accent-light);
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+  .back-top {
+    display: inline-block;
+    margin-top: 2rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .back-top:hover { color: var(--highlight); }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    html { font-size: 14px; }
+    .site-header h1 { font-size: 1.8rem; }
+    .def-grid { grid-template-columns: 1fr; }
+    .content { padding: 0 1rem 4rem; }
+  }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .site-header, .toc, .question-block, .info-box, table, .diagram { break-inside: avoid; }
+    .info-box { border-left-color: #666; }
+    a { color: #111; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <h1>Unit 1 — Solutions</h1>
+  <p class="subtitle">Electromechanical Systems &amp; Robotics Basics</p>
+  <span class="unit-badge">5 Marks Each</span>
+</header>
+
+<nav class="toc">
+  <h2>Questions</h2>
+  <ol>
+    <li><a href="#q1">What is a robot? How are robots classified?</a></li>
+    <li><a href="#q2">Workspace and Degrees of Freedom</a></li>
+    <li><a href="#q3">Linear Joint and Twisting Joint</a></li>
+    <li><a href="#q4">Orthogonal Joint and Rotational Joint</a></li>
+    <li><a href="#q5">Analogy between Robot and Human Body</a></li>
+    <li><a href="#q6">Major components — Mechanical Subsystems</a></li>
+    <li><a href="#q7">Open-loop and Closed-loop Control Systems</a></li>
+    <li><a href="#q8">Major components — Electrical Subsystems</a></li>
+    <li><a href="#q9">Major components — Pneumatic Subsystems</a></li>
+    <li><a href="#q10">Accuracy, Precision and Repeatability</a></li>
+    <li><a href="#q11">Forward Kinematics — Importance</a></li>
+    <li><a href="#q12">Applications in unsafe/unreachable areas</a></li>
+  </ol>
+</nav>
+
+<main class="content">
+
+<!-- ═══════════ Q1 ═══════════ -->
+<div class="question-block" id="q1">
+  <p class="q-label">Question 01 <span class="marks">5 Marks</span></p>
+  <h2>What is a robot? How are robots classified?</h2>
+
+  <h3>Definition of a Robot</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>robot</strong> is a reprogrammable, multifunctional manipulator designed to move materials, parts, tools, or specialized devices through variable programmed motions for the performance of a variety of tasks. — <em>Robot Institute of America (RIA)</em>
+  </div>
+  <p>The word <strong>"Robot"</strong> was coined by Czech novelist <strong>Karel Čapek</strong> in his 1920 play <em>"Rossum's Universal Robots (R.U.R.)"</em>. In Czech, "robota" means forced labor or servant. The term <strong>"Robotics"</strong> was introduced by <strong>Isaac Asimov</strong> in 1942.</p>
+
+  <h3>Classification of Robots</h3>
+  <p>Robots can be classified based on multiple criteria:</p>
+
+  <h4>A. Based on Application</h4>
+  <ul>
+    <li><strong>Industrial Robots</strong> — Used in manufacturing for welding, painting, assembly, pick-and-place, material handling. Example: FANUC, ABB, KUKA.</li>
+    <li><strong>Service Robots</strong> — Perform tasks for humans outside manufacturing. Examples: vacuum cleaners (Roomba), hospital delivery robots.</li>
+    <li><strong>Military/Defense Robots</strong> — Used in bomb disposal, surveillance, drone operations.</li>
+    <li><strong>Medical Robots</strong> — Surgical assistance (Da Vinci system), rehabilitation robots.</li>
+    <li><strong>Space/Exploration Robots</strong> — Planetary rovers (Curiosity, Perseverance), space station arms (Canadarm).</li>
+  </ul>
+
+  <h4>B. Based on Configuration / Geometry</h4>
+  <table>
+    <tr><th>Configuration</th><th>Joint Types</th><th>Workspace Shape</th></tr>
+    <tr><td>Cartesian (Gantry)</td><td>PPP (3 Prismatic)</td><td>Rectangular box</td></tr>
+    <tr><td>Cylindrical</td><td>RPP (1 Revolute + 2 Prismatic)</td><td>Cylindrical envelope</td></tr>
+    <tr><td>Polar / Spherical</td><td>RRP (2 Revolute + 1 Prismatic)</td><td>Spherical envelope</td></tr>
+    <tr><td>Articulated (Jointed-arm)</td><td>RRR (3 Revolute)</td><td>Complex near-spherical</td></tr>
+    <tr><td>SCARA</td><td>RRP</td><td>Cylindrical</td></tr>
+  </table>
+
+  <h4>C. Based on Control Method</h4>
+  <ul>
+    <li><strong>Servo Controlled Robots</strong> — Use feedback (closed-loop) for precise positioning.</li>
+    <li><strong>Non-Servo Robots</strong> — Use mechanical stops (open-loop); limited flexibility.</li>
+  </ul>
+
+  <h4>D. Based on Intelligence Level</h4>
+  <ul>
+    <li><strong>Manually Controlled</strong> — Operated by human in real-time (tele-operated).</li>
+    <li><strong>Fixed Sequence</strong> — Performs a pre-set sequence of operations.</li>
+    <li><strong>Variable Sequence</strong> — Sequence can be modified easily.</li>
+    <li><strong>Intelligent Robots</strong> — Use AI, sensors and vision systems to make decisions.</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <rect x="220" y="10" width="260" height="45" rx="6" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="350" y="38" text-anchor="middle" fill="#60a5fa" font-size="14" font-family="Inter" font-weight="700">CLASSIFICATION OF ROBOTS</text>
+      <line x1="350" y1="55" x2="350" y2="80" stroke="#555" stroke-width="1.5"/>
+      <line x1="100" y1="80" x2="600" y2="80" stroke="#555" stroke-width="1.5"/>
+      <line x1="100" y1="80" x2="100" y2="100" stroke="#555" stroke-width="1.5"/>
+      <line x1="270" y1="80" x2="270" y2="100" stroke="#555" stroke-width="1.5"/>
+      <line x1="430" y1="80" x2="430" y2="100" stroke="#555" stroke-width="1.5"/>
+      <line x1="600" y1="80" x2="600" y2="100" stroke="#555" stroke-width="1.5"/>
+
+      <rect x="30" y="100" width="140" height="35" rx="4" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="100" y="122" text-anchor="middle" fill="#ccc" font-size="11" font-family="Inter" font-weight="600">By Application</text>
+      <rect x="200" y="100" width="140" height="35" rx="4" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="270" y="122" text-anchor="middle" fill="#ccc" font-size="11" font-family="Inter" font-weight="600">By Configuration</text>
+      <rect x="360" y="100" width="140" height="35" rx="4" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="430" y="122" text-anchor="middle" fill="#ccc" font-size="11" font-family="Inter" font-weight="600">By Control</text>
+      <rect x="530" y="100" width="140" height="35" rx="4" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="600" y="122" text-anchor="middle" fill="#ccc" font-size="11" font-family="Inter" font-weight="600">By Intelligence</text>
+
+      <text x="100" y="160" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Industrial</text>
+      <text x="100" y="178" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Service</text>
+      <text x="100" y="196" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Military</text>
+      <text x="100" y="214" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Medical</text>
+      <text x="100" y="232" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Space</text>
+
+      <text x="270" y="160" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Cartesian</text>
+      <text x="270" y="178" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Cylindrical</text>
+      <text x="270" y="196" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Spherical</text>
+      <text x="270" y="214" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Articulated</text>
+      <text x="270" y="232" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">SCARA</text>
+
+      <text x="430" y="160" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Servo</text>
+      <text x="430" y="178" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Non-Servo</text>
+
+      <text x="600" y="160" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Manual</text>
+      <text x="600" y="178" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Fixed Seq.</text>
+      <text x="600" y="196" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Variable Seq.</text>
+      <text x="600" y="214" text-anchor="middle" fill="#aaa" font-size="9.5" font-family="Inter">Intelligent</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.1 — Classification of Robots</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q2 ═══════════ -->
+<div class="question-block" id="q2">
+  <p class="q-label">Question 02 <span class="marks">5 Marks</span></p>
+  <h2>Elaborate the terms Workspace and Degrees of Freedom with a neat sketch.</h2>
+
+  <h3>Workspace (Work Envelope)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Workspace</strong> is the total volume of space that can be reached by the robot's end effector (tool tip). It is also called the <strong>work envelope</strong> or <strong>work volume</strong>.
+  </div>
+  <p>The shape and size of the workspace depends on:</p>
+  <ul>
+    <li>Robot configuration (Cartesian, Cylindrical, Spherical, Articulated)</li>
+    <li>Number and type of joints</li>
+    <li>Length of links</li>
+    <li>Joint limits (mechanical stops)</li>
+  </ul>
+  <p>Different robot configurations produce different workspace shapes:</p>
+  <table>
+    <tr><th>Configuration</th><th>Workspace Shape</th></tr>
+    <tr><td>Cartesian (PPP)</td><td>Rectangular prism / box</td></tr>
+    <tr><td>Cylindrical (RPP)</td><td>Hollow cylinder</td></tr>
+    <tr><td>Spherical (RRP)</td><td>Partial sphere (truncated)</td></tr>
+    <tr><td>Articulated (RRR)</td><td>Complex, near-spherical envelope</td></tr>
+  </table>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- Cartesian -->
+      <rect x="20" y="40" width="120" height="80" rx="2" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="20" y1="120" x2="50" y2="150" stroke="#60a5fa" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="140" y1="120" x2="170" y2="150" stroke="#60a5fa" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="140" y1="40" x2="170" y2="70" stroke="#60a5fa" stroke-width="1" stroke-dasharray="4,3"/>
+      <rect x="50" y="70" width="120" height="80" rx="2" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="80" y="195" text-anchor="middle" fill="#888" font-size="10" font-family="Inter">Cartesian (Box)</text>
+
+      <!-- Cylindrical -->
+      <ellipse cx="280" cy="50" rx="60" ry="18" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <ellipse cx="280" cy="150" rx="60" ry="18" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="220" y1="50" x2="220" y2="150" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="340" y1="50" x2="340" y2="150" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="280" y="195" text-anchor="middle" fill="#888" font-size="10" font-family="Inter">Cylindrical</text>
+
+      <!-- Spherical -->
+      <circle cx="470" cy="100" r="70" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="470" cy="100" r="3" fill="#fbbf24"/>
+      <text x="470" y="195" text-anchor="middle" fill="#888" font-size="10" font-family="Inter">Spherical</text>
+
+      <!-- Articulated -->
+      <ellipse cx="640" cy="100" rx="50" ry="70" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="640" cy="100" r="3" fill="#f87171"/>
+      <text x="640" y="195" text-anchor="middle" fill="#888" font-size="10" font-family="Inter">Articulated</text>
+
+      <text x="350" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="600">WORKSPACE SHAPES FOR DIFFERENT ROBOT CONFIGURATIONS</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.2 — Workspace shapes for various robot configurations</p>
+  </div>
+
+  <h3>Degrees of Freedom (DOF)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Degrees of Freedom (DOF)</strong> is the number of independent parameters (displacements or rotations) needed to completely define the position and orientation of a body in space.
+  </div>
+  <p>Each <strong>revolute joint</strong> (rotation) or <strong>prismatic joint</strong> (linear slide) contributes <strong>1 DOF</strong>. To fully position and orient an object in 3D space, <strong>6 DOF</strong> are needed — 3 for position (x, y, z) and 3 for orientation (Roll, Pitch, Yaw).</p>
+
+  <div class="info-box formula">
+<span class="label">DOF Examples</span>
+Human Arm:      7 DOF (3 shoulder + 1 elbow + 3 wrist)
+PUMA 560 Robot: 6 DOF (all revolute joints)
+SCARA Robot:    4 DOF (RRP + Rotation)
+Cartesian:      3 DOF (PPP — 3 prismatic only)</div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker></defs>
+      <!-- Base -->
+      <rect x="250" y="200" width="100" height="25" rx="3" fill="none" stroke="#888" stroke-width="1.5"/>
+      <text x="300" y="217" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Base</text>
+      <!-- Joint 1 -->
+      <circle cx="300" cy="195" r="8" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="300" y="198" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">J1</text>
+      <!-- Link 1 -->
+      <line x1="300" y1="187" x2="300" y2="140" stroke="#888" stroke-width="3"/>
+      <text x="318" y="165" fill="#888" font-size="9" font-family="Inter">Link 1</text>
+      <!-- Joint 2 -->
+      <circle cx="300" cy="135" r="8" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="300" y="138" text-anchor="middle" fill="#34d399" font-size="8" font-family="Inter">J2</text>
+      <!-- Link 2 -->
+      <line x1="305" y1="129" x2="380" y2="90" stroke="#888" stroke-width="3"/>
+      <text x="355" y="100" fill="#888" font-size="9" font-family="Inter">Link 2</text>
+      <!-- Joint 3 -->
+      <circle cx="385" cy="85" r="8" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="385" y="88" text-anchor="middle" fill="#fbbf24" font-size="8" font-family="Inter">J3</text>
+      <!-- End effector -->
+      <line x1="391" y1="80" x2="440" y2="60" stroke="#888" stroke-width="3"/>
+      <rect x="435" y="48" width="40" height="25" rx="3" fill="none" stroke="#f87171" stroke-width="1.2"/>
+      <text x="455" y="65" text-anchor="middle" fill="#f87171" font-size="8" font-family="Inter">E.E.</text>
+
+      <!-- DOF arrows -->
+      <path d="M 270,195 A 20,20 0 0,1 290,180" fill="none" stroke="#60a5fa" stroke-width="1" marker-end="url(#arr2)"/>
+      <text x="255" y="187" fill="#60a5fa" font-size="8" font-family="Inter">θ₁</text>
+
+      <!-- Labels -->
+      <text x="50" y="30" fill="#ccc" font-size="12" font-family="Inter" font-weight="600">3-DOF ARTICULATED ROBOT ARM</text>
+      <text x="50" y="55" fill="#aaa" font-size="10" font-family="Inter">Each joint adds 1 DOF</text>
+      <text x="50" y="75" fill="#60a5fa" font-size="10" font-family="Inter">● J1 = Revolute (1 DOF)</text>
+      <text x="50" y="95" fill="#34d399" font-size="10" font-family="Inter">● J2 = Revolute (1 DOF)</text>
+      <text x="50" y="115" fill="#fbbf24" font-size="10" font-family="Inter">● J3 = Revolute (1 DOF)</text>
+      <text x="50" y="140" fill="#aaa" font-size="10" font-family="Inter">Total = 3 DOF</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.3 — A 3-DOF articulated robot arm showing joints and links</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q3 ═══════════ -->
+<div class="question-block" id="q3">
+  <p class="q-label">Question 03 <span class="marks">5 Marks</span></p>
+  <h2>Explain with a neat sketch: Linear Joint and Twisting Joint.</h2>
+
+  <h3>Linear Joint (Type L)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>Linear Joint</strong> produces a sliding (translational) motion between the input link and output link. The axes of the two adjacent links are <strong>parallel</strong> to each other.
+  </div>
+  <ul>
+    <li><strong>Type:</strong> Prismatic (P) joint</li>
+    <li><strong>Motion:</strong> Translational — one link slides linearly relative to the other</li>
+    <li><strong>Joint Variable:</strong> Distance <code>d</code> (linear displacement)</li>
+    <li><strong>Axes Relationship:</strong> Input and output link axes are parallel</li>
+    <li><strong>Example:</strong> The vertical column slide in a Cartesian robot, telescopic mechanism</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker></defs>
+      <!-- Link 1 -->
+      <rect x="50" y="60" width="180" height="30" rx="4" fill="none" stroke="#888" stroke-width="2"/>
+      <text x="140" y="80" text-anchor="middle" fill="#aaa" font-size="11" font-family="Inter">Input Link (Fixed)</text>
+      <!-- Link 2 sliding -->
+      <rect x="230" y="55" width="200" height="40" rx="4" fill="none" stroke="#60a5fa" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="330" y="80" text-anchor="middle" fill="#60a5fa" font-size="11" font-family="Inter">Output Link (Slides)</text>
+      <!-- Arrow showing motion -->
+      <line x1="440" y1="45" x2="510" y2="45" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <line x1="440" y1="45" x2="370" y2="45" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="440" y="38" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Inter">d (linear displacement)</text>
+      <!-- Axis labels -->
+      <line x1="50" y1="120" x2="450" y2="120" stroke="#555" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="250" y="140" text-anchor="middle" fill="#666" font-size="10" font-family="Inter">Parallel axes of input &amp; output links</text>
+      <text x="300" y="170" text-anchor="middle" fill="#888" font-size="11" font-family="Inter" font-weight="600">LINEAR JOINT</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.4 — Linear Joint — translational motion with parallel axes</p>
+  </div>
+
+  <h3>Twisting Joint (Type T)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>Twisting Joint</strong> produces a rotary motion between the input and output links. The axis of rotation is <strong>parallel</strong> to the axes of both links.
+  </div>
+  <ul>
+    <li><strong>Type:</strong> Revolute (R) joint</li>
+    <li><strong>Motion:</strong> Rotational — one link twists (rotates) about the axis parallel to both links</li>
+    <li><strong>Joint Variable:</strong> Angle <code>θ</code> (angular displacement)</li>
+    <li><strong>Axes Relationship:</strong> Rotation axis is parallel to both input and output link axes</li>
+    <li><strong>Example:</strong> Rotation of the robot forearm about its own longitudinal axis (like turning a screwdriver)</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Link 1 -->
+      <rect x="50" y="80" width="160" height="30" rx="4" fill="none" stroke="#888" stroke-width="2"/>
+      <text x="130" y="100" text-anchor="middle" fill="#aaa" font-size="11" font-family="Inter">Input Link</text>
+      <!-- Joint circle -->
+      <circle cx="235" cy="95" r="15" fill="none" stroke="#34d399" stroke-width="2"/>
+      <text x="235" y="99" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">T</text>
+      <!-- Link 2 -->
+      <rect x="260" y="80" width="180" height="30" rx="4" fill="none" stroke="#888" stroke-width="2"/>
+      <text x="350" y="100" text-anchor="middle" fill="#aaa" font-size="11" font-family="Inter">Output Link</text>
+      <!-- Rotation arrow -->
+      <path d="M 235,60 A 25,25 0 1,1 255,70" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="260" y="53" fill="#34d399" font-size="10" font-family="Inter">θ (twist)</text>
+      <!-- Axis line -->
+      <line x1="50" y1="130" x2="440" y2="130" stroke="#555" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="245" y="150" text-anchor="middle" fill="#666" font-size="10" font-family="Inter">Rotation axis ∥ to link axes</text>
+      <text x="300" y="185" text-anchor="middle" fill="#888" font-size="11" font-family="Inter" font-weight="600">TWISTING JOINT</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.5 — Twisting Joint — rotary motion about an axis parallel to both links</p>
+  </div>
+
+  <h3>Comparison</h3>
+  <table>
+    <tr><th>Feature</th><th>Linear Joint</th><th>Twisting Joint</th></tr>
+    <tr><td>Motion Type</td><td>Translational (sliding)</td><td>Rotational (twisting)</td></tr>
+    <tr><td>Joint Category</td><td>Prismatic (P)</td><td>Revolute (R)</td></tr>
+    <tr><td>Joint Variable</td><td>Distance d</td><td>Angle θ</td></tr>
+    <tr><td>Axes Relation</td><td>Input &amp; output axes parallel</td><td>Rotation axis ∥ to link axes</td></tr>
+    <tr><td>Symbol</td><td>L</td><td>T</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q4 ═══════════ -->
+<div class="question-block" id="q4">
+  <p class="q-label">Question 04 <span class="marks">5 Marks</span></p>
+  <h2>Explain with a neat sketch: Orthogonal Joint and Rotational Joint.</h2>
+
+  <h3>Orthogonal Joint (Type O)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    An <strong>Orthogonal Joint</strong> produces a translational (sliding) motion between the input link and output link where the axes of the two adjacent links are <strong>perpendicular (at 90°)</strong> to each other.
+  </div>
+  <ul>
+    <li><strong>Type:</strong> Prismatic (P) joint</li>
+    <li><strong>Motion:</strong> Translational — one link slides relative to the other</li>
+    <li><strong>Joint Variable:</strong> Distance <code>d</code></li>
+    <li><strong>Axes Relationship:</strong> Input and output link axes are perpendicular</li>
+    <li><strong>Example:</strong> Horizontal arm sliding on a vertical column in a cylindrical robot</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/></marker></defs>
+      <!-- Vertical link (input) -->
+      <rect x="120" y="30" width="30" height="150" rx="4" fill="none" stroke="#888" stroke-width="2"/>
+      <text x="135" y="110" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter" transform="rotate(-90, 135, 110)">Input Link</text>
+      <!-- Horizontal link (output) -->
+      <rect x="150" y="90" width="200" height="30" rx="4" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="250" y="110" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Inter">Output Link (Slides)</text>
+      <!-- 90 degree symbol -->
+      <rect x="150" y="105" width="12" height="12" fill="none" stroke="#aaa" stroke-width="1"/>
+      <!-- Motion arrow -->
+      <line x1="360" y1="85" x2="420" y2="85" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arr4)"/>
+      <line x1="360" y1="85" x2="300" y2="85" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arr4)"/>
+      <text x="360" y="78" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter">d</text>
+      <!-- Label -->
+      <text x="300" y="205" text-anchor="middle" fill="#888" font-size="11" font-family="Inter" font-weight="600">ORTHOGONAL JOINT (axes ⊥)</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.6 — Orthogonal Joint — translational motion with perpendicular axes</p>
+  </div>
+
+  <h3>Rotational Joint (Type R)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>Rotational Joint</strong> produces a rotary motion where the axis of rotation is <strong>perpendicular</strong> to the axes of both input and output links.
+  </div>
+  <ul>
+    <li><strong>Type:</strong> Revolute (R) joint</li>
+    <li><strong>Motion:</strong> Rotational — output link rotates about an axis ⊥ to both links</li>
+    <li><strong>Joint Variable:</strong> Angle <code>θ</code></li>
+    <li><strong>Axes Relationship:</strong> Rotation axis is perpendicular to axes of both adjacent links</li>
+    <li><strong>Example:</strong> Elbow joint of an articulated robot, shoulder joint</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- Input link horizontal -->
+      <rect x="50" y="100" width="160" height="25" rx="4" fill="none" stroke="#888" stroke-width="2"/>
+      <text x="130" y="117" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Input Link</text>
+      <!-- Joint -->
+      <circle cx="230" cy="112" r="14" fill="none" stroke="#f87171" stroke-width="2"/>
+      <text x="230" y="116" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter" font-weight="700">R</text>
+      <!-- Output link rotated -->
+      <line x1="242" y1="103" x2="370" y2="50" stroke="#888" stroke-width="4" stroke-linecap="round"/>
+      <text x="320" y="60" fill="#aaa" font-size="10" font-family="Inter">Output Link</text>
+      <!-- Angle arc -->
+      <path d="M 270,112 A 40,40 0 0,0 260,80" fill="none" stroke="#f87171" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="280" y="92" fill="#f87171" font-size="10" font-family="Inter">θ</text>
+      <!-- Perpendicular axis -->
+      <circle cx="230" cy="112" r="3" fill="#f87171"/>
+      <text x="230" y="155" text-anchor="middle" fill="#666" font-size="9" font-family="Inter">Axis of rotation ⊥ to</text>
+      <text x="230" y="168" text-anchor="middle" fill="#666" font-size="9" font-family="Inter">both link axes</text>
+      <text x="300" y="205" text-anchor="middle" fill="#888" font-size="11" font-family="Inter" font-weight="600">ROTATIONAL JOINT (axis ⊥ to links)</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.7 — Rotational Joint — rotary motion about axis perpendicular to both links</p>
+  </div>
+
+  <h3>Comparison</h3>
+  <table>
+    <tr><th>Feature</th><th>Orthogonal Joint</th><th>Rotational Joint</th></tr>
+    <tr><td>Motion Type</td><td>Translational (sliding)</td><td>Rotational</td></tr>
+    <tr><td>Joint Category</td><td>Prismatic (P)</td><td>Revolute (R)</td></tr>
+    <tr><td>Joint Variable</td><td>Distance d</td><td>Angle θ</td></tr>
+    <tr><td>Axes Relation</td><td>Input &amp; output axes ⊥</td><td>Rotation axis ⊥ to both link axes</td></tr>
+    <tr><td>Symbol</td><td>O (or U)</td><td>R</td></tr>
+    <tr><td>Example</td><td>Column slide in cylindrical robot</td><td>Elbow joint of articulated arm</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q5 ═══════════ -->
+<div class="question-block" id="q5">
+  <p class="q-label">Question 05 <span class="marks">5 Marks</span></p>
+  <h2>Explain the analogy between a robot and the human body.</h2>
+
+  <p>A robot is essentially designed to mimic the functions of the human body. The following table shows the detailed analogy between corresponding parts:</p>
+
+  <div class="def-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="cell header">Human Body Part</div><div class="cell header">Robot Equivalent</div><div class="cell header">Function</div>
+    <div class="cell"><strong>Brain</strong></div><div class="cell">Controller / Microprocessor</div><div class="cell">Decision making, processing commands</div>
+    <div class="cell"><strong>Nervous System</strong></div><div class="cell">Wiring / Communication Bus</div><div class="cell">Signal transmission between parts</div>
+    <div class="cell"><strong>Skeleton (bones)</strong></div><div class="cell">Links (rigid structural members)</div><div class="cell">Structural support</div>
+    <div class="cell"><strong>Joints</strong></div><div class="cell">Joints (revolute / prismatic)</div><div class="cell">Provide relative motion between links</div>
+    <div class="cell"><strong>Muscles</strong></div><div class="cell">Actuators (motors / hydraulics)</div><div class="cell">Generate force and motion</div>
+    <div class="cell"><strong>Hand / Fingers</strong></div><div class="cell">End Effector / Gripper</div><div class="cell">Grasp and manipulate objects</div>
+    <div class="cell"><strong>Eyes</strong></div><div class="cell">Vision Sensors / Cameras</div><div class="cell">Visual perception of environment</div>
+    <div class="cell"><strong>Skin (touch)</strong></div><div class="cell">Tactile / Force Sensors</div><div class="cell">Detect contact, pressure, texture</div>
+    <div class="cell"><strong>Ears</strong></div><div class="cell">Microphones / Sound sensors</div><div class="cell">Audio input &amp; voice recognition</div>
+    <div class="cell"><strong>Feet / Legs</strong></div><div class="cell">Base / Mobile platform / Wheels</div><div class="cell">Locomotion and stability</div>
+  </div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+      <!-- Human side -->
+      <text x="150" y="25" text-anchor="middle" fill="#60a5fa" font-size="13" font-family="Inter" font-weight="700">HUMAN BODY</text>
+      <!-- Head -->
+      <circle cx="150" cy="65" r="22" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="150" y="69" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter">Brain</text>
+      <!-- Torso -->
+      <rect x="128" y="87" width="44" height="70" rx="4" fill="none" stroke="#60a5fa" stroke-width="1.2"/>
+      <text x="150" y="125" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">Torso</text>
+      <!-- Arms -->
+      <line x1="128" y1="95" x2="80" y2="140" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="172" y1="95" x2="220" y2="140" stroke="#60a5fa" stroke-width="2"/>
+      <circle cx="80" cy="140" r="4" fill="none" stroke="#60a5fa" stroke-width="1"/>
+      <circle cx="220" cy="140" r="4" fill="none" stroke="#60a5fa" stroke-width="1"/>
+      <line x1="80" y1="144" x2="65" y2="175" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="220" y1="144" x2="235" y2="175" stroke="#60a5fa" stroke-width="2"/>
+      <!-- Hands -->
+      <text x="60" y="190" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">Hand</text>
+      <text x="240" y="190" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">Hand</text>
+      <!-- Legs -->
+      <line x1="140" y1="157" x2="125" y2="220" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="160" y1="157" x2="175" y2="220" stroke="#60a5fa" stroke-width="2"/>
+      <text x="150" y="240" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">Legs/Feet</text>
+
+      <!-- Arrow -->
+      <text x="350" y="130" text-anchor="middle" fill="#aaa" font-size="14" font-family="Inter">⟺</text>
+      <text x="350" y="150" text-anchor="middle" fill="#888" font-size="10" font-family="Inter">Analogy</text>
+
+      <!-- Robot side -->
+      <text x="550" y="25" text-anchor="middle" fill="#34d399" font-size="13" font-family="Inter" font-weight="700">ROBOT</text>
+      <!-- Controller (head) -->
+      <rect x="525" y="45" width="50" height="35" rx="4" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="550" y="67" text-anchor="middle" fill="#34d399" font-size="8" font-family="Inter">Controller</text>
+      <!-- Body -->
+      <rect x="530" y="85" width="40" height="50" rx="3" fill="none" stroke="#34d399" stroke-width="1.2"/>
+      <text x="550" y="113" text-anchor="middle" fill="#34d399" font-size="7" font-family="Inter">Body</text>
+      <!-- Arms (links) -->
+      <line x1="530" y1="92" x2="480" y2="120" stroke="#34d399" stroke-width="2.5"/>
+      <circle cx="480" cy="120" r="5" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <line x1="480" y1="125" x2="460" y2="165" stroke="#34d399" stroke-width="2.5"/>
+      <rect x="445" y="165" width="30" height="18" rx="2" fill="none" stroke="#f87171" stroke-width="1.2"/>
+      <text x="460" y="178" text-anchor="middle" fill="#f87171" font-size="7" font-family="Inter">Gripper</text>
+      <!-- Base -->
+      <rect x="520" y="140" width="60" height="20" rx="3" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="550" y="155" text-anchor="middle" fill="#34d399" font-size="8" font-family="Inter">Base</text>
+      <!-- Wheels -->
+      <circle cx="530" cy="170" r="8" fill="none" stroke="#34d399" stroke-width="1"/>
+      <circle cx="570" cy="170" r="8" fill="none" stroke="#34d399" stroke-width="1"/>
+      <!-- Camera -->
+      <circle cx="540" cy="52" r="4" fill="none" stroke="#fbbf24" stroke-width="1"/>
+      <text x="555" y="50" fill="#fbbf24" font-size="7" font-family="Inter">Cam</text>
+
+      <!-- Labels on right -->
+      <text x="620" y="65" fill="#888" font-size="8" font-family="Inter">← Brain = Controller</text>
+      <text x="620" y="120" fill="#888" font-size="8" font-family="Inter">← Joint = Actuator</text>
+      <text x="620" y="178" fill="#888" font-size="8" font-family="Inter">← Hand = Gripper</text>
+      <text x="620" y="155" fill="#888" font-size="8" font-family="Inter">← Feet = Base</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.8 — Analogy between human body and robot</p>
+  </div>
+
+  <h3>Key Observations</h3>
+  <ul>
+    <li>The human arm has <strong>7 DOF</strong>, while most industrial robots have <strong>6 DOF</strong> — sufficient for full spatial manipulation.</li>
+    <li>Unlike humans, robots can have <strong>superhuman strength</strong> (hydraulic actuators), <strong>perfect repeatability</strong>, and can work in <strong>hazardous environments</strong>.</li>
+    <li>However, robots lack human <strong>adaptability</strong>, <strong>general intelligence</strong>, and <strong>fine motor skills</strong> for delicate tasks.</li>
+  </ul>
+</div>
+
+<!-- ═══════════ Q6 ═══════════ -->
+<div class="question-block" id="q6">
+  <p class="q-label">Question 06 <span class="marks">5 Marks</span></p>
+  <h2>What are the major components of a robot? Describe Mechanical Subsystems with a neat figure.</h2>
+
+  <h3>Major Components of a Robot</h3>
+  <p>A robot system consists of the following major components:</p>
+  <ol>
+    <li><strong>Mechanical Subsystem</strong> — Physical structure (links, joints, gears, end effector)</li>
+    <li><strong>Electrical/Electronic Subsystem</strong> — Power supply, actuators, sensors, wiring</li>
+    <li><strong>Control Subsystem</strong> — Microcontroller / computer, control algorithms</li>
+    <li><strong>Software/Programming</strong> — Robot programming language, path planning, AI</li>
+    <li><strong>Pneumatic/Hydraulic Subsystem</strong> — Fluid power systems (if applicable)</li>
+  </ol>
+
+  <h3>Mechanical Subsystem — Detailed Description</h3>
+  <p>The mechanical subsystem forms the <strong>physical skeleton</strong> of the robot. It includes:</p>
+
+  <h4>1. Links (Rigid Bodies)</h4>
+  <p>Links are the rigid structural members that connect joints. They define the robot's reach and form its skeletal frame. Made of aluminium, steel, or carbon fibre.</p>
+
+  <h4>2. Joints</h4>
+  <p>Joints connect two links and provide relative motion. Types: Linear (L), Orthogonal (O), Rotational (R), Twisting (T), Revolving (V).</p>
+
+  <h4>3. Base</h4>
+  <p>The fixed or mobile platform on which the robot arm is mounted. Provides stability and support for the entire structure.</p>
+
+  <h4>4. Wrist</h4>
+  <p>Located between the arm and end effector. Provides orientation control through Roll, Pitch, and Yaw motions.</p>
+
+  <h4>5. End Effector</h4>
+  <p>The tool or gripper attached to the wrist. Performs the actual task — gripping, welding, painting, drilling, etc.</p>
+
+  <h4>6. Transmission Elements</h4>
+  <p>Gears, belts, chains, lead screws, harmonic drives — used to transmit motion from actuators to joints.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#888"/></marker></defs>
+
+      <text x="350" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">MECHANICAL SUBSYSTEM OF A ROBOT</text>
+
+      <!-- Base -->
+      <rect x="200" y="260" width="150" height="35" rx="5" fill="none" stroke="#888" stroke-width="2"/>
+      <text x="275" y="282" text-anchor="middle" fill="#aaa" font-size="11" font-family="Inter" font-weight="600">BASE</text>
+
+      <!-- Joint 1 (Waist) -->
+      <circle cx="275" cy="250" r="12" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="275" y="254" text-anchor="middle" fill="#60a5fa" font-size="8" font-family="Inter">J1</text>
+      <text x="310" y="248" fill="#888" font-size="9" font-family="Inter">← Waist Joint</text>
+
+      <!-- Link 1 (Shoulder to Elbow) -->
+      <line x1="275" y1="238" x2="275" y2="170" stroke="#aaa" stroke-width="5" stroke-linecap="round"/>
+      <text x="295" y="205" fill="#666" font-size="9" font-family="Inter">Link 1</text>
+
+      <!-- Joint 2 (Shoulder) -->
+      <circle cx="275" cy="165" r="12" fill="none" stroke="#34d399" stroke-width="2"/>
+      <text x="275" y="169" text-anchor="middle" fill="#34d399" font-size="8" font-family="Inter">J2</text>
+      <text x="310" y="163" fill="#888" font-size="9" font-family="Inter">← Shoulder Joint</text>
+
+      <!-- Link 2 -->
+      <line x1="280" y1="155" x2="380" y2="110" stroke="#aaa" stroke-width="5" stroke-linecap="round"/>
+      <text x="340" y="120" fill="#666" font-size="9" font-family="Inter">Link 2</text>
+
+      <!-- Joint 3 (Elbow) -->
+      <circle cx="385" cy="105" r="12" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <text x="385" y="109" text-anchor="middle" fill="#fbbf24" font-size="8" font-family="Inter">J3</text>
+      <text x="415" y="100" fill="#888" font-size="9" font-family="Inter">← Elbow Joint</text>
+
+      <!-- Link 3 (Forearm) -->
+      <line x1="395" y1="98" x2="470" y2="75" stroke="#aaa" stroke-width="5" stroke-linecap="round"/>
+      <text x="445" y="78" fill="#666" font-size="9" font-family="Inter">Link 3</text>
+
+      <!-- Wrist -->
+      <rect x="468" y="58" width="55" height="25" rx="4" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="495" y="75" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter">Wrist</text>
+      <text x="540" y="70" fill="#888" font-size="8" font-family="Inter">Roll, Pitch, Yaw</text>
+
+      <!-- End Effector -->
+      <rect x="525" y="50" width="65" height="30" rx="4" fill="none" stroke="#c084fc" stroke-width="2"/>
+      <text x="557" y="70" text-anchor="middle" fill="#c084fc" font-size="9" font-family="Inter" font-weight="600">Gripper</text>
+      <text x="557" y="45" fill="#888" font-size="8" font-family="Inter">End Effector</text>
+
+      <!-- Legend -->
+      <rect x="30" y="40" width="140" height="110" rx="4" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+      <text x="40" y="58" fill="#ccc" font-size="9" font-family="Inter" font-weight="600">LEGEND</text>
+      <circle cx="50" cy="73" r="5" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="62" y="77" fill="#888" font-size="8" font-family="Inter">Revolute Joint</text>
+      <line x1="42" y1="92" x2="58" y2="92" stroke="#aaa" stroke-width="3"/>
+      <text x="62" y="96" fill="#888" font-size="8" font-family="Inter">Link (rigid body)</text>
+      <rect x="42" y="105" width="16" height="10" rx="2" fill="none" stroke="#c084fc" stroke-width="1"/>
+      <text x="62" y="114" fill="#888" font-size="8" font-family="Inter">End Effector</text>
+      <rect x="42" y="123" width="16" height="10" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+      <text x="62" y="132" fill="#888" font-size="8" font-family="Inter">Base / Support</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.9 — Mechanical subsystem of a 3-DOF articulated robot</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q7 ═══════════ -->
+<div class="question-block" id="q7">
+  <p class="q-label">Question 07 <span class="marks">5 Marks</span></p>
+  <h2>Explain Open-loop and Closed-loop Control Systems in robotic manipulators with suitable block diagrams.</h2>
+
+  <h3>Open-Loop Control System</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    An <strong>open-loop control system</strong> is one in which the output has <strong>no effect</strong> on the input (control action). There is <strong>no feedback</strong> from the output to the input. The controller sends commands to the actuator without verifying the actual output.
+  </div>
+
+  <h4>Characteristics:</h4>
+  <ul>
+    <li>Simple and economical design</li>
+    <li>No feedback mechanism — output is not measured or compared</li>
+    <li>Less accurate — cannot correct for disturbances or errors</li>
+    <li>Generally stable (no chance of oscillation due to feedback)</li>
+    <li>Suitable for simple, predictable tasks</li>
+  </ul>
+
+  <p><strong>Robotics Example:</strong> A stepper motor rotating a fixed number of steps without an encoder to verify the actual angle reached. If the motor misses a step, the system has no way to detect or correct the error.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 620 100" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <text x="10" y="20" fill="#60a5fa" font-size="11" font-family="Inter" font-weight="600">OPEN-LOOP CONTROL SYSTEM</text>
+      <rect x="10" y="35" width="100" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="60" y="59" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Input (r)</text>
+      <rect x="160" y="35" width="130" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+      <text x="225" y="59" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter">Controller</text>
+      <rect x="340" y="35" width="110" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+      <text x="395" y="59" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter">Robot/Plant</text>
+      <rect x="500" y="35" width="100" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="550" y="59" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Output (c)</text>
+      <line x1="110" y1="55" x2="160" y2="55" stroke="#555" stroke-width="1.2" marker-end="url(#arr6)"/>
+      <line x1="290" y1="55" x2="340" y2="55" stroke="#555" stroke-width="1.2" marker-end="url(#arr6)"/>
+      <line x1="450" y1="55" x2="500" y2="55" stroke="#555" stroke-width="1.2" marker-end="url(#arr6)"/>
+    </svg>
+    <p class="diagram-caption">Fig 1.10 — Open-loop control system — no feedback path</p>
+  </div>
+
+  <h3>Closed-Loop Control System</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    A <strong>closed-loop control system</strong> (feedback control system) is one in which the output is <strong>continuously measured</strong> and <strong>fed back</strong> to the input for comparison. The difference (error signal) is used to adjust the control action.
+  </div>
+
+  <h4>Characteristics:</h4>
+  <ul>
+    <li>Feedback mechanism present — output is measured by sensors</li>
+    <li>Highly accurate — error is continuously corrected</li>
+    <li>Complex design, higher cost</li>
+    <li>May become unstable if not properly designed</li>
+    <li>Essential for precision robotics tasks</li>
+  </ul>
+
+  <p><strong>Robotics Example:</strong> A servo motor with an encoder. The controller commands a desired angle; the encoder measures the actual angle; the difference (error) drives the motor until the error is zero.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg">
+      <text x="10" y="20" fill="#34d399" font-size="11" font-family="Inter" font-weight="600">CLOSED-LOOP CONTROL SYSTEM</text>
+      <rect x="10" y="40" width="90" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="55" y="64" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Input (r)</text>
+      <circle cx="140" cy="60" r="14" fill="none" stroke="#777" stroke-width="1.2"/>
+      <text x="140" y="64" text-anchor="middle" fill="#aaa" font-size="14" font-family="Inter">Σ</text>
+      <text x="130" y="50" fill="#34d399" font-size="8" font-family="Inter">+</text>
+      <text x="130" y="74" fill="#f87171" font-size="8" font-family="Inter">−</text>
+      <rect x="190" y="40" width="120" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+      <text x="250" y="64" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter">Controller</text>
+      <rect x="350" y="40" width="110" height="40" rx="4" fill="none" stroke="#777" stroke-width="1.5"/>
+      <text x="405" y="64" text-anchor="middle" fill="#ccc" font-size="10" font-family="Inter">Robot/Plant</text>
+      <rect x="500" y="40" width="100" height="40" rx="4" fill="none" stroke="#555" stroke-width="1.2"/>
+      <text x="550" y="64" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter">Output (c)</text>
+
+      <line x1="100" y1="60" x2="126" y2="60" stroke="#555" stroke-width="1.2" marker-end="url(#arr6)"/>
+      <line x1="154" y1="60" x2="190" y2="60" stroke="#555" stroke-width="1.2" marker-end="url(#arr6)"/>
+      <text x="172" y="53" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">error(e)</text>
+      <line x1="310" y1="60" x2="350" y2="60" stroke="#555" stroke-width="1.2" marker-end="url(#arr6)"/>
+      <line x1="460" y1="60" x2="500" y2="60" stroke="#555" stroke-width="1.2" marker-end="url(#arr6)"/>
+
+      <!-- Feedback path -->
+      <rect x="260" y="130" width="140" height="30" rx="4" fill="none" stroke="#555" stroke-width="1"/>
+      <text x="330" y="149" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">Feedback Sensor</text>
+      <line x1="550" y1="80" x2="550" y2="145" stroke="#555" stroke-width="1"/>
+      <line x1="550" y1="145" x2="400" y2="145" stroke="#555" stroke-width="1"/>
+      <line x1="260" y1="145" x2="140" y2="145" stroke="#555" stroke-width="1"/>
+      <line x1="140" y1="145" x2="140" y2="74" stroke="#555" stroke-width="1" marker-end="url(#arr6)"/>
+    </svg>
+    <p class="diagram-caption">Fig 1.11 — Closed-loop control system — output is fed back for comparison</p>
+  </div>
+
+  <h3>Comparison Table</h3>
+  <table>
+    <tr><th>Feature</th><th>Open-Loop</th><th>Closed-Loop</th></tr>
+    <tr><td>Feedback</td><td>No feedback path</td><td>Output fed back to input</td></tr>
+    <tr><td>Accuracy</td><td>Less accurate</td><td>Highly accurate</td></tr>
+    <tr><td>Stability</td><td>Generally stable</td><td>Can become unstable</td></tr>
+    <tr><td>Complexity</td><td>Simple</td><td>Complex</td></tr>
+    <tr><td>Cost</td><td>Low</td><td>High</td></tr>
+    <tr><td>Robotic Example</td><td>Stepper motor (no encoder)</td><td>Servo motor (with encoder)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q8 ═══════════ -->
+<div class="question-block" id="q8">
+  <p class="q-label">Question 08 <span class="marks">5 Marks</span></p>
+  <h2>What are the major components of a robot? Describe Electrical Subsystems with a neat figure.</h2>
+
+  <p>As described in Q6, the major components of a robot include Mechanical, Electrical/Electronic, Control, Software, and Pneumatic/Hydraulic subsystems.</p>
+
+  <h3>Electrical Subsystem — Detailed Description</h3>
+  <p>The electrical subsystem provides <strong>power</strong> and <strong>signal processing</strong> capabilities to the robot.</p>
+
+  <h4>1. Power Supply</h4>
+  <ul>
+    <li>Converts AC mains to regulated DC voltages needed by motors, sensors, and controllers.</li>
+    <li>Includes transformers, rectifiers, voltage regulators, and battery packs (for mobile robots).</li>
+  </ul>
+
+  <h4>2. Electric Actuators (Motors)</h4>
+  <ul>
+    <li><strong>DC Motors</strong> — Provide continuous rotation; speed controlled by voltage.</li>
+    <li><strong>Stepper Motors</strong> — Rotate in fixed angular steps; open-loop positioning.</li>
+    <li><strong>Servo Motors</strong> — DC motor + encoder + controller; precise angle control.</li>
+    <li><strong>BLDC Motors</strong> — Brushless DC; high efficiency, long life.</li>
+  </ul>
+
+  <h4>3. Sensors</h4>
+  <ul>
+    <li><strong>Encoders</strong> — Measure angular position/speed of joints.</li>
+    <li><strong>Potentiometers</strong> — Analog position sensing.</li>
+    <li><strong>Force/Torque sensors</strong> — Measure forces at the end effector.</li>
+    <li><strong>Proximity sensors</strong> — Detect nearby objects without contact.</li>
+  </ul>
+
+  <h4>4. Controller / Microprocessor</h4>
+  <p>The "brain" of the robot — receives sensor data, processes commands, sends signals to actuators. Examples: ATmega328P, ARM Cortex, PLC.</p>
+
+  <h4>5. Wiring and Communication</h4>
+  <p>Cables, connectors, communication buses (I2C, SPI, UART, CAN) that transmit signals and power between components.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <text x="340" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">ELECTRICAL SUBSYSTEM BLOCK DIAGRAM</text>
+
+      <!-- Power Supply -->
+      <rect x="20" y="50" width="120" height="50" rx="5" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="80" y="72" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">Power Supply</text>
+      <text x="80" y="88" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">AC→DC, Battery</text>
+
+      <!-- Controller -->
+      <rect x="250" y="50" width="140" height="50" rx="5" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="320" y="72" text-anchor="middle" fill="#60a5fa" font-size="11" font-family="Inter" font-weight="700">CONTROLLER</text>
+      <text x="320" y="88" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">Microprocessor / PLC</text>
+
+      <!-- Motor drivers -->
+      <rect x="490" y="50" width="130" height="50" rx="5" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="555" y="72" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">Motor Drivers</text>
+      <text x="555" y="88" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">H-Bridge, PWM</text>
+
+      <!-- Actuators -->
+      <rect x="490" y="140" width="130" height="50" rx="5" fill="none" stroke="#c084fc" stroke-width="1.5"/>
+      <text x="555" y="162" text-anchor="middle" fill="#c084fc" font-size="10" font-family="Inter" font-weight="600">Actuators</text>
+      <text x="555" y="178" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">DC/Servo/Stepper</text>
+
+      <!-- Sensors -->
+      <rect x="250" y="200" width="140" height="50" rx="5" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="320" y="222" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">Sensors</text>
+      <text x="320" y="238" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">Encoder, Proximity, Force</text>
+
+      <!-- Wiring -->
+      <rect x="20" y="200" width="120" height="50" rx="5" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="80" y="222" text-anchor="middle" fill="#aaa" font-size="10" font-family="Inter" font-weight="600">Wiring / Bus</text>
+      <text x="80" y="238" text-anchor="middle" fill="#888" font-size="8" font-family="Inter">I2C, SPI, CAN</text>
+
+      <!-- Arrows -->
+      <line x1="140" y1="75" x2="250" y2="75" stroke="#555" stroke-width="1.2" marker-end="url(#arr7)"/>
+      <text x="195" y="68" text-anchor="middle" fill="#666" font-size="8" font-family="Inter">Power</text>
+      <line x1="390" y1="75" x2="490" y2="75" stroke="#555" stroke-width="1.2" marker-end="url(#arr7)"/>
+      <text x="440" y="68" text-anchor="middle" fill="#666" font-size="8" font-family="Inter">Signals</text>
+      <line x1="555" y1="100" x2="555" y2="140" stroke="#555" stroke-width="1.2" marker-end="url(#arr7)"/>
+      <line x1="490" y1="165" x2="390" y2="165" stroke="#555" stroke-width="1"/>
+      <line x1="390" y1="165" x2="390" y2="215" stroke="#555" stroke-width="1"/>
+      <line x1="390" y1="215" x2="390" y2="225" stroke="#555" stroke-width="1" marker-end="url(#arr7)"/>
+      <text x="430" y="155" fill="#666" font-size="8" font-family="Inter">Motion</text>
+      <line x1="320" y1="200" x2="320" y2="100" stroke="#555" stroke-width="1.2" marker-end="url(#arr7)"/>
+      <text x="305" y="150" fill="#666" font-size="8" font-family="Inter">Feedback</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.12 — Electrical subsystem block diagram of a robot</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q9 ═══════════ -->
+<div class="question-block" id="q9">
+  <p class="q-label">Question 09 <span class="marks">5 Marks</span></p>
+  <h2>What are the major components of a robot? Describe Pneumatic Subsystems with a neat figure.</h2>
+
+  <p>The major components of a robot are: Mechanical, Electrical/Electronic, Control, Software, and Pneumatic/Hydraulic subsystems (refer Q6).</p>
+
+  <h3>Pneumatic Subsystem — Detailed Description</h3>
+  <p>Pneumatic systems use <strong>compressed air</strong> to create linear or rotary motion. They are widely used in robots requiring fast, repetitive, pick-and-place operations.</p>
+
+  <h4>Components of Pneumatic Subsystem</h4>
+  <ol>
+    <li><strong>Air Compressor</strong> — Compresses atmospheric air to high pressure (typically 6–10 bar).</li>
+    <li><strong>Air Filter / Regulator / Lubricator (FRL Unit)</strong> — Filters contaminants, regulates pressure, adds lubrication for valve operation.</li>
+    <li><strong>Direction Control Valve (DCV)</strong> — Controls direction of air flow (3/2, 5/2 valves). Can be solenoid-operated.</li>
+    <li><strong>Flow Control Valve</strong> — Controls speed of actuator by regulating air flow rate.</li>
+    <li><strong>Pneumatic Actuator</strong> — Converts compressed air energy into mechanical motion:
+      <ul>
+        <li><strong>Linear actuator (cylinder)</strong> — Single-acting or double-acting piston-cylinder</li>
+        <li><strong>Rotary actuator</strong> — Vane-type pneumatic motor</li>
+      </ul>
+    </li>
+    <li><strong>Exhaust / Muffler</strong> — Releases spent air, reduces noise.</li>
+  </ol>
+
+  <h4>Advantages</h4>
+  <ul>
+    <li>Fast operation and high speed</li>
+    <li>Clean — uses air (no contamination risk)</li>
+    <li>Works in extreme temperatures</li>
+    <li>Simple design and low cost</li>
+    <li>Safe — no risk of fire or explosion</li>
+  </ul>
+
+  <h4>Disadvantages</h4>
+  <ul>
+    <li>Low force output compared to hydraulic</li>
+    <li>Air is compressible — less precise positioning</li>
+    <li>Air leakage possible at joints and seals</li>
+    <li>Noisy operation</li>
+    <li>Moisture contamination in air supply</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker></defs>
+      <text x="340" y="20" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">PNEUMATIC SUBSYSTEM BLOCK DIAGRAM</text>
+
+      <rect x="10" y="70" width="100" height="55" rx="5" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="60" y="93" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter" font-weight="600">Air</text>
+      <text x="60" y="108" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter" font-weight="600">Compressor</text>
+
+      <rect x="140" y="70" width="90" height="55" rx="5" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="185" y="93" text-anchor="middle" fill="#34d399" font-size="9" font-family="Inter" font-weight="600">FRL Unit</text>
+      <text x="185" y="108" text-anchor="middle" fill="#888" font-size="7.5" font-family="Inter">Filter+Reg+Lub</text>
+
+      <rect x="260" y="70" width="100" height="55" rx="5" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="310" y="90" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter" font-weight="600">Direction</text>
+      <text x="310" y="105" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter" font-weight="600">Control Valve</text>
+
+      <rect x="390" y="70" width="100" height="55" rx="5" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="440" y="90" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter" font-weight="600">Flow Control</text>
+      <text x="440" y="105" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter" font-weight="600">Valve</text>
+
+      <rect x="520" y="70" width="120" height="55" rx="5" fill="none" stroke="#c084fc" stroke-width="2"/>
+      <text x="580" y="93" text-anchor="middle" fill="#c084fc" font-size="10" font-family="Inter" font-weight="700">Pneumatic</text>
+      <text x="580" y="108" text-anchor="middle" fill="#c084fc" font-size="10" font-family="Inter" font-weight="700">Actuator</text>
+
+      <line x1="110" y1="97" x2="140" y2="97" stroke="#555" stroke-width="1.2" marker-end="url(#arr8)"/>
+      <line x1="230" y1="97" x2="260" y2="97" stroke="#555" stroke-width="1.2" marker-end="url(#arr8)"/>
+      <line x1="360" y1="97" x2="390" y2="97" stroke="#555" stroke-width="1.2" marker-end="url(#arr8)"/>
+      <line x1="490" y1="97" x2="520" y2="97" stroke="#555" stroke-width="1.2" marker-end="url(#arr8)"/>
+
+      <!-- Controller input -->
+      <rect x="260" y="155" width="100" height="30" rx="4" fill="none" stroke="#888" stroke-width="1"/>
+      <text x="310" y="174" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">Controller Signal</text>
+      <line x1="310" y1="155" x2="310" y2="125" stroke="#555" stroke-width="1" marker-end="url(#arr8)"/>
+
+      <!-- Output -->
+      <text x="580" y="145" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">→ Linear / Rotary Motion</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.13 — Pneumatic subsystem block diagram showing air flow path</p>
+  </div>
+</div>
+
+<!-- ═══════════ Q10 ═══════════ -->
+<div class="question-block" id="q10">
+  <p class="q-label">Question 10 <span class="marks">5 Marks</span></p>
+  <h2>Elaborate the terms Accuracy, Precision and Repeatability.</h2>
+
+  <h3>1. Accuracy</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Accuracy</strong> is the ability of the robot to move its end effector to the <strong>exact target point</strong> in the workspace. It measures how close the actual position is to the <strong>programmed (desired) position</strong>.
+  </div>
+  <ul>
+    <li>Accuracy is a <strong>single-event property</strong> — measured for one attempt.</li>
+    <li>Expressed as the distance between the desired point and the actual point reached.</li>
+    <li>Depends on: controller resolution, mechanical tolerances, calibration, sensor quality.</li>
+    <li><strong>Analogy:</strong> An archer hitting the bullseye — the shot lands exactly where aimed.</li>
+  </ul>
+
+  <h3>2. Precision</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Precision</strong> is the ability of the robot to reach the <strong>same point consistently</strong> over multiple attempts. It measures how close multiple attempts are <strong>to each other</strong> (not necessarily to the target).
+  </div>
+  <ul>
+    <li>Precision is a <strong>set-of-events property</strong> — measured over many repetitions.</li>
+    <li>High precision means the robot lands in the same spot every time, even if that spot is not the target.</li>
+    <li><strong>Analogy:</strong> An archer whose shots are all clustered tightly together — consistent but maybe off-center.</li>
+  </ul>
+
+  <h3>3. Repeatability</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Repeatability</strong> is the ability of the robot to return to a <strong>previously taught position</strong> with the same accuracy and precision, over and over again. It combines both accuracy and precision.
+  </div>
+  <ul>
+    <li>Measured as the spread of positions when the robot is commanded to the same point multiple times.</li>
+    <li>Industrial robots typically have repeatability of ±0.02 mm to ±0.1 mm.</li>
+    <li>More important than accuracy in industrial applications because robots are usually "taught" positions.</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+      <text x="350" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">ACCURACY vs PRECISION vs REPEATABILITY (Target Analogy)</text>
+
+      <!-- Case 1: High Accuracy, High Precision -->
+      <circle cx="120" cy="120" r="55" fill="none" stroke="#333" stroke-width="1"/>
+      <circle cx="120" cy="120" r="35" fill="none" stroke="#333" stroke-width="1"/>
+      <circle cx="120" cy="120" r="15" fill="none" stroke="#444" stroke-width="1"/>
+      <circle cx="120" cy="120" r="3" fill="#34d399"/>
+      <circle cx="118" cy="117" r="2.5" fill="#34d399"/>
+      <circle cx="122" cy="122" r="2.5" fill="#34d399"/>
+      <circle cx="119" cy="121" r="2.5" fill="#34d399"/>
+      <circle cx="121" cy="118" r="2.5" fill="#34d399"/>
+      <text x="120" y="195" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">High Accuracy</text>
+      <text x="120" y="210" text-anchor="middle" fill="#34d399" font-size="10" font-family="Inter" font-weight="600">High Precision</text>
+
+      <!-- Case 2: Low Accuracy, High Precision -->
+      <circle cx="310" cy="120" r="55" fill="none" stroke="#333" stroke-width="1"/>
+      <circle cx="310" cy="120" r="35" fill="none" stroke="#333" stroke-width="1"/>
+      <circle cx="310" cy="120" r="15" fill="none" stroke="#444" stroke-width="1"/>
+      <circle cx="310" cy="120" r="3" fill="#444"/>
+      <circle cx="340" cy="90" r="2.5" fill="#fbbf24"/>
+      <circle cx="342" cy="93" r="2.5" fill="#fbbf24"/>
+      <circle cx="338" cy="88" r="2.5" fill="#fbbf24"/>
+      <circle cx="341" cy="91" r="2.5" fill="#fbbf24"/>
+      <circle cx="339" cy="92" r="2.5" fill="#fbbf24"/>
+      <text x="310" y="195" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">Low Accuracy</text>
+      <text x="310" y="210" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Inter" font-weight="600">High Precision</text>
+
+      <!-- Case 3: Low Accuracy, Low Precision -->
+      <circle cx="500" cy="120" r="55" fill="none" stroke="#333" stroke-width="1"/>
+      <circle cx="500" cy="120" r="35" fill="none" stroke="#333" stroke-width="1"/>
+      <circle cx="500" cy="120" r="15" fill="none" stroke="#444" stroke-width="1"/>
+      <circle cx="500" cy="120" r="3" fill="#444"/>
+      <circle cx="475" cy="95" r="2.5" fill="#f87171"/>
+      <circle cx="530" cy="140" r="2.5" fill="#f87171"/>
+      <circle cx="490" cy="150" r="2.5" fill="#f87171"/>
+      <circle cx="520" cy="100" r="2.5" fill="#f87171"/>
+      <circle cx="480" cy="130" r="2.5" fill="#f87171"/>
+      <text x="500" y="195" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">Low Accuracy</text>
+      <text x="500" y="210" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">Low Precision</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.14 — Target analogy for Accuracy vs Precision</p>
+  </div>
+
+  <h3>Summary Comparison</h3>
+  <table>
+    <tr><th>Parameter</th><th>Measures</th><th>Property Of</th><th>Depends On</th></tr>
+    <tr><td>Accuracy</td><td>Closeness to target</td><td>Single event</td><td>Calibration, sensor quality</td></tr>
+    <tr><td>Precision</td><td>Closeness of repeated attempts to each other</td><td>Set of events</td><td>Mechanical tolerances, backlash</td></tr>
+    <tr><td>Repeatability</td><td>Ability to return to same taught point</td><td>Multiple cycles</td><td>Both accuracy &amp; precision</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q11 ═══════════ -->
+<div class="question-block" id="q11">
+  <p class="q-label">Question 11 <span class="marks">5 Marks</span></p>
+  <h2>What is Forward Kinematics? Discuss its importance.</h2>
+
+  <h3>Definition</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>Forward Kinematics (FK)</strong> is the process of determining the <strong>position and orientation</strong> of the robot's end effector given the <strong>joint parameters</strong> (angles for revolute joints or displacements for prismatic joints) and the <strong>link lengths</strong>.
+  </div>
+  <p><strong>Given:</strong> Joint variables (θ₁, θ₂, ..., θₙ) and link lengths (l₁, l₂, ..., lₙ)<br>
+  <strong>Find:</strong> End effector position (x, y, z) and orientation (Roll, Pitch, Yaw)</p>
+
+  <h3>Mathematical Formulation</h3>
+  <p>For a simple 2-link planar robot arm:</p>
+  <div class="info-box formula">
+<span class="label">Forward Kinematics — 2-Link Planar Arm</span>
+x = l₁ · cos(θ₁) + l₂ · cos(θ₁ + θ₂)
+y = l₁ · sin(θ₁) + l₂ · sin(θ₁ + θ₂)
+
+Where:
+  l₁, l₂  = link lengths
+  θ₁, θ₂  = joint angles
+  (x, y)  = end effector position</div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker>
+        <marker id="arr9b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker>
+      </defs>
+      <text x="300" y="20" text-anchor="middle" fill="#ccc" font-size="12" font-family="Inter" font-weight="700">FORWARD KINEMATICS — 2-LINK PLANAR ARM</text>
+
+      <!-- Axes -->
+      <line x1="100" y1="230" x2="500" y2="230" stroke="#444" stroke-width="1" marker-end="url(#arr9)"/>
+      <line x1="100" y1="230" x2="100" y2="40" stroke="#444" stroke-width="1" marker-end="url(#arr9)"/>
+      <text x="510" y="234" fill="#666" font-size="10" font-family="Inter">X</text>
+      <text x="94" y="35" fill="#666" font-size="10" font-family="Inter">Y</text>
+      <text x="90" y="244" fill="#666" font-size="10" font-family="Inter">O</text>
+
+      <!-- Link 1 -->
+      <line x1="100" y1="230" x2="280" y2="140" stroke="#60a5fa" stroke-width="4" stroke-linecap="round"/>
+      <text x="175" y="175" fill="#60a5fa" font-size="11" font-family="Inter" font-weight="600">l₁</text>
+
+      <!-- Joint 1 angle -->
+      <path d="M 160,230 A 60,60 0 0,0 145,205" fill="none" stroke="#60a5fa" stroke-width="1.2"/>
+      <text x="165" y="215" fill="#60a5fa" font-size="10" font-family="Inter">θ₁</text>
+
+      <!-- Joint 2 -->
+      <circle cx="280" cy="140" r="6" fill="none" stroke="#34d399" stroke-width="2"/>
+
+      <!-- Link 2 -->
+      <line x1="280" y1="140" x2="400" y2="80" stroke="#34d399" stroke-width="4" stroke-linecap="round"/>
+      <text x="350" y="100" fill="#34d399" font-size="11" font-family="Inter" font-weight="600">l₂</text>
+
+      <!-- Joint 2 angle -->
+      <path d="M 310,125 A 30,30 0 0,0 300,112" fill="none" stroke="#34d399" stroke-width="1.2"/>
+      <text x="315" y="113" fill="#34d399" font-size="10" font-family="Inter">θ₂</text>
+
+      <!-- End effector -->
+      <circle cx="400" cy="80" r="6" fill="#f87171" stroke="#f87171" stroke-width="1"/>
+      <text x="415" y="75" fill="#f87171" font-size="10" font-family="Inter" font-weight="600">P(x, y)</text>
+
+      <!-- Dashed lines to axes -->
+      <line x1="400" y1="80" x2="400" y2="230" stroke="#555" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="400" y1="80" x2="100" y2="80" stroke="#555" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="400" y="248" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">x</text>
+      <text x="85" y="84" fill="#888" font-size="9" font-family="Inter">y</text>
+
+      <!-- FK arrow box -->
+      <rect x="30" y="60" width="50" height="60" rx="4" fill="none" stroke="#888" stroke-width="1"/>
+      <text x="55" y="83" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">θ₁</text>
+      <text x="55" y="100" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">θ₂</text>
+      <text x="55" y="117" text-anchor="middle" fill="#888" font-size="9" font-family="Inter">l₁, l₂</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.15 — Forward Kinematics of a 2-link planar robot arm</p>
+  </div>
+
+  <h3>Importance of Forward Kinematics</h3>
+  <ol>
+    <li><strong>Simulation &amp; Visualization:</strong> FK is used in software to simulate robot motion before actual deployment — checking reachability, collisions.</li>
+    <li><strong>Path Planning:</strong> Determines the trajectory of the end effector in Cartesian space from joint-space trajectories.</li>
+    <li><strong>Workspace Determination:</strong> By sweeping all joint variables through their limits, FK helps define the robot's workspace envelope.</li>
+    <li><strong>Sensor Calibration:</strong> FK is used to map sensor readings (joint encoders) to actual end-effector positions.</li>
+    <li><strong>Foundation for Inverse Kinematics:</strong> FK is the mathematical foundation upon which Inverse Kinematics is built — IK requires FK equations to solve for joint angles.</li>
+  </ol>
+
+  <table>
+    <tr><th>Forward Kinematics</th><th>Inverse Kinematics</th></tr>
+    <tr><td>Given: Joint angles → Find: End-effector position</td><td>Given: End-effector position → Find: Joint angles</td></tr>
+    <tr><td>Always has a unique solution</td><td>May have multiple or no solutions</td></tr>
+    <tr><td>Computationally simple</td><td>Computationally complex</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ Q12 ═══════════ -->
+<div class="question-block" id="q12">
+  <p class="q-label">Question 12 <span class="marks">5 Marks</span></p>
+  <h2>Explain the applications of robots in areas that are unsafe or unreachable for humans.</h2>
+
+  <p>One of the most compelling reasons for using robots is their ability to operate in environments that are <strong>too dangerous, inaccessible, or inhospitable</strong> for human workers. Key application areas include:</p>
+
+  <h3>1. Nuclear Industry</h3>
+  <ul>
+    <li>Robots are used for handling radioactive materials, decommissioning nuclear plants, and inspection of reactor cores.</li>
+    <li>Radiation levels are lethal to humans but do not affect mechanical/electronic systems (with shielding).</li>
+    <li><strong>Example:</strong> PackBot used in Fukushima nuclear disaster for reconnaissance.</li>
+  </ul>
+
+  <h3>2. Bomb Disposal / Explosive Ordnance Disposal (EOD)</h3>
+  <ul>
+    <li>Remote-controlled robots can approach, inspect, and defuse explosive devices.</li>
+    <li>Keeps human bomb disposal technicians at a safe distance.</li>
+    <li><strong>Example:</strong> iRobot PackBot 510, Remotec Andros.</li>
+  </ul>
+
+  <h3>3. Space Exploration</h3>
+  <ul>
+    <li>Planetary rovers explore surfaces of other planets where human survival is impossible.</li>
+    <li>Robotic arms on space stations perform maintenance tasks in the vacuum of space.</li>
+    <li><strong>Examples:</strong> Mars rovers (Curiosity, Perseverance), Canadarm2 on ISS.</li>
+  </ul>
+
+  <h3>4. Deep Sea / Underwater Exploration</h3>
+  <ul>
+    <li>ROVs (Remotely Operated Vehicles) can dive to extreme depths where water pressure would crush humans.</li>
+    <li>Used for ocean floor mapping, underwater pipeline inspection, deep-sea mining.</li>
+    <li><strong>Example:</strong> ROV Jason for deep-sea scientific exploration (up to 6,500m depth).</li>
+  </ul>
+
+  <h3>5. Disaster Response &amp; Search and Rescue</h3>
+  <ul>
+    <li>Robots can enter collapsed buildings, navigate rubble, and detect survivors using thermal/acoustic sensors.</li>
+    <li>Used after earthquakes, mine collapses, and building fires.</li>
+    <li><strong>Example:</strong> Snake robots for navigating narrow spaces in rubble.</li>
+  </ul>
+
+  <h3>6. Hazardous Chemical / Biological Environments</h3>
+  <ul>
+    <li>Chemical plants, biohazard zones, toxic waste handling — robots can operate without risk of poisoning.</li>
+    <li>Used for cleanup of chemical spills and handling of infectious materials.</li>
+  </ul>
+
+  <h3>7. Mining and Tunneling</h3>
+  <ul>
+    <li>Underground mining is extremely dangerous (cave-ins, toxic gases, explosions).</li>
+    <li>Autonomous mining robots can extract minerals, drill tunnels, and transport ore.</li>
+  </ul>
+
+  <h3>8. Military and Surveillance</h3>
+  <ul>
+    <li>Unmanned Aerial Vehicles (UAVs/drones) for surveillance, reconnaissance.</li>
+    <li>Unmanned Ground Vehicles (UGVs) for mine clearance and patrol.</li>
+    <li>Keeps soldiers out of harm's way.</li>
+  </ul>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+      <text x="350" y="25" text-anchor="middle" fill="#ccc" font-size="13" font-family="Inter" font-weight="700">ROBOT APPLICATIONS IN UNSAFE / UNREACHABLE AREAS</text>
+
+      <rect x="250" y="50" width="200" height="40" rx="20" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <text x="350" y="75" text-anchor="middle" fill="#60a5fa" font-size="12" font-family="Inter" font-weight="700">ROBOT</text>
+
+      <line x1="250" y1="70" x2="100" y2="120" stroke="#555" stroke-width="1"/>
+      <line x1="290" y1="90" x2="200" y2="140" stroke="#555" stroke-width="1"/>
+      <line x1="350" y1="90" x2="350" y2="140" stroke="#555" stroke-width="1"/>
+      <line x1="410" y1="90" x2="500" y2="140" stroke="#555" stroke-width="1"/>
+      <line x1="450" y1="70" x2="620" y2="120" stroke="#555" stroke-width="1"/>
+
+      <rect x="30" y="115" width="140" height="30" rx="4" fill="none" stroke="#f87171" stroke-width="1.2"/>
+      <text x="100" y="135" text-anchor="middle" fill="#f87171" font-size="9" font-family="Inter">Nuclear &amp; Radiation</text>
+
+      <rect x="130" y="140" width="140" height="30" rx="4" fill="none" stroke="#fbbf24" stroke-width="1.2"/>
+      <text x="200" y="160" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Inter">Bomb Disposal</text>
+
+      <rect x="280" y="140" width="140" height="30" rx="4" fill="none" stroke="#34d399" stroke-width="1.2"/>
+      <text x="350" y="160" text-anchor="middle" fill="#34d399" font-size="9" font-family="Inter">Space Exploration</text>
+
+      <rect x="430" y="140" width="140" height="30" rx="4" fill="none" stroke="#60a5fa" stroke-width="1.2"/>
+      <text x="500" y="160" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Inter">Deep Sea / Underwater</text>
+
+      <rect x="550" y="115" width="140" height="30" rx="4" fill="none" stroke="#c084fc" stroke-width="1.2"/>
+      <text x="620" y="135" text-anchor="middle" fill="#c084fc" font-size="9" font-family="Inter">Disaster Rescue</text>
+
+      <!-- Additional row -->
+      <rect x="80" y="195" width="140" height="30" rx="4" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="150" y="215" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter">Chemical Hazards</text>
+
+      <rect x="280" y="195" width="140" height="30" rx="4" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="350" y="215" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter">Underground Mining</text>
+
+      <rect x="480" y="195" width="140" height="30" rx="4" fill="none" stroke="#888" stroke-width="1.2"/>
+      <text x="550" y="215" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter">Military / UAVs</text>
+    </svg>
+    <p class="diagram-caption">Fig 1.16 — Applications of robots in unsafe/unreachable environments</p>
+  </div>
+</div>
+
+<a href="#top" class="back-top">↑ Back to top</a>
+
+</main>
+</body>
+</html>

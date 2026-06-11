@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5 — Microcontroller (ATmega328P) | AEM Solutions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root{--bg:#0e0e0e;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border-light:#333;--text:#d4d4d4;--text-dim:#888;--text-bright:#f0f0f0;--accent:#a0a0a0;--accent-light:#c8c8c8;--highlight:#fff;--accent-blue:#60a5fa;--accent-green:#34d399;--accent-amber:#fbbf24}
+  *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:15px}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .site-header{text-align:center;padding:5rem 2rem 3rem;border-bottom:1px solid var(--border)}.site-header h1{font-size:2.4rem;font-weight:800;color:var(--highlight);letter-spacing:-1px;margin-bottom:.5rem}.site-header .subtitle{font-size:.95rem;color:var(--text-dim);font-weight:300;letter-spacing:3px;text-transform:uppercase}.site-header .unit-badge{display:inline-block;margin-top:1rem;background:var(--surface2);border:1px solid var(--border-light);padding:.35rem 1.2rem;border-radius:20px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:#c084fc;letter-spacing:2px;text-transform:uppercase}
+  .toc{max-width:720px;margin:3rem auto;padding:2rem 2.5rem;background:var(--surface);border:1px solid var(--border);border-radius:8px}.toc h2{font-size:1rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent);margin-bottom:1.5rem;font-weight:600}.toc ol{list-style:none;counter-reset:toc-counter}.toc ol li{counter-increment:toc-counter;margin-bottom:.6rem}.toc ol li a{color:var(--text);text-decoration:none;font-weight:400;transition:color .2s;display:flex;align-items:baseline;gap:.75rem}.toc ol li a::before{content:"Q" counter(toc-counter,decimal-leading-zero);font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:#c084fc;min-width:2rem}.toc ol li a:hover{color:var(--highlight)}
+  .content{max-width:800px;margin:0 auto;padding:0 2rem 6rem}
+  .question-block{margin-top:4rem;padding-top:2.5rem;border-top:1px solid var(--border)}.question-block:first-of-type{margin-top:2rem}.q-label{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:#c084fc;margin-bottom:.5rem}.q-label .marks{float:right;color:var(--accent-amber);letter-spacing:1px}.question-block>h2{font-size:1.35rem;font-weight:700;color:var(--highlight);margin-bottom:1.5rem;letter-spacing:-.3px;line-height:1.5}.question-block h3{font-size:1.1rem;font-weight:600;color:var(--text-bright);margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}.question-block h4{font-size:1rem;font-weight:600;color:var(--accent-light);margin:1.25rem 0 .6rem}
+  p{margin-bottom:1rem}ul,ol{margin:.75rem 0 1.25rem 1.5rem}li{margin-bottom:.4rem}
+  .info-box{background:var(--surface);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 6px 6px 0;font-size:.92rem}.info-box.formula{border-left-color:var(--accent-blue);font-family:'IBM Plex Mono',monospace;font-size:.88rem;white-space:pre-wrap}.info-box.definition{border-left-color:var(--accent-green)}.info-box strong{color:var(--text-bright)}.info-box .label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:.5rem;font-weight:600}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem}th{background:var(--surface2);color:var(--accent-light);font-weight:600;text-transform:uppercase;font-size:.75rem;letter-spacing:1px;padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border-light)}td{padding:.65rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}tr:hover td{background:var(--surface)}
+  .diagram{margin:2rem 0;text-align:center}.diagram svg{max-width:100%;height:auto}.diagram-caption{font-size:.78rem;color:var(--text-dim);margin-top:.75rem;font-style:italic}
+  code{font-family:'IBM Plex Mono',monospace;background:var(--surface2);padding:.15rem .4rem;border-radius:3px;font-size:.88em;color:var(--accent-light)}
+  pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.25rem 1.5rem;overflow-x:auto;font-family:'IBM Plex Mono',monospace;font-size:.85rem;line-height:1.6;margin:1.5rem 0;color:var(--text)}
+  .back-top{display:inline-block;margin-top:2rem;font-size:.78rem;color:var(--text-dim);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color .2s}.back-top:hover{color:var(--highlight)}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+  @media(max-width:600px){html{font-size:14px}.site-header h1{font-size:1.8rem}.content{padding:0 1rem 4rem}}
+  @media print{body{background:#fff;color:#111}.info-box{border-left-color:#666}a{color:#111}}
+</style>
+</head>
+<body>
+<header class="site-header" id="top">
+  <h1>Unit 5 — Solutions</h1>
+  <p class="subtitle">Microcontroller (ATmega328P)</p>
+  <span class="unit-badge">5 Marks Each</span>
+</header>
+<nav class="toc">
+  <h2>Questions</h2>
+  <ol>
+    <li><a href="#q1">RISC vs CISC — Where does ATmega328P fit?</a></li>
+    <li><a href="#q2">ALU and Program Counter in ATmega328P</a></li>
+    <li><a href="#q3">Ports — Digital and Analog I/O pins</a></li>
+    <li><a href="#q4">Flash, SRAM, and EEPROM differences</a></li>
+    <li><a href="#q5">Hardware vs Software Interrupts</a></li>
+    <li><a href="#q6">ATmega328P as I2C Master</a></li>
+    <li><a href="#q7">PWM Generation using Timer/Counter</a></li>
+    <li><a href="#q8">MOSI, MISO, SCK, SS Pins (SPI)</a></li>
+    <li><a href="#q9">5 Features of ATmega328P</a></li>
+    <li><a href="#q10">Arduino IDE Functions (any 5)</a></li>
+    <li><a href="#q11">Analog Pin — ADC and Resolution</a></li>
+    <li><a href="#q12">Timer0, Timer1, Timer2 Differences</a></li>
+  </ol>
+</nav>
+<main class="content">
+
+<!-- Q1 -->
+<div class="question-block" id="q1">
+  <p class="q-label">Question 01 <span class="marks">5 Marks</span></p>
+  <h2>Differentiate between RISC and CISC architectures. Where does ATmega328P fit?</h2>
+  <table>
+    <tr><th>Feature</th><th>RISC (Reduced Instruction Set)</th><th>CISC (Complex Instruction Set)</th></tr>
+    <tr><td>Instruction Set</td><td>Small, simple instruction set</td><td>Large, complex instruction set</td></tr>
+    <tr><td>Instruction Length</td><td>Fixed-length instructions</td><td>Variable-length instructions</td></tr>
+    <tr><td>Execution</td><td>Most instructions execute in 1 clock cycle</td><td>Instructions may take multiple cycles</td></tr>
+    <tr><td>Addressing Modes</td><td>Fewer addressing modes</td><td>Many addressing modes</td></tr>
+    <tr><td>Register File</td><td>Large number of general-purpose registers</td><td>Fewer registers</td></tr>
+    <tr><td>Memory Access</td><td>Load/Store architecture (only load/store access memory)</td><td>Many instructions can access memory directly</td></tr>
+    <tr><td>Hardware</td><td>Simpler hardware, hardwired control</td><td>Complex hardware, micro-programmed control</td></tr>
+    <tr><td>Pipelining</td><td>Easy to pipeline (uniform instruction size)</td><td>Difficult to pipeline</td></tr>
+    <tr><td>Code Size</td><td>Larger (more instructions needed)</td><td>Smaller (one complex instruction does more)</td></tr>
+    <tr><td>Power</td><td>Lower power consumption</td><td>Higher power consumption</td></tr>
+    <tr><td>Examples</td><td><strong>AVR (ATmega328P)</strong>, ARM, MIPS</td><td>Intel x86, Motorola 68000</td></tr>
+  </table>
+
+  <h3>ATmega328P — A RISC Microcontroller</h3>
+  <div class="info-box definition">
+    The <strong>ATmega328P</strong> is based on the <strong>AVR RISC architecture</strong> developed by Atmel (now Microchip). It features:
+    <ul style="margin-top:0.5rem">
+      <li>131 powerful instructions, <strong>most executed in a single clock cycle</strong></li>
+      <li><strong>32 × 8-bit general-purpose registers</strong></li>
+      <li>Harvard architecture (separate program and data memory)</li>
+      <li>Two-stage instruction pipeline for efficient execution</li>
+      <li>Achieves throughput approaching <strong>1 MIPS per MHz</strong> (Million Instructions Per Second)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="question-block" id="q2">
+  <p class="q-label">Question 02 <span class="marks">5 Marks</span></p>
+  <h2>Explain the function of the ALU and Program Counter in ATmega328P.</h2>
+
+  <h3>ALU (Arithmetic Logic Unit)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    The <strong>ALU</strong> is the computational core of the ATmega328P. It performs <strong>arithmetic and logical operations</strong> on data stored in the 32 general-purpose registers.
+  </div>
+  <h4>Functions of ALU:</h4>
+  <ul>
+    <li><strong>Arithmetic Operations:</strong> Addition (ADD), subtraction (SUB), increment (INC), decrement (DEC), multiply (MUL).</li>
+    <li><strong>Logical Operations:</strong> AND, OR, XOR, NOT, bit shift, bit set/clear.</li>
+    <li><strong>Comparison:</strong> Compare (CP) instructions that set status flags without changing data.</li>
+    <li><strong>Status Register (SREG) Update:</strong> After each operation, the ALU updates flags — Zero (Z), Carry (C), Negative (N), Overflow (V), Half Carry (H), Sign (S).</li>
+    <li>In the ATmega328P, the ALU operates <strong>directly on the 32 registers</strong>, and most ALU operations execute in <strong>1 clock cycle</strong>.</li>
+  </ul>
+
+  <h3>Program Counter (PC)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    The <strong>Program Counter</strong> is a special register that holds the <strong>address of the next instruction</strong> to be fetched from Flash program memory and executed.
+  </div>
+  <h4>Functions of Program Counter:</h4>
+  <ul>
+    <li><strong>Sequential Execution:</strong> After each instruction fetch, the PC is automatically incremented to point to the next instruction.</li>
+    <li><strong>Branching:</strong> For branch/jump instructions (JMP, CALL, RJMP), the PC is loaded with the target address.</li>
+    <li><strong>Interrupt Handling:</strong> When an interrupt occurs, the current PC value is saved on the stack, and the PC is loaded with the interrupt vector address.</li>
+    <li><strong>Subroutine Calls:</strong> CALL pushes PC onto the stack; RET pops it back.</li>
+    <li>In ATmega328P, the PC is <strong>14 bits wide</strong>, capable of addressing up to 16K word locations (32 KB of Flash memory).</li>
+  </ul>
+</div>
+
+<!-- Q3 -->
+<div class="question-block" id="q3">
+  <p class="q-label">Question 03 <span class="marks">5 Marks</span></p>
+  <h2>Illustrate the different types of ports in ATmega328P. Elaborate digital and analog I/O pins with examples.</h2>
+
+  <h3>Ports in ATmega328P</h3>
+  <p>The ATmega328P has <strong>3 I/O ports</strong>, each 8 bits wide (though not all pins may be available):</p>
+
+  <table>
+    <tr><th>Port</th><th>Pins</th><th>Arduino Mapping</th><th>Functions</th></tr>
+    <tr><td><strong>Port B</strong></td><td>PB0–PB7</td><td>Digital pins 8–13 + XTAL</td><td>Digital I/O, SPI (MOSI, MISO, SCK, SS), PWM</td></tr>
+    <tr><td><strong>Port C</strong></td><td>PC0–PC6</td><td>Analog pins A0–A5 + RESET</td><td>Analog input (ADC), I2C (SDA, SCL), Digital I/O</td></tr>
+    <tr><td><strong>Port D</strong></td><td>PD0–PD7</td><td>Digital pins 0–7</td><td>Digital I/O, UART (TX, RX), External Interrupts, PWM</td></tr>
+  </table>
+
+  <h4>Each port has 3 registers:</h4>
+  <ul>
+    <li><strong>DDRx</strong> (Data Direction Register) — Sets pin as input (0) or output (1)</li>
+    <li><strong>PORTx</strong> (Data Register) — Writes output value or enables internal pull-up</li>
+    <li><strong>PINx</strong> (Input Pins Register) — Reads the current state of the pin</li>
+  </ul>
+
+  <h3>Digital I/O Pins</h3>
+  <p>ATmega328P has <strong>14 digital I/O pins</strong> (D0–D13 in Arduino). They can be configured as input or output.</p>
+
+  <h4>Example — LED Blinking (Digital Output):</h4>
+<pre>
+void setup() {
+  pinMode(13, OUTPUT);    // Set pin 13 as output
+}
+void loop() {
+  digitalWrite(13, HIGH); // Turn LED ON
+  delay(1000);            // Wait 1 second
+  digitalWrite(13, LOW);  // Turn LED OFF
+  delay(1000);
+}
+</pre>
+
+  <h3>Analog Input Pins</h3>
+  <p>ATmega328P has <strong>6 analog input pins</strong> (A0–A5, mapped to Port C: PC0–PC5). These are connected to the internal <strong>10-bit ADC</strong> that converts analog voltage (0–5V) into a digital value (0–1023).</p>
+
+  <h4>Example — Reading a Potentiometer (Analog Input):</h4>
+<pre>
+void setup() {
+  Serial.begin(9600);
+}
+void loop() {
+  int sensorValue = analogRead(A0); // Read analog pin A0
+  Serial.println(sensorValue);      // Print value (0-1023)
+  delay(100);
+}
+</pre>
+
+  <h4>Note:</h4>
+  <p>Analog pins (A0–A5) can also be used as <strong>digital I/O</strong> pins (D14–D19) when analog functionality is not needed.</p>
+</div>
+
+<!-- Q4 -->
+<div class="question-block" id="q4">
+  <p class="q-label">Question 04 <span class="marks">5 Marks</span></p>
+  <h2>Explain the difference between Flash, SRAM, and EEPROM.</h2>
+  <table>
+    <tr><th>Feature</th><th>Flash Memory</th><th>SRAM</th><th>EEPROM</th></tr>
+    <tr><td><strong>Full Name</strong></td><td>Flash Program Memory</td><td>Static Random Access Memory</td><td>Electrically Erasable Programmable ROM</td></tr>
+    <tr><td><strong>Size in ATmega328P</strong></td><td>32 KB</td><td>2 KB</td><td>1 KB</td></tr>
+    <tr><td><strong>Type</strong></td><td>Non-volatile</td><td>Volatile</td><td>Non-volatile</td></tr>
+    <tr><td><strong>Data Retention</strong></td><td>Retains data without power</td><td>Data lost when power off</td><td>Retains data without power</td></tr>
+    <tr><td><strong>Purpose</strong></td><td>Stores the <strong>program code</strong> (instructions)</td><td>Stores <strong>runtime variables</strong>, stack, heap</td><td>Stores <strong>user data</strong> that must persist (calibration, settings)</td></tr>
+    <tr><td><strong>Speed</strong></td><td>Fast read, slow write</td><td>Fastest (read &amp; write)</td><td>Slowest (write is very slow)</td></tr>
+    <tr><td><strong>Write Cycles</strong></td><td>~10,000 write/erase cycles</td><td>Unlimited</td><td>~100,000 write/erase cycles</td></tr>
+    <tr><td><strong>Write Method</strong></td><td>Page-by-page (via ISP/bootloader)</td><td>Byte-by-byte (any time)</td><td>Byte-by-byte</td></tr>
+    <tr><td><strong>Analogy</strong></td><td>Hard drive (stores programs)</td><td>RAM (temporary workspace)</td><td>Small notepad (saves settings)</td></tr>
+  </table>
+
+  <div class="info-box">
+    <span class="label">Key Insight</span>
+    When you upload a sketch to Arduino, the code is stored in <strong>Flash</strong>. Variables declared in code are stored in <strong>SRAM</strong> during execution. To save data permanently (like a high score or calibration value), you write to <strong>EEPROM</strong>.
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="question-block" id="q5">
+  <p class="q-label">Question 05 <span class="marks">5 Marks</span></p>
+  <h2>What is the difference between hardware and software interrupts? List external and internal interrupts in ATmega328P.</h2>
+
+  <h3>What is an Interrupt?</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    An <strong>interrupt</strong> is a signal that temporarily halts the main program execution, causes the CPU to execute a special function called the <strong>Interrupt Service Routine (ISR)</strong>, and then returns to the main program.
+  </div>
+
+  <table>
+    <tr><th>Feature</th><th>Hardware Interrupt</th><th>Software Interrupt</th></tr>
+    <tr><td>Trigger</td><td>External hardware signal (pin change, timer overflow)</td><td>Software instruction in the program</td></tr>
+    <tr><td>Source</td><td>Physical pins, peripherals (timer, ADC, UART)</td><td>Programmed instructions (e.g., SWI, INT)</td></tr>
+    <tr><td>When</td><td>Asynchronous — can occur at any time</td><td>Synchronous — occurs at a specific point in code</td></tr>
+    <tr><td>Priority</td><td>Has fixed hardware priority</td><td>Priority determined by software</td></tr>
+    <tr><td>Example</td><td>Button press on INT0 pin</td><td>System call, breakpoint</td></tr>
+  </table>
+
+  <h3>External Interrupts in ATmega328P</h3>
+  <ul>
+    <li><strong>INT0</strong> (PD2 / Digital pin 2) — Triggered by rising edge, falling edge, or level change.</li>
+    <li><strong>INT1</strong> (PD3 / Digital pin 3) — Same trigger options as INT0.</li>
+    <li><strong>PCINT0–PCINT23</strong> — Pin Change Interrupts on any of the 24 I/O pins (grouped into 3 ports: PCINT0–7, PCINT8–14, PCINT16–23).</li>
+  </ul>
+
+  <h3>Internal Interrupts in ATmega328P</h3>
+  <ul>
+    <li><strong>Timer Interrupts:</strong> Timer0/Timer1/Timer2 overflow, compare match, input capture.</li>
+    <li><strong>ADC Interrupt:</strong> ADC conversion complete.</li>
+    <li><strong>UART Interrupts:</strong> USART TX complete, RX complete, Data Register Empty.</li>
+    <li><strong>SPI Interrupt:</strong> SPI transfer complete.</li>
+    <li><strong>TWI (I2C) Interrupt:</strong> I2C event (start, stop, data received).</li>
+    <li><strong>EEPROM Ready Interrupt:</strong> EEPROM write operation complete.</li>
+    <li><strong>Analog Comparator Interrupt:</strong> When comparator output changes.</li>
+    <li><strong>Watchdog Timer Interrupt:</strong> Watchdog timer timeout.</li>
+  </ul>
+</div>
+
+<!-- Q6 -->
+<div class="question-block" id="q6">
+  <p class="q-label">Question 06 <span class="marks">5 Marks</span></p>
+  <h2>How does ATmega328P act as an I2C Master?</h2>
+
+  <h3>I2C (Inter-Integrated Circuit) Protocol</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>I2C (I²C)</strong> is a synchronous, multi-master, multi-slave, serial communication protocol that uses only <strong>2 wires</strong>: SDA (Serial Data) and SCL (Serial Clock). In ATmega328P, it is called <strong>TWI (Two-Wire Interface)</strong>.
+  </div>
+
+  <h4>I2C Pins in ATmega328P:</h4>
+  <ul>
+    <li><strong>SDA</strong> = PC4 (Analog pin A4) — Bidirectional data line</li>
+    <li><strong>SCL</strong> = PC5 (Analog pin A5) — Clock line (generated by master)</li>
+  </ul>
+
+  <h4>How ATmega328P Acts as I2C Master:</h4>
+  <ol>
+    <li><strong>Generate START Condition:</strong> The master pulls SDA LOW while SCL is HIGH — signals the beginning of communication.</li>
+    <li><strong>Send Slave Address:</strong> Master sends a 7-bit slave address + 1-bit R/W (0=Write, 1=Read) on SDA, clocked by SCL.</li>
+    <li><strong>Wait for ACK:</strong> The addressed slave responds with an ACK (pulls SDA LOW) on the 9th clock pulse.</li>
+    <li><strong>Send/Receive Data:</strong> Data is transferred byte-by-byte. Each byte is followed by an ACK/NACK from the receiver.</li>
+    <li><strong>Generate STOP Condition:</strong> Master releases SDA from LOW to HIGH while SCL is HIGH — signals end of communication.</li>
+  </ol>
+
+  <h4>Arduino Example — I2C Master Writing to Slave:</h4>
+<pre>
+#include &lt;Wire.h&gt;
+
+void setup() {
+  Wire.begin();        // Join I2C bus as Master
+}
+void loop() {
+  Wire.beginTransmission(0x27); // Address slave 0x27
+  Wire.write("Hello");          // Send data
+  Wire.endTransmission();       // Send STOP
+  delay(500);
+}
+</pre>
+</div>
+
+<!-- Q7 -->
+<div class="question-block" id="q7">
+  <p class="q-label">Question 07 <span class="marks">5 Marks</span></p>
+  <h2>How is PWM generated using Timer/Counter modules?</h2>
+
+  <h3>What is PWM?</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>PWM (Pulse Width Modulation)</strong> is a technique that generates a digital waveform with a variable <strong>duty cycle</strong>. The average voltage output is proportional to the duty cycle, allowing control of motor speed, LED brightness, etc.
+  </div>
+
+  <div class="info-box formula">
+<span class="label">Duty Cycle Formula</span>
+Duty Cycle (%) = (ON time / Total Period) × 100
+
+Average Voltage = V_supply × (Duty Cycle / 100)
+Example: 5V supply, 50% duty → V_avg = 2.5V</div>
+
+  <h4>PWM Generation using Timers in ATmega328P:</h4>
+  <ol>
+    <li>The <strong>Timer/Counter</strong> continuously counts from 0 up to a maximum value (TOP).</li>
+    <li>An <strong>Output Compare Register (OCR)</strong> holds a threshold value.</li>
+    <li>When the counter value < OCR → Output pin is HIGH.</li>
+    <li>When the counter value ≥ OCR → Output pin is LOW.</li>
+    <li>This creates a square wave with duty cycle = OCR/TOP × 100%.</li>
+    <li>Changing the OCR value changes the duty cycle.</li>
+  </ol>
+
+  <h4>PWM Modes:</h4>
+  <ul>
+    <li><strong>Fast PWM:</strong> Counter counts from 0 to TOP, then resets. Single-slope. Higher frequency.</li>
+    <li><strong>Phase-Correct PWM:</strong> Counter counts up to TOP then back down to 0. Dual-slope. Symmetric output — better for motor control.</li>
+  </ul>
+
+  <h4>PWM Pins on ATmega328P (Arduino Uno):</h4>
+  <table>
+    <tr><th>Pin</th><th>Timer</th><th>OC Register</th></tr>
+    <tr><td>D3</td><td>Timer2</td><td>OC2B</td></tr>
+    <tr><td>D5</td><td>Timer0</td><td>OC0B</td></tr>
+    <tr><td>D6</td><td>Timer0</td><td>OC0A</td></tr>
+    <tr><td>D9</td><td>Timer1</td><td>OC1A</td></tr>
+    <tr><td>D10</td><td>Timer1</td><td>OC1B</td></tr>
+    <tr><td>D11</td><td>Timer2</td><td>OC2A</td></tr>
+  </table>
+
+  <h4>Arduino Example:</h4>
+<pre>
+analogWrite(9, 128);  // 50% duty cycle on pin 9 (0-255 range)
+analogWrite(9, 64);   // 25% duty cycle
+analogWrite(9, 255);  // 100% duty cycle (always HIGH)
+</pre>
+</div>
+
+<!-- Q8 -->
+<div class="question-block" id="q8">
+  <p class="q-label">Question 08 <span class="marks">5 Marks</span></p>
+  <h2>Explain the role of MOSI, MISO, SCK, and SS pins.</h2>
+
+  <h3>SPI (Serial Peripheral Interface)</h3>
+  <div class="info-box definition">
+    <span class="label">Definition</span>
+    <strong>SPI</strong> is a synchronous, full-duplex, master-slave serial communication protocol. It uses <strong>4 wires</strong> and is faster than I2C. Used for high-speed communication with SD cards, displays, sensors.
+  </div>
+
+  <table>
+    <tr><th>Pin</th><th>Full Name</th><th>Direction (Master)</th><th>ATmega328P Pin</th><th>Function</th></tr>
+    <tr><td><strong>MOSI</strong></td><td>Master Out Slave In</td><td>Output (Master → Slave)</td><td>PB3 (D11)</td><td>Data line from master to slave. Master sends data, slave receives data on this line.</td></tr>
+    <tr><td><strong>MISO</strong></td><td>Master In Slave Out</td><td>Input (Slave → Master)</td><td>PB4 (D12)</td><td>Data line from slave to master. Slave sends data, master receives data on this line.</td></tr>
+    <tr><td><strong>SCK</strong></td><td>Serial Clock</td><td>Output</td><td>PB5 (D13)</td><td>Clock signal generated by the master. Synchronizes data transfer. Both devices sample data on clock edges.</td></tr>
+    <tr><td><strong>SS</strong></td><td>Slave Select (Chip Select)</td><td>Output</td><td>PB2 (D10)</td><td>Active LOW signal. Master pulls SS LOW to select a specific slave for communication. Each slave has its own SS line.</td></tr>
+  </table>
+
+  <h4>How SPI Communication Works:</h4>
+  <ol>
+    <li>Master pulls the <strong>SS pin LOW</strong> for the target slave.</li>
+    <li>Master generates <strong>SCK</strong> clock pulses.</li>
+    <li>On each clock pulse, one bit is sent on <strong>MOSI</strong> (master→slave) and simultaneously one bit is received on <strong>MISO</strong> (slave→master).</li>
+    <li>After data transfer, master pulls <strong>SS HIGH</strong> to deselect the slave.</li>
+  </ol>
+
+  <h4>Advantages of SPI:</h4>
+  <ul>
+    <li>Full-duplex (simultaneous send and receive)</li>
+    <li>Very fast (up to 10 MHz on ATmega328P)</li>
+    <li>No addressing scheme needed (SS selects slave)</li>
+    <li>Simple hardware</li>
+  </ul>
+</div>
+
+<!-- Q9 -->
+<div class="question-block" id="q9">
+  <p class="q-label">Question 09 <span class="marks">5 Marks</span></p>
+  <h2>Summarize any 5 features of ATmega328P.</h2>
+  <ol>
+    <li><strong>8-bit AVR RISC Architecture:</strong> 131 instructions, most single-cycle execution. 32 × 8-bit general-purpose registers. Achieves up to 20 MIPS at 20 MHz clock speed.</li>
+    <li><strong>Memory:</strong> 32 KB Flash (program memory), 2 KB SRAM (data memory), 1 KB EEPROM (non-volatile data storage). Harvard architecture with separate program and data buses.</li>
+    <li><strong>I/O Ports:</strong> 23 programmable I/O pins organized into 3 ports (B, C, D). Each pin can be configured as input or output. Internal pull-up resistors available.</li>
+    <li><strong>Built-in Peripherals:</strong>
+      <ul>
+        <li>6-channel 10-bit ADC</li>
+        <li>3 Timer/Counters (Timer0: 8-bit, Timer1: 16-bit, Timer2: 8-bit)</li>
+        <li>6 PWM output channels</li>
+        <li>USART (serial communication)</li>
+        <li>SPI (Serial Peripheral Interface)</li>
+        <li>TWI / I2C (Two-Wire Interface)</li>
+        <li>Analog Comparator</li>
+      </ul>
+    </li>
+    <li><strong>Low Power Modes:</strong> 6 sleep modes (Idle, ADC Noise Reduction, Power-save, Power-down, Standby, Extended Standby) for battery-powered applications. Operating voltage: 1.8V–5.5V.</li>
+  </ol>
+</div>
+
+<!-- Q10 -->
+<div class="question-block" id="q10">
+  <p class="q-label">Question 10 <span class="marks">5 Marks</span></p>
+  <h2>What is the use of the following in Arduino IDE? (Answer any 5)</h2>
+
+  <h4>a. <code>void setup()</code></h4>
+  <p>Called <strong>once</strong> when the Arduino board is powered on or reset. Used to <strong>initialize</strong> pin modes, serial communication, libraries, and variables. Code inside runs only once at startup.</p>
+<pre>void setup() {
+  pinMode(13, OUTPUT);   // Initialize pin 13 as output
+  Serial.begin(9600);    // Start serial at 9600 baud
+}</pre>
+
+  <h4>b. <code>void loop()</code></h4>
+  <p>Called <strong>repeatedly</strong> in an infinite loop after <code>setup()</code> completes. Contains the <strong>main program logic</strong> — reading sensors, controlling actuators, making decisions. This function runs forever.</p>
+<pre>void loop() {
+  digitalWrite(13, HIGH);  // Turn LED on
+  delay(1000);
+  digitalWrite(13, LOW);   // Turn LED off
+  delay(1000);
+}</pre>
+
+  <h4>c. <code>pinMode(pin, mode)</code></h4>
+  <p>Configures a specified digital pin as <strong>INPUT</strong>, <strong>OUTPUT</strong>, or <strong>INPUT_PULLUP</strong>. Must be called before using <code>digitalRead()</code> or <code>digitalWrite()</code> on that pin.</p>
+<pre>pinMode(7, INPUT);         // Set pin 7 as digital input
+pinMode(13, OUTPUT);       // Set pin 13 as digital output
+pinMode(2, INPUT_PULLUP);  // Input with internal pull-up</pre>
+
+  <h4>d. <code>pulseIn(pin, value)</code></h4>
+  <p>Reads the <strong>duration of a pulse</strong> (HIGH or LOW) on a digital pin, in <strong>microseconds</strong>. Commonly used with ultrasonic sensors (HC-SR04) to measure echo time.</p>
+<pre>long duration = pulseIn(echoPin, HIGH);
+// Returns time in μs the echo pin was HIGH
+// Distance = duration × 0.034 / 2 (in cm)</pre>
+
+  <h4>e. <code>digitalRead(pin)</code></h4>
+  <p>Reads the value from a specified digital pin — returns <strong>HIGH (1)</strong> or <strong>LOW (0)</strong>. Used to read button states, switch positions, digital sensor outputs.</p>
+<pre>int buttonState = digitalRead(7);  // Read pin 7
+if (buttonState == HIGH) {
+  // Button is pressed
+}</pre>
+
+  <h4>f. <code>digitalWrite(pin, value)</code></h4>
+  <p>Writes a <strong>HIGH</strong> or <strong>LOW</strong> value to a digital output pin. Used to turn LEDs on/off, activate relays, drive motors.</p>
+<pre>digitalWrite(13, HIGH);  // Set pin 13 to 5V (LED on)
+digitalWrite(13, LOW);   // Set pin 13 to 0V (LED off)</pre>
+</div>
+
+<!-- Q11 -->
+<div class="question-block" id="q11">
+  <p class="q-label">Question 11 <span class="marks">5 Marks</span></p>
+  <h2>Explain the importance of the analog pin in ATmega328P. Does it have ADC? What is the resolution?</h2>
+
+  <h3>Importance of Analog Pins</h3>
+  <p>The analog pins (A0–A5) allow the ATmega328P to interface with the <strong>real-world analog environment</strong>. While digital pins only detect HIGH/LOW (binary), analog pins can measure <strong>continuously varying voltages</strong> — essential for reading sensors like:</p>
+  <ul>
+    <li>Temperature sensors (LM35, thermistor)</li>
+    <li>Light sensors (LDR / photoresistor)</li>
+    <li>Potentiometers (variable resistance)</li>
+    <li>Pressure sensors, moisture sensors</li>
+    <li>Current sensors (ACS712)</li>
+  </ul>
+
+  <h3>Does ATmega328P have ADC?</h3>
+  <div class="info-box definition">
+    <strong>Yes!</strong> The ATmega328P has a built-in <strong>10-bit Successive Approximation ADC</strong> with <strong>6 channels</strong> (multiplexed through a single ADC module).
+  </div>
+
+  <h3>ADC Resolution</h3>
+  <div class="info-box formula">
+<span class="label">Resolution</span>
+ADC Resolution = 10 bits
+Number of steps = 2¹⁰ = <strong>1024 steps</strong> (values 0 to 1023)
+
+Voltage Resolution = V_ref / 1024
+With V_ref = 5V:
+  Resolution = 5V / 1024 = <strong>4.88 mV per step</strong>
+
+Conversion: Voltage = (ADC_value × V_ref) / 1024</div>
+
+  <h4>ADC Features in ATmega328P:</h4>
+  <ul>
+    <li><strong>6 multiplexed channels</strong> (ADC0–ADC5 on pins PC0–PC5 / A0–A5)</li>
+    <li><strong>10-bit resolution</strong> (output: 0–1023)</li>
+    <li>Conversion time: 13–260 μs</li>
+    <li>Selectable voltage reference: AVCC (5V), internal 1.1V, or external AREF</li>
+    <li>Free-running or single conversion mode</li>
+    <li>ADC interrupt on conversion complete</li>
+  </ul>
+</div>
+
+<!-- Q12 -->
+<div class="question-block" id="q12">
+  <p class="q-label">Question 12 <span class="marks">5 Marks</span></p>
+  <h2>Explain the difference between Timer0, Timer1, and Timer2.</h2>
+
+  <table>
+    <tr><th>Feature</th><th>Timer0</th><th>Timer1</th><th>Timer2</th></tr>
+    <tr><td><strong>Bit Width</strong></td><td>8-bit (0–255)</td><td>16-bit (0–65535)</td><td>8-bit (0–255)</td></tr>
+    <tr><td><strong>Max Count</strong></td><td>255</td><td>65,535</td><td>255</td></tr>
+    <tr><td><strong>PWM Pins</strong></td><td>D5 (OC0B), D6 (OC0A)</td><td>D9 (OC1A), D10 (OC1B)</td><td>D3 (OC2B), D11 (OC2A)</td></tr>
+    <tr><td><strong>Prescaler Options</strong></td><td>1, 8, 64, 256, 1024</td><td>1, 8, 64, 256, 1024</td><td>1, 8, 32, 64, 128, 256, 1024</td></tr>
+    <tr><td><strong>Used By Arduino</strong></td><td>delay(), millis(), micros()</td><td>Servo library</td><td>tone() function</td></tr>
+    <tr><td><strong>Special Features</strong></td><td>Basic timer, used for system timing</td><td>Input Capture, 16-bit precision, best for long intervals</td><td>Asynchronous operation (can use external 32.768 kHz crystal for RTC)</td></tr>
+    <tr><td><strong>Modes</strong></td><td>Normal, CTC, Fast PWM, Phase-Correct PWM</td><td>Normal, CTC, Fast PWM, Phase-Correct PWM, Input Capture</td><td>Normal, CTC, Fast PWM, Phase-Correct PWM</td></tr>
+    <tr><td><strong>Compare Registers</strong></td><td>OCR0A, OCR0B</td><td>OCR1A, OCR1B, ICR1</td><td>OCR2A, OCR2B</td></tr>
+    <tr><td><strong>Best For</strong></td><td>System functions (don't modify!)</td><td>Precise timing, servo, long delays, frequency measurement</td><td>Tone generation, RTC</td></tr>
+  </table>
+
+  <div class="info-box">
+    <span class="label">Important Note</span>
+    <strong>Do not modify Timer0</strong> settings in Arduino — it is used by <code>delay()</code>, <code>millis()</code>, and <code>micros()</code>. Changing Timer0 prescaler will break these system functions. Use Timer1 or Timer2 for custom timing tasks.
+  </div>
+</div>
+
+<a href="#top" class="back-top">↑ Back to top</a>
+</main>
+</body>
+</html>
